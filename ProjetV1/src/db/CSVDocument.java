@@ -1,7 +1,12 @@
 package db;
 
 import java.io.*;
-import java.nio.file.*;
+import java.nio.*;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.OpenOption;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 
 public class CSVDocument  {
@@ -24,11 +29,9 @@ public class CSVDocument  {
 		return set;
 	}
 	
-	public void Add (CSVLine line){
-		try (BufferedWriter writer = Files.newBufferedWriter(path, "US-ASCII	",StandardOpenOption.APPEND)) {
+	public void Add (CSVLine line) throws IOException{
+		try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(path), Charset.forName("UTF-8"),(OpenOption)StandardOpenOption.APPEND )) {
 		    writer.write(line.toString());
-		} catch (IOException ioe) {
-		    System.err.format("IOException: %s%n", ioe);
 		}
 	}
 	

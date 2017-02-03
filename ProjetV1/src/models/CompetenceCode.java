@@ -29,7 +29,7 @@ public class CompetenceCode {
 
 	@Override
 	public String toString() {
-		return "category "+'.'+  subCategory;
+		return "category"+'.'+  subCategory;
 	}
 
 	public char getCategory() {
