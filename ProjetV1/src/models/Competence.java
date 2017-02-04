@@ -2,7 +2,7 @@ package models;
 
 import java.util.ArrayList;
 
-public class Competence {
+public class Competence implements Entity{
 	private CompetenceCode code ;
 	private ArrayList<String> Names ;
 	
@@ -36,6 +36,12 @@ public class Competence {
 	@Override
 	public String toString() {
 		return "[code=" + code + ", Names=" + Names + "]";
+	}
+
+
+	@Override
+	public String ID() {		
+		return code.toString();
 	}
 	
  

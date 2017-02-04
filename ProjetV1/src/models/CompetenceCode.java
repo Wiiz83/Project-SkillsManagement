@@ -13,13 +13,13 @@ public class CompetenceCode {
 	public CompetenceCode(String code) throws InvalidDataException{
 		if (code.length()<3)
 			throw new InvalidDataException();
-		if (code.charAt(1)!='.')
+		if (code.charAt(1)!='.' || code.charAt(code.length()-1)!='.')
 			throw new InvalidDataException();
 		category=Character.toUpperCase(code.charAt(0));
 		if (category <'A' || category > 'Z')
 			throw new InvalidDataException();			
 		try {
-			subCategory= Integer.parseInt(code.substring(2) );
+			subCategory= Integer.parseInt(code.substring(2,code.length()-1) );
 		}
 		catch (NumberFormatException e){
 			throw new InvalidDataException(e);
@@ -29,7 +29,7 @@ public class CompetenceCode {
 
 	@Override
 	public String toString() {
-		return "category"+'.'+  subCategory;
+		return category+"."+  subCategory+".";
 	}
 
 	public char getCategory() {

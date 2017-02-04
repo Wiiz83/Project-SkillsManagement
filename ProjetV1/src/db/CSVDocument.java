@@ -8,30 +8,44 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 
-public class CSVDocument  {
-	private String path ;
-	ArrayList<CSVLine> set; 
-	
-	
-	CSVDocument(String path) {
-		this.path=path;
+public class CSVDocument {
+	private String path;
+	private ArrayList<CSVLine> set;
+	private boolean ignoreFirstLine;
 
+	public CSVDocument(String path) {
+		this.path = path;
+		set = new ArrayList<CSVLine>();
+		ignoreFirstLine=false;
 	}
-	
-	ArrayList<CSVLine> getAll() throws IOException{
-		BufferedReader br = new BufferedReader(new FileReader(path));		 
+
+	public CSVDocument(String path, boolean ignoreFirstLine) {
+		this(path);
+		this.ignoreFirstLine = ignoreFirstLine;
+	}
+
+	public ArrayList<CSVLine> getAll() throws IOException {
+		BufferedReader br = new BufferedReader(new FileReader(path));
 		String line = null;
+		boolean ignore = ignoreFirstLine;
 		while ((line = br.readLine()) != null) {
-			set.add(new CSVLine(line));
-		}	 
+			if (!ignore) {
+				ignore = false;
+				set.add(new CSVLine(line));
+			}
+		}
 		br.close();
 		return set;
 	}
-	
-	public void Add (CSVLine line) throws IOException{
-		try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(path), Charset.forName("UTF-8"),(OpenOption)StandardOpenOption.APPEND )) {
-		    writer.write(line.toString());
+
+	public void Add(CSVLine line) throws IOException {
+		try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(path), Charset.forName("UTF-8"),
+				(OpenOption) StandardOpenOption.APPEND)) {
+			writer.write(line.toString());
+			set.add(line);
+		} catch (IOException e) {
+			set.remove(set.size() - 1);
+			throw e;
 		}
 	}
-	
 }

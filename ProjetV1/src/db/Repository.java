@@ -1,7 +1,9 @@
 package db;
 import java.util.ArrayList;
 
-public interface Repository<E> {
+import models.Entity;
+
+public interface Repository<E extends Entity> {
 	public void Add (E e);		
 	public ArrayList<E> GetAll();	
 }

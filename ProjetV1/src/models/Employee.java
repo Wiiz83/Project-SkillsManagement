@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Employee {
+public class Employee implements Entity{
 	private String name;
 	private String lastName;
 	private Date entryDate;
@@ -20,13 +20,18 @@ public class Employee {
 		this.entryDate = entryDate;
 		ID = iD;
 	}
-	public Employee(String name, String lastName, String entryDate, int iD) throws InvalidDataException {
-		this(name,lastName,(Date)null,iD);
-		setEntryDate(entryDate);				
+	public Employee(String name, String lastName, String entryDate, String iD) throws InvalidDataException {
+		this(name,lastName,(Date)null,-1);
+		setEntryDate(entryDate);
+		setID(iD);
 	}
 	
 	public void addCompetence (Competence c) {
 		Competences.add(c);
+	}
+	
+	public void addCompetences (ArrayList<Competence> list ){
+		Competences.addAll(list);
 	}
 		
 	
@@ -85,6 +90,8 @@ public class Employee {
 			throw new InvalidDataException(e);
 		}
 	}
-
-
+	@Override
+	public String ID() {
+		return Integer.toString(ID);
+	}
 }
