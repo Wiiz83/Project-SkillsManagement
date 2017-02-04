@@ -1,5 +1,5 @@
 package models;
 
-public interface Entity {
-	public String ID();
+public abstract class Entity {
+	public abstract String ID();
 }

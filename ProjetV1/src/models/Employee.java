@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Employee implements Entity{
+public class Employee extends Entity{
 	private String name;
 	private String lastName;
 	private Date entryDate;
@@ -26,6 +26,9 @@ public class Employee implements Entity{
 		setID(iD);
 	}
 	
+	public ArrayList<Competence> getCompetences() {
+		return Competences;
+	}
 	public void addCompetence (Competence c) {
 		Competences.add(c);
 	}

@@ -12,8 +12,8 @@ public class CSVRepository<E extends Entity> implements Repository<E>{
 		this.doc = doc;
 	}
 	
-	public void Add (E e){
-	//	System.out.println( E.ID() );
+	public   void Add (Entity e){
+	//  System.out.println( E.ID() );
 	}
 	public ArrayList<E> GetAll(){
 		return null;

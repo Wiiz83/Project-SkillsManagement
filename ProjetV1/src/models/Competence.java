@@ -2,7 +2,7 @@ package models;
 
 import java.util.ArrayList;
 
-public class Competence implements Entity{
+public class Competence extends Entity{
 	private CompetenceCode code ;
 	private ArrayList<String> Names ;
 	
