@@ -1,63 +1,66 @@
+/*
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 	FICHIER A SUPPRIMER APRES RECUPERATION
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
 package gui;
+ 
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.Timer;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
-import gui.Navigation;
-import gui.Page;
-
-public class Window implements Runnable , ActionListener 
-{
-	private static final int UPDATE_DELAY = 15;
-	
-	/**
-	 * La fenêtre
-	 */
-	private JFrame frame;
-	
-	/**
-	 * Le dessin
-	 */
-	private GraphicsPanel gameGraphics;
-
-	/**
-	 * Le timer
-	 */
-	private Timer timer;
-
-	/**
-	 * 
-	 */
-	private long startTime;
-
+public class Window {
+	private static JFrame frame;
+	private Header header;
 	private String title;
-	
+	private Image iconImage;
 	public static final int WIDTH = 1280;
 	public static final int HEIGHT = 720;
+    JPanel cards; //a panel that uses CardLayout
 
-	/**
-	 * Constructeur d'une Window
-	 * 
-	 * @param name le nom de la fenêtre
-	 */
 	public Window(String name) {
+		
+/*
 		this.title = "Blokus";
 		this.frame = new JFrame();
 		this.frame.setName(name);
 		this.frame.setSize(WIDTH, HEIGHT);
 		this.frame.setTitle(this.title);
-		Image iconImage;
+		this.frame.setLayout(new GridLayout(2,0));
+		
 		try {
-			iconImage = ImageIO.read(getClass().getResourceAsStream(Page.PATH_RESOURCES_IMAGES + "icon.png"));
+			iconImage = ImageIO.read(getClass().getResourceAsStream("/images/icon.png"));
 			this.frame.setIconImage(iconImage);
 		}
 		catch (IOException e) {
@@ -65,41 +68,73 @@ public class Window implements Runnable , ActionListener
 		}
 		
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.gameGraphics = new GraphicsPanel();
-		this.frame.getContentPane().add(this.gameGraphics, BorderLayout.CENTER);
+
 		
-		Navigation.NavigateTo(Navigation.homePage);
-		this.timer = new Timer(UPDATE_DELAY, this);
-	}
+		// CONFIGURE LE HEADER
+		JPanel panelHeader = new JPanel();
+		panelHeader.setLayout(new BoxLayout(panelHeader, BoxLayout.Y_AXIS));
+		panelHeader.setSize(new Dimension(this.frame.getWidth(), 70));
+		panelHeader.add(new Header());
+		
+		// CONFIGURE LE CONTENU
+		JPanel panelContent = new JPanel();
+		panelContent.setLayout(new BoxLayout(panelContent, BoxLayout.Y_AXIS));
+		panelContent.setSize(new Dimension(this.frame.getWidth(), 650));
+		panelContent.add(new HomePage());
+		
+		this.frame.add(panelHeader);
+		this.frame.add(panelContent);
+	
+		
+		
+		JPanel contentPane = new JPanel();
+        contentPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        contentPane.setLayout(new CardLayout());
+        
+        
+        
+        HomePanel panel1 = new HomePanel(contentPane);
+        
+        panel2 = new MyPanel2(contentPane);
+        contentPane.add(panel1, "Panel 1"); 
+        contentPane.add(panel2, "Panel 2");
+        frame.setContentPane(contentPane);
+        frame.pack();   
+        frame.setLocationByPlatform(true);
+        frame.setVisible(true);
+        
+        
+		
+		JPanel headerPanel = new JPanel();
+		JButton accueil =  new JButton("Accueil");
+		JButton personnel =  new JButton("Personnel");
+		headerPanel.add(accueil);
+		headerPanel.add(personnel);
+		
+		
+        JPanel card1 = new JPanel();
+        card1.add(new JButton("Button 1"));
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource()==this.timer) {
-			float elapsedTime = (System.nanoTime() - this.startTime)/1000000f;
-			this.startTime = System.nanoTime();
-			
-			this.gameGraphics.update(elapsedTime);
-		}
-	}
-
-	@Override
-	public void run() {
+        JPanel card2 = new JPanel();
+        card2.add(new JTextField("TextField", 20));
+        
+        //Create the panel that contains the "cards".
+        cards = new JPanel(new CardLayout());
+        cards.add(card1);
+        cards.add(card2);
+        
+        frame.getContentPane().add(headerPanel, BorderLayout.PAGE_START);
+        frame.getContentPane().add(cards, BorderLayout.CENTER);
+        
 		this.frame.setVisible(true);
 		this.frame.setResizable(false);
-		this.frame.addKeyListener(new KeyListener() {
-			@Override
-			public void keyPressed(KeyEvent e) {}
+		
 
-			@Override
-			public void keyReleased(KeyEvent e) {
-				//Keyboard.setLastKeyTyped(e.getKeyCode());
-			}
-
-			@Override
-			public void keyTyped(KeyEvent e) {}
-		});
-		this.startTime = System.nanoTime();
-		this.timer.start();
+*/
+		
 	}
+
+
+
 	
 }

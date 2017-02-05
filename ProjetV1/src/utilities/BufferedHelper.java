@@ -1,4 +1,4 @@
-package gui;
+package utilities;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -12,6 +12,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+
+import navigation.Page;
 
 public class BufferedHelper 
 {
@@ -47,32 +49,6 @@ public class BufferedHelper
 		}
         return customFont;
     }
-    
-    /**
-     * Méthode static qui permet de récuperer la police de caractère par défaut
-     * @param fontSize la taille de la police
-     * @return la police de caractère
-     */
-  /*  public static Font getDefaultFont(float fontSize)
-    {
-    	Font customFont = null;
-		try 
-		{
-			InputStream file = OptionPage.class.getClass().getResourceAsStream(Page.PATH_RESOURCES_FONTS + DEFAULT_FONT_NAME);
-			customFont = Font.createFont(Font.TRUETYPE_FONT, file).deriveFont(fontSize);
-	        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-	        //register the font
-	        ge.registerFont(customFont);
-	        
-		} 
-		catch (FontFormatException | IOException e) 
-		{
-			System.err.println(e.getMessage());
-			e.printStackTrace();
-		}
-        return customFont;
-    }
-    */
     
     /**
      * Génère le mask d'une image donnée

@@ -1,8 +1,10 @@
-package gui;
+package navigation;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.ActionListener;
+
+import gui.Window;
 
 public abstract class Page implements ActionListener {
 	
@@ -25,6 +27,7 @@ public abstract class Page implements ActionListener {
 	 * Constante d'accès au dossier de resources des animation
 	 */
 	public static final String PATH_RESOURCES_ANIMATION = "/animation/";
+	
 	
 	/**
 	 * Si il est activé ou non
@@ -67,6 +70,10 @@ public abstract class Page implements ActionListener {
 		{
 			this.updatePage(elapsedTime);
 		}
+		else
+		{
+			
+		}
 	}
 	
 	public final void draw(Graphics2D g)
@@ -89,5 +96,7 @@ public abstract class Page implements ActionListener {
 	{
 		this.enabled = state;
 	}
+	
+
 	
 }

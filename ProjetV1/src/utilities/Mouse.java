@@ -1,4 +1,6 @@
-package gui;
+package utilities;
+
+import utilities.Vector2;
 
 public class Mouse 
 {

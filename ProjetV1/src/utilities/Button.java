@@ -1,4 +1,4 @@
-package gui;
+package utilities;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,13 +14,12 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 import program.Program;
-import gui.Vector2;
-import gui.BufferedHelper;
-import gui.Mouse;
+import utilities.BufferedHelper;
+import utilities.Mouse;
+import utilities.Vector2;
 
 
-public class BlokusButton implements DrawableInterface
-{
+public class Button {
 	/**
 	 * Determine si le bouton est activé
 	 */
@@ -73,7 +72,7 @@ public class BlokusButton implements DrawableInterface
 	 * 
 	 * @param file le chemin vers l'image
 	 */
-	public BlokusButton(String file)
+	public Button(String file)
 	{
 		this.actionCommand = null;
 		this.mouseHover = false;
@@ -98,7 +97,7 @@ public class BlokusButton implements DrawableInterface
 	 * 
 	 * @param file le chemin vers l'image
 	 */
-	public BlokusButton(URL file)
+	public Button(URL file)
 	{
 		this.actionCommand = null;
 		this.mouseHover = false;
@@ -216,13 +215,12 @@ public class BlokusButton implements DrawableInterface
 		}
 	}
 
-	@Override
 	public void update(float elapsedTime) 
 	{
 		if(this.isInBounds(Mouse.getPosition()) && this.isEnabled)
 		{
 			this.mouseHover = true;
-			GraphicsPanel.newCursor = Program.POINTING_HAND_CURSOR;
+			//Header.newCursor = Program.POINTING_HAND_CURSOR;
 			if(Mouse.getLastMouseButton() == Mouse.LEFT)
 			{
 				if(this.wasClicked) {
@@ -248,7 +246,6 @@ public class BlokusButton implements DrawableInterface
 		}
 	}
 
-	@Override
 	public void draw(Graphics2D g) 
 	{
 		
