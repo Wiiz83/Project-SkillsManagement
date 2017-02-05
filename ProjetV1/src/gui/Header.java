@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
@@ -15,17 +16,22 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.image.RGBImageFilter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 
 import org.w3c.dom.css.RGBColor;
 
+import navigation.Navigation;
 import navigation.Page;
+import program.Program;
 import utilities.Button;
 import utilities.Vector2;
 
-public class Header extends JComponent implements ActionListener{
+public class Header extends JPanel implements ActionListener{
 	private static final long		serialVersionUID	= 1L;
 	private static final boolean	DEBUG				= false;
 	private static final int POS_Y	= 10;
@@ -40,7 +46,9 @@ public class Header extends JComponent implements ActionListener{
 	private Image logo;
 	
 	// Le bouton d'accueil
-	private Button buttonHomePage;
+	public static Button buttonHomePage;
+	public static Button buttonHomePage2;
+	public static Button buttonHomePage3;
 
 	/**
 	 * Constructeur de GraphicsPanel
@@ -50,12 +58,14 @@ public class Header extends JComponent implements ActionListener{
 		try {
 			//this.background = ImageIO.read(getClass().getResource("/images/background.png"));
 			this.buttonHomePage = new Button(getClass().getResource(Page.PATH_RESOURCES_BOUTONS + "accueil.png"));
+			this.buttonHomePage2 = new Button(getClass().getResource(Page.PATH_RESOURCES_BOUTONS + "accueil.png"));
+			this.buttonHomePage3 = new Button(getClass().getResource(Page.PATH_RESOURCES_BOUTONS + "accueil.png"));
 			this.logo = ImageIO.read(getClass().getResource("/images/logo.png"));
 		}
 		catch (IOException e) {
 			System.out.println("erreur chargement fond");
 			e.printStackTrace();
-		}
+		}	
 	}
 
 	@Override
@@ -72,15 +82,23 @@ public class Header extends JComponent implements ActionListener{
 		this.buttonHomePage.draw(batch);
 		this.buttonHomePage.setPosition(new Vector2(200, POS_Y));
 		this.buttonHomePage.addListener(this);
+		this.buttonHomePage2.draw(batch);
+		this.buttonHomePage2.setPosition(new Vector2(400, POS_Y));
+		this.buttonHomePage2.addListener(this);
+		this.buttonHomePage3.draw(batch);
+		this.buttonHomePage3.setPosition(new Vector2(600, POS_Y));
+		this.buttonHomePage3.addListener(this);
+		
 		
 		g.drawImage(logo, 0, POS_Y, 136, 50, null);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+
 	}
 	
+
+		
 
 }

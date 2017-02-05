@@ -1,10 +1,13 @@
 package utilities;
 
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -12,14 +15,17 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.JComponent;
 
+import gui.Header;
+import gui.ProgramFrame;
 import program.Program;
 import utilities.BufferedHelper;
 import utilities.Mouse;
 import utilities.Vector2;
 
 
-public class Button {
+public class Button extends JComponent implements MouseListener{
 	/**
 	 * Determine si le bouton est activé
 	 */
@@ -74,6 +80,9 @@ public class Button {
 	 */
 	public Button(String file)
 	{
+		super();
+		enableInputMethods(true);   
+		addMouseListener(this);
 		this.actionCommand = null;
 		this.mouseHover = false;
 		this.wasClicked = false;
@@ -99,6 +108,9 @@ public class Button {
 	 */
 	public Button(URL file)
 	{
+		super();
+		enableInputMethods(true);   
+		addMouseListener(this);
 		this.actionCommand = null;
 		this.mouseHover = false;
 		this.wasClicked = false;
@@ -280,5 +292,49 @@ public class Button {
 			
 			g2d.dispose();
 		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		System.out.println("sss");
+		if (e.getSource() instanceof Button) {
+			if (e.getSource().equals(Header.buttonHomePage)) {
+            	System.out.println("ddd");
+                CardLayout cardLayout = (CardLayout) ProgramFrame.contentPane.getLayout();
+                cardLayout.show(ProgramFrame.contentPane, "Panel 1");
+				
+			}
+			else if (e.getSource().equals(Header.buttonHomePage2)) {
+
+			}
+			else if (e.getSource().equals(Header.buttonHomePage3)) {
+
+			}
+		}
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

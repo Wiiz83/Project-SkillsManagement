@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 
 import gui.ProgramFrame;
 
@@ -17,16 +18,22 @@ public class HomePanel extends JPanel  {
 	    private JPanel contentPane;
 	    private JPanel choiceBox;
 
-	    public HomePanel(JPanel panel, ProgramFrame cle) 
+	    public HomePanel() 
 	    {
-	        contentPane = panel;
 	        setOpaque(true);
 	        setBackground(Color.RED.darker().darker());
-	    }
-
-	    @Override
-	    public Dimension getPreferredSize()
-	    {
-	        return (new Dimension(500, 500));
+	        String[] columnNames = { "French", "Spanish", "Italian" };
+	        String[][] tableData = {{"un",     "uno",     "uno"     },
+	                                {"deux",   "dos",     "due"     },
+	                                {"trois",  "tres",    "tre"     },
+	                                { "quatre", "cuatro",  "quattro"},
+	                                { "cinq",   "cinco",   "cinque" },
+	                                { "six",    "seis",    "sei"    },
+	                                { "sept",   "siete",   "sette"  } };
+			
+	        //Create and set up the content pane.
+	        JTable table = new JTable(tableData, columnNames);
+	        add(table);
+	        
 	    }
 }
