@@ -31,7 +31,7 @@ import program.Program;
 import utilities.Button;
 import utilities.Vector2;
 
-public class Header extends JPanel implements ActionListener{
+public class Header extends JPanel implements ActionListener {
 	private static final long		serialVersionUID	= 1L;
 	private static final boolean	DEBUG				= false;
 	private static final int POS_Y	= 10;
@@ -47,8 +47,6 @@ public class Header extends JPanel implements ActionListener{
 	
 	// Le bouton d'accueil
 	public static Button buttonHomePage;
-	public static Button buttonHomePage2;
-	public static Button buttonHomePage3;
 
 	/**
 	 * Constructeur de GraphicsPanel
@@ -57,9 +55,8 @@ public class Header extends JPanel implements ActionListener{
 		super();
 		try {
 			//this.background = ImageIO.read(getClass().getResource("/images/background.png"));
-			this.buttonHomePage = new Button(getClass().getResource(Page.PATH_RESOURCES_BOUTONS + "accueil.png"));
-			this.buttonHomePage2 = new Button(getClass().getResource(Page.PATH_RESOURCES_BOUTONS + "accueil.png"));
-			this.buttonHomePage3 = new Button(getClass().getResource(Page.PATH_RESOURCES_BOUTONS + "accueil.png"));
+			this.buttonHomePage = new Button("/boutons/accueil.png");
+			add(buttonHomePage);
 			this.logo = ImageIO.read(getClass().getResource("/images/logo.png"));
 		}
 		catch (IOException e) {
@@ -78,17 +75,6 @@ public class Header extends JPanel implements ActionListener{
 
 		batch.setColor(new Color(0, 72, 136));
 		batch.fillRect(0, 0, 1280, 70);
-
-		this.buttonHomePage.draw(batch);
-		this.buttonHomePage.setPosition(new Vector2(200, POS_Y));
-		this.buttonHomePage.addListener(this);
-		this.buttonHomePage2.draw(batch);
-		this.buttonHomePage2.setPosition(new Vector2(400, POS_Y));
-		this.buttonHomePage2.addListener(this);
-		this.buttonHomePage3.draw(batch);
-		this.buttonHomePage3.setPosition(new Vector2(600, POS_Y));
-		this.buttonHomePage3.addListener(this);
-		
 		
 		g.drawImage(logo, 0, POS_Y, 136, 50, null);
 	}
