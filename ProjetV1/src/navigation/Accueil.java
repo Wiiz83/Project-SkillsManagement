@@ -16,13 +16,13 @@ import javax.swing.ListSelectionModel;
 
 import gui.ProgramFrame;
 
-public class HomePanel extends JPanel  {
+public class Accueil extends JPanel  {
 	   private JButton jcomp4;
 	    private JPanel contentPane;
 	    private JPanel choiceBox;
 	    ListSelectionModel listSelectionModel;
 
-	    public HomePanel() 
+	    public Accueil() 
 	    {
 	        setOpaque(true);
 	        //setBackground(Color.RED.darker().darker());

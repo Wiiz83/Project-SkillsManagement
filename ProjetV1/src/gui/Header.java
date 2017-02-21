@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -20,15 +21,20 @@ import java.awt.image.RGBImageFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import org.w3c.dom.css.RGBColor;
+
+import navigation.Accueil;
 import navigation.Navigation;
+import navigation.PersonnelPanel;
 import program.Program;
 
-public class Header extends JPanel implements ActionListener {
+public class Header extends JPanel implements MouseListener {
 	private static final long		serialVersionUID	= 1L;
 	private static final boolean	DEBUG				= false;
 
@@ -40,11 +46,18 @@ public class Header extends JPanel implements ActionListener {
 	public static Button boutonCompetences;
 	public static Button boutonPersonnel;
 	public static Button boutonMissions;
+	
+	public Accueil panelAccueil;
+	
+	String etat;
+	JFrame frame;
+	JPanel menu;
+	JPanel contenu;
 
 
-
-	public Header() {
+	public Header(JFrame frame) {
 		super();
+		this.frame = frame;
 
 		try {
 			this.logo = ImageIO.read(getClass().getResource("/images/logo.png"));
@@ -54,37 +67,97 @@ public class Header extends JPanel implements ActionListener {
 			e.printStackTrace();
 		}	
 		
-		
-		this.boutonAccueil = new Button("/boutons/accueil.png");
+		this.boutonAccueil = new Button("/boutons/accueil.png");		
 		this.boutonCompetences = new Button("/boutons/competences.png");
 		this.boutonPersonnel = new Button("/boutons/personnel.png");
 		this.boutonMissions = new Button("/boutons/missions.png");
+		
+		this.boutonAccueil.addMouseListener(this);
+		this.boutonCompetences.addMouseListener(this);
+		this.boutonPersonnel.addMouseListener(this);
+		this.boutonMissions.addMouseListener(this);
 
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
+		
+		this.menu = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		menu.setSize(1280, 70);
+		menu.setLocation(0, 0);
+		menu.setOpaque(false);
+		menu.add(boutonAccueil);
+		menu.add(boutonCompetences);
+		menu.add(boutonPersonnel);
+		menu.add(boutonMissions);
+		add(menu);
 
-		JPanel subPanel = new JPanel(new FlowLayout(FlowLayout.LEFT)); // new FlowLayout not needed
-		subPanel.setOpaque(false);
-		subPanel.add(boutonAccueil);
-		subPanel.add(boutonCompetences);
-		subPanel.add(boutonPersonnel);
-		subPanel.add(boutonMissions);
-		add(subPanel);
+        this.contenu = new JPanel();
+        contenu.setSize(this.frame.getWidth(), (this.frame.getHeight() - menu.getHeight()));
+        contenu.setLocation(this.frame.getX(), (this.frame.getY() - menu.getY()));
+        contenu.setOpaque(false);
+        contenu.setBorder(BorderFactory.createEmptyBorder(70,0,0,0)); 
+        contenu.setLayout(new CardLayout());
+        this.frame.getContentPane().add(contenu); 
+
+        this.panelAccueil = new Accueil();
+        this.contenu.add(this.panelAccueil, "Panel 1"); 
+        
+        this.etat = "accueil";
+		
 	}
 
 	@Override
-	public void paintComponent(Graphics g) {
+	public void paintComponent(Graphics g) {		
 		super.paintComponent(g);
 		Graphics2D batch = (Graphics2D) g;
 		batch.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		batch.setColor(new Color(0, 72, 136));
 		batch.fillRect(0, 0, 1280, 70);
 		g.drawImage(logo, 1215, 9, 50, 50, null);
+		
+        this.panelAccueil.setVisible(false);
+		
+		if(this.etat == "accueil")
+		{
+	        this.panelAccueil.setVisible(true);
+		}
+
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-
+	public void mouseClicked(MouseEvent e) {
+		if (e.getSource() instanceof Button) {
+			if (e.getSource().equals(this.boutonAccueil)) {
+				this.etat = "accueil";
+				this.repaint();
+			}
+			else if (e.getSource().equals(this.boutonCompetences)) {
+			
+			}
+			else if (e.getSource().equals(this.boutonPersonnel)) {
+				
+			}
+			else if (e.getSource().equals(this.boutonMissions)) {
+				
+			}
+		}
+		
 	}
-	
+
+	@Override
+	public void mouseEntered(MouseEvent e) {		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {	
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+	}
+
+
 }

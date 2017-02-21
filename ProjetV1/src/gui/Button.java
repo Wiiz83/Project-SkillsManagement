@@ -31,6 +31,7 @@ public class Button extends JComponent implements MouseListener {
 	String etat;
 	int width;
 	int height;
+	private ArrayList<ActionListener> listeners;
 
 	public Button(String url)
 	{
@@ -46,11 +47,11 @@ public class Button extends JComponent implements MouseListener {
 		    e.printStackTrace();
 		}
 	    
-		enableInputMethods(true);   
+		this.listeners = new ArrayList<ActionListener>();
+		enableInputMethods(true);
 		addMouseListener(this);
 		this.width = backgroundImage.getWidth();
 		this.height = backgroundImage.getHeight();
-		System.out.println(this.width);
 	}
 
 	@Override
@@ -60,6 +61,19 @@ public class Button extends JComponent implements MouseListener {
        } else {
           return new Dimension(this.width, this.height);
       }
+	}
+
+	public void addListener(ActionListener listener)
+	{
+		this.listeners.add(listener);
+	}
+	
+	public void raiseClickEvent(ActionEvent e)
+	{
+		for(ActionListener listener : this.listeners)
+		{
+			listener.actionPerformed(e);
+		}
 	}
 	
 	@Override
