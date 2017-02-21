@@ -1,4 +1,4 @@
-package utilities;
+package gui;
 
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -16,16 +16,11 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Vector;
-
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
-import gui.Header;
-import gui.ProgramFrame;
+import gui.BufferedHelper;
 import program.Program;
-import utilities.BufferedHelper;
-import utilities.Mouse;
-import utilities.Vector2;
 
 public class Button extends JComponent implements MouseListener {
 
@@ -69,17 +64,8 @@ public class Button extends JComponent implements MouseListener {
 	
 	@Override
 	protected void paintComponent(Graphics g) {
-/*	    super.paintComponent(g);
-	    if(this.etat == "survol"){
-	    	g.drawImage(backgroundImageHover, 0, 0, null);
-	    } else if(this.etat == "grisé") {
-	    	g.drawImage(backgroundImageDisable, 0, 0, null);
-	    }  else {
-	    	g.drawImage(backgroundImage, 0, 0, null);
-	    }*/
-	    
-	    
-	    
+		super.paintComponent(g);
+
 		if(this.backgroundImage != null)
 		{
 			Graphics2D g2d = (Graphics2D) g.create();

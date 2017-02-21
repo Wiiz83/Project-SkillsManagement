@@ -11,7 +11,6 @@ import javax.swing.SwingUtilities;
 
 import db.*;
 import gui.ProgramFrame;
-import gui.Window;
 import models.*;
 
 public class Program {

@@ -19,20 +19,14 @@ import java.awt.event.MouseWheelListener;
 import java.awt.image.RGBImageFilter;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-
 import org.w3c.dom.css.RGBColor;
-
 import navigation.Navigation;
-import navigation.Page;
 import program.Program;
-import utilities.Button;
-import utilities.Vector2;
 
 public class Header extends JPanel implements ActionListener {
 	private static final long		serialVersionUID	= 1L;

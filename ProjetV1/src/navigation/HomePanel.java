@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 
 import gui.ProgramFrame;
 
@@ -19,6 +20,7 @@ public class HomePanel extends JPanel  {
 	   private JButton jcomp4;
 	    private JPanel contentPane;
 	    private JPanel choiceBox;
+	    ListSelectionModel listSelectionModel;
 
 	    public HomePanel() 
 	    {
@@ -35,6 +37,8 @@ public class HomePanel extends JPanel  {
 			
 	        //Create and set up the content pane.
 	        JTable table = new JTable(tableData, columnNames);
+	        listSelectionModel = table.getSelectionModel();
+		 	table.setSelectionModel(listSelectionModel);
 	        add(table);
 	        
 	        
