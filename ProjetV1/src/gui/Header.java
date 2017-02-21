@@ -40,23 +40,42 @@ public class Header extends JPanel implements ActionListener {
 
 	// Prend le curseur prédéfini
 	public static Cursor newCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+	private Image logo;
 
-	// Le bouton d'accueil
-	public static Button buttonHomePage;
+	public static Button boutonAccueil;
+	public static Button boutonCompetences;
+	public static Button boutonPersonnel;
+	public static Button boutonMissions;
+
 
 
 	public Header() {
 		super();
 
-		this.buttonHomePage = new Button("/boutons/accueil.png");
+		try {
+			this.logo = ImageIO.read(getClass().getResource("/images/logo.png"));
+		}
+		catch (IOException e) {
+			System.out.println("erreur chargement fond");
+			e.printStackTrace();
+		}	
+		
+		
+		this.boutonAccueil = new Button("/boutons/accueil.png");
+		this.boutonCompetences = new Button("/boutons/competences.png");
+		this.boutonPersonnel = new Button("/boutons/personnel.png");
+		this.boutonMissions = new Button("/boutons/missions.png");
 
 		setLayout(new BorderLayout());
-		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
 
-		JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.LEFT)); // new FlowLayout not needed
-		southPanel.setOpaque(false);
-		southPanel.add(buttonHomePage);
-		add(southPanel);
+		JPanel subPanel = new JPanel(new FlowLayout(FlowLayout.LEFT)); // new FlowLayout not needed
+		subPanel.setOpaque(false);
+		subPanel.add(boutonAccueil);
+		subPanel.add(boutonCompetences);
+		subPanel.add(boutonPersonnel);
+		subPanel.add(boutonMissions);
+		add(subPanel);
 	}
 
 	@Override
@@ -66,6 +85,7 @@ public class Header extends JPanel implements ActionListener {
 		batch.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		batch.setColor(new Color(0, 72, 136));
 		batch.fillRect(0, 0, 1280, 70);
+		g.drawImage(logo, 1215, 9, 50, 50, null);
 	}
 
 	@Override

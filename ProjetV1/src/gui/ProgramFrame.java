@@ -38,7 +38,7 @@ public class ProgramFrame {
 
 	    public void displayGUI(String name)
 	    {
-			this.title = "Blokus";
+			this.title = "Skill Expert";
 			this.frame = new JFrame();
 			this.frame.setName(name);
 			this.frame.setSize(WIDTH, HEIGHT);

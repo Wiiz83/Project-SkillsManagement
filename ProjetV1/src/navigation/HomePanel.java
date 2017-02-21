@@ -23,7 +23,7 @@ public class HomePanel extends JPanel  {
 	    public HomePanel() 
 	    {
 	        setOpaque(true);
-	        setBackground(Color.RED.darker().darker());
+	        //setBackground(Color.RED.darker().darker());
 	        String[] columnNames = { "French", "Spanish", "Italian" };
 	        String[][] tableData = {{"un",     "uno",     "uno"     },
 	                                {"deux",   "dos",     "due"     },
