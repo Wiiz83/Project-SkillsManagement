@@ -1,0 +1,3 @@
+WARNING - 22:25:00: First conversion pass
+ERROR - 22:25:00: org.xml.sax.SAXParseExceptionpublicId: /ProjetV1/src/csv/CSVAssociation.java; systemId: file:///ProjetV1/src/csv/CSVAssociation.java; lineNumber: 1; columnNumber: 1; Contenu non autorisé dans le prologue.
+ERROR - 22:25:00: org.xml.sax.SAXParseExceptionpublicId: /ProjetV1/src/csv/CSVAssociation.java; systemId: file:///ProjetV1/src/csv/CSVAssociation.java; lineNumber: 1; columnNumber: 1; Contenu non autorisé dans le prologue.
