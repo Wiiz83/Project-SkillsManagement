@@ -31,7 +31,7 @@ import org.w3c.dom.css.RGBColor;
 
 import navigation.Accueil;
 import navigation.Navigation;
-import navigation.PersonnelPanel;
+import navigation.Personnel;
 import program.Program;
 
 public class Header extends JPanel implements MouseListener {
@@ -40,7 +40,9 @@ public class Header extends JPanel implements MouseListener {
 
 	// Prend le curseur prédéfini
 	public static Cursor newCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+	
 	private Image logo;
+	private Image background;
 
 	public static Button boutonAccueil;
 	public static Button boutonCompetences;
@@ -48,6 +50,7 @@ public class Header extends JPanel implements MouseListener {
 	public static Button boutonMissions;
 	
 	public Accueil panelAccueil;
+	public Personnel panelPersonnel;
 	
 	String etat;
 	JFrame frame;
@@ -61,6 +64,7 @@ public class Header extends JPanel implements MouseListener {
 
 		try {
 			this.logo = ImageIO.read(getClass().getResource("/images/logo.png"));
+			this.background = ImageIO.read(getClass().getResource("/images/background.png"));
 		}
 		catch (IOException e) {
 			System.out.println("erreur chargement fond");
@@ -91,8 +95,7 @@ public class Header extends JPanel implements MouseListener {
 		add(menu);
 
         this.contenu = new JPanel();
-        contenu.setSize(this.frame.getWidth(), (this.frame.getHeight() - menu.getHeight()));
-        contenu.setLocation(this.frame.getX(), (this.frame.getY() - menu.getY()));
+        contenu.setSize(this.frame.getWidth(), this.frame.getHeight());
         contenu.setOpaque(false);
         contenu.setBorder(BorderFactory.createEmptyBorder(70,0,0,0)); 
         contenu.setLayout(new CardLayout());
@@ -100,6 +103,9 @@ public class Header extends JPanel implements MouseListener {
 
         this.panelAccueil = new Accueil();
         this.contenu.add(this.panelAccueil, "Panel 1"); 
+        
+        this.panelPersonnel = new Personnel();
+        this.contenu.add(this.panelPersonnel, "Panel 2"); 
         
         this.etat = "accueil";
 		
@@ -109,17 +115,26 @@ public class Header extends JPanel implements MouseListener {
 	public void paintComponent(Graphics g) {		
 		super.paintComponent(g);
 		Graphics2D batch = (Graphics2D) g;
-		batch.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		batch.setColor(new Color(0, 72, 136));
-		batch.fillRect(0, 0, 1280, 70);
-		g.drawImage(logo, 1215, 9, 50, 50, null);
 		
         this.panelAccueil.setVisible(false);
+        this.panelPersonnel.setVisible(false);
 		
 		if(this.etat == "accueil")
 		{
 	        this.panelAccueil.setVisible(true);
 		}
+		if(this.etat == "personnel")
+		{
+	        this.panelPersonnel.setVisible(true);
+		}
+		
+		batch.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		batch.setColor(new Color(0, 72, 136));
+		batch.fillRect(0, 0, 1280, 70);
+		g.drawImage(logo, 1215, 9, 50, 50, null);
+		g.drawImage(background, 0, 70, 1280, 720, null);
+		
+
 
 	}
 
@@ -134,6 +149,8 @@ public class Header extends JPanel implements MouseListener {
 			
 			}
 			else if (e.getSource().equals(this.boutonPersonnel)) {
+				this.etat = "personnel";
+				this.repaint();
 				
 			}
 			else if (e.getSource().equals(this.boutonMissions)) {

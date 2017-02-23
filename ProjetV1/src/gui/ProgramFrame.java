@@ -22,7 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import navigation.Accueil;
-import navigation.PersonnelPanel;
+import navigation.Personnel;
 
 public class ProgramFrame {
 	
@@ -33,11 +33,11 @@ public class ProgramFrame {
 		public static final int WIDTH = 1280;
 		public static final int HEIGHT = 720;
 
-	    public void displayGUI(String name)
+	    public void displayGUI()
 	    {
 			this.title = "Skill Expert";
 			this.frame = new JFrame();
-			this.frame.setName(name);
+			this.frame.setName(this.title);
 			this.frame.setSize(WIDTH, HEIGHT);
 			this.frame.setTitle(this.title);
 			

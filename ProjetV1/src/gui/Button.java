@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -32,11 +33,13 @@ public class Button extends JComponent implements MouseListener {
 	int width;
 	int height;
 	private ArrayList<ActionListener> listeners;
+    private Cursor defaultCursor;
+    private Cursor handCursor;
 
 	public Button(String url)
 	{
 		super();
-		
+
 	    try {
 			this.backgroundImage = ImageIO.read(new File(getClass().getResource(url).toURI()));
 			this.backgroundImageHover = BufferedHelper.generateMask(this.backgroundImage, Color.BLACK, 0.5f);
@@ -46,7 +49,6 @@ public class Button extends JComponent implements MouseListener {
 		} catch (IOException e) {
 		    e.printStackTrace();
 		}
-	    
 		this.listeners = new ArrayList<ActionListener>();
 		enableInputMethods(true);
 		addMouseListener(this);
@@ -107,6 +109,7 @@ public class Button extends JComponent implements MouseListener {
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
+		Header.newCursor = Program.POINTING_HAND_CURSOR;
 		this.etat = "survol";
 		repaint();
 	}
@@ -128,4 +131,6 @@ public class Button extends JComponent implements MouseListener {
 		// TODO Auto-generated method stub
 		
 	}
+	
+
 }

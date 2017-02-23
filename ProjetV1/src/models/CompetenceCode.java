@@ -1,5 +1,7 @@
 package models;
 
+import csv.InvalidDataException;
+
 public class CompetenceCode {
 	private char category;
 	private int subCategory;
@@ -25,11 +27,9 @@ public class CompetenceCode {
 			throw new InvalidDataException(e);
 		}
 	}
-	
 
-	@Override
 	public String toString() {
-		return category+"."+  subCategory+".";
+		return category+"."+ subCategory+".";
 	}
 
 	public char getCategory() {
