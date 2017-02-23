@@ -62,8 +62,7 @@ public class Program {
 	            }
 	    });
 
-
-
+/*
 				
 	    for (int i = 0; i < 10000; i++) {
 	    	// Charger toutes les compétences
@@ -103,7 +102,7 @@ public class Program {
 	    	missions_csv.add(mission_test);
 
 	    	System.out.println(missions_csv.getByID(mission_test.csvID()));
-	    }
+	    }*/
 		 }
 
 	    
