@@ -26,7 +26,7 @@ public class CSVMetadataMapper {
 			Class<? extends CSVEntity> E, Class<? extends CSVEntity> N, String path, boolean ignoreFirstLine,
 			int idColumnPosition
 	) {
-		if (path.equals("./fichiers_projet/missions_competences.csv")) {
+		if (path.equals("./ressources/fichiers/missions_competences.csv")) {
 			@SuppressWarnings("unused")
 			int i = 0;
 		}

@@ -7,7 +7,7 @@ import models.Mission;
 
 public class CSVModel {
 	
-	private String				RELATIVEPATH	= "./fichiers_projet/";
+	private String				RELATIVEPATH	= "./ressouces/fichiers/";
 	private CSVMetadataMapper	metadata;
 	
 	public CSVModel() {
