@@ -22,8 +22,6 @@ import navigation.Missions;
 import navigation.Personnel;
 public class Header extends JPanel implements MouseListener {
 	private static final long		serialVersionUID	= 1L;
-	
-	// Prend le curseur prédéfini
 	public static Cursor newCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 	
 	private Image logo;
