@@ -17,6 +17,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import navigation.Accueil;
+import navigation.Competences;
+import navigation.Missions;
 import navigation.Personnel;
 public class Header extends JPanel implements MouseListener {
 	private static final long		serialVersionUID	= 1L;
@@ -34,6 +36,8 @@ public class Header extends JPanel implements MouseListener {
 	
 	public Accueil panelAccueil;
 	public Personnel panelPersonnel;
+	public Missions panelMissions;
+	public Competences panelCompetences;
 	
 	String etat;
 	JFrame frame;
@@ -58,7 +62,6 @@ public class Header extends JPanel implements MouseListener {
 		this.boutonCompetences = new Button("/boutons/competences.png");
 		this.boutonPersonnel = new Button("/boutons/personnel.png");
 		this.boutonMissions = new Button("/boutons/missions.png");
-		
 		this.boutonAccueil.addMouseListener(this);
 		this.boutonCompetences.addMouseListener(this);
 		this.boutonPersonnel.addMouseListener(this);
@@ -90,6 +93,12 @@ public class Header extends JPanel implements MouseListener {
         this.panelPersonnel = new Personnel();
         this.contenu.add(this.panelPersonnel, "Panel 2"); 
         
+        this.panelMissions = new Missions();
+        this.contenu.add(this.panelMissions, "Panel 3"); 
+        
+        this.panelCompetences = new Competences();
+        this.contenu.add(this.panelCompetences, "Panel 4"); 
+        
         this.etat = "accueil";
 		
 	}
@@ -101,6 +110,8 @@ public class Header extends JPanel implements MouseListener {
 		
         this.panelAccueil.setVisible(false);
         this.panelPersonnel.setVisible(false);
+        this.panelMissions.setVisible(false);
+        this.panelCompetences.setVisible(false);
 		
 		if(this.etat == "accueil")
 		{
@@ -110,6 +121,14 @@ public class Header extends JPanel implements MouseListener {
 		{
 	        this.panelPersonnel.setVisible(true);
 		}
+		if(this.etat == "missions")
+		{
+	        this.panelMissions.setVisible(true);
+		}
+		if(this.etat == "competences")
+		{
+	        this.panelCompetences.setVisible(true);
+		}
 		
 		batch.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		batch.setColor(new Color(0, 72, 136));
@@ -117,8 +136,6 @@ public class Header extends JPanel implements MouseListener {
 		g.drawImage(logo, 1215, 9, 50, 50, null);
 		g.drawImage(background, 0, 70, 1280, 720, null);
 		
-
-
 	}
 
 	@Override
@@ -129,7 +146,8 @@ public class Header extends JPanel implements MouseListener {
 				this.repaint();
 			}
 			else if (e.getSource().equals(this.boutonCompetences)) {
-			
+				this.etat = "competences";
+				this.repaint();
 			}
 			else if (e.getSource().equals(this.boutonPersonnel)) {
 				this.etat = "personnel";
@@ -137,27 +155,20 @@ public class Header extends JPanel implements MouseListener {
 				
 			}
 			else if (e.getSource().equals(this.boutonMissions)) {
-				
+				this.etat = "missions";
+				this.repaint();
 			}
 		}
-		
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {		
-	}
-
+	public void mouseEntered(MouseEvent e) {}
 	@Override
-	public void mouseExited(MouseEvent e) {	
-	}
-
+	public void mouseExited(MouseEvent e) {}
 	@Override
-	public void mousePressed(MouseEvent e) {
-	}
-
+	public void mousePressed(MouseEvent e) {}
 	@Override
-	public void mouseReleased(MouseEvent e) {
-	}
+	public void mouseReleased(MouseEvent e) {}
 
 
 }
