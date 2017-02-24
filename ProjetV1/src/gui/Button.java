@@ -1,8 +1,6 @@
 package gui;
 
-import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -14,9 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Vector;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
@@ -33,8 +29,6 @@ public class Button extends JComponent implements MouseListener {
 	int width;
 	int height;
 	private ArrayList<ActionListener> listeners;
-    private Cursor defaultCursor;
-    private Cursor handCursor;
 
 	public Button(String url)
 	{

@@ -11,8 +11,6 @@ import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-
 
 public class BufferedHelper 
 {
@@ -100,13 +98,6 @@ public class BufferedHelper
         return image;
     }
 	
-	/**
-	 * Génère un mask simple
-	 * @param width La largeur du mask
-	 * @param height La hauteur du mask
-	 * @param alpha La transparence du mask
-	 * @return Le mask
-	 */
 	public static BufferedImage generateSampleMask(int width, int height, float alpha)
 	{
 		BufferedImage b = new BufferedImage(width,  height, BufferedImage.TYPE_INT_ARGB);
