@@ -30,7 +30,8 @@ public class Personnel extends JPanel {
 			table.setFillsViewportHeight(true);
 			JScrollPane js = new JScrollPane(table);
 		    js.setVisible(true);
-		    js.setBounds(10, 10, 800, 20);
+		    js.setBounds(10, 10, 300, 600);
+			add(js);
 		    
 		} catch (NumberFormatException | IOException | InvalidCSVException | InvalidDataException | ParseException e) {
 			// TODO Auto-generated catch block
