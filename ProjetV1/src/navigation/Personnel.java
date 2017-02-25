@@ -4,21 +4,26 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.TextField;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import csv.CSVToTable;
 import csv.InvalidCSVException;
 import csv.InvalidDataException;
 import gui.Button;
+import gui.Titre;
 
 
 public class Personnel extends JPanel implements MouseListener{
@@ -28,6 +33,9 @@ public class Personnel extends JPanel implements MouseListener{
 	Button boutonSupprimer;
 	Button boutonEnregistrer;
 	Button boutonAnnuler;
+	JTable listePersonnel;
+	Vector selectedCells = new Vector<int[]>();
+
 	
 	private static final long serialVersionUID = 1L;
 
@@ -37,11 +45,12 @@ public class Personnel extends JPanel implements MouseListener{
 		setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
 		
 
-		JTable table = new JTable();		
+		this.listePersonnel = new JTable();		
 		try {
-			table = CSVToTable.Employes();
-			table.setFillsViewportHeight(true);
-			JScrollPane js = new JScrollPane(table);
+			listePersonnel = CSVToTable.Employes();
+			listePersonnel.setFillsViewportHeight(true);
+			listePersonnel.addMouseListener(this);
+			JScrollPane js = new JScrollPane(listePersonnel);
 		    js.setVisible(true);
 		    js.setBounds(10, 10, 300, 600);
 			add(js);
@@ -77,7 +86,45 @@ public class Personnel extends JPanel implements MouseListener{
 		add(this.boutonEnregistrer);
 		add(this.boutonAnnuler);
 		
+		Titre titre = new Titre("Détails du salarié :" );
+		
+		
+		JLabel labelNom = new JLabel("Nom :");
+		JLabel labelPrenom = new JLabel("Prénom :");
+		JLabel labelDate = new JLabel("Date d'entrée :");
+	//	JLabel labelId = new JLabel(this.IDSelect)
+		JLabel labelCompetences = new JLabel("Liste des compétences :");
+		
+		TextField nom = new TextField();		
+		TextField prenom = new TextField();
+		TextField date = new TextField();
+		TextField id = new TextField();
+		JTable competences = new JTable();
+		
+		ChargementConsultation();
     }
+	
+	
+	public void ChargementConsultation(){
+		TextField nom = new TextField();
+		TextField prenom = new TextField();
+		TextField date = new TextField();
+		TextField id = new TextField();
+		JTable competences = new JTable();
+	}
+	
+	public void ChargementModification(){
+		
+	}
+	
+	public void ChargementNouveau(){
+		TextField nom = new TextField();
+		TextField prenom = new TextField();
+		TextField date = new TextField();
+		TextField id = new TextField();
+		JTable competences = new JTable();
+	}
+	
 	
 	@Override
 	public void paintComponent(Graphics g) {		
@@ -87,9 +134,8 @@ public class Personnel extends JPanel implements MouseListener{
 		
 		batch.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		batch.setColor(Color.WHITE);
-		batch.fillRect(330, 13, 930, 535);
-		
-		
+		batch.fillRect(330, 40, 930, 510);
+
 	}
 	
 
@@ -97,9 +143,22 @@ public class Personnel extends JPanel implements MouseListener{
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() instanceof Button) {
 			if (e.getSource().equals(this.boutonNouveau)) {
-				this.repaint();
+				ChargementNouveau();
 			}
-
+			if (e.getSource().equals(this.boutonModifier)) {
+				ChargementModification();
+			}
+		}
+		
+		if (e.getSource() instanceof JTable) {
+		  int row = this.listePersonnel.rowAtPoint(e.getPoint());
+          int col =  this.listePersonnel.columnAtPoint(e.getPoint());
+          int[] newEntry = new int[]{row,col};
+          if(selectedCells.contains(newEntry)){
+             selectedCells.remove(newEntry);
+          }else{
+             selectedCells.add(newEntry);
+          }
 		}
 	}
 
