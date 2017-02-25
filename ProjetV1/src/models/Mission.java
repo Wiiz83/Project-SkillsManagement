@@ -15,6 +15,7 @@ public class Mission extends CSVEntity {
 	private int									id	= -1;
 	private ArrayList<Employee>					AffEmp;
 	private ArrayList<CompetenceRequirement>	CompReq;
+	private Status								Status;
 	
 	public Mission(String nomM, Date dateDebut, int duree, int nbPersReq) {
 		super();
@@ -24,8 +25,17 @@ public class Mission extends CSVEntity {
 		this.nbPersReq = nbPersReq;
 		this.AffEmp = new ArrayList<>();
 		this.CompReq = new ArrayList<>();
+		this.Status = Status.PLANIFIEE;
 	}
 	
+	public Status getStatus() {
+		return Status;
+	}
+
+	public void setStatus(Status status) {
+		Status = status;
+	}
+
 	public boolean addCompetenceReq(CompetenceRequirement cr) {
 		return CompReq.add(cr);
 	}
