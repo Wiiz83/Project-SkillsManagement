@@ -35,7 +35,7 @@ public class Personnel extends JPanel implements MouseListener{
 	Button boutonAnnuler;
 	JTable listePersonnel;
 	Vector selectedCells = new Vector<int[]>();
-
+	int IDSelect;
 	
 	private static final long serialVersionUID = 1L;
 
@@ -86,12 +86,13 @@ public class Personnel extends JPanel implements MouseListener{
 		add(this.boutonEnregistrer);
 		add(this.boutonAnnuler);
 		
-		Titre titre = new Titre("Détails du salarié :" );
+		Titre titre = new Titre(" Détails du salarié :" );
+		titre.setBounds(330, 10, 930, 20);
+		add(titre);
 		
 		JLabel labelNom = new JLabel("Nom :");
 		JLabel labelPrenom = new JLabel("Prénom :");
 		JLabel labelDate = new JLabel("Date d'entrée :");
-	//	JLabel labelId = new JLabel(this.IDSelect)
 		JLabel labelCompetences = new JLabel("Liste des compétences :");
 		
 		TextField nom = new TextField();		
@@ -110,9 +111,23 @@ public class Personnel extends JPanel implements MouseListener{
 		TextField date = new TextField();
 		TextField id = new TextField();
 		JTable competences = new JTable();
+		
+		this.boutonEnregistrer.setVisible(false);
+		this.boutonAnnuler.setVisible(false);
+		this.boutonNouveau.setVisible(true);
+		this.boutonModifier.setVisible(true);
+		this.boutonSupprimer.setVisible(true);
+		this.listePersonnel.setEnabled(true);
+
 	}
 	
 	public void ChargementModification(){
+		this.boutonEnregistrer.setVisible(true);
+		this.boutonAnnuler.setVisible(true);
+		this.boutonNouveau.setVisible(false);
+		this.boutonModifier.setVisible(false);
+		this.boutonSupprimer.setVisible(false);
+		this.listePersonnel.setEnabled(false);
 		
 	}
 	
@@ -129,8 +144,6 @@ public class Personnel extends JPanel implements MouseListener{
 	public void paintComponent(Graphics g) {		
 		super.paintComponent(g);
 		Graphics2D batch = (Graphics2D) g;
-		
-		
 		batch.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		batch.setColor(Color.WHITE);
 		batch.fillRect(330, 40, 930, 510);
@@ -147,17 +160,20 @@ public class Personnel extends JPanel implements MouseListener{
 			if (e.getSource().equals(this.boutonModifier)) {
 				ChargementModification();
 			}
+			if (e.getSource().equals(this.boutonModifier)) {
+				ChargementModification();
+			}
+			if (e.getSource().equals(this.boutonEnregistrer)) {
+				ChargementConsultation();
+			}
+			if (e.getSource().equals(this.boutonAnnuler)) {
+				ChargementConsultation();
+			}
 		}
 		
-		if (e.getSource() instanceof JTable) {
-		  int row = this.listePersonnel.rowAtPoint(e.getPoint());
-          int col =  this.listePersonnel.columnAtPoint(e.getPoint());
-          int[] newEntry = new int[]{row,col};
-          if(selectedCells.contains(newEntry)){
-             selectedCells.remove(newEntry);
-          }else{
-             selectedCells.add(newEntry);
-          }
+		if (e.getSource() instanceof JTable) {          
+          int ligneSelectionne = this.listePersonnel.getSelectedRow();
+          this.IDSelect = (int) listePersonnel.getValueAt(ligneSelectionne, 3);
 		}
 	}
 

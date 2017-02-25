@@ -26,12 +26,12 @@ public class CSVToTable {
 		TableModel dataModel = new AbstractTableModel() {
 			@Override
 			public String getColumnName(int col) {
-				String[] headers = { "Nom", "Prénom", "Date d'entrée" };
+				String[] headers = {"Nom", "Prénom", "Date d'entrée", "ID",  };
 				return headers[col];
 			}
 			
 			public int getColumnCount() {
-				return 3;
+				return 5;
 			}
 			
 			public int getRowCount() {
@@ -40,22 +40,31 @@ public class CSVToTable {
 			
 			public Object getValueAt(int row, int col) {
 				Employee emp = employes.get(row);
-				switch (col) {
-				case 1:
-					return emp.getName();
 				
-				case 0:
-					return emp.getLastName();
-				case 2:
-					return dateformatter.format(emp.getEntryDate());
-				default:
-					System.out.println("JTable access ");
-					break;
+				switch (col) {
+					case 0:
+						return emp.getLastName();
+					case 1:
+						return emp.getName();
+					case 2:
+						return dateformatter.format(emp.getEntryDate());
+					case 3:
+						return emp.getID();
+					case 4:
+						return emp.getCompetences();
+					default:
+						System.out.println("JTable access ");
+						break;
 				}
 				return emp;
 			}
 		};
+		
 		JTable table = new JTable(dataModel);
+		table.getColumnModel().getColumn(3).setMinWidth(0);
+		table.getColumnModel().getColumn(3).setMaxWidth(0);
+		table.getColumnModel().getColumn(4).setMinWidth(0);
+		table.getColumnModel().getColumn(4).setMaxWidth(0);
 		
 		return table;
 	}
