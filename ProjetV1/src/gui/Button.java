@@ -28,12 +28,13 @@ public class Button extends JComponent implements MouseListener {
 	String etat;
 	int width;
 	int height;
+	int x;
+	int y;
 	private ArrayList<ActionListener> listeners;
 
 	public Button(String url)
 	{
 		super();
-
 	    try {
 			this.backgroundImage = ImageIO.read(new File(getClass().getResource(url).toURI()));
 			this.backgroundImageHover = BufferedHelper.generateMask(this.backgroundImage, Color.BLACK, 0.5f);
@@ -79,21 +80,24 @@ public class Button extends JComponent implements MouseListener {
 		if(this.backgroundImage != null)
 		{
 			Graphics2D g2d = (Graphics2D) g.create();
-			g2d.drawImage(this.backgroundImage,0,0,this.width,this.height,null);
+			g2d.drawImage(this.backgroundImage, this.x , this.y ,this.width,this.height,null);
 			
 			if(this.etat == "survol")
 			{
-				g2d.drawImage(this.backgroundImageHover,0,0,this.width,this.height,null);
+				g2d.drawImage(this.backgroundImageHover, this.x , this.y,this.width,this.height,null);
 			}
 			else if(this.etat == "grisé")
 			{
-				g2d.drawImage(this.backgroundImageDisable,0,0,this.width,this.height,null);
+				g2d.drawImage(this.backgroundImageDisable, this.x , this.y,this.width,this.height,null);
 			}
 			
 			g2d.dispose();
 		}
 	}
 
+	public void setBounds(int x, int y) {
+		super.setBounds(x, y, this.width, this.height);
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
