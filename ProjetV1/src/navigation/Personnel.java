@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.TextField;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
@@ -17,7 +16,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 
 import csv.CSVToTable;
 import csv.InvalidCSVException;
@@ -37,9 +35,9 @@ public class Personnel extends JPanel implements MouseListener{
 	Vector selectedCells = new Vector<int[]>();
 
 	int IDSelect;
-	TextField nom;
-	TextField prenom;
-	TextField date;
+	JTextField nom;
+	JTextField prenom;
+	JTextField date;
 	JTable competences;
 
 	private static final long serialVersionUID = 1L;
@@ -100,11 +98,12 @@ public class Personnel extends JPanel implements MouseListener{
 		JLabel labelDate = new JLabel("Date d'entrée :");
 		JLabel labelCompetences = new JLabel("Liste des compétences :");
 		
-		this.nom = new TextField();		
+		this.nom = new JTextField();		
+		this.nom.addMouseListener(this);
 		this.nom.setBounds(350, 50, 150, 40);
 		add(this.nom);
-		this.prenom = new TextField();
-		this.date = new TextField();
+		this.prenom = new JTextField();
+		this.date = new JTextField();
 		this.competences = new JTable();
 		
 		ChargementConsultation();
