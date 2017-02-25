@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<eclipse-userlibraries version="2">
+    <library name="JCommon 1.0.23" systemlibrary="false">
+        <archive path="C:/Users/Lucas/Desktop/jcommon-1.0.23/jcommon-1.0.23.jar" source="C:/Users/Lucas/Desktop/jcommon-1.0.23"/>
+    </library>
+    <library name="JFreeChart 1.0.19" systemlibrary="false">
+        <archive path="C:/Users/Lucas/Desktop/jfreechart-1.0.19/lib/jfreechart-1.0.19.jar" source="C:/Users/Lucas/Desktop/jfreechart-1.0.19"/>
+    </library>
+</eclipse-userlibraries>
