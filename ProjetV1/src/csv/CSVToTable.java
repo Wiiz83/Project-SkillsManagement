@@ -126,11 +126,9 @@ public class CSVToTable {
 				Mission mis = missions.get(row);
 				switch (col) {
 				case 0:
-					return mis.getID();
-				
+					return mis.getID();				
 				case 1:
-					return mis.getNomM();
-					
+					return mis.getNomM();					
 				case 2:
 					return mis.getDuree();
 				case 3:
