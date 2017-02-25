@@ -88,7 +88,6 @@ public class Personnel extends JPanel implements MouseListener{
 		
 		Titre titre = new Titre("Détails du salarié :" );
 		
-		
 		JLabel labelNom = new JLabel("Nom :");
 		JLabel labelPrenom = new JLabel("Prénom :");
 		JLabel labelDate = new JLabel("Date d'entrée :");
