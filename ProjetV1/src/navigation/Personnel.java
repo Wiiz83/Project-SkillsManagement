@@ -36,7 +36,12 @@ public class Personnel extends JPanel implements MouseListener{
 	JTable listePersonnel;
 	Vector selectedCells = new Vector<int[]>();
 
-	
+	int IDSelect;
+	TextField nom;
+	TextField prenom;
+	TextField date;
+	JTable competences;
+
 	private static final long serialVersionUID = 1L;
 
 	public Personnel()  {   
@@ -86,42 +91,48 @@ public class Personnel extends JPanel implements MouseListener{
 		add(this.boutonEnregistrer);
 		add(this.boutonAnnuler);
 		
-		Titre titre = new Titre("Détails du salarié :" );
+		Titre titre = new Titre(" Détails du salarié :" );
+		titre.setBounds(330, 10, 930, 20);
+		add(titre);
 		
 		JLabel labelNom = new JLabel("Nom :");
 		JLabel labelPrenom = new JLabel("Prénom :");
 		JLabel labelDate = new JLabel("Date d'entrée :");
-	//	JLabel labelId = new JLabel(this.IDSelect)
 		JLabel labelCompetences = new JLabel("Liste des compétences :");
 		
-		TextField nom = new TextField();		
-		TextField prenom = new TextField();
-		TextField date = new TextField();
-		TextField id = new TextField();
-		JTable competences = new JTable();
+		this.nom = new TextField();		
+		this.nom.setBounds(350, 50, 150, 40);
+		add(this.nom);
+		this.prenom = new TextField();
+		this.date = new TextField();
+		this.competences = new JTable();
 		
 		ChargementConsultation();
     }
 	
 	
 	public void ChargementConsultation(){
-		TextField nom = new TextField();
-		TextField prenom = new TextField();
-		TextField date = new TextField();
-		TextField id = new TextField();
-		JTable competences = new JTable();
+		this.boutonEnregistrer.setVisible(false);
+		this.boutonAnnuler.setVisible(false);
+		this.boutonNouveau.setVisible(true);
+		this.boutonModifier.setVisible(true);
+		this.boutonSupprimer.setVisible(true);
+		this.listePersonnel.setEnabled(true);
 	}
 	
 	public void ChargementModification(){
-		
+		this.boutonEnregistrer.setVisible(true);
+		this.boutonAnnuler.setVisible(true);
+		this.boutonNouveau.setVisible(false);
+		this.boutonModifier.setVisible(false);
+		this.boutonSupprimer.setVisible(false);
+		this.listePersonnel.setEnabled(false);
+		this.nom.setEnabled(true);
+		this.nom.setEditable(true);
 	}
 	
 	public void ChargementNouveau(){
-		TextField nom = new TextField();
-		TextField prenom = new TextField();
-		TextField date = new TextField();
-		TextField id = new TextField();
-		JTable competences = new JTable();
+
 	}
 	
 	
@@ -129,12 +140,9 @@ public class Personnel extends JPanel implements MouseListener{
 	public void paintComponent(Graphics g) {		
 		super.paintComponent(g);
 		Graphics2D batch = (Graphics2D) g;
-		
-		
 		batch.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		batch.setColor(Color.WHITE);
 		batch.fillRect(330, 40, 930, 510);
-
 	}
 	
 
@@ -149,15 +157,13 @@ public class Personnel extends JPanel implements MouseListener{
 			}
 		}
 		
-		if (e.getSource() instanceof JTable) {
-		  int row = this.listePersonnel.rowAtPoint(e.getPoint());
-          int col =  this.listePersonnel.columnAtPoint(e.getPoint());
-          int[] newEntry = new int[]{row,col};
-          if(selectedCells.contains(newEntry)){
-             selectedCells.remove(newEntry);
-          }else{
-             selectedCells.add(newEntry);
-          }
+		if (e.getSource() instanceof JTable) {          
+			int ligneSelectionne = this.listePersonnel.getSelectedRow();
+	  		this.nom.setText((String) listePersonnel.getValueAt(ligneSelectionne, 0));	
+	  	//	this.prenom.setText((String) listePersonnel.getValueAt(ligneSelectionne, 1));
+	  		//this.date.setText((String) listePersonnel.getValueAt(ligneSelectionne, 2));
+			//this.IDSelect = (int) listePersonnel.getValueAt(ligneSelectionne, 3);
+	  		//this.competences = new JTable();
 		}
 	}
 

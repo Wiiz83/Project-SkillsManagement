@@ -1,6 +1,7 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -10,6 +11,7 @@ import csv.InvalidDataException;
 public class Mission extends CSVEntity {
 	private String								nomM;
 	private Date								dateDebut;
+	private Date								dateFin;
 	private int									duree;
 	private int									nbPersReq;
 	private int									id	= -1;
@@ -26,10 +28,18 @@ public class Mission extends CSVEntity {
 		this.AffEmp = new ArrayList<>();
 		this.CompReq = new ArrayList<>();
 		this.Status = Status.PLANIFIEE;
+		this.dateFin = setDateFin(duree);
 	}
 	
 	public Status getStatus() {
 		return Status;
+	}
+	
+	public Date setDateFin(int duree){
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(this.dateDebut);
+		cal.add(Calendar.DATE, duree);
+		return cal.getTime();
 	}
 
 	public void setStatus(Status status) {
