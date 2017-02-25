@@ -84,10 +84,10 @@ public class CSVToTable {
 			public Object getValueAt(int row, int col) {
 				Competence comp = competences.get(row);
 				switch (col) {
-				case 1:
+				case 0:
 					return comp.getCode();
 				
-				case 0:
+				case 1:
 					return comp.getNames();
 				default:
 					System.out.println("JTable access ");
@@ -125,10 +125,10 @@ public class CSVToTable {
 			public Object getValueAt(int row, int col) {
 				Mission mis = missions.get(row);
 				switch (col) {
-				case 1:
+				case 0:
 					return mis.getID();
 				
-				case 0:
+				case 1:
 					return mis.getNomM();
 					
 				case 2:
