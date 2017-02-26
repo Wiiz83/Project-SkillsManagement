@@ -41,6 +41,7 @@ public class Header extends JPanel implements MouseListener {
 	JFrame frame;
 	JPanel menu;
 	JPanel contenu;
+	JPanel PageActuelle;
 
 
 	public Header(JFrame frame) {
@@ -84,7 +85,6 @@ public class Header extends JPanel implements MouseListener {
         contenu.setBorder(BorderFactory.createEmptyBorder(70,0,0,0)); 
         contenu.setLayout(new CardLayout());
         this.frame.getContentPane().add(contenu); 
-
         this.panelAccueil = new Accueil();
         this.contenu.add(this.panelAccueil, "Panel 1"); 
         
@@ -98,6 +98,7 @@ public class Header extends JPanel implements MouseListener {
         this.contenu.add(this.panelCompetences, "Panel 4"); 
         
         this.etat = "accueil";
+        ChargementPage();
 		
 	}
 
@@ -105,57 +106,50 @@ public class Header extends JPanel implements MouseListener {
 	public void paintComponent(Graphics g) {		
 		super.paintComponent(g);
 		Graphics2D batch = (Graphics2D) g;
-		
-        this.panelAccueil.setVisible(false);
-        this.panelPersonnel.setVisible(false);
-        this.panelMissions.setVisible(false);
-        this.panelCompetences.setVisible(false);
-		
-		if(this.etat == "accueil")
-		{
-	        this.panelAccueil.setVisible(true);
-		}
-		if(this.etat == "personnel")
-		{
-	        this.panelPersonnel.setVisible(true);
-		}
-		if(this.etat == "missions")
-		{
-	        this.panelMissions.setVisible(true);
-		}
-		if(this.etat == "competences")
-		{
-	        this.panelCompetences.setVisible(true);
-		}
-		
 		batch.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		batch.setColor(new Color(0, 72, 136));
 		batch.fillRect(0, 0, 1280, 70);
 		g.drawImage(logo, 1215, 9, 50, 50, null);
 		g.drawImage(background, 0, 70, 1280, 720, null);
-		
 	}
 
+	
+	public void ChargementPage(){
+		if( this.PageActuelle != null){
+			this.PageActuelle.setVisible(false);
+		}
+		if(this.etat == "accueil"){
+	        this.panelAccueil.setVisible(true);
+	        this.PageActuelle = this.panelAccueil;
+		}
+		if(this.etat == "personnel"){
+	        this.panelPersonnel.setVisible(true);
+	        this.PageActuelle = this.panelPersonnel;
+		}
+		if(this.etat == "missions"){
+	        this.panelMissions.setVisible(true);
+		}
+		if(this.etat == "competences"){
+	        this.panelCompetences.setVisible(true);
+		}
+	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() instanceof Button) {
 			if (e.getSource().equals(this.boutonAccueil)) {
 				this.etat = "accueil";
-				this.repaint();
 			}
 			else if (e.getSource().equals(this.boutonCompetences)) {
 				this.etat = "competences";
-				this.repaint();
 			}
 			else if (e.getSource().equals(this.boutonPersonnel)) {
 				this.etat = "personnel";
-				this.repaint();
 				
 			}
 			else if (e.getSource().equals(this.boutonMissions)) {
 				this.etat = "missions";
-				this.repaint();
 			}
+			ChargementPage();
 		}
 	}
 
