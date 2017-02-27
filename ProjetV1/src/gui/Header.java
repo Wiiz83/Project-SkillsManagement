@@ -85,6 +85,7 @@ public class Header extends JPanel implements MouseListener {
         contenu.setBorder(BorderFactory.createEmptyBorder(70,0,0,0)); 
         contenu.setLayout(new CardLayout());
         this.frame.getContentPane().add(contenu); 
+        
         this.panelAccueil = new Accueil();
         this.contenu.add(this.panelAccueil, "Panel 1"); 
         
@@ -132,10 +133,12 @@ public class Header extends JPanel implements MouseListener {
 		if(this.etat == "competences"){
 	        this.panelCompetences.setVisible(true);
 		}
+
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() instanceof Button) {
+
 			if (e.getSource().equals(this.boutonAccueil)) {
 				this.etat = "accueil";
 			}

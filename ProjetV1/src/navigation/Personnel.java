@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -22,6 +23,7 @@ import csv.InvalidCSVException;
 import csv.InvalidDataException;
 import gui.Button;
 import gui.Titre;
+import models.Competence;
 
 
 public class Personnel extends JPanel implements MouseListener{
@@ -38,7 +40,7 @@ public class Personnel extends JPanel implements MouseListener{
 	JTextField nom;
 	JTextField prenom;
 	JTextField date;
-	JTable competences;
+	ArrayList<Competence> competences;
 
 	private static final long serialVersionUID = 1L;
 
@@ -94,17 +96,44 @@ public class Personnel extends JPanel implements MouseListener{
 		add(titre);
 		
 		JLabel labelNom = new JLabel("Nom :");
+		labelNom.setBounds(350, 50, 150, 25);
+		add(labelNom);
+		
 		JLabel labelPrenom = new JLabel("Prénom :");
+		labelPrenom.setBounds(350, 80, 150, 25);
+		add(labelPrenom);
+		
 		JLabel labelDate = new JLabel("Date d'entrée :");
+		labelDate.setBounds(350, 110, 150, 25);
+		add(labelDate);
+		
 		JLabel labelCompetences = new JLabel("Liste des compétences :");
+		labelCompetences.setBounds(350, 140, 150, 25);
+		add(labelCompetences);
 		
 		this.nom = new JTextField();		
 		this.nom.addMouseListener(this);
-		this.nom.setBounds(350, 50, 150, 40);
+		this.nom.setBounds(450, 50, 150, 25);
 		add(this.nom);
+		
 		this.prenom = new JTextField();
+		this.prenom.addMouseListener(this);
+		this.prenom.setBounds(450, 80, 150, 25);
+		add(this.prenom);
+		
 		this.date = new JTextField();
-		this.competences = new JTable();
+		this.date.addMouseListener(this);
+		this.date.setBounds(450, 110, 150, 25);
+		add(this.date);
+		
+	/*	this.competences = new JTable();
+		this.competences.addMouseListener(this);
+		this.competences.setFillsViewportHeight(true);
+		JScrollPane js=new JScrollPane(this.competences);
+	    js.setVisible(true);
+	    js.setBounds(350, 170, 350, 350);
+		add(js);
+		*/
 		
 		ChargementConsultation();
     }
@@ -159,10 +188,12 @@ public class Personnel extends JPanel implements MouseListener{
 		if (e.getSource() instanceof JTable) {          
 			int ligneSelectionne = this.listePersonnel.getSelectedRow();
 	  		this.nom.setText((String) listePersonnel.getValueAt(ligneSelectionne, 0));	
-	  	//	this.prenom.setText((String) listePersonnel.getValueAt(ligneSelectionne, 1));
-	  		//this.date.setText((String) listePersonnel.getValueAt(ligneSelectionne, 2));
+	  	 	this.prenom.setText((String) listePersonnel.getValueAt(ligneSelectionne, 1));
+	  		this.date.setText((String) listePersonnel.getValueAt(ligneSelectionne, 2));
 			//this.IDSelect = (int) listePersonnel.getValueAt(ligneSelectionne, 3);
-	  		//this.competences = new JTable();
+	  		this.competences = (ArrayList<Competence>) listePersonnel.getValueAt(ligneSelectionne, 4);
+
+			
 		}
 	}
 

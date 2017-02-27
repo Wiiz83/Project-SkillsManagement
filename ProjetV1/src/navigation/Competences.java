@@ -12,13 +12,9 @@ public class Competences extends JPanel {
 	
 	public Competences () 
     {   
-	    setOpaque(true);
-		setLayout(new BorderLayout());
+	    setOpaque(false);
+		setLayout(null);
 		setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
 
-		this.nom = new JTextField();		
-		this.nom.setBounds(350, 50, 150, 40);
-
-		add(this.nom);
     }
 }

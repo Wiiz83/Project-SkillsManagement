@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
@@ -17,8 +18,7 @@ import models.*;
 public class CSVToTable {
 	static SimpleDateFormat dateformatter = new SimpleDateFormat("dd/MM/yyyy");
 	
-	public static JTable Employes()
-			throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException {
+	public static JTable Employes() throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException {
 		CSVObjects<Employee> employes_csv = new CSVObjects<>(Employee.class);
 		ArrayList<Employee> employes = employes_csv.getAll();
 		
@@ -40,7 +40,7 @@ public class CSVToTable {
 			
 			public Object getValueAt(int row, int col) {
 				Employee emp = employes.get(row);
-				
+
 				switch (col) {
 					case 0:
 						return emp.getLastName();
@@ -69,8 +69,45 @@ public class CSVToTable {
 		return table;
 	}
 	
-	public static JTable Competences()
-			throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException {
+	public static JTable CompetencesEmploye(ArrayList<Competence> list)	 {
+		
+		@SuppressWarnings("serial")
+		TableModel dataModel = new AbstractTableModel() {
+			@Override
+			public String getColumnName(int col) {				
+				String[] headers = { "Code", "Names"};
+				return headers[col];
+			}
+			
+			public int getColumnCount() {
+				return 2;
+			}
+			
+			public int getRowCount() {
+				return list.size();
+			}
+			
+			public Object getValueAt(int row, int col) {
+				Competence comp = list.get(row);
+				
+				switch (col) {
+				case 0:
+					return comp.getCode();
+				case 1:
+					return comp.getNames();
+				default:
+					System.out.println("JTable access ");
+					break;
+				}
+				return comp;
+			}
+		};
+		JTable table = new JTable(dataModel);
+		
+		return table;
+	}
+	
+	public static JTable Competences()	throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException {
 		CSVObjects<Competence> competences_csv = new CSVObjects<>(Competence.class);
 		ArrayList<Competence> competences = competences_csv.getAll();
 		
@@ -110,8 +147,7 @@ public class CSVToTable {
 		return table;
 	}
 	
-	public static JTable Mission()
-			throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException {
+	public static JTable Mission() throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException {
 		CSVObjects<Mission> missions_csv = new CSVObjects<>(Competence.class);
 		ArrayList<Mission> missions = missions_csv.getAll();
 		
@@ -153,5 +189,7 @@ public class CSVToTable {
 		
 		return table;
 	}
+	
+	
 	
 }
