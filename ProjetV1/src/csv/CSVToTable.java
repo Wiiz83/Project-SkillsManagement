@@ -70,17 +70,17 @@ public class CSVToTable {
 		return table;
 	}
 	
-public static JTable CompetencesEmploye(ArrayList<Competence> list) {
+	public static JTable CompetencesEmploye(ArrayList<Competence> list) {
 		
 		@SuppressWarnings("serial")
 		TableModel dataModel = new AbstractTableModel() {
 			public String getColumnName(int col) {
-				String[] headers = { "Code", "Names" };
+				String[] headers = { "Code", "FR", "EN" };
 				return headers[col];
 			}
 			
 			public int getColumnCount() {
-				return Languages.size;
+				return Languages.size + 1;
 			}
 			
 			public int getRowCount() {
@@ -96,7 +96,7 @@ public static JTable CompetencesEmploye(ArrayList<Competence> list) {
 					return comp.getCode();
 				
 				default:
-					if (col < Languages.size)
+					if (col <= Languages.size)
 						return comp.getNames().get(col - 1);
 					System.out.println("JTable access ");
 					break;
@@ -107,47 +107,7 @@ public static JTable CompetencesEmploye(ArrayList<Competence> list) {
 		JTable table = new JTable(dataModel);
 		return table;
 	}
-		
-	public static JTable Competences()	throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException {
-		CSVObjects<Competence> competences_csv = new CSVObjects<>(Competence.class);
-		ArrayList<Competence> competences = competences_csv.getAll();
-		
-		@SuppressWarnings("serial")
-		TableModel dataModel = new AbstractTableModel() {
-			@Override
-			public String getColumnName(int col) {
-				String[] headers = { "Code", "Names"};
-				return headers[col];
-			}
 			
-			public int getColumnCount() {
-				return 3;
-			}
-			
-			public int getRowCount() {
-				return competences.size();
-			}
-			
-			public Object getValueAt(int row, int col) {
-				Competence comp = competences.get(row);
-				switch (col) {
-				case 0:
-					return comp.getCode();
-				
-				case 1:
-					return comp.getNames();
-				default:
-					System.out.println("JTable access ");
-					break;
-				}
-				return comp;
-			}
-		};
-		JTable table = new JTable(dataModel);
-		
-		return table;
-	}
-	
 	public static JTable Mission() throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException {
 		CSVObjects<Mission> missions_csv = new CSVObjects<>(Competence.class);
 		ArrayList<Mission> missions = missions_csv.getAll();
