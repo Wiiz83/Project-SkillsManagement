@@ -47,15 +47,7 @@ public class CSVObjectLoader<E extends CSVEntity> {
 				AssociatedObjects.put(N, AssociatedNObjects);
 			}
 		}
-		
-		HashMap<Class<? extends CSVEntity>, Object[]> AssociatedObjectsArr = new HashMap<>();
-		for (Map.Entry<Class<? extends CSVEntity>, ArrayList<Object>> pair : AssociatedObjects.entrySet()) {
-			pair.getKey();
-			Class<? extends CSVEntity> _class = pair.getKey();
-			Object[] objects = (pair.getValue()).toArray();
-			AssociatedObjectsArr.put(_class, objects);
-		}
-		
+				
 		return AssociatedObjects;
 	}
 	
