@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
@@ -18,7 +17,8 @@ import models.*;
 public class CSVToTable {
 	static SimpleDateFormat dateformatter = new SimpleDateFormat("dd/MM/yyyy");
 	
-	public static JTable Employes() throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException {
+	public static JTable Employes()
+			throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException {
 		CSVObjects<Employee> employes_csv = new CSVObjects<>(Employee.class);
 		ArrayList<Employee> employes = employes_csv.getAll();
 		
@@ -26,7 +26,7 @@ public class CSVToTable {
 		TableModel dataModel = new AbstractTableModel() {
 			@Override
 			public String getColumnName(int col) {
-				String[] headers = {"Nom", "Prénom", "Date d'entrée", "ID", "Competences"};
+				String[] headers = { "Nom", "Prénom", "Date d'entrée", "ID", "Competences" };
 				return headers[col];
 			}
 			
@@ -40,23 +40,23 @@ public class CSVToTable {
 			
 			public Object getValueAt(int row, int col) {
 				Employee emp = employes.get(row);
-
+				
 				switch (col) {
-					case 0:
-						return emp.getLastName();
-					case 1:
-						return emp.getName();
-					case 2:
-						return dateformatter.format(emp.getEntryDate());
-					case 3:
-						return emp.getID();
-					case 4:
-						return emp.getCompetences();
-					default:
-						System.out.println("JTable access ");
-						break;
+				case 0:
+					return emp.getLastName();
+				case 1:
+					return emp.getName();
+				case 2:
+					return dateformatter.format(emp.getEntryDate());
+				case 3:
+					return emp.getID();
+				case 4:
+					return emp.getCompetences();
+				default:
+					System.out.println("JTable access ");
+					break;
 				}
-
+				
 				return emp;
 			}
 		};
@@ -66,7 +66,7 @@ public class CSVToTable {
 		table.getColumnModel().getColumn(3).setMaxWidth(0);
 		table.getColumnModel().getColumn(4).setMinWidth(0);
 		table.getColumnModel().getColumn(4).setMaxWidth(0);
-
+		
 		return table;
 	}
 	
@@ -107,8 +107,9 @@ public class CSVToTable {
 		JTable table = new JTable(dataModel);
 		return table;
 	}
-			
-	public static JTable Mission() throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException {
+	
+	public static JTable Mission()
+			throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException {
 		CSVObjects<Mission> missions_csv = new CSVObjects<>(Competence.class);
 		ArrayList<Mission> missions = missions_csv.getAll();
 		
@@ -116,7 +117,7 @@ public class CSVToTable {
 		TableModel dataModel = new AbstractTableModel() {
 			@Override
 			public String getColumnName(int col) {
-				String[] headers = { "Code", "Name", "Duration", "Status"};
+				String[] headers = { "Code", "Name", "Duration", "Status" };
 				return headers[col];
 			}
 			
@@ -132,9 +133,9 @@ public class CSVToTable {
 				Mission mis = missions.get(row);
 				switch (col) {
 				case 0:
-					return mis.getID();				
+					return mis.getID();
 				case 1:
-					return mis.getNomM();					
+					return mis.getNomM();
 				case 2:
 					return mis.getDuree();
 				case 3:
@@ -147,10 +148,7 @@ public class CSVToTable {
 			}
 		};
 		JTable table = new JTable(dataModel);
-		
 		return table;
 	}
-	
-	
 	
 }

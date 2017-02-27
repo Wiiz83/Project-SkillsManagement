@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class CSVObjectLoader<E extends CSVEntity> {
 	
@@ -47,7 +46,7 @@ public class CSVObjectLoader<E extends CSVEntity> {
 				AssociatedObjects.put(N, AssociatedNObjects);
 			}
 		}
-				
+		
 		return AssociatedObjects;
 	}
 	
