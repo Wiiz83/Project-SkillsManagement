@@ -56,6 +56,7 @@ public class CSVToTable {
 						System.out.println("JTable access ");
 						break;
 				}
+
 				return emp;
 			}
 		};
@@ -65,7 +66,7 @@ public class CSVToTable {
 		table.getColumnModel().getColumn(3).setMaxWidth(0);
 		table.getColumnModel().getColumn(4).setMinWidth(0);
 		table.getColumnModel().getColumn(4).setMaxWidth(0);
-		
+
 		return table;
 	}
 	

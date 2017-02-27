@@ -24,6 +24,7 @@ import csv.InvalidDataException;
 import gui.Button;
 import gui.Titre;
 import models.Competence;
+import models.Employee;
 
 
 public class Personnel extends JPanel implements MouseListener{
@@ -40,7 +41,7 @@ public class Personnel extends JPanel implements MouseListener{
 	JTextField nom;
 	JTextField prenom;
 	JTextField date;
-	ArrayList<Competence> competences;
+	JTable competences;
 
 	private static final long serialVersionUID = 1L;
 
@@ -126,20 +127,24 @@ public class Personnel extends JPanel implements MouseListener{
 		this.date.setBounds(450, 110, 150, 25);
 		add(this.date);
 		
-	/*	this.competences = new JTable();
+	    this.competences = new JTable();
 		this.competences.addMouseListener(this);
 		this.competences.setFillsViewportHeight(true);
 		JScrollPane js=new JScrollPane(this.competences);
 	    js.setVisible(true);
 	    js.setBounds(350, 170, 350, 350);
 		add(js);
-		*/
-		
+
 		ChargementConsultation();
     }
 	
 	
 	public void ChargementConsultation(){
+		this.nom.setEditable(false);
+		this.prenom.setEditable(false);
+		this.date.setEditable(false);
+		this.competences.setEnabled(false);
+		
 		this.boutonEnregistrer.setVisible(false);
 		this.boutonAnnuler.setVisible(false);
 		this.boutonNouveau.setVisible(true);
@@ -149,18 +154,26 @@ public class Personnel extends JPanel implements MouseListener{
 	}
 	
 	public void ChargementModification(){
+		this.nom.setEditable(true);
+		this.prenom.setEditable(true);
+		this.date.setEditable(true);
+		this.competences.setEnabled(true);
+		
 		this.boutonEnregistrer.setVisible(true);
 		this.boutonAnnuler.setVisible(true);
 		this.boutonNouveau.setVisible(false);
 		this.boutonModifier.setVisible(false);
 		this.boutonSupprimer.setVisible(false);
 		this.listePersonnel.setEnabled(false);
-		this.nom.setEnabled(true);
-		this.nom.setEditable(true);
 	}
 	
 	public void ChargementNouveau(){
 
+	}
+	
+	public void Enregistrement(){
+	//	this.IDSelect = (int) listePersonnel.getValueAt(ligneSelectionne, 3);		
+		
 	}
 	
 	
@@ -183,16 +196,35 @@ public class Personnel extends JPanel implements MouseListener{
 			if (e.getSource().equals(this.boutonModifier)) {
 				ChargementModification();
 			}
+			if (e.getSource().equals(this.boutonSupprimer)) {
+				//ChargementSuppression();
+			}
+			if (e.getSource().equals(this.boutonAnnuler)) {
+				ChargementConsultation();
+			}
+			if (e.getSource().equals(this.boutonEnregistrer)) {
+				// enregistrer
+				Enregistrement();
+				ChargementConsultation();
+			}
 		}
 		
 		if (e.getSource() instanceof JTable) {          
+			//Employee employeSelect = new Employe();
+			
 			int ligneSelectionne = this.listePersonnel.getSelectedRow();
 	  		this.nom.setText((String) listePersonnel.getValueAt(ligneSelectionne, 0));	
 	  	 	this.prenom.setText((String) listePersonnel.getValueAt(ligneSelectionne, 1));
 	  		this.date.setText((String) listePersonnel.getValueAt(ligneSelectionne, 2));
-			//this.IDSelect = (int) listePersonnel.getValueAt(ligneSelectionne, 3);
-	  		this.competences = (ArrayList<Competence>) listePersonnel.getValueAt(ligneSelectionne, 4);
-
+			this.IDSelect = (int) listePersonnel.getValueAt(ligneSelectionne, 3);		
+	  		
+	  		//this.competences = new ArrayList<Competence>();
+	  		//this.competences = (ArrayList<Competence>) listePersonnel.getValueAt(ligneSelectionne, 4);
+	  		//System.out.println(this.competences.size());
+	  		
+	  		//for (Competence item : competences) {   
+	  		//    System.out.println(item);
+	  		//}
 			
 		}
 	}
