@@ -26,7 +26,7 @@ public class CSVToTable {
 		TableModel dataModel = new AbstractTableModel() {
 			@Override
 			public String getColumnName(int col) {
-				String[] headers = { "Nom", "PrÃ©nom", "Date d'entrÃ©e", "ID", "Competences" };
+				String[] headers = { "Nom", "Prénom", "Date d'entrée", "ID", "Compétences" };
 				return headers[col];
 			}
 			
@@ -88,7 +88,6 @@ public class CSVToTable {
 			}
 			
 			public Object getValueAt(int row, int col) {
-				System.out.println("getValueAt(int row, int col):" + row + ";" + col);
 				Competence comp = list.get(row);
 				
 				switch (col) {
@@ -150,5 +149,85 @@ public class CSVToTable {
 		JTable table = new JTable(dataModel);
 		return table;
 	}
+	
+	public static JTable Competences()	throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException {
+		CSVObjects<Competence> competences_csv = new CSVObjects<>(Competence.class);
+		ArrayList<Competence> competences = competences_csv.getAll();
+		
+		@SuppressWarnings("serial")
+		TableModel dataModel = new AbstractTableModel() {
+			public String getColumnName(int col) {
+				String[] headers = { "Code", "FR", "EN" };
+				return headers[col];
+			}
+			
+			public int getColumnCount() {
+				return Languages.size + 1;
+			}
+			
+			public int getRowCount() {
+				return competences.size();
+			}
+			
+			public Object getValueAt(int row, int col) {
+				Competence comp = competences.get(row);
+				
+				switch (col) {
+					case 0:
+						return comp.getCode();
+					case 1:
+						return comp.getNames();
+					default:
+						System.out.println("JTable access ");
+						break;
+				}
+				return comp;
+			}
+		};
+		
+		JTable table = new JTable(dataModel);
+		
+		for(int i =2; i<dataModel.getColumnCount();i++){
+			table.getColumnModel().getColumn(i).setMinWidth(0);
+			table.getColumnModel().getColumn(i).setMaxWidth(0);
+		}
+	
+		return table;
+	}
+	
+	public static JTable LanguesCompetence(ArrayList<String> list) {
+		
+		@SuppressWarnings("serial")
+		TableModel dataModel = new AbstractTableModel() {
+			public String getColumnName(int col) {
+				String[] headers = { "FR", "EN" };
+				return headers[col];
+			}
+			
+			public int getColumnCount() {
+				return Languages.size;
+			}
+			
+			public int getRowCount() {
+				return list.size();
+			}
+			
+			public Object getValueAt(int row, int col) {
+				String nom = list.get(row);
+				
+				switch (col) {
+					case 0:
+						return nom;
+					default:
+						System.out.println("JTable access ");
+						break;
+				  }
+				return nom;
+			}
+		};
+		JTable table = new JTable(dataModel);
+		return table;
+	}
+	
 	
 }

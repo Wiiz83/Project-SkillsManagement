@@ -91,7 +91,7 @@ public class Personnel extends JPanel implements MouseListener {
 		add(this.boutonEnregistrer);
 		add(this.boutonAnnuler);
 		
-		Titre titre = new Titre(" DÃ©tails du salariÃ© :");
+		Titre titre = new Titre(" Détails du salarié :");
 		titre.setBounds(330, 10, 930, 20);
 		add(titre);
 		
@@ -99,15 +99,15 @@ public class Personnel extends JPanel implements MouseListener {
 		labelNom.setBounds(350, 50, 150, 25);
 		add(labelNom);
 		
-		JLabel labelPrenom = new JLabel("PrÃ©nom :");
+		JLabel labelPrenom = new JLabel("Prénom :");
 		labelPrenom.setBounds(350, 80, 150, 25);
 		add(labelPrenom);
 		
-		JLabel labelDate = new JLabel("Date d'entrÃ©e :");
+		JLabel labelDate = new JLabel("Date d'entrée :");
 		labelDate.setBounds(350, 110, 150, 25);
 		add(labelDate);
 		
-		JLabel labelCompetences = new JLabel("Liste des compÃ©tences :");
+		JLabel labelCompetences = new JLabel("Liste des compétences :");
 		labelCompetences.setBounds(350, 140, 150, 25);
 		add(labelCompetences);
 		
@@ -218,16 +218,6 @@ public class Personnel extends JPanel implements MouseListener {
 					.CompetencesEmploye((ArrayList<Competence>) listePersonnel.getValueAt(ligneSelectionne, 4))
 					.getModel();
 			this.competences.setModel(dataModel);
-			
-			// this.competences = new ArrayList<Competence>();
-			// this.competences = (ArrayList<Competence>)
-			// listePersonnel.getValueAt(ligneSelectionne, 4);
-			// System.out.println(this.competences.size());
-			
-			// for (Competence item : competences) {
-			// System.out.println(item);
-			// }
-			
 		}
 	}
 	
