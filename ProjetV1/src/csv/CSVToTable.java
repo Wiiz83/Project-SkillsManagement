@@ -109,7 +109,7 @@ public class CSVToTable {
 	
 	public static JTable Mission()
 			throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException {
-		CSVObjects<Mission> missions_csv = new CSVObjects<>(Competence.class);
+		CSVObjects<Mission> missions_csv = new CSVObjects<>(Mission.class);
 		ArrayList<Mission> missions = missions_csv.getAll();
 		
 		@SuppressWarnings("serial")
@@ -150,7 +150,8 @@ public class CSVToTable {
 		return table;
 	}
 	
-	public static JTable Competences()	throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException {
+	public static JTable Competences()
+			throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException {
 		CSVObjects<Competence> competences_csv = new CSVObjects<>(Competence.class);
 		ArrayList<Competence> competences = competences_csv.getAll();
 		
@@ -173,13 +174,13 @@ public class CSVToTable {
 				Competence comp = competences.get(row);
 				
 				switch (col) {
-					case 0:
-						return comp.getCode();
-					case 1:
-						return comp.getNames();
-					default:
-						System.out.println("JTable access ");
-						break;
+				case 0:
+					return comp.getCode();
+				case 1:
+					return comp.getNames();
+				default:
+					System.out.println("JTable access ");
+					break;
 				}
 				return comp;
 			}
@@ -187,11 +188,11 @@ public class CSVToTable {
 		
 		JTable table = new JTable(dataModel);
 		
-		for(int i =2; i<dataModel.getColumnCount();i++){
+		for (int i = 2; i < dataModel.getColumnCount(); i++) {
 			table.getColumnModel().getColumn(i).setMinWidth(0);
 			table.getColumnModel().getColumn(i).setMaxWidth(0);
 		}
-	
+		
 		return table;
 	}
 	
@@ -216,18 +217,17 @@ public class CSVToTable {
 				String nom = list.get(row);
 				
 				switch (col) {
-					case 0:
-						return nom;
-					default:
-						System.out.println("JTable access ");
-						break;
-				  }
+				case 0:
+					return nom;
+				default:
+					System.out.println("JTable access ");
+					break;
+				}
 				return nom;
 			}
 		};
 		JTable table = new JTable(dataModel);
 		return table;
 	}
-	
 	
 }

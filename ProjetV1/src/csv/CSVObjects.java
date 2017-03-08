@@ -58,6 +58,14 @@ public class CSVObjects<E extends CSVEntity> {
 		return csvloader.createObject(line);
 	}
 	
+	public void delete(String ID) {
+		// TODO;
+	}
+	
+	public void modify(E e) {
+		// TODO
+	}
+	
 	public ArrayList<E> getAll()
 			throws IOException, InvalidCSVException, InvalidDataException, NumberFormatException, ParseException {
 		ArrayList<E> all = new ArrayList<>();
