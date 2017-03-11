@@ -18,6 +18,7 @@ public class CSVObjectLoader<E extends CSVEntity> {
 			throws InvalidCSVException, InvalidDataException, IOException, NumberFormatException, ParseException {
 		E object = CSVDeserializer.Deserialize(line, EntityType);
 		object.setReferencedObjects(getAssociatedObjects(object));
+		object.setAttached();
 		return object;
 	}
 	

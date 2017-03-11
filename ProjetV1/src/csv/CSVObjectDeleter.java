@@ -11,10 +11,10 @@ public class CSVObjectDeleter<E extends CSVEntity> {
 		this.doc = doc;
 	}
 	
-	public void deleteObject(E e) throws CSVUpdateException, IOException, InvalidCSVException {
-	/*	if (!e.isAttached()) {
+	public void deleteObject(E e) throws IOException, InvalidCSVException, CSVUpdateException {
+		if (!e.isAttached()) {
 			throw new CSVUpdateException("Object to delete is not attached");
-		}*/
+		}
 		deleteReferencesToObject(e);
 		deleteAssociations(e);
 		doc.removeLine(e.csvID());
