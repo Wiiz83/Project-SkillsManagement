@@ -39,6 +39,7 @@ public class Personnel extends JPanel implements MouseListener {
 	JTable	listePersonnel;
 	Vector	selectedCells	= new Vector<int[]>();
 	
+	JScrollPane jsPersonnel;
 	int			IDSelect;
 	JTextField	nom;
 	JTextField	prenom;
@@ -48,6 +49,7 @@ public class Personnel extends JPanel implements MouseListener {
 	private static final long serialVersionUID = 1L;
 	
 	public Personnel() {
+		
 		setOpaque(false);
 		setLayout(null);
 		setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
@@ -127,23 +129,25 @@ public class Personnel extends JPanel implements MouseListener {
 	}
 	
 	public void AffichageListe(){
-		if(this.listePersonnel != null){
-			remove(this.listePersonnel);
-		}
-		
 		this.listePersonnel = new JTable();
 		try {
-			listePersonnel = CSVToTable.Employes();
-			listePersonnel.setFillsViewportHeight(true);
-			listePersonnel.addMouseListener(this);
-			JScrollPane js = new JScrollPane(listePersonnel);
-			js.setVisible(true);
-			js.setBounds(10, 10, 300, 600);
-			add(js);
+			this.listePersonnel = CSVToTable.Employes();
+			this.listePersonnel.setFillsViewportHeight(true);
+			this.listePersonnel.addMouseListener(this);
+			this.jsPersonnel = new JScrollPane(this.listePersonnel);
+			this.jsPersonnel.setVisible(true);
+			this.jsPersonnel.setBounds(10, 10, 300, 600);
+			add(this.jsPersonnel);
 		} catch (NumberFormatException | IOException | InvalidCSVException | InvalidDataException | ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void Reinitialiser(){
+		remove(this.listePersonnel);
+		remove(this.jsPersonnel);
+		this.IDSelect = 0;
 	}
 	
 	public void ChargementConsultation() {
@@ -209,6 +213,8 @@ public class Personnel extends JPanel implements MouseListener {
 					employes_csv = new CSVObjects<>(Employee.class);
 					Employee emp = employes_csv.getByID(String.valueOf(this.IDSelect));
 					employes_csv.delete(emp);
+					Reinitialiser();
+					AffichageListe();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -228,8 +234,6 @@ public class Personnel extends JPanel implements MouseListener {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				AffichageListe();
-
 			}
 			if (e.getSource().equals(this.boutonAnnuler)) {
 				ChargementConsultation();
