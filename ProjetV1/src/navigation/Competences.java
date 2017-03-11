@@ -27,6 +27,7 @@ import csv.InvalidDataException;
 import gui.Button;
 import gui.Titre;
 import models.Competence;
+import models.Employee;
 
 public class Competences extends JPanel implements MouseListener {
 
@@ -168,6 +169,7 @@ public class Competences extends JPanel implements MouseListener {
 			}
 			if (e.getSource().equals(this.boutonSupprimer)) {
 				// ChargementSuppression();
+
 			}
 			if (e.getSource().equals(this.boutonAnnuler)) {
 				ChargementConsultation();

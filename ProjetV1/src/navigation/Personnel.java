@@ -19,7 +19,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableModel;
 
+import csv.CSVObjects;
 import csv.CSVToTable;
+import csv.CSVUpdateException;
 import csv.InvalidCSVException;
 import csv.InvalidDataException;
 import gui.Button;
@@ -49,21 +51,8 @@ public class Personnel extends JPanel implements MouseListener {
 		setOpaque(false);
 		setLayout(null);
 		setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
-		
-		this.listePersonnel = new JTable();
-		try {
-			listePersonnel = CSVToTable.Employes();
-			listePersonnel.setFillsViewportHeight(true);
-			listePersonnel.addMouseListener(this);
-			JScrollPane js = new JScrollPane(listePersonnel);
-			js.setVisible(true);
-			js.setBounds(10, 10, 300, 600);
-			add(js);
-			
-		} catch (NumberFormatException | IOException | InvalidCSVException | InvalidDataException | ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	
+		AffichageListe();
 		
 		this.boutonNouveau = new Button("/boutons/nouveau.png");
 		this.boutonNouveau.setBounds(330, 560);
@@ -137,6 +126,26 @@ public class Personnel extends JPanel implements MouseListener {
 		ChargementConsultation();
 	}
 	
+	public void AffichageListe(){
+		if(this.listePersonnel != null){
+			remove(this.listePersonnel);
+		}
+		
+		this.listePersonnel = new JTable();
+		try {
+			listePersonnel = CSVToTable.Employes();
+			listePersonnel.setFillsViewportHeight(true);
+			listePersonnel.addMouseListener(this);
+			JScrollPane js = new JScrollPane(listePersonnel);
+			js.setVisible(true);
+			js.setBounds(10, 10, 300, 600);
+			add(js);
+		} catch (NumberFormatException | IOException | InvalidCSVException | InvalidDataException | ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void ChargementConsultation() {
 		this.nom.setEditable(false);
 		this.prenom.setEditable(false);
@@ -194,6 +203,33 @@ public class Personnel extends JPanel implements MouseListener {
 			}
 			if (e.getSource().equals(this.boutonSupprimer)) {
 				// ChargementSuppression();
+				
+				CSVObjects<Employee> employes_csv;
+				try {
+					employes_csv = new CSVObjects<>(Employee.class);
+					Employee emp = employes_csv.getByID(String.valueOf(this.IDSelect));
+					employes_csv.delete(emp);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (NumberFormatException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (InvalidCSVException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (InvalidDataException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (CSVUpdateException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				AffichageListe();
+
 			}
 			if (e.getSource().equals(this.boutonAnnuler)) {
 				ChargementConsultation();
