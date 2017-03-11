@@ -2,6 +2,7 @@ package csv;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class CSVMetadataMapper {
 	private HashMap<Class<? extends CSVEntity>, // Entity
@@ -48,6 +49,18 @@ public class CSVMetadataMapper {
 	
 	public ArrayList<Class<? extends CSVEntity>> getAssociatedEntities(Class<? extends CSVEntity> Entity) {
 		return associations.get(Entity);
+	}
+	
+	public ArrayList<Class<? extends CSVEntity>> getReferencingEntities(Class<? extends CSVEntity> Entity) {
+		ArrayList<Class<? extends CSVEntity>> referencingEntities = new ArrayList<>();
+		for (Map.Entry<Class<? extends CSVEntity>, ArrayList<Class<? extends CSVEntity>>> pair : associations
+				.entrySet()) {
+			ArrayList<Class<? extends CSVEntity>> referenced = pair.getValue();
+			if (referenced.contains(Entity)) {
+				referencingEntities.add(pair.getKey());
+			}
+		}
+		return referencingEntities;
 	}
 	
 	public CSVFileConfig getCSVFileConfig(CSVAssociation assoc) {

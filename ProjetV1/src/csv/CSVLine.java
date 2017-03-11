@@ -6,17 +6,18 @@ import java.util.Arrays;
 @SuppressWarnings("serial")
 public class CSVLine extends ArrayList<String> {
 	
-	public boolean  add(String line) {
+	public boolean add(String line) {
 		return this.addAll(Arrays.asList(line.split(";")));
 	}
+	
 	// Empty Lines detection
-	public boolean  isValid(){
-		boolean valid = this.size()>1;
+	public boolean isValid() {
+		boolean valid = this.size() > 1;
 		if (valid)
-			valid&= this.get(1)!=null;
+			valid &= this.get(1) != null;
 		return valid;
 	}
-
+	
 	public String toString() {
 		String line = "";
 		for (String s : this) {
@@ -24,4 +25,9 @@ public class CSVLine extends ArrayList<String> {
 		}
 		return line.substring(0, line.length() - 1);
 	}
+	
+	public boolean equals(Object o) {
+		return o.toString().equals(this.toString());
+	}
+	
 }

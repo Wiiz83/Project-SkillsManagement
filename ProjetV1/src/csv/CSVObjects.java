@@ -10,12 +10,14 @@ public class CSVObjects<E extends CSVEntity> {
 	private CSVDocument			doc;
 	private CSVObjectLoader<E>	csvloader;
 	private CSVObjectSaver<E>	csvsaver;
+	private CSVObjectDeleter<E>	csvdeleter;
 	
 	public CSVObjects(Class<? extends CSVEntity> c) throws IOException {
 		super();
 		this.doc = new CSVDocument(c);
 		this.csvloader = new CSVObjectLoader<E>(c);
 		this.csvsaver = new CSVObjectSaver<E>(doc);
+		this.csvdeleter = new CSVObjectDeleter<E>(doc);
 	}
 	
 	private String generateID() throws InvalidDataException {
@@ -58,8 +60,8 @@ public class CSVObjects<E extends CSVEntity> {
 		return csvloader.createObject(line);
 	}
 	
-	public void delete(String ID) {
-		// TODO;
+	public void delete(E e) throws CSVUpdateException, IOException, InvalidCSVException {
+		csvdeleter.deleteObject(e);
 	}
 	
 	public void modify(E e) {

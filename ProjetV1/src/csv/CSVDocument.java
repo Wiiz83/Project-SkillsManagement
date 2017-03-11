@@ -93,19 +93,49 @@ public class CSVDocument {
 	}
 	
 	public boolean removeLine(String ID) throws IOException {
+		boolean ignore = ignoreFirstLine;
 		boolean found = false;
-		try (BufferedWriter writer = Files.newBufferedWriter(
-				Paths.get(path), Charset.forName("UTF-8"), StandardOpenOption.CREATE,
-				StandardOpenOption.TRUNCATE_EXISTING
-		)) {
-			for (CSVLine line : this.set) {
-				if (!ID.equals(line.get(idColumnPosition))) {
-					writer.write(line.toString());
+		
+		File inFile = new File(path);
+		File tempFile = new File(inFile.getAbsolutePath() + ".tmp");
+		BufferedReader br = new BufferedReader(new FileReader(path));
+		PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
+		
+		try {
+			String line;
+			while ((line = br.readLine()) != null) {
+				if (!ignore) {
+					CSVLine csvline = new CSVLine();
+					csvline.add(line);
+					boolean deleteLine = csvline.isValid();
+					if (deleteLine && csvline.size() > idColumnPosition)
+						deleteLine = ID.equals(csvline.get(idColumnPosition));
+					if (!deleteLine && csvline.isValid()) {
+						pw.println(line);
+						// pw.flush();
+					} else if (csvline.isValid()) {
+						found = true;
+						int i = -1;
+						for (CSVLine set_line : set) {
+							i++;
+							if (set_line.get(idColumnPosition).equals(csvline.get(idColumnPosition))) {
+								break;
+							}
+						}
+						set.remove(i);
+					}
 				} else {
-					set.remove(line);
-					found = true;
+					pw.println(line);
+					// pw.flush();
+					ignore = false;
 				}
 			}
+			
+		} finally {
+			pw.close();
+			br.close();
+			inFile.delete();
+			tempFile.renameTo(inFile);
 		}
 		return found;
 	}
@@ -114,11 +144,11 @@ public class CSVDocument {
 		if (getLineByID(ID) == null) {
 			addLine(newLine);
 		} else {
-			modifiyLine(ID, newLine);
+			modifiyLineByID(ID, newLine);
 		}
 	}
 	
-	public void modifiyLine(String ID, CSVLine newLine) throws IOException, InvalidCSVException {
+	public void modifiyLineByID(String ID, CSVLine newLine) throws IOException, InvalidCSVException {
 		assert (ID.equals(newLine.get(idColumnPosition)));
 		boolean found = removeLine(ID);
 		if (found) {
@@ -126,6 +156,10 @@ public class CSVDocument {
 		} else {
 			throw new InvalidCSVException("Line to be modified not found: ID=" + ID);
 		}
+	}
+	
+	public int getIdColumnPosition() {
+		return idColumnPosition;
 	}
 	
 	public String getPath() {

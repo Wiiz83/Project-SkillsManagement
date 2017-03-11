@@ -19,6 +19,10 @@ public abstract class CSVEntity {
 		attachedObject = true;
 	}
 	
+	public void setAttached(boolean b) {
+		attachedObject = b;
+	}
+	
 	public boolean isAttached() {
 		return attachedObject;
 	}
