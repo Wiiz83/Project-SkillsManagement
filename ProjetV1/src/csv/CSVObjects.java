@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class CSVObjects<E extends CSVEntity> {
 	
@@ -66,8 +69,24 @@ public class CSVObjects<E extends CSVEntity> {
 	
 	public void modify(E e) throws CSVUpdateException, IOException, InvalidCSVException, NumberFormatException,
 			InvalidDataException, ParseException {
-		delete(e);
+		csvdeleter.deleteObject(e, false);
 		csvsaver.addObject(e);
+	}
+	
+	public ArrayList<E> GetFiltered(Predicate<E> filter)
+			throws NumberFormatException, IOException, InvalidCSVException, InvalidDataException, ParseException {
+		return GetFiltered(filter, null);
+	}
+	
+	public ArrayList<E> GetFiltered(Predicate<E> filter, Comparator<E> c)
+			throws NumberFormatException, IOException, InvalidCSVException, InvalidDataException, ParseException {
+		ArrayList<E> all = getAll();
+		ArrayList<E> filtered = all.stream().filter(filter).collect(Collectors.toCollection(ArrayList::new));
+		if (c == null)
+			return filtered;
+		else
+			filtered.sort(c);
+		return filtered;
 	}
 	
 	public ArrayList<E> getAll()

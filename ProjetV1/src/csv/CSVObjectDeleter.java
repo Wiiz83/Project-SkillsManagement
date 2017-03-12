@@ -12,10 +12,17 @@ public class CSVObjectDeleter<E extends CSVEntity> {
 	}
 	
 	public void deleteObject(E e) throws IOException, InvalidCSVException, CSVUpdateException {
+		deleteObject(e, true);
+	}
+	
+	public void deleteObject(E e, boolean deleteReferencesToObject)
+			throws IOException, InvalidCSVException, CSVUpdateException {
+		
 		if (!e.isAttached()) {
 			throw new CSVUpdateException("Object to delete is not attached");
 		}
-		deleteReferencesToObject(e);
+		if (deleteReferencesToObject)
+			deleteReferencesToObject(e);
 		deleteAssociations(e);
 		doc.removeLine(e.csvID());
 		e.setAttached(false);
@@ -47,7 +54,7 @@ public class CSVObjectDeleter<E extends CSVEntity> {
 		}
 	}
 	
-	private void deleteAssociations(E e) throws IOException {
+	void deleteAssociations(E e) throws IOException {
 		CSVModel model = new CSVModel();
 		for (Class<? extends CSVEntity> N : model.getMetadata().getAssociatedEntities(e.getClass())) {
 			if (N == null)
