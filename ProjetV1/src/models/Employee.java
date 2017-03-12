@@ -24,6 +24,14 @@ public class Employee extends CSVEntity {
 		Competences = new ArrayList<Competence>();
 	}
 	
+	public Employee(String name, String lastName, String entryDate) throws InvalidDataException {
+		this.name = name;
+		this.lastName = lastName;
+		this.ID = -1;
+		Competences = new ArrayList<Competence>();
+		setEntryDate(entryDate);
+	}
+	
 	public Employee(String name, String lastName, String entryDate, String iD) throws InvalidDataException {
 		this.name = name;
 		this.lastName = lastName;
@@ -69,7 +77,7 @@ public class Employee extends CSVEntity {
 	}
 	
 	public void setEntryDate(String entryDate) throws InvalidDataException {
-		String pattern = "MM/dd/yyyy";
+		String pattern = "dd/MM/yyyy";
 		SimpleDateFormat format = new SimpleDateFormat(pattern);
 		try {
 			setEntryDate(format.parse(entryDate));
