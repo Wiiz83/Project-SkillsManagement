@@ -64,8 +64,10 @@ public class CSVObjects<E extends CSVEntity> {
 		csvdeleter.deleteObject(e);
 	}
 	
-	public void modify(E e) {
-		// TODO
+	public void modify(E e) throws CSVUpdateException, IOException, InvalidCSVException, NumberFormatException,
+			InvalidDataException, ParseException {
+		delete(e);
+		add(e);
 	}
 	
 	public ArrayList<E> getAll()
