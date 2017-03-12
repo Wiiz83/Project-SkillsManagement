@@ -67,7 +67,7 @@ public class CSVObjects<E extends CSVEntity> {
 	public void modify(E e) throws CSVUpdateException, IOException, InvalidCSVException, NumberFormatException,
 			InvalidDataException, ParseException {
 		delete(e);
-		add(e);
+		csvsaver.addObject(e);
 	}
 	
 	public ArrayList<E> getAll()
