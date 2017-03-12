@@ -7,11 +7,15 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -45,6 +49,7 @@ public class Personnel extends JPanel implements MouseListener {
 	JTextField	prenom;
 	JTextField	date;
 	JTable		competences;
+	String mode;
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -179,12 +184,53 @@ public class Personnel extends JPanel implements MouseListener {
 	}
 	
 	public void ChargementNouveau() {
-		
+		this.nom.setText("");
+		this.prenom.setText("");
+		this.date.setText("");
+
+		ChargementModification();
+		this.mode = "nouveau";
 	}
 	
 	public void Enregistrement() {
 		// this.IDSelect = (int) listePersonnel.getValueAt(ligneSelectionne, 3);
-		
+		switch (this.mode) {
+			case "nouveau":
+					CSVObjects<Employee> employes_csv;
+			try {
+				employes_csv = new CSVObjects<>(Employee.class);
+				Employee emp = new Employee(this.nom.getText(), this.prenom.getText(), this.date.getText());
+				employes_csv.add(emp);
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvalidDataException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvalidCSVException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (CSVUpdateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+				break;
+				
+			case "modification":
+				
+				break;
+	
+			default:
+				break;
+		}
 	}
 	
 	@Override
