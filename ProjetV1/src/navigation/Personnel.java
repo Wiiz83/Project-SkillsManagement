@@ -167,6 +167,8 @@ public class Personnel extends JPanel implements MouseListener {
 		this.boutonModifier.setVisible(true);
 		this.boutonSupprimer.setVisible(true);
 		this.listePersonnel.setEnabled(true);
+		
+		this.mode = "consultation";
 	}
 	
 	public void ChargementModification() {
@@ -181,50 +183,79 @@ public class Personnel extends JPanel implements MouseListener {
 		this.boutonModifier.setVisible(false);
 		this.boutonSupprimer.setVisible(false);
 		this.listePersonnel.setEnabled(false);
+		
+		this.mode = "nouveau";
 	}
 	
 	public void ChargementNouveau() {
 		this.nom.setText("");
 		this.prenom.setText("");
 		this.date.setText("");
-
 		ChargementModification();
+		
 		this.mode = "nouveau";
 	}
 	
 	public void Enregistrement() {
 		// this.IDSelect = (int) listePersonnel.getValueAt(ligneSelectionne, 3);
+		
+		CSVObjects<Employee> employes_csv;
+		
 		switch (this.mode) {
 			case "nouveau":
-					CSVObjects<Employee> employes_csv;
-			try {
-				employes_csv = new CSVObjects<>(Employee.class);
-				Employee emp = new Employee(this.nom.getText(), this.prenom.getText(), this.date.getText());
-				employes_csv.add(emp);
 
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvalidDataException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvalidCSVException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (CSVUpdateException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+					try {
+						employes_csv = new CSVObjects<>(Employee.class);
+						Employee emp = new Employee(this.nom.getText(), this.prenom.getText(), this.date.getText());
+						employes_csv.add(emp);
+		
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvalidDataException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (NumberFormatException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvalidCSVException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (CSVUpdateException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 
 				break;
 				
 			case "modification":
+				try {
+					employes_csv = new CSVObjects<>(Employee.class);
+					Employee emp = new Employee(this.nom.getText(), this.prenom.getText(), this.date.getText());
+					employes_csv.modify(emp);
+	
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvalidDataException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvalidCSVException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (CSVUpdateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
 				break;
 	
