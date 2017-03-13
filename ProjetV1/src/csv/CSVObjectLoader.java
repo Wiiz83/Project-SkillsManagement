@@ -14,6 +14,17 @@ public class CSVObjectLoader<E extends CSVEntity> {
 		EntityType = c;
 	}
 	
+	/**
+	 * Crée l'objet et charge ses dépendances
+	 * 
+	 * @param line
+	 * @return
+	 * @throws InvalidCSVException
+	 * @throws InvalidDataException
+	 * @throws IOException
+	 * @throws NumberFormatException
+	 * @throws ParseException
+	 */
 	public E createObject(CSVLine line)
 			throws InvalidCSVException, InvalidDataException, IOException, NumberFormatException, ParseException {
 		E object = CSVDeserializer.Deserialize(line, EntityType);

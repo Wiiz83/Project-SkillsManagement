@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Fournit des méthodes de mapping entre les classes des entités, les
+ * associations, et les documents CSV correspendants.
+ *
+ */
 public class CSVMetadataMapper {
 	private HashMap<Class<? extends CSVEntity>, // Entity
 					ArrayList<Class<? extends CSVEntity>> // N-Entities
