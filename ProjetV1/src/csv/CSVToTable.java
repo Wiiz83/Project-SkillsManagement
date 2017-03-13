@@ -225,6 +225,51 @@ public class CSVToTable {
 		return table;
 	}
 	
+	public static JTable Competences()
+			throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException {
+		CSVObjects<Competence> competences_csv = new CSVObjects<>(Competence.class);
+		ArrayList<Competence> competences = competences_csv.getAll();
+		@SuppressWarnings("serial")
+		TableModel dataModel = new AbstractTableModel() {
+			public String getColumnName(int col) {
+				String[] headers = { "Code", "FR", "EN" };
+				return headers[col];
+			}
+			
+			public int getColumnCount() {
+				return Languages.size + 1;
+			}
+			
+			public int getRowCount() {
+				return competences.size();
+			}
+			
+			public Object getValueAt(int row, int col) {
+				Competence comp = competences.get(row);
+				
+				switch (col) {
+				case 0:
+					return comp.getCode();
+				case 1:
+					return comp.getNames();
+				default:
+					System.out.println("JTable access ");
+					break;
+				}
+				return comp;
+			}
+		};
+		
+		JTable table = new JTable(dataModel);
+		
+		for (int i = 2; i < dataModel.getColumnCount(); i++) {
+			table.getColumnModel().getColumn(i).setMinWidth(0);
+			table.getColumnModel().getColumn(i).setMaxWidth(0);
+		}
+		
+		return table;
+	}
+	
 	public static JTable LanguesCompetence(ArrayList<String> list) {
 		
 		@SuppressWarnings("serial")
