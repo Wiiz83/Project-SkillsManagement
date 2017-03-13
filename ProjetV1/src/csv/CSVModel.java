@@ -5,6 +5,10 @@ import models.CompetenceRequirement;
 import models.Employee;
 import models.Mission;
 
+/**
+ * Objet de configuration des fichiers CSV et le modèle des données.
+ *
+ */
 public class CSVModel {
 	
 	private String				RELATIVEPATH	= "./ressources/fichiers/";

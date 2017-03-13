@@ -1,5 +1,9 @@
 package models;
 
+/**
+ * @author David
+ * Enumeration des différents langage de l'application
+ */
 public enum Languages {
 	FRENCH,
 	ENGLISH;

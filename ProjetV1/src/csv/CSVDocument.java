@@ -8,7 +8,8 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 
 /**
- * Represents a CSV document.
+ * Représente un document CSV et fournit les méthodes de lecture / écriture
+ *
  */
 public class CSVDocument {
 	private String				path;

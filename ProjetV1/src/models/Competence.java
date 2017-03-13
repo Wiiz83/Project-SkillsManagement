@@ -6,10 +6,18 @@ import java.util.HashMap;
 import csv.CSVEntity;
 import csv.InvalidDataException;
 
+/**
+ * @author David
+ * Classe Competence
+ */
 public class Competence extends CSVEntity {
 	private CompetenceCode		code;
 	private ArrayList<String>	Names;
 	
+	/**
+	 * @param code, les codes compétences
+	 * @param names, les libellés des compétences
+	 */
 	public Competence(CompetenceCode code, ArrayList<String> names) {
 		super();
 		this.code = code;

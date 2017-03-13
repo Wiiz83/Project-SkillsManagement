@@ -3,6 +3,10 @@ package csv;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Classe de base pour toutes les entités.
+ *
+ */
 public abstract class CSVEntity {
 	private boolean	attachedObject	= false;
 	private boolean	autoGenaratedID	= true;

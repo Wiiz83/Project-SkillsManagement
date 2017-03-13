@@ -2,6 +2,12 @@ package csv;
 
 import java.io.IOException;
 
+/**
+ * Fournit des méthodes de suppression des objets, leurs associations, et les
+ * références vers l'objet.
+ *
+ * @param <E>
+ */
 public class CSVObjectDeleter<E extends CSVEntity> {
 	
 	private CSVDocument doc;

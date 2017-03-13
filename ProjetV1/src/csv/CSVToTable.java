@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
@@ -107,10 +108,9 @@ public class CSVToTable {
 		return table;
 	}
 	
-	public static JTable Mission()
+	public static JTable Mission(ArrayList<Mission> missions)
 			throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException {
 		CSVObjects<Mission> missions_csv = new CSVObjects<>(Mission.class);
-		ArrayList<Mission> missions = missions_csv.getAll();
 		
 		@SuppressWarnings("serial")
 		TableModel dataModel = new AbstractTableModel() {
@@ -148,6 +148,30 @@ public class CSVToTable {
 		};
 		JTable table = new JTable(dataModel);
 		return table;
+	}
+	
+	public static JTable Mission()
+			throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException {
+		CSVObjects<Mission> missions_csv = new CSVObjects<>(Mission.class);
+		ArrayList<Mission> missions = missions_csv.getAll();
+		return Mission(missions);
+	}
+	
+	public static JTable MissionsEncours()
+			throws NumberFormatException, IOException, InvalidCSVException, InvalidDataException, ParseException {
+		CSVObjects<Mission> missions_csv = new CSVObjects<>(Mission.class);
+		ArrayList<Mission> missions = missions_csv.GetFiltered(m -> m.getStatus() == Status.EN_COURS);
+		return Mission(missions);
+	}
+	
+	public static JTable MissionsDuMois(Date dateDebut, int nbJours)
+			throws NumberFormatException, IOException, InvalidCSVException, InvalidDataException, ParseException {
+		CSVObjects<Mission> missions_csv = new CSVObjects<>(Mission.class);
+		/*
+		 * ArrayList<Mission> missions = missions_csv.GetFiltered(m ->
+		 * m.getDateDebut().compareTo(dateDebut) >0 && );
+		 */
+		return null; // Mission(missions);
 	}
 	
 	public static JTable Competences()
