@@ -32,7 +32,7 @@ public class Missions extends JPanel implements MouseListener {
 	Button	boutonSupprimer;
 	Button	boutonEnregistrer;
 	Button	boutonAnnuler;
-	JTable	listePersonnel;
+	JTable	listeMissions;
 	Vector	selectedCells	= new Vector<int[]>();
 	
 	int			IDSelect;
@@ -51,18 +51,17 @@ public class Missions extends JPanel implements MouseListener {
 		setLayout(null);
 		setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
 		
-		this.listePersonnel = new JTable();
+		this.listeMissions = new JTable();
 		try {
-			listePersonnel = CSVToTable.Mission();
-			listePersonnel.setFillsViewportHeight(true);
-			listePersonnel.addMouseListener(this);
-			JScrollPane js = new JScrollPane(listePersonnel);
+			listeMissions = CSVToTable.Mission();
+			listeMissions.setFillsViewportHeight(true);
+			listeMissions.addMouseListener(this);
+			JScrollPane js = new JScrollPane(listeMissions);
 			js.setVisible(true);
 			js.setBounds(10, 10, 300, 600);
 			add(js);
 			
 		} catch (NumberFormatException | IOException | InvalidCSVException | InvalidDataException | ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -149,7 +148,7 @@ public class Missions extends JPanel implements MouseListener {
 		this.boutonNouveau.setVisible(true);
 		this.boutonModifier.setVisible(true);
 		this.boutonSupprimer.setVisible(true);
-		this.listePersonnel.setEnabled(true);
+		this.listeMissions.setEnabled(true);
 	}
 	
 	public void ChargementModification() {
@@ -163,7 +162,7 @@ public class Missions extends JPanel implements MouseListener {
 		this.boutonNouveau.setVisible(false);
 		this.boutonModifier.setVisible(false);
 		this.boutonSupprimer.setVisible(false);
-		this.listePersonnel.setEnabled(false);
+		this.listeMissions.setEnabled(false);
 	}
 	
 	public void ChargementNouveau() {
@@ -207,18 +206,13 @@ public class Missions extends JPanel implements MouseListener {
 		}
 		
 		if (e.getSource() instanceof JTable) {
-			// Employee employeSelect = new Employe();
-			
-			int ligneSelectionne = this.listePersonnel.getSelectedRow();
-			this.nom.setText((String) listePersonnel.getValueAt(ligneSelectionne, 0));
-			this.prenom.setText((String) listePersonnel.getValueAt(ligneSelectionne, 1));
-			this.date.setText((String) listePersonnel.getValueAt(ligneSelectionne, 2));
-			this.IDSelect = (int) listePersonnel.getValueAt(ligneSelectionne, 3);
+			int ligneSelectionne = this.listeMissions.getSelectedRow();
+			this.nom.setText((String) listeMissions.getValueAt(ligneSelectionne, 0));
+			this.prenom.setText((String) listeMissions.getValueAt(ligneSelectionne, 1));
+			this.date.setText((String) listeMissions.getValueAt(ligneSelectionne, 2));
+			this.IDSelect = (int) listeMissions.getValueAt(ligneSelectionne, 3);
 			@SuppressWarnings("unchecked")
-			TableModel dataModel = CSVToTable
-					.CompetencesEmploye((ArrayList<Competence>) listePersonnel.getValueAt(ligneSelectionne, 4))
-					.getModel();
-			
+			TableModel dataModel = CSVToTable.CompetencesEmploye((ArrayList<Competence>) listeMissions.getValueAt(ligneSelectionne, 4)).getModel();
 			this.competences.setModel(dataModel);
 		}
 	}
