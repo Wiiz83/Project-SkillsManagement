@@ -39,6 +39,10 @@ public class Recommendation {
 		}
 	}
 	
+	public ArrayList<Employee> GetEmpToRec(){
+		return this.empToRec;
+	}
+	
 	public void deleteAff(){
 		for(Employee e : empRec){
 			for(Employee e2 : empAff){
