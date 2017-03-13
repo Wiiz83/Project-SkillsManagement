@@ -5,6 +5,11 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Fournit les méthodes
+ *
+ * @param <E>
+ */
 public class CSVObjectLoader<E extends CSVEntity> {
 	
 	private Class<? extends CSVEntity> EntityType;
@@ -14,6 +19,17 @@ public class CSVObjectLoader<E extends CSVEntity> {
 		EntityType = c;
 	}
 	
+	/**
+	 * Crée l'objet et charge ses dépendances
+	 * 
+	 * @param line
+	 * @return
+	 * @throws InvalidCSVException
+	 * @throws InvalidDataException
+	 * @throws IOException
+	 * @throws NumberFormatException
+	 * @throws ParseException
+	 */
 	public E createObject(CSVLine line)
 			throws InvalidCSVException, InvalidDataException, IOException, NumberFormatException, ParseException {
 		E object = CSVDeserializer.Deserialize(line, EntityType);

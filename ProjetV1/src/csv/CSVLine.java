@@ -3,6 +3,10 @@ package csv;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Représente une ligne d'un document CSV
+ *
+ */
 @SuppressWarnings("serial")
 public class CSVLine extends ArrayList<String> {
 	
