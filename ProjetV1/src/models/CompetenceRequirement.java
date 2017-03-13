@@ -14,6 +14,8 @@ public class CompetenceRequirement extends CSVEntity {
 	private int			id	= -1;
 	private Competence	competence;
 	private int			requiredEmployees;
+	private HashMap hs = new HashMap<Integer, Competence>();
+	
 	
 	/**
 	 * @param competence, la compétence en question
@@ -33,10 +35,17 @@ public class CompetenceRequirement extends CSVEntity {
 		return requiredEmployees;
 	}
 	
+	public HashMap getCompReq(){
+		hs.put(this.id, this);
+		return hs;
+	}
+	
+	@Override
 	public String csvID() {
 		return Integer.toString(id);
 	}
 	
+	@Override
 	public void setCsvID(String iD) throws InvalidDataException {
 		try {
 			id = (Integer.parseInt(iD));
@@ -57,6 +66,7 @@ public class CompetenceRequirement extends CSVEntity {
 		return null;
 	}
 	
+	@Override
 	public void setReferencedObjects(HashMap<Class<? extends CSVEntity>, ArrayList<Object>> hashMap) {
 		assert (false);
 	}

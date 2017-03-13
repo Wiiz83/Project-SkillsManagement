@@ -183,7 +183,6 @@ public class CSVToTable {
 	public static JTable Competences(ArrayList<Competence> competence)
 			throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException {
 		CSVObjects<Competence> competences_csv = new CSVObjects<>(Competence.class);
-		/////////////
 		@SuppressWarnings("serial")
 		TableModel dataModel = new AbstractTableModel() {
 			public String getColumnName(int col) {
