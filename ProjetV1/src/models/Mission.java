@@ -8,6 +8,10 @@ import java.util.HashMap;
 import csv.CSVEntity;
 import csv.InvalidDataException;
 
+/**
+ * @author David
+ * Classe Mission
+ */
 public class Mission extends CSVEntity {
 	private String								nomM;
 	private Date								dateDebut;
@@ -19,6 +23,13 @@ public class Mission extends CSVEntity {
 	private ArrayList<CompetenceRequirement>	CompReq;
 	private Status								Status;
 	
+	/**
+	 * @param nomM
+	 * @param dateDebut
+	 * @param duree
+	 * @param nbPersReq
+	 * Classe Mission
+	 */
 	public Mission(String nomM, Date dateDebut, int duree, int nbPersReq) {
 		super();
 		this.nomM = nomM;
@@ -31,10 +42,17 @@ public class Mission extends CSVEntity {
 		this.dateFin = setDateFin(duree);
 	}
 	
+	/**
+	 * @return le statut actuel de la mission
+	 */
 	public Status getStatus() {
 		return Status;
 	}
 	
+	/**
+	 * @param duree
+	 * @return calcul la date de fin et l'instancie sur la mission
+	 */
 	public Date setDateFin(int duree){
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(this.dateDebut);
@@ -46,14 +64,25 @@ public class Mission extends CSVEntity {
 		Status = status;
 	}
 
+	/**
+	 * @param cr
+	 * @return ajoute une compétence a la mission (true si réussi false si echec de l'ajout
+	 */
 	public boolean addCompetenceReq(CompetenceRequirement cr) {
 		return CompReq.add(cr);
 	}
 	
+	/**
+	 * @return l'arraylist des compétences requises sur le projet
+	 */
 	public ArrayList<CompetenceRequirement> getCompReq() {
 		return CompReq;
 	}
 	
+	/**
+	 * @param e
+	 * Affectation d'un employé sur la mission
+	 */
 	public void affectEmployee(Employee e) {
 		AffEmp.add(e);
 	}
