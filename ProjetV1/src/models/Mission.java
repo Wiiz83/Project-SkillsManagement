@@ -8,6 +8,10 @@ import java.util.HashMap;
 import csv.CSVEntity;
 import csv.InvalidDataException;
 
+/**
+ * @author David
+ * Classe Mission
+ */
 public class Mission extends CSVEntity {
 	private String								nomM;
 	private Date								dateDebut;

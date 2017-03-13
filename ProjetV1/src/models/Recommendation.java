@@ -8,6 +8,10 @@ import csv.CSVObjects;
 import csv.InvalidCSVException;
 import csv.InvalidDataException;
 
+/**
+ * @author David
+ * Classe Recommendation
+ */
 public class Recommendation {
 	
 	private static int recID;
