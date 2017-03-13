@@ -5,6 +5,11 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Fournit les méthodes
+ *
+ * @param <E>
+ */
 public class CSVObjectLoader<E extends CSVEntity> {
 	
 	private Class<? extends CSVEntity> EntityType;
