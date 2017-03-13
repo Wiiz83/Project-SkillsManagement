@@ -85,22 +85,9 @@ public class Header extends JPanel implements MouseListener {
         contenu.setBorder(BorderFactory.createEmptyBorder(70,0,0,0)); 
         contenu.setLayout(new CardLayout());
         this.frame.getContentPane().add(contenu); 
-        
-        this.panelAccueil = new Accueil();
-        this.contenu.add(this.panelAccueil, "Panel 1"); 
-        
-        this.panelPersonnel = new Personnel();
-        this.contenu.add(this.panelPersonnel, "Panel 2"); 
-        
-        this.panelMissions = new Missions();
-        this.contenu.add(this.panelMissions, "Panel 3"); 
-        
-        this.panelCompetences = new Competences();
-        this.contenu.add(this.panelCompetences, "Panel 4"); 
-        
+
         this.etat = "accueil";
-        ChargementPage();
-		
+        ChargementPage();		
 	}
 
 	@Override
@@ -115,25 +102,42 @@ public class Header extends JPanel implements MouseListener {
 	}
 
 	
-	public void ChargementPage(){
+	public void ChargementPage(){		
 		if( this.PageActuelle != null){
-			this.PageActuelle.setVisible(false);
+			this.contenu.remove(this.PageActuelle);
 		}
-		if(this.etat == "accueil"){
-	        this.panelAccueil.setVisible(true);
-	        this.PageActuelle = this.panelAccueil;
+		
+		switch (this.etat) {
+			case "accueil":
+				 this.panelAccueil = new Accueil();
+				 this.PageActuelle = this.panelAccueil;
+				 this.contenu.add(this.panelAccueil); 
+				break;
+				
+			case "personnel":
+				 this.panelPersonnel = new Personnel();
+				 this.PageActuelle = this.panelPersonnel;
+				 this.contenu.add(this.panelPersonnel); 
+				break;
+				
+			case "missions":
+				this.panelMissions = new Missions();
+				 this.PageActuelle = this.panelMissions;
+				this.contenu.add(this.panelMissions); 
+				break;
+				
+			case "competences":
+				 this.panelCompetences = new Competences();
+				 this.PageActuelle = this.panelCompetences;
+				 this.contenu.add(this.panelCompetences); 
+				break;
+	
+			default:
+				System.out.println("Problème lors du chargement de la page");
+				break;
 		}
-		if(this.etat == "personnel"){
-	        this.panelPersonnel.setVisible(true);
-	        this.PageActuelle = this.panelPersonnel;
-		}
-		if(this.etat == "missions"){
-	        this.panelMissions.setVisible(true);
-		}
-		if(this.etat == "competences"){
-	        this.panelCompetences.setVisible(true);
-		}
-
+		 this.frame.invalidate();
+		 this.frame.validate();
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -147,7 +151,6 @@ public class Header extends JPanel implements MouseListener {
 			}
 			else if (e.getSource().equals(this.boutonPersonnel)) {
 				this.etat = "personnel";
-				
 			}
 			else if (e.getSource().equals(this.boutonMissions)) {
 				this.etat = "missions";
