@@ -53,7 +53,7 @@ public class Missions extends JPanel implements MouseListener {
 		
 		this.listePersonnel = new JTable();
 		try {
-			listePersonnel = CSVToTable.Employes();
+			listePersonnel = CSVToTable.Mission();
 			listePersonnel.setFillsViewportHeight(true);
 			listePersonnel.addMouseListener(this);
 			JScrollPane js = new JScrollPane(listePersonnel);
@@ -218,6 +218,7 @@ public class Missions extends JPanel implements MouseListener {
 			TableModel dataModel = CSVToTable
 					.CompetencesEmploye((ArrayList<Competence>) listePersonnel.getValueAt(ligneSelectionne, 4))
 					.getModel();
+			
 			this.competences.setModel(dataModel);
 		}
 	}
