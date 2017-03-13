@@ -174,10 +174,9 @@ public class CSVToTable {
 		return null; // Mission(missions);
 	}
 	
-	public static JTable Competences()
+	public static JTable Competences(ArrayList<Competence> competence)
 			throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException {
 		CSVObjects<Competence> competences_csv = new CSVObjects<>(Competence.class);
-		ArrayList<Competence> competences = competences_csv.getAll();
 		
 		@SuppressWarnings("serial")
 		TableModel dataModel = new AbstractTableModel() {
@@ -191,11 +190,11 @@ public class CSVToTable {
 			}
 			
 			public int getRowCount() {
-				return competences.size();
+				return competence.size();
 			}
 			
 			public Object getValueAt(int row, int col) {
-				Competence comp = competences.get(row);
+				Competence comp = competence.get(row);
 				
 				switch (col) {
 				case 0:

@@ -1,12 +1,18 @@
 package models;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import javax.swing.JTable;
+
 import csv.CSVEntity;
+import csv.CSVObjects;
+import csv.CSVToTable;
+import csv.InvalidCSVException;
 import csv.InvalidDataException;
 
 public class Employee extends CSVEntity {
@@ -42,6 +48,21 @@ public class Employee extends CSVEntity {
 	
 	public ArrayList<Competence> getCompetences() {
 		return Competences;
+	}
+	
+	public JTable getUnCompetences() throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException{
+		CSVObjects<Competence> competences_csv = new CSVObjects<>(Competence.class);
+		ArrayList<Competence> competences = competences_csv.getAll();
+		for(Competence c : this.Competences){
+			for(Competence c2 : competences){
+				if(c == c2){
+					competences.remove(c2);
+				}
+			}
+		}
+		CSVToTable competences_return = new CSVToTable();
+		
+		return competences_return.Competences(competences);
 	}
 	
 	public void addCompetence(Competence c) {
