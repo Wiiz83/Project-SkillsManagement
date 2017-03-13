@@ -18,6 +18,9 @@ public class Recommendation {
 	private ArrayList<Employee> empToRec;
 	
 	
+	/**
+	 * @param misToRec (La mission qui est concernée par les recommendations
+	 */
 	public Recommendation(Mission misToRec) {
 		super();
 		this.recID++;
@@ -26,6 +29,14 @@ public class Recommendation {
 		this.empAff = misToRec.getAffEmp();
 	}
 	
+	/**
+	 * @throws IOException
+	 * @throws NumberFormatException
+	 * @throws InvalidCSVException
+	 * @throws InvalidDataException
+	 * @throws ParseException
+	 * Calcul toutes les recommendations de la mission en fonction des besoins
+	 */
 	public void setRecommendations() throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException{
 		CSVObjects<Employee> employee_csv = new CSVObjects<>(Employee.class);
 		empRec = employee_csv.getAll();
@@ -39,10 +50,16 @@ public class Recommendation {
 		}
 	}
 	
+	/**
+	 * @return la liste des employés recommendés pour la mission
+	 */
 	public ArrayList<Employee> GetEmpToRec(){
 		return this.empToRec;
 	}
 	
+	/**
+	 * Efface tout les employés déjà présent sur la mission des recommendations
+	 */
 	public void deleteAff(){
 		for(Employee e : empRec){
 			for(Employee e2 : empAff){
@@ -53,6 +70,10 @@ public class Recommendation {
 		}
 	}
 	
+	/**
+	 * @param Compétence a vérifier concernant la mission
+	 * @return Le nombre de d'employés nécéssaires ayant cette compétence sur le projet
+	 */
 	public int checkCompMission(Competence c){
 		int nbEmpReqComp = 0;
 		for(CompetenceRequirement cr : this.misCompReq){
