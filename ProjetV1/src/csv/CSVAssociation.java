@@ -4,7 +4,18 @@ public class CSVAssociation {
 	Class<? extends CSVEntity>	Entity;
 	Class<? extends CSVEntity>	NEntity;
 	
-	// One to Many Association (csv: ID;T1;T2..)
+	/**
+	 * Représente une association de cardinalité 1-N
+	 * <p>
+	 * Java: ArrayList
+	 * </p>
+	 * <p>
+	 * CSV : ID_objet; Clé_Etrangère_1, Clé_Etrangère_2 ...
+	 * </p>
+	 * 
+	 * @param entity
+	 * @param nEntity
+	 */
 	public CSVAssociation(Class<? extends CSVEntity> entity, Class<? extends CSVEntity> nEntity) {
 		super();
 		Entity = entity;

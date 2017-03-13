@@ -8,6 +8,13 @@ import java.util.Comparator;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+/**
+ * Fournit les méthodes de lecture / écriture des entités configurées dans
+ * CSVModel.java
+ * 
+ * @param <E>
+ *            Le type de l'objet
+ */
 public class CSVObjects<E extends CSVEntity> {
 	
 	private CSVDocument			doc;
@@ -15,6 +22,12 @@ public class CSVObjects<E extends CSVEntity> {
 	private CSVObjectSaver<E>	csvsaver;
 	private CSVObjectDeleter<E>	csvdeleter;
 	
+	/**
+	 * Constructeur qui prend en paramètre la classe d'entités
+	 * 
+	 * @param c
+	 * @throws IOException
+	 */
 	public CSVObjects(Class<? extends CSVEntity> c) throws IOException {
 		super();
 		this.doc = new CSVDocument(c);
@@ -32,6 +45,18 @@ public class CSVObjects<E extends CSVEntity> {
 		
 	}
 	
+	/**
+	 * Ajoute un objet non attaché et ses dépendances aux fichiers CSV. Les
+	 * dépendances doivent exister dans la base de données.
+	 * 
+	 * @param e
+	 * @throws IOException
+	 * @throws InvalidCSVException
+	 * @throws InvalidDataException
+	 * @throws CSVUpdateException
+	 * @throws NumberFormatException
+	 * @throws ParseException
+	 */
 	public void add(E e) throws IOException, InvalidCSVException, InvalidDataException, CSVUpdateException,
 			NumberFormatException, ParseException {
 		if (e.isAttached()) {
@@ -47,6 +72,17 @@ public class CSVObjects<E extends CSVEntity> {
 		csvsaver.addObject(e);
 	}
 	
+	/**
+	 * Ajoute plusieurs objets
+	 * 
+	 * @param many
+	 * @throws NumberFormatException
+	 * @throws IOException
+	 * @throws InvalidCSVException
+	 * @throws InvalidDataException
+	 * @throws CSVUpdateException
+	 * @throws ParseException
+	 */
 	public void addMany(Iterable<E> many) throws NumberFormatException, IOException, InvalidCSVException,
 			InvalidDataException, CSVUpdateException, ParseException {
 		for (E e : many) {
@@ -54,6 +90,15 @@ public class CSVObjects<E extends CSVEntity> {
 		}
 	}
 	
+	/**
+	 * @param ID
+	 * @return Retourne un objet par son ID ou NULL si l'ID est introuvable.
+	 * @throws IOException
+	 * @throws InvalidCSVException
+	 * @throws InvalidDataException
+	 * @throws NumberFormatException
+	 * @throws ParseException
+	 */
 	public E getByID(String ID)
 			throws IOException, InvalidCSVException, InvalidDataException, NumberFormatException, ParseException {
 		CSVLine line = doc.getLineByID(ID);
@@ -63,21 +108,64 @@ public class CSVObjects<E extends CSVEntity> {
 		return csvloader.createObject(line);
 	}
 	
+	/**
+	 * Supprimer un objet et les occurences de son ID dans les associations.
+	 * 
+	 * @param e
+	 * @throws CSVUpdateException
+	 * @throws IOException
+	 * @throws InvalidCSVException
+	 */
 	public void delete(E e) throws CSVUpdateException, IOException, InvalidCSVException {
 		csvdeleter.deleteObject(e);
 	}
 	
+	/**
+	 * Supprime un objet puis le rajoute.
+	 * 
+	 * @param e
+	 * @throws CSVUpdateException
+	 * @throws IOException
+	 * @throws InvalidCSVException
+	 * @throws NumberFormatException
+	 * @throws InvalidDataException
+	 * @throws ParseException
+	 */
 	public void modify(E e) throws CSVUpdateException, IOException, InvalidCSVException, NumberFormatException,
 			InvalidDataException, ParseException {
 		csvdeleter.deleteObject(e, false);
 		csvsaver.addObject(e);
 	}
 	
+	/**
+	 * Retourne les objets filtrés par une expression labmda
+	 * 
+	 * @param filter
+	 * @return
+	 * @throws NumberFormatException
+	 * @throws IOException
+	 * @throws InvalidCSVException
+	 * @throws InvalidDataException
+	 * @throws ParseException
+	 */
 	public ArrayList<E> GetFiltered(Predicate<E> filter)
 			throws NumberFormatException, IOException, InvalidCSVException, InvalidDataException, ParseException {
 		return GetFiltered(filter, null);
 	}
 	
+	/**
+	 * Retourne les objets filtrés par une expression labmda et triés avec le
+	 * comparateur fourni
+	 * 
+	 * @param filter
+	 * @param c
+	 * @return
+	 * @throws NumberFormatException
+	 * @throws IOException
+	 * @throws InvalidCSVException
+	 * @throws InvalidDataException
+	 * @throws ParseException
+	 */
 	public ArrayList<E> GetFiltered(Predicate<E> filter, Comparator<E> c)
 			throws NumberFormatException, IOException, InvalidCSVException, InvalidDataException, ParseException {
 		ArrayList<E> all = getAll();
@@ -89,6 +177,16 @@ public class CSVObjects<E extends CSVEntity> {
 		return filtered;
 	}
 	
+	/**
+	 * Retourne tous les objets
+	 * 
+	 * @return
+	 * @throws IOException
+	 * @throws InvalidCSVException
+	 * @throws InvalidDataException
+	 * @throws NumberFormatException
+	 * @throws ParseException
+	 */
 	public ArrayList<E> getAll()
 			throws IOException, InvalidCSVException, InvalidDataException, NumberFormatException, ParseException {
 		ArrayList<E> all = new ArrayList<>();

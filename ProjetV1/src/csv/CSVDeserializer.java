@@ -9,6 +9,17 @@ import models.*;
 public class CSVDeserializer {
 	static SimpleDateFormat dateformatter = new SimpleDateFormat("dd/MM/yyyy");
 	
+	/**
+	 * Crée un objet à partir de sa classe et sa représentation dans un fichier
+	 * CSV
+	 * 
+	 * @param line
+	 * @param c
+	 * @return
+	 * @throws InvalidCSVException
+	 * @throws InvalidDataException
+	 * @throws IOException
+	 */
 	@SuppressWarnings("unchecked")
 	public static <E extends CSVEntity> E Deserialize(CSVLine line, Class<?> c)
 			throws InvalidCSVException, InvalidDataException, IOException {
