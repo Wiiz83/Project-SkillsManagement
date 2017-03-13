@@ -36,7 +36,7 @@ public class CompetenceRequirement extends CSVEntity {
 	}
 	
 	public HashMap getCompReq(){
-		hs.put(this.id, this);
+		hs.put(this.requiredEmployees, this);
 		return hs;
 	}
 	
