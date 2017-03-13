@@ -2,16 +2,30 @@ package models;
 
 import csv.InvalidDataException;
 
+/**
+ * @author David
+ * Classe CompetenceCode, retrouver les compétences, leur code etc ...
+ */
 public class CompetenceCode {
 	private char category;
 	private int subCategory;
 	
+	/**
+	 * @param category
+	 * @param subCategory
+	 * Constructeur pour les code de type 'A' . 'A' (A.A)
+	 */
 	public CompetenceCode(char category, int subCategory) {
 		super();
 		this.category = category;
 		this.subCategory = subCategory;
 	}
 	
+	/**
+	 * @param code
+	 * @throws InvalidDataException
+	 * Constructeur pour les codes de types "A.A"
+	 */
 	public CompetenceCode(String code) throws InvalidDataException{
 		if (code.length()<3)
 			throw new InvalidDataException();
