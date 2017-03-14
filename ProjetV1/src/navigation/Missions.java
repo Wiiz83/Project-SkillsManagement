@@ -27,16 +27,11 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableModel;
 
-import org.jdatepicker.impl.JDatePanelImpl;
-import org.jdatepicker.impl.JDatePickerImpl;
-import org.jdatepicker.impl.UtilDateModel;
-
 import csv.CSVToTable;
 import csv.InvalidCSVException;
 import csv.InvalidDataException;
 import gui.Button;
 import gui.DateLabelFormatter;
-import gui.JDatePicker;
 import gui.Titre;
 import models.Competence;
 
@@ -53,8 +48,7 @@ public class Missions extends JPanel implements MouseListener {
 	int	IDSelect;
 	JTextField nom;
 	JComboBox<String> statut;
-	JDatePicker dateDebut;
-	JDatePicker dateFin;
+
 	JTable competences;
 
 	private static final long serialVersionUID = 1L;
@@ -132,9 +126,6 @@ public class Missions extends JPanel implements MouseListener {
 		this.nom.setBounds(450, 50, 150, 25);
 		add(this.nom);
 		
-		this.dateDebut = new JDatePicker(500, 50, 150, 25);
-		System.out.println(this.dateDebut.getDatePicker());
-		add(this.dateDebut.getDatePicker());
 	
 		this.competences = new JTable();
 		this.competences.addMouseListener(this);
