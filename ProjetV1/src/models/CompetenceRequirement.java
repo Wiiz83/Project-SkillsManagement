@@ -7,19 +7,18 @@ import csv.CSVEntity;
 import csv.InvalidDataException;
 
 /**
- * @author David
  * Classe pour les compétences requises dans une mission
  */
 public class CompetenceRequirement extends CSVEntity {
 	private int			id	= -1;
 	private Competence	competence;
 	private int			requiredEmployees;
-	private HashMap hs = new HashMap<Integer, Competence>();
-	
 	
 	/**
-	 * @param competence, la compétence en question
-	 * @param requiredEmployees, le nombre d'employés nécéssaires pour cette compétence
+	 * @param competence,
+	 *            la compétence en question
+	 * @param requiredEmployees,
+	 *            le nombre d'employés nécéssaires pour cette compétence
 	 */
 	public CompetenceRequirement(Competence competence, int requiredEmployees) {
 		super();
@@ -33,11 +32,6 @@ public class CompetenceRequirement extends CSVEntity {
 	
 	public int getNbRequiredEmployees() {
 		return requiredEmployees;
-	}
-	
-	public HashMap getCompReq(){
-		hs.put(this.requiredEmployees, this);
-		return hs;
 	}
 	
 	@Override

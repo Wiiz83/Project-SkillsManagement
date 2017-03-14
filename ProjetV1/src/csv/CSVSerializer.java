@@ -31,6 +31,8 @@ public class CSVSerializer {
 		line.add(dateformat.format(o.getDateDebut()));
 		line.add(Integer.toString(o.getDuree()));
 		line.add(Integer.toString(o.getNbPersReq()));
+		line.add(dateformat.format(o.getDateFin()));
+		line.add(String.valueOf(o.getForcer_planification()));
 		return line;
 	}
 	

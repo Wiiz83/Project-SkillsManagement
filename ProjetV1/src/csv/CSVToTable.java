@@ -1,12 +1,12 @@
 package csv;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.function.Predicate;
 
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
@@ -20,10 +20,8 @@ import models.*;
 public class CSVToTable {
 	static SimpleDateFormat dateformatter = new SimpleDateFormat("dd/MM/yyyy");
 	
-	public static JTable Employes()
+	public static JTable Employes(ArrayList<Employee> employes)
 			throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException {
-		CSVObjects<Employee> employes_csv = new CSVObjects<>(Employee.class);
-		ArrayList<Employee> employes = employes_csv.getAll();
 		
 		@SuppressWarnings("serial")
 		TableModel dataModel = new AbstractTableModel() {
@@ -56,7 +54,7 @@ public class CSVToTable {
 				case 4:
 					return emp.getCompetences();
 				default:
-					System.out.println("JTable access ");
+					System.out.println("Employes_JTable access ");
 					break;
 				}
 				
@@ -71,6 +69,13 @@ public class CSVToTable {
 		table.getColumnModel().getColumn(4).setMaxWidth(0);
 		
 		return table;
+	}
+	
+	public static JTable Employes()
+			throws NumberFormatException, IOException, InvalidCSVException, InvalidDataException, ParseException {
+		CSVObjects<Employee> employes_csv = new CSVObjects<>(Employee.class);
+		ArrayList<Employee> employes = employes_csv.getAll();
+		return Employes(employes);
 	}
 	
 	public static JTable CompetencesEmploye(ArrayList<Competence> list) {
@@ -104,6 +109,58 @@ public class CSVToTable {
 					break;
 				}
 				return comp;
+			}
+		};
+		JTable table = new JTable(dataModel);
+		return table;
+	}
+	
+	public static JTable CompetencesEmployeManquantes(String IDEmploye)
+			throws NumberFormatException, IOException, InvalidCSVException, InvalidDataException, ParseException {
+		CSVObjects<Employee> employes_csv = new CSVObjects<>(Employee.class);
+		Employee employe = employes_csv.getByID(IDEmploye);
+		ArrayList<Competence> compEmp = employe.getCompetences();
+		
+		CSVObjects<Competence> comp_csv = new CSVObjects<>(Competence.class);
+		ArrayList<Competence> autres = comp_csv.getFiltered(c -> !compEmp.contains(c));
+		return CompetencesEmploye(autres);
+	}
+	
+	public static JTable Competences()
+			throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException {
+		CSVObjects<Competence> competences_csv = new CSVObjects<>(Competence.class);
+		ArrayList<Competence> competences = competences_csv.getAll();
+		return CompetencesEmploye(competences);
+	};
+	
+	public static JTable LanguesCompetence(ArrayList<String> list) {
+		
+		@SuppressWarnings("serial")
+		TableModel dataModel = new AbstractTableModel() {
+			public String getColumnName(int col) {
+				String[] headers = { "FR", "EN" };
+				return headers[col];
+			}
+			
+			public int getColumnCount() {
+				return Languages.size;
+			}
+			
+			public int getRowCount() {
+				return list.size();
+			}
+			
+			public Object getValueAt(int row, int col) {
+				String nom = list.get(row);
+				
+				switch (col) {
+				case 0:
+					return nom;
+				default:
+					System.out.println("JTable access ");
+					break;
+				}
+				return nom;
 			}
 		};
 		JTable table = new JTable(dataModel);
@@ -158,149 +215,36 @@ public class CSVToTable {
 		return Mission(missions);
 	}
 	
-	public static JTable MissionsEncours()
-			throws NumberFormatException, IOException, InvalidCSVException, InvalidDataException, ParseException {
+	public static JTable Mission(Predicate<Mission> filtre)
+			throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException {
 		CSVObjects<Mission> missions_csv = new CSVObjects<>(Mission.class);
-		ArrayList<Mission> missions = missions_csv.GetFiltered(m -> m.getStatus() == Status.EN_COURS);
+		ArrayList<Mission> missions = missions_csv.getFiltered(filtre);
 		return Mission(missions);
 	}
 	
-	public static JTable MissionsIntervalle(String strDateDebut, int nbJours)
+	public static JTable MissionsAvecStatus(Status status)
 			throws NumberFormatException, IOException, InvalidCSVException, InvalidDataException, ParseException {
-		SimpleDateFormat dateformatter = new SimpleDateFormat("dd/MM/yyyy");
-		Date dateDebut = dateformatter.parse(strDateDebut);
+		return Mission(m -> m.getStatus() == status);
+	}
+	
+	public static JTable MissionsduMois()
+			throws NumberFormatException, IOException, InvalidCSVException, InvalidDataException, ParseException {
+		return MissionsIntervalle(Cal.today(), 30);
+	}
+	
+	public static JTable MissionsIntervalle(Date dateDebut, int nbJours)
+			throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException {
 		Calendar c = Calendar.getInstance();
 		c.setTime(dateDebut);
 		c.add(Calendar.DATE, nbJours);
-		CSVObjects<Mission> missions_csv = new CSVObjects<>(Mission.class);
-		
-		ArrayList<Mission> missions = missions_csv.GetFiltered(
-				m -> m.getDateDebut().compareTo(dateDebut) > 0 && m.getDateDebut().compareTo(c.getTime()) < 0
-		);
-		return Mission(missions);
+		return Mission(m -> m.getDateDebut().compareTo(dateDebut) > 0 && m.getDateDebut().compareTo(c.getTime()) < 0);
 	}
 	
-	public static JTable Competences(ArrayList<Competence> competence)
-			throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException {
-		CSVObjects<Competence> competences_csv = new CSVObjects<>(Competence.class);
-		@SuppressWarnings("serial")
-		TableModel dataModel = new AbstractTableModel() {
-			public String getColumnName(int col) {
-				String[] headers = { "Code", "FR", "EN" };
-				return headers[col];
-			}
-			
-			public int getColumnCount() {
-				return Languages.size + 1;
-			}
-			
-			public int getRowCount() {
-				return competence.size();
-			}
-			
-			public Object getValueAt(int row, int col) {
-				Competence comp = competence.get(row);
-				
-				switch (col) {
-				case 0:
-					return comp.getCode();
-				case 1:
-					return comp.getNames();
-				default:
-					System.out.println("JTable access ");
-					break;
-				}
-				return comp;
-			}
-		};
-		
-		JTable table = new JTable(dataModel);
-		
-		for (int i = 2; i < dataModel.getColumnCount(); i++) {
-			table.getColumnModel().getColumn(i).setMinWidth(0);
-			table.getColumnModel().getColumn(i).setMaxWidth(0);
-		}
-		
-		return table;
-	}
-	
-	public static JTable Competences()
-			throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException {
-		CSVObjects<Competence> competences_csv = new CSVObjects<>(Competence.class);
-		ArrayList<Competence> competences = competences_csv.getAll();
-		@SuppressWarnings("serial")
-		TableModel dataModel = new AbstractTableModel() {
-			public String getColumnName(int col) {
-				String[] headers = { "Code", "FR", "EN" };
-				return headers[col];
-			}
-			
-			public int getColumnCount() {
-				return Languages.size + 1;
-			}
-			
-			public int getRowCount() {
-				return competences.size();
-			}
-			
-			public Object getValueAt(int row, int col) {
-				Competence comp = competences.get(row);
-				
-				switch (col) {
-				case 0:
-					return comp.getCode();
-				case 1:
-					return comp.getNames();
-				default:
-					System.out.println("JTable access ");
-					break;
-				}
-				return comp;
-			}
-		};
-		
-		JTable table = new JTable(dataModel);
-		
-		for (int i = 2; i < dataModel.getColumnCount(); i++) {
-			table.getColumnModel().getColumn(i).setMinWidth(0);
-			table.getColumnModel().getColumn(i).setMaxWidth(0);
-		}
-		
-		return table;
-	}
-	
-	public static JTable LanguesCompetence(ArrayList<String> list) {
-		
-		@SuppressWarnings("serial")
-		TableModel dataModel = new AbstractTableModel() {
-			public String getColumnName(int col) {
-				String[] headers = { "FR", "EN" };
-				return headers[col];
-			}
-			
-			public int getColumnCount() {
-				return Languages.size;
-			}
-			
-			public int getRowCount() {
-				return list.size();
-			}
-			
-			public Object getValueAt(int row, int col) {
-				String nom = list.get(row);
-				
-				switch (col) {
-				case 0:
-					return nom;
-				default:
-					System.out.println("JTable access ");
-					break;
-				}
-				return nom;
-			}
-		};
-		JTable table = new JTable(dataModel);
-		return table;
+	public static JTable MissionsIntervalle(String strDateDebut, int nbJours)
+			throws ParseException, NumberFormatException, IOException, InvalidCSVException, InvalidDataException {
+		SimpleDateFormat dateformatter = new SimpleDateFormat("dd/MM/yyyy");
+		Date dateDebut = dateformatter.parse(strDateDebut);
+		return MissionsIntervalle(dateDebut, nbJours);
 	}
 	
 }

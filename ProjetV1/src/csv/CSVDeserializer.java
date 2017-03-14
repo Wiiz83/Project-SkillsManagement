@@ -74,6 +74,9 @@ public class CSVDeserializer {
 				Integer.parseInt(line.get(4))
 		);
 		m.setCsvID(line.get(0));
+		if (line.get(6).equals("true"))
+			m.planifier();
+		m.setDateFin(dateformatter.parse(line.get(5)));
 		return m;
 	}
 	
