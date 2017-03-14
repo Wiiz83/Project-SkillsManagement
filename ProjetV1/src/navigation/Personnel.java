@@ -197,38 +197,17 @@ public class Personnel extends JPanel implements MouseListener {
 	}
 	
 	public void Enregistrement() {
-		// this.IDSelect = (int) listePersonnel.getValueAt(ligneSelectionne, 3);
-		
 		CSVObjects<Employee> employes_csv;
 		
 		switch (this.mode) {
 			case "nouveau":
-
 					try {
 						employes_csv = new CSVObjects<>(Employee.class);
 						Employee emp = new Employee(this.nom.getText(), this.prenom.getText(), this.date.getText());
 						employes_csv.add(emp);
-		
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (InvalidDataException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (NumberFormatException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (InvalidCSVException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (CSVUpdateException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
+					} catch (IOException | InvalidDataException | NumberFormatException | InvalidCSVException | CSVUpdateException  | ParseException  e) {
 						e.printStackTrace();
 					}
-
 				break;
 				
 			case "modification":
@@ -236,27 +215,9 @@ public class Personnel extends JPanel implements MouseListener {
 					employes_csv = new CSVObjects<>(Employee.class);
 					Employee emp = new Employee(this.nom.getText(), this.prenom.getText(), this.date.getText());
 					employes_csv.modify(emp);
-	
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
+				} catch (IOException | InvalidDataException | NumberFormatException | InvalidCSVException | CSVUpdateException | ParseException e) {
 					e.printStackTrace();
-				} catch (InvalidDataException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NumberFormatException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InvalidCSVException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (CSVUpdateException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
+				} 
 				break;
 	
 			default:

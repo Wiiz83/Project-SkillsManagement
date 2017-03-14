@@ -1,17 +1,25 @@
 package navigation;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.text.Format;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -19,14 +27,21 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableModel;
 
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
+
 import csv.CSVToTable;
 import csv.InvalidCSVException;
 import csv.InvalidDataException;
 import gui.Button;
+import gui.DateLabelFormatter;
+import gui.JDatePicker;
 import gui.Titre;
 import models.Competence;
 
 public class Missions extends JPanel implements MouseListener {
+	
 	Button	boutonNouveau;
 	Button	boutonModifier;
 	Button	boutonSupprimer;
@@ -35,12 +50,13 @@ public class Missions extends JPanel implements MouseListener {
 	JTable	listeMissions;
 	Vector	selectedCells	= new Vector<int[]>();
 	
-	int			IDSelect;
-	JTextField	nom;
-	JTextField	prenom;
-	JTextField	date;
-	JTable		competences;
-	
+	int	IDSelect;
+	JTextField nom;
+	JComboBox<String> statut;
+	JDatePicker dateDebut;
+	JDatePicker dateFin;
+	JTable competences;
+
 	private static final long serialVersionUID = 1L;
 	
 	
@@ -116,16 +132,10 @@ public class Missions extends JPanel implements MouseListener {
 		this.nom.setBounds(450, 50, 150, 25);
 		add(this.nom);
 		
-		this.prenom = new JTextField();
-		this.prenom.addMouseListener(this);
-		this.prenom.setBounds(450, 80, 150, 25);
-		add(this.prenom);
-		
-		this.date = new JTextField();
-		this.date.addMouseListener(this);
-		this.date.setBounds(450, 110, 150, 25);
-		add(this.date);
-		
+		this.dateDebut = new JDatePicker(500, 50, 150, 25);
+		System.out.println(this.dateDebut.getDatePicker());
+		add(this.dateDebut.getDatePicker());
+	
 		this.competences = new JTable();
 		this.competences.addMouseListener(this);
 		this.competences.setFillsViewportHeight(true);
@@ -139,8 +149,6 @@ public class Missions extends JPanel implements MouseListener {
 	
 	public void ChargementConsultation() {
 		this.nom.setEditable(false);
-		this.prenom.setEditable(false);
-		this.date.setEditable(false);
 		this.competences.setEnabled(false);
 		
 		this.boutonEnregistrer.setVisible(false);
@@ -153,8 +161,6 @@ public class Missions extends JPanel implements MouseListener {
 	
 	public void ChargementModification() {
 		this.nom.setEditable(true);
-		this.prenom.setEditable(true);
-		this.date.setEditable(true);
 		this.competences.setEnabled(true);
 		
 		this.boutonEnregistrer.setVisible(true);
@@ -208,8 +214,6 @@ public class Missions extends JPanel implements MouseListener {
 		if (e.getSource() instanceof JTable) {
 			int ligneSelectionne = this.listeMissions.getSelectedRow();
 			this.nom.setText((String) listeMissions.getValueAt(ligneSelectionne, 0));
-			this.prenom.setText((String) listeMissions.getValueAt(ligneSelectionne, 1));
-			this.date.setText((String) listeMissions.getValueAt(ligneSelectionne, 2));
 			this.IDSelect = (int) listeMissions.getValueAt(ligneSelectionne, 3);
 			@SuppressWarnings("unchecked")
 			TableModel dataModel = CSVToTable.CompetencesEmploye((ArrayList<Competence>) listeMissions.getValueAt(ligneSelectionne, 4)).getModel();

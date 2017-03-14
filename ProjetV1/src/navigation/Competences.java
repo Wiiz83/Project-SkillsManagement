@@ -49,7 +49,7 @@ public class Competences extends JPanel implements MouseListener {
 		setOpaque(false);
 		setLayout(null);
 		setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
-		
+
 		this.listeCompetences = new JTable();
 		try {
 			listeCompetences = CSVToTable.Competences();
@@ -63,8 +63,7 @@ public class Competences extends JPanel implements MouseListener {
 		} catch (NumberFormatException | IOException | InvalidCSVException | InvalidDataException | ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
+		} 
 		this.boutonNouveau = new Button("/boutons/nouveau.png");
 		this.boutonNouveau.setBounds(330, 560);
 		this.boutonNouveau.addMouseListener(this);
