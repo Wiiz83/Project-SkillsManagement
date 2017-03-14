@@ -148,7 +148,7 @@ public class CSVObjects<E extends CSVEntity> {
 	 * @throws InvalidDataException
 	 * @throws ParseException
 	 */
-	public ArrayList<E> GetFiltered(Predicate<E> filter)
+	public ArrayList<E> getFiltered(Predicate<E> filter)
 			throws NumberFormatException, IOException, InvalidCSVException, InvalidDataException, ParseException {
 		return GetFiltered(filter, null);
 	}

@@ -7,7 +7,6 @@ import csv.CSVEntity;
 import csv.InvalidDataException;
 
 /**
- * @author David
  * Classe Competence
  */
 public class Competence extends CSVEntity {
@@ -15,8 +14,10 @@ public class Competence extends CSVEntity {
 	private ArrayList<String>	Names;
 	
 	/**
-	 * @param code, les codes compétences
-	 * @param names, les libellés des compétences
+	 * @param code,
+	 *            les codes compétences
+	 * @param names,
+	 *            les libellés des compétences
 	 */
 	public Competence(CompetenceCode code, ArrayList<String> names) {
 		super();

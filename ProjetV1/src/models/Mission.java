@@ -9,8 +9,7 @@ import csv.CSVEntity;
 import csv.InvalidDataException;
 
 /**
- * @author David
- * Classe Mission
+ * @author David Classe Mission
  */
 public class Mission extends CSVEntity {
 	private String								nomM;
@@ -21,14 +20,15 @@ public class Mission extends CSVEntity {
 	private int									id	= -1;
 	private ArrayList<Employee>					AffEmp;
 	private ArrayList<CompetenceRequirement>	CompReq;
-	private Status								Status;
+	
+	private boolean forcer_planification = false;
 	
 	/**
 	 * @param nomM
 	 * @param dateDebut
 	 * @param duree
 	 * @param nbPersReq
-	 * Classe Mission
+	 *            Classe Mission
 	 */
 	public Mission(String nomM, Date dateDebut, int duree, int nbPersReq) {
 		super();
@@ -38,35 +38,50 @@ public class Mission extends CSVEntity {
 		this.nbPersReq = nbPersReq;
 		this.AffEmp = new ArrayList<>();
 		this.CompReq = new ArrayList<>();
-		this.Status = Status.PLANIFIEE;
-		this.dateFin = setDateFin(duree);
+		this.setDateFin(setDateFin(duree));
 	}
 	
 	/**
 	 * @return le statut actuel de la mission
 	 */
 	public Status getStatus() {
-		return Status;
+		
+		if (Cal.today().compareTo(dateFin) > 0) {
+			return Status.TERMINEE;
+		}
+		if (AffEmp.size() < nbPersReq || forcer_planification)
+			if (Cal.today().compareTo(dateDebut) > 0) {
+				return Status.EN_COURS;
+			} else {
+				return Status.PLANIFIEE;
+			}
+		else
+			return Status.PREPARATION;
+	}
+	
+	public void planifier() {
+		this.forcer_planification = true;
+	}
+	
+	public boolean estModifiable() {
+		return (getStatus() == Status.PREPARATION || getStatus() == Status.PLANIFIEE);
 	}
 	
 	/**
 	 * @param duree
 	 * @return calcul la date de fin et l'instancie sur la mission
 	 */
-	public Date setDateFin(int duree){
+	public Date setDateFin(int duree) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(this.dateDebut);
 		cal.add(Calendar.DATE, duree);
 		return cal.getTime();
 	}
-
-	public void setStatus(Status status) {
-		Status = status;
-	}
-
+	
 	/**
 	 * @param cr
-	 * @return ajoute une compétence a la mission (true si réussi false si echec de l'ajout
+	 * @return ajoute une compétence a la mission (true si réussi false si echec
+	 *         de l'ajout
 	 */
 	public boolean addCompetenceReq(CompetenceRequirement cr) {
 		return CompReq.add(cr);
@@ -81,7 +96,7 @@ public class Mission extends CSVEntity {
 	
 	/**
 	 * @param e
-	 * Affectation d'un employé sur la mission
+	 *            Affectation d'un employé sur la mission
 	 */
 	public void affectEmployee(Employee e) {
 		AffEmp.add(e);
@@ -166,6 +181,18 @@ public class Mission extends CSVEntity {
 	public void setReferencedObjects(HashMap<Class<? extends CSVEntity>, ArrayList<Object>> hashMap) {
 		AffEmp = castArrayList(hashMap, Employee.class);
 		CompReq = castArrayList(hashMap, CompetenceRequirement.class);
+	}
+	
+	public Date getDateFin() {
+		return dateFin;
+	}
+	
+	public void setDateFin(Date dateFin) {
+		this.dateFin = dateFin;
+	}
+	
+	public boolean getForcer_planification() {
+		return forcer_planification;
 	}
 	
 }
