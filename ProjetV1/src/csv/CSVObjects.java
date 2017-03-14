@@ -36,15 +36,6 @@ public class CSVObjects<E extends CSVEntity> {
 		this.csvdeleter = new CSVObjectDeleter<E>(doc);
 	}
 	
-	private String generateID() throws InvalidDataException {
-		if (doc.lineCount() == 0)
-			return "1";
-		ArrayList<Integer> IDs = doc.getIDS();
-		int generatedID = Collections.max(IDs) + 1;
-		return Integer.toString(generatedID);
-		
-	}
-	
 	/**
 	 * Ajoute un objet non attaché et ses dépendances aux fichiers CSV. Les
 	 * dépendances doivent exister dans la base de données.
@@ -195,4 +186,14 @@ public class CSVObjects<E extends CSVEntity> {
 		}
 		return all;
 	}
+	
+	private String generateID() throws InvalidDataException {
+		if (doc.lineCount() == 0)
+			return "1";
+		ArrayList<Integer> IDs = doc.getIDS();
+		int generatedID = Collections.max(IDs) + 1;
+		return Integer.toString(generatedID);
+		
+	}
+	
 }
