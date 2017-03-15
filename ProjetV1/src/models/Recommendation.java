@@ -4,26 +4,24 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 
+import csv.CSVException;
 import csv.CSVObjects;
-import csv.InvalidCSVException;
-import csv.InvalidDataException;
 
 /**
- * @author David
- * Classe Recommendation
+ * @author David Classe Recommendation
  */
 public class Recommendation {
 	
-	private static int recID;
-	private Mission misToRec;
-	private ArrayList<Employee> empRec;
-	private ArrayList<CompetenceRequirement> misCompReq;
-	private ArrayList<Employee> empAff;
-	private ArrayList<Employee> empToRec;
-	
+	private static int							recID;
+	private Mission								misToRec;
+	private ArrayList<Employee>					empRec;
+	private ArrayList<CompetenceRequirement>	misCompReq;
+	private ArrayList<Employee>					empAff;
+	private ArrayList<Employee>					empToRec;
 	
 	/**
-	 * @param misToRec (La mission qui est concernée par les recommendations
+	 * @param misToRec
+	 *            (La mission qui est concernée par les recommendations
 	 */
 	public Recommendation(Mission misToRec) {
 		super();
@@ -36,19 +34,19 @@ public class Recommendation {
 	/**
 	 * @throws IOException
 	 * @throws NumberFormatException
-	 * @throws InvalidCSVException
-	 * @throws InvalidDataException
 	 * @throws ParseException
-	 * Calcul toutes les recommendations de la mission en fonction des besoins
+	 *             Calcul toutes les recommendations de la mission en fonction
+	 *             des besoins
+	 * @throws CSVException
 	 */
-	public void setRecommendations() throws IOException, NumberFormatException, InvalidCSVException, InvalidDataException, ParseException{
+	public void setRecommendations() throws CSVException {
 		CSVObjects<Employee> employee_csv = new CSVObjects<>(Employee.class);
 		empRec = employee_csv.getAll();
-		for(Employee e : empRec){
-			for(Competence c : e.getCompetences()){
-				if(checkCompMission(c) != 0){
-					if(!this.empToRec.contains(e))
-					this.empToRec.add(e);
+		for (Employee e : empRec) {
+			for (Competence c : e.getCompetences()) {
+				if (checkCompMission(c) != 0) {
+					if (!this.empToRec.contains(e))
+						this.empToRec.add(e);
 				}
 			}
 		}
@@ -57,17 +55,17 @@ public class Recommendation {
 	/**
 	 * @return la liste des employés recommendés pour la mission
 	 */
-	public ArrayList<Employee> GetEmpToRec(){
+	public ArrayList<Employee> GetEmpToRec() {
 		return this.empToRec;
 	}
 	
 	/**
 	 * Efface tout les employés déjà présent sur la mission des recommendations
 	 */
-	public void deleteAff(){
-		for(Employee e : empRec){
-			for(Employee e2 : empAff){
-				if(e == e2){
+	public void deleteAff() {
+		for (Employee e : empRec) {
+			for (Employee e2 : empAff) {
+				if (e == e2) {
 					empRec.remove(e);
 				}
 			}
@@ -75,19 +73,21 @@ public class Recommendation {
 	}
 	
 	/**
-	 * @param Compétence a vérifier concernant la mission
-	 * @return Le nombre de d'employés nécéssaires ayant cette compétence sur le projet
+	 * @param Compétence
+	 *            a vérifier concernant la mission
+	 * @return Le nombre de d'employés nécéssaires ayant cette compétence sur le
+	 *         projet
 	 */
-	public int checkCompMission(Competence c){
+	public int checkCompMission(Competence c) {
 		int nbEmpReqComp = 0;
-		for(CompetenceRequirement cr : this.misCompReq){
-			if(cr.getCompetence() == c){
+		for (CompetenceRequirement cr : this.misCompReq) {
+			if (cr.getCompetence() == c) {
 				nbEmpReqComp = cr.getNbRequiredEmployees();
 			}
 		}
-		for(Employee e : this.empAff){
-			for(Competence cEmp : e.getCompetences()){
-				if(cEmp == c){
+		for (Employee e : this.empAff) {
+			for (Competence cEmp : e.getCompetences()) {
+				if (cEmp == c) {
 					nbEmpReqComp--;
 				}
 			}

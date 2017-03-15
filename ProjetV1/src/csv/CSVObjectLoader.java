@@ -24,14 +24,12 @@ public class CSVObjectLoader<E extends CSVEntity> {
 	 * 
 	 * @param line
 	 * @return
-	 * @throws InvalidCSVException
-	 * @throws InvalidDataException
 	 * @throws IOException
 	 * @throws NumberFormatException
 	 * @throws ParseException
+	 * @throws CSVException
 	 */
-	public E createObject(CSVLine line)
-			throws InvalidCSVException, InvalidDataException, IOException, NumberFormatException, ParseException {
+	public E createObject(CSVLine line) throws IOException, NumberFormatException, ParseException, CSVException {
 		E object = CSVDeserializer.Deserialize(line, EntityType);
 		object.setReferencedObjects(getAssociatedObjects(object));
 		object.setAttached();
@@ -39,7 +37,7 @@ public class CSVObjectLoader<E extends CSVEntity> {
 	}
 	
 	private HashMap<Class<? extends CSVEntity>, ArrayList<Object>> getAssociatedObjects(E e)
-			throws IOException, InvalidCSVException, InvalidDataException, NumberFormatException, ParseException {
+			throws IOException, NumberFormatException, ParseException, CSVException {
 		
 		HashMap<Class<? extends CSVEntity>, ArrayList<Object>> AssociatedObjects = new HashMap<>();
 		CSVModel model = new CSVModel();

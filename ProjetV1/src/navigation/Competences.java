@@ -1,14 +1,11 @@
 package navigation;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -20,17 +17,12 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableModel;
 
-import csv.CSVObjects;
-import csv.CSVToTable;
-import csv.InvalidCSVException;
-import csv.InvalidDataException;
+import csv.CSVException;
 import gui.Button;
 import gui.Titre;
-import models.Competence;
-import models.Employee;
 
 public class Competences extends JPanel implements MouseListener {
-
+	
 	Button	boutonNouveau;
 	Button	boutonModifier;
 	Button	boutonSupprimer;
@@ -38,21 +30,25 @@ public class Competences extends JPanel implements MouseListener {
 	Button	boutonAnnuler;
 	JTable	listeCompetences;
 	Vector	selectedCells	= new Vector<int[]>();
-
+	
 	JTextField	code;
 	JTable		listeLangues;
-
+	
 	private static final long serialVersionUID = 1L;
 	
-	public Competences () 
-    {   
+	public Competences() {
 		setOpaque(false);
 		setLayout(null);
 		setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
-
+		
 		this.listeCompetences = new JTable();
 		try {
-			listeCompetences = CSVToTable.Competences();
+			try {
+				listeCompetences = JTableRequests.toutesLesCompetences();
+			} catch (CSVException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			listeCompetences.setFillsViewportHeight(true);
 			listeCompetences.addMouseListener(this);
 			JScrollPane js = new JScrollPane(listeCompetences);
@@ -60,10 +56,10 @@ public class Competences extends JPanel implements MouseListener {
 			js.setBounds(10, 10, 300, 600);
 			add(js);
 			
-		} catch (NumberFormatException | IOException | InvalidCSVException | InvalidDataException | ParseException e) {
+		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+		}
 		this.boutonNouveau = new Button("/boutons/nouveau.png");
 		this.boutonNouveau.setBounds(330, 560);
 		this.boutonNouveau.addMouseListener(this);
@@ -106,7 +102,7 @@ public class Competences extends JPanel implements MouseListener {
 		this.code.addMouseListener(this);
 		this.code.setBounds(400, 50, 150, 25);
 		add(this.code);
-				
+		
 		this.listeLangues = new JTable();
 		this.listeLangues.addMouseListener(this);
 		this.listeLangues.setFillsViewportHeight(true);
@@ -168,7 +164,7 @@ public class Competences extends JPanel implements MouseListener {
 			}
 			if (e.getSource().equals(this.boutonSupprimer)) {
 				// ChargementSuppression();
-
+				
 			}
 			if (e.getSource().equals(this.boutonAnnuler)) {
 				ChargementConsultation();
@@ -184,7 +180,7 @@ public class Competences extends JPanel implements MouseListener {
 			int ligneSelectionne = this.listeCompetences.getSelectedRow();
 			this.code.setText((listeCompetences.getValueAt(ligneSelectionne, 0)).toString());
 			@SuppressWarnings("unchecked")
-			TableModel dataModel = CSVToTable
+			TableModel dataModel = ListToJTable
 					.LanguesCompetence((ArrayList<String>) this.listeCompetences.getValueAt(ligneSelectionne, 1))
 					.getModel();
 			this.listeLangues.setModel(dataModel);

@@ -1,25 +1,16 @@
 package navigation;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
-import java.text.Format;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -27,11 +18,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableModel;
 
-import csv.CSVToTable;
-import csv.InvalidCSVException;
-import csv.InvalidDataException;
+import csv.CSVException;
 import gui.Button;
-import gui.DateLabelFormatter;
 import gui.Titre;
 import models.Competence;
 
@@ -45,25 +33,23 @@ public class Missions extends JPanel implements MouseListener {
 	JTable	listeMissions;
 	Vector	selectedCells	= new Vector<int[]>();
 	
-	int	IDSelect;
-	JTextField nom;
-	JComboBox<String> statut;
-
+	int					IDSelect;
+	JTextField			nom;
+	JComboBox<String>	statut;
+	
 	JTable competences;
-
+	
 	private static final long serialVersionUID = 1L;
 	
-	
-	public Missions() 
-    {   
-
+	public Missions() {
+		
 		setOpaque(false);
 		setLayout(null);
 		setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
 		
 		this.listeMissions = new JTable();
 		try {
-			listeMissions = CSVToTable.Mission();
+			listeMissions = JTableRequests.toutesLesMissions();
 			listeMissions.setFillsViewportHeight(true);
 			listeMissions.addMouseListener(this);
 			JScrollPane js = new JScrollPane(listeMissions);
@@ -71,7 +57,7 @@ public class Missions extends JPanel implements MouseListener {
 			js.setBounds(10, 10, 300, 600);
 			add(js);
 			
-		} catch (NumberFormatException | IOException | InvalidCSVException | InvalidDataException | ParseException e) {
+		} catch (CSVException e) {
 			e.printStackTrace();
 		}
 		
@@ -126,7 +112,6 @@ public class Missions extends JPanel implements MouseListener {
 		this.nom.setBounds(450, 50, 150, 25);
 		add(this.nom);
 		
-	
 		this.competences = new JTable();
 		this.competences.addMouseListener(this);
 		this.competences.setFillsViewportHeight(true);
@@ -207,7 +192,8 @@ public class Missions extends JPanel implements MouseListener {
 			this.nom.setText((String) listeMissions.getValueAt(ligneSelectionne, 0));
 			this.IDSelect = (int) listeMissions.getValueAt(ligneSelectionne, 3);
 			@SuppressWarnings("unchecked")
-			TableModel dataModel = CSVToTable.CompetencesEmploye((ArrayList<Competence>) listeMissions.getValueAt(ligneSelectionne, 4)).getModel();
+			TableModel dataModel = ListToJTable
+					.competences((ArrayList<Competence>) listeMissions.getValueAt(ligneSelectionne, 4)).getModel();
 			this.competences.setModel(dataModel);
 		}
 	}

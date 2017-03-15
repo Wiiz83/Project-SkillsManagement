@@ -16,13 +16,11 @@ public class CSVDeserializer {
 	 * @param line
 	 * @param c
 	 * @return
-	 * @throws InvalidCSVException
-	 * @throws InvalidDataException
 	 * @throws IOException
+	 * @throws CSVException
 	 */
 	@SuppressWarnings("unchecked")
-	public static <E extends CSVEntity> E Deserialize(CSVLine line, Class<?> c)
-			throws InvalidCSVException, InvalidDataException, IOException {
+	public static <E extends CSVEntity> E Deserialize(CSVLine line, Class<?> c) throws IOException, CSVException {
 		try {
 			if (c == Competence.class)
 				return (E) CSVDeserializer.Competence(line);
@@ -43,7 +41,7 @@ public class CSVDeserializer {
 	}
 	
 	private static CompetenceRequirement CompetenceRequirement(CSVLine line)
-			throws ParseException, NumberFormatException, InvalidCSVException, InvalidDataException, IOException {
+			throws ParseException, NumberFormatException, IOException, CSVException {
 		CSVObjects<Competence> compreq = new CSVObjects<>(Competence.class);
 		return new CompetenceRequirement(compreq.getByID(line.get(1)), Integer.parseInt(line.get(0)));
 	}

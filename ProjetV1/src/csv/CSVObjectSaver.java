@@ -14,8 +14,8 @@ public class CSVObjectSaver<E extends CSVEntity> {
 		this.doc = doc;
 	}
 	
-	public void addObject(E e) throws IOException, InvalidCSVException, InvalidDataException, CSVUpdateException,
-			NumberFormatException, ParseException {
+	public void addObject(E e)
+			throws IOException, CSVUpdateException, NumberFormatException, ParseException, CSVException {
 		if (e.isAttached()) {
 			throw new CSVUpdateException("Object is already attached");
 		} else {
@@ -27,8 +27,7 @@ public class CSVObjectSaver<E extends CSVEntity> {
 		e.setAttached();
 	}
 	
-	private void saveObjectReferences(E e)
-			throws IOException, InvalidCSVException, InvalidDataException, NumberFormatException, ParseException {
+	private void saveObjectReferences(E e) throws IOException, NumberFormatException, ParseException, CSVException {
 		HashMap<Class<? extends CSVEntity>, ArrayList<String>> associatedObjectsIDS = e.getReferencedObjectsIDS();
 		CSVModel model = new CSVModel();
 		for (Class<? extends CSVEntity> N : model.getMetadata().getAssociatedEntities(e.getClass())) {

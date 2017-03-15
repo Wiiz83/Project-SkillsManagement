@@ -6,16 +6,10 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -23,11 +17,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableModel;
 
+import csv.CSVException;
 import csv.CSVObjects;
-import csv.CSVToTable;
-import csv.CSVUpdateException;
-import csv.InvalidCSVException;
-import csv.InvalidDataException;
 import gui.Button;
 import gui.Titre;
 import models.Competence;
@@ -43,13 +34,13 @@ public class Personnel extends JPanel implements MouseListener {
 	JTable	listePersonnel;
 	Vector	selectedCells	= new Vector<int[]>();
 	
-	JScrollPane jsPersonnel;
+	JScrollPane	jsPersonnel;
 	int			IDSelect;
 	JTextField	nom;
 	JTextField	prenom;
 	JTextField	date;
 	JTable		competences;
-	String mode;
+	String		mode;
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -58,7 +49,7 @@ public class Personnel extends JPanel implements MouseListener {
 		setOpaque(false);
 		setLayout(null);
 		setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
-	
+		
 		AffichageListe();
 		
 		this.boutonNouveau = new Button("/boutons/nouveau.png");
@@ -133,23 +124,23 @@ public class Personnel extends JPanel implements MouseListener {
 		ChargementConsultation();
 	}
 	
-	public void AffichageListe(){
+	public void AffichageListe() {
 		this.listePersonnel = new JTable();
 		try {
-			this.listePersonnel = CSVToTable.Employes();
+			this.listePersonnel = JTableRequests.tousLesEmployes();
 			this.listePersonnel.setFillsViewportHeight(true);
 			this.listePersonnel.addMouseListener(this);
 			this.jsPersonnel = new JScrollPane(this.listePersonnel);
 			this.jsPersonnel.setVisible(true);
 			this.jsPersonnel.setBounds(10, 10, 300, 600);
 			add(this.jsPersonnel);
-		} catch (NumberFormatException | IOException | InvalidCSVException | InvalidDataException | ParseException e) {
+		} catch (CSVException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public void Reinitialiser(){
+	public void Reinitialiser() {
 		remove(this.listePersonnel);
 		remove(this.jsPersonnel);
 		this.IDSelect = 0;
@@ -200,28 +191,28 @@ public class Personnel extends JPanel implements MouseListener {
 		CSVObjects<Employee> employes_csv;
 		
 		switch (this.mode) {
-			case "nouveau":
-					try {
-						employes_csv = new CSVObjects<>(Employee.class);
-						Employee emp = new Employee(this.nom.getText(), this.prenom.getText(), this.date.getText());
-						employes_csv.add(emp);
-					} catch (IOException | InvalidDataException | NumberFormatException | InvalidCSVException | CSVUpdateException  | ParseException  e) {
-						e.printStackTrace();
-					}
-				break;
-				
-			case "modification":
-				try {
-					employes_csv = new CSVObjects<>(Employee.class);
-					Employee emp = new Employee(this.nom.getText(), this.prenom.getText(), this.date.getText());
-					employes_csv.modify(emp);
-				} catch (IOException | InvalidDataException | NumberFormatException | InvalidCSVException | CSVUpdateException | ParseException e) {
-					e.printStackTrace();
-				} 
-				break;
-	
-			default:
-				break;
+		case "nouveau":
+			try {
+				employes_csv = new CSVObjects<>(Employee.class);
+				Employee emp = new Employee(this.nom.getText(), this.prenom.getText(), this.date.getText());
+				employes_csv.add(emp);
+			} catch (CSVException e) {
+				e.printStackTrace();
+			}
+			break;
+		
+		case "modification":
+			try {
+				employes_csv = new CSVObjects<>(Employee.class);
+				Employee emp = new Employee(this.nom.getText(), this.prenom.getText(), this.date.getText());
+				employes_csv.modify(emp);
+			} catch (CSVException e) {
+				e.printStackTrace();
+			}
+			break;
+		
+		default:
+			break;
 		}
 	}
 	
@@ -253,22 +244,7 @@ public class Personnel extends JPanel implements MouseListener {
 					employes_csv.delete(emp);
 					Reinitialiser();
 					AffichageListe();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (NumberFormatException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (InvalidCSVException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (InvalidDataException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (ParseException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (CSVUpdateException e1) {
+				} catch (CSVException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -292,9 +268,8 @@ public class Personnel extends JPanel implements MouseListener {
 			this.date.setText((String) listePersonnel.getValueAt(ligneSelectionne, 2));
 			this.IDSelect = (int) listePersonnel.getValueAt(ligneSelectionne, 3);
 			@SuppressWarnings("unchecked")
-			TableModel dataModel = CSVToTable
-					.CompetencesEmploye((ArrayList<Competence>) listePersonnel.getValueAt(ligneSelectionne, 4))
-					.getModel();
+			TableModel dataModel = ListToJTable
+					.competences((ArrayList<Competence>) listePersonnel.getValueAt(ligneSelectionne, 4)).getModel();
 			this.competences.setModel(dataModel);
 		}
 	}
