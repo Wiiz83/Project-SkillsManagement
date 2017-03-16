@@ -9,6 +9,10 @@ import javax.swing.table.TableModel;
 
 import models.*;
 
+/**
+ * Permet de convertir une liste d'objets en JTable
+ *
+ */
 public class ListToJTable {
 	static SimpleDateFormat dateformatter = new SimpleDateFormat("dd/MM/yyyy");
 	

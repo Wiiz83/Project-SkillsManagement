@@ -5,7 +5,7 @@ public class CSVAssociation {
 	Class<? extends CSVEntity>	NEntity;
 	
 	/**
-	 * Représente une association de cardinalité 1-N
+	 * Représente une association de cardinalité 1-N, N>0
 	 * <p>
 	 * Java: ArrayList
 	 * </p>

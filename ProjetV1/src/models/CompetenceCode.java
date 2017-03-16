@@ -3,7 +3,7 @@ package models;
 import csv.InvalidDataException;
 
 /**
- * Classe CompetenceCode, retrouver les compétences, leur code etc ...
+ * Représente le code d'une compétence
  */
 public class CompetenceCode {
 	private char	category;

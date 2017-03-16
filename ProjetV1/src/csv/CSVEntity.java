@@ -61,6 +61,10 @@ public abstract class CSVEntity {
 		return (this.getClass().getName() + ";;" + this.csvID()).hashCode();
 	}
 	
+	/**
+	 * @param ReferencedObjects
+	 * @return Les IDs CSV d'une liste d'objets attachés.
+	 */
 	protected final ArrayList<String> getIDS(ArrayList<? extends CSVEntity> ReferencedObjects) {
 		ArrayList<String> ids = new ArrayList<String>();
 		for (CSVEntity e : ReferencedObjects) {

@@ -9,6 +9,10 @@ import java.util.HashMap;
 import csv.CSVEntity;
 import csv.InvalidDataException;
 
+/**
+ * Représente un employé
+ *
+ */
 public class Employee extends CSVEntity {
 	private String					name;
 	private String					lastName;

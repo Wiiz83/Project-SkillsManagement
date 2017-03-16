@@ -49,7 +49,7 @@ public class CSVDocument {
 	}
 	
 	/**
-	 * @return List of the document lines
+	 * @return Liste des lignes d'un document
 	 * @throws IOException
 	 */
 	public ArrayList<CSVLine> getAll() throws IOException {
@@ -93,6 +93,11 @@ public class CSVDocument {
 		}
 	}
 	
+	/**
+	 * @param ID
+	 * @return vrai si la ligne à supprimer est trouvée
+	 * @throws IOException
+	 */
 	public boolean removeLine(String ID) throws IOException {
 		boolean ignore = ignoreFirstLine;
 		boolean found = false;

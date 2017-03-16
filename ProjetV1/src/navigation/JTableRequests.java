@@ -13,6 +13,10 @@ import csv.CSVException;
 import csv.CSVObjects;
 import models.*;
 
+/**
+ * Cherche les objets dans la base de données et les convertit en JTable
+ *
+ */
 public class JTableRequests {
 	
 	///////// Requetes Employé
@@ -73,6 +77,12 @@ public class JTableRequests {
 		SimpleDateFormat dateformatter = new SimpleDateFormat("dd/MM/yyyy");
 		Date dateDebut = dateformatter.parse(strDateDebut);
 		return MissionsIntervalle(dateDebut, nbJours);
+	}
+	
+	public static double nombreMissionsAvecStatus(Status status) throws CSVException {
+		CSVObjects<Mission> missions_csv = new CSVObjects<>(Mission.class);
+		ArrayList<Mission> missions = missions_csv.getFiltered(m -> m.getStatus() == status);
+		return missions.size();
 	}
 	
 }

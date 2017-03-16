@@ -5,6 +5,10 @@ import java.text.SimpleDateFormat;
 
 import models.*;
 
+/**
+ * Crée une ligne CSV à partir des attributs d'un objet
+ *
+ */
 public class CSVSerializer {
 	private static DateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
 	

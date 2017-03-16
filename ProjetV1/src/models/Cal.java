@@ -3,9 +3,11 @@ package models;
 import java.util.Calendar;
 import java.util.Date;
 
-// Calendrier
 public class Cal {
 	
+	/**
+	 * @return La date d'aujourd'hui ou une autre date pour les tests
+	 */
 	public static Date today() {
 		Calendar today = Calendar.getInstance();
 		today.clear(Calendar.HOUR);

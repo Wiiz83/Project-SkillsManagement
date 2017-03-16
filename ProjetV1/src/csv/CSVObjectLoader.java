@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Fournit les méthodes
+ * Fournit les méthodes de chargement d'un objet et ses dépendances
  *
  * @param <E>
  */

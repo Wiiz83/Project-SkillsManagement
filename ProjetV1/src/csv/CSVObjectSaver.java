@@ -5,6 +5,12 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Fournit les les méthodes d'ajout d'un objet et ses dépendances dans les
+ * fichiers CSV
+ *
+ * @param <E>
+ */
 public class CSVObjectSaver<E extends CSVEntity> {
 	
 	private CSVDocument doc;

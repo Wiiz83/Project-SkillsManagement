@@ -7,7 +7,8 @@ import csv.CSVEntity;
 import csv.InvalidDataException;
 
 /**
- * Classe pour les compétences requises dans une mission
+ * Représente une compétence et le nombre d'employés nécessaires pour cette
+ * compétence dans une mission
  */
 public class CompetenceRequirement extends CSVEntity {
 	private int			id	= -1;
