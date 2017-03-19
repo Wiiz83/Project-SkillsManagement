@@ -20,6 +20,8 @@ public class Employee extends CSVEntity {
 	private int						ID;
 	private ArrayList<Competence>	Competences;
 	
+	
+	//Constructeur basique 
 	public Employee(String name, String lastName, Date entryDate) {
 		this.name = name;
 		this.lastName = lastName;
@@ -28,6 +30,8 @@ public class Employee extends CSVEntity {
 		Competences = new ArrayList<Competence>();
 	}
 	
+	
+	//Constructeur
 	public Employee(String name, String lastName, String entryDate) throws InvalidDataException {
 		this.name = name;
 		this.lastName = lastName;
@@ -36,6 +40,8 @@ public class Employee extends CSVEntity {
 		setEntryDate(entryDate);
 	}
 	
+	
+	//Constructeur avec le set de l'ID 
 	public Employee(String name, String lastName, String entryDate, String iD) throws InvalidDataException {
 		this.name = name;
 		this.lastName = lastName;
@@ -80,6 +86,7 @@ public class Employee extends CSVEntity {
 		this.entryDate = entryDate;
 	}
 	
+	//Formatage de l'entryDate avant l'insertion dans l'attribut
 	public void setEntryDate(String entryDate) throws InvalidDataException {
 		String pattern = "dd/MM/yyyy";
 		SimpleDateFormat format = new SimpleDateFormat(pattern);

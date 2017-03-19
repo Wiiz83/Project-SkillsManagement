@@ -47,16 +47,16 @@ public class Mission extends CSVEntity {
 	public Status getStatus() {
 		
 		if (Cal.today().compareTo(dateFin) > 0) {
-			return Status.TERMINEE;
+			return Status.TERMINEE; 	//Vérification de si la mission est terminée puis retour
 		}
 		if (AffEmp.size() < nbPersReq || forcer_planification)
 			if (Cal.today().compareTo(dateDebut) > 0) {
-				return Status.EN_COURS;
+				return Status.EN_COURS; //Vérification de si la mission est commencée puis retour
 			} else {
-				return Status.PLANIFIEE;
+				return Status.PLANIFIEE;  //Vérification de si la mission est planifiée mais non commencée puis retour
 			}
 		else
-			return Status.PREPARATION;
+			return Status.PREPARATION; //Si aucun des états précédents ne correspond alors la mission est encore en préparation
 	}
 	
 	public void planifier() {
@@ -64,7 +64,7 @@ public class Mission extends CSVEntity {
 	}
 	
 	public boolean estModifiable() {
-		return (getStatus() == Status.PREPARATION || getStatus() == Status.PLANIFIEE);
+		return (getStatus() == Status.PREPARATION || getStatus() == Status.PLANIFIEE); //retourne si oui ou non la mission est toujours modifiable
 	}
 	
 	/**

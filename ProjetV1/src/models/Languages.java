@@ -2,7 +2,7 @@ package models;
 
 /**
  * @author David
- * Enumeration des différents langage de l'application
+ * Enumeration des différents langages de l'application
  */
 public enum Languages {
 	FRENCH,
