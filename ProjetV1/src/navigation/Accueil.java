@@ -1,26 +1,21 @@
 package navigation;
 
-import java.io.IOException;
-import java.text.ParseException;
-
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.table.DefaultTableModel;
-import gui.Table;
 import gui.Titre;
 import models.Status;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
-
 import csv.CSVException;
-import csv.InvalidCSVException;
-import csv.InvalidDataException;
+
+/**
+ * Page d'accueil de l'application
+ */
 
 public class Accueil extends JPanel  {
 	
@@ -33,15 +28,15 @@ public class Accueil extends JPanel  {
 	    String [][] dataTableMEC;
 	    String [] headerTableMAV;
 	    String [][] dataTableMAV;
-
+	    
 	    public Accueil() 
 	    {
 		    setOpaque(false);
 			setLayout(null);
 			setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
-			
-		    /*
-		     *  MISSION EN COURS
+
+		    /**
+		     *  JTable contenant les missions en cours
 		     */
 			Titre titreMEC = new Titre(" Missions en cours :");
 			titreMEC.setBounds(10, 10, 800, 20);
@@ -51,7 +46,6 @@ public class Accueil extends JPanel  {
 				try {
 					tableMEC = JTableRequests.MissionsAvecStatus(Status.EN_COURS);
 				} catch (CSVException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				tableMEC.setFillsViewportHeight(true);
@@ -60,9 +54,9 @@ public class Accueil extends JPanel  {
 				jsMEC.setBounds(10, 40, 800, 250);
 				add(jsMEC);
 		    
-		    /*
-		     *  MISSION A VENIR 
-		     */
+			 /**
+			 *  JTable contenant les missions à venir sur un intervalle définit par l'utilisateur
+			 */
 		  	Titre titreMAV = new Titre(" Missions à venir dans le mois :");
 		  	titreMAV.setBounds(10, 310, 800, 20);
 			add(titreMAV);
@@ -71,7 +65,6 @@ public class Accueil extends JPanel  {
 				try {
 					tableMAV = JTableRequests.MissionsduMois();
 				} catch (CSVException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				tableMAV.setFillsViewportHeight(true);
@@ -80,9 +73,9 @@ public class Accueil extends JPanel  {
 				jsMAV.setBounds(10, 340, 800, 250);
 				add(jsMAV);
 
-		    /*
-		     *  CAMEMBERT
-		     */
+			/**
+		    *  Diagramme cammenbert représentant la répartition des missions par leurs statuts 
+		    */
 		  	Titre label3 = new Titre(" Répartition des missions par statut :");
 			label3.setBounds(820, 10, 440, 20);
 			add(label3);

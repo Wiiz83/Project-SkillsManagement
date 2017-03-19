@@ -102,14 +102,13 @@ public class ListToJTable {
 		JTable table = new JTable(dataModel);
 		return table;
 	}
-	
-	/// ?
+
 	public static JTable LanguesCompetence(ArrayList<String> list) {
 		
 		@SuppressWarnings("serial")
 		TableModel dataModel = new AbstractTableModel() {
 			public String getColumnName(int col) {
-				String[] headers = { "FR", "EN" };
+				String[] headers = { "Libellé" };
 				return headers[col];
 			}
 			

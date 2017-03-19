@@ -2,13 +2,15 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Font;
-
 import javax.swing.JLabel;
 
 public class Titre extends JLabel {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Création d'un titre type pour le programme : fond bleu rectangulaire et police blanche 
+	 */
 	public Titre(String texte) {
 		setText(texte);
 		setOpaque(true);

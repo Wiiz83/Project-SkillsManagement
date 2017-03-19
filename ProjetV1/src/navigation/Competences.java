@@ -6,118 +6,119 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
 import java.util.Vector;
-
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.TableModel;
-
 import csv.CSVException;
 import gui.Button;
 import gui.Titre;
 
+/**
+ * Page "Compétences" de l'application contenant la liste de toutes les
+ * compétences avec possibilité d'ajout, suppression et modification
+ * 
+ */
 public class Competences extends JPanel implements MouseListener {
-	
-	Button	boutonNouveau;
-	Button	boutonModifier;
-	Button	boutonSupprimer;
-	Button	boutonEnregistrer;
-	Button	boutonAnnuler;
-	JTable	listeCompetences;
-	Vector	selectedCells	= new Vector<int[]>();
-	
-	JTextField	code;
-	JTable		listeLangues;
-	
 	private static final long serialVersionUID = 1L;
-	
+
+	Button boutonNouveau;
+	Button boutonModifier;
+	Button boutonSupprimer;
+	Button boutonEnregistrer;
+	Button boutonAnnuler;
+	JTable listeCompetences;
+	Vector<int[]> selectedCells = new Vector<int[]>();
+	JTextField code;
+	JTable listeLangues;
+
 	public Competences() {
 		setOpaque(false);
 		setLayout(null);
 		setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
-		
+
+		/**
+		 * JTable contenant toutes les compétences
+		 */
 		this.listeCompetences = new JTable();
 		try {
-			try {
-				listeCompetences = JTableRequests.toutesLesCompetences();
-			} catch (CSVException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			listeCompetences.setFillsViewportHeight(true);
-			listeCompetences.addMouseListener(this);
-			JScrollPane js = new JScrollPane(listeCompetences);
-			js.setVisible(true);
-			js.setBounds(10, 10, 300, 600);
-			add(js);
-			
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
+			listeCompetences = JTableRequests.toutesLesCompetences();
+		} catch (CSVException | NumberFormatException e) {
 			e.printStackTrace();
 		}
+		listeCompetences.setFillsViewportHeight(true);
+		listeCompetences.addMouseListener(this);
+		JScrollPane js = new JScrollPane(listeCompetences);
+		js.setVisible(true);
+		js.setBounds(10, 10, 300, 600);
+		add(js);
+
+		/**
+		 * Création et positionnement des boutons de gestion de formulaire
+		 */
 		this.boutonNouveau = new Button("/boutons/nouveau.png");
 		this.boutonNouveau.setBounds(330, 560);
 		this.boutonNouveau.addMouseListener(this);
-		
 		this.boutonModifier = new Button("/boutons/modifier.png");
 		this.boutonModifier.setBounds(510, 560);
 		this.boutonModifier.addMouseListener(this);
-		
 		this.boutonSupprimer = new Button("/boutons/supprimer.png");
 		this.boutonSupprimer.setBounds(690, 560);
 		this.boutonSupprimer.addMouseListener(this);
-		
 		this.boutonEnregistrer = new Button("/boutons/enregistrer.png");
 		this.boutonEnregistrer.setBounds(885, 560);
 		this.boutonEnregistrer.addMouseListener(this);
-		
 		this.boutonAnnuler = new Button("/boutons/annuler.png");
 		this.boutonAnnuler.setBounds(1100, 560);
 		this.boutonAnnuler.addMouseListener(this);
-		
 		add(this.boutonNouveau);
 		add(this.boutonModifier);
 		add(this.boutonSupprimer);
 		add(this.boutonEnregistrer);
 		add(this.boutonAnnuler);
-		
+
+		/**
+		 * Création et positionnement des éléments du formulaire
+		 */
 		Titre titre = new Titre(" Détails de la compétence :");
 		titre.setBounds(330, 10, 930, 20);
 		add(titre);
-		
+
 		JLabel labelNom = new JLabel("Code :");
 		labelNom.setBounds(350, 50, 150, 25);
 		add(labelNom);
-		
+
 		JLabel labelCompetences = new JLabel("Liste des langues :");
 		labelCompetences.setBounds(350, 80, 150, 25);
 		add(labelCompetences);
-		
+
 		this.code = new JTextField();
 		this.code.addMouseListener(this);
 		this.code.setBounds(400, 50, 150, 25);
 		add(this.code);
-		
+
 		this.listeLangues = new JTable();
 		this.listeLangues.addMouseListener(this);
 		this.listeLangues.setFillsViewportHeight(true);
-		JScrollPane js = new JScrollPane(this.listeLangues);
-		js.setVisible(true);
-		js.setBounds(350, 110, 350, 350);
-		add(js);
-		
+		JScrollPane jsLangues = new JScrollPane(this.listeLangues);
+		jsLangues.setVisible(true);
+		jsLangues.setBounds(350, 110, 350, 350);
+		add(jsLangues);
+
 		ChargementConsultation();
 	}
-	
+
+	/**
+	 * Mode Consultation : - Lecture des informations détaillés de l'élément
+	 * sélectionné - Les éléments du formulaire ne sont pas modifiables
+	 */
 	public void ChargementConsultation() {
 		this.code.setEditable(false);
 		this.listeLangues.setEnabled(false);
-		
+
 		this.boutonEnregistrer.setVisible(false);
 		this.boutonAnnuler.setVisible(false);
 		this.boutonNouveau.setVisible(true);
@@ -125,11 +126,16 @@ public class Competences extends JPanel implements MouseListener {
 		this.boutonSupprimer.setVisible(true);
 		this.listeCompetences.setEnabled(true);
 	}
-	
+
+	/**
+	 * Mode Modification : - Possibilité de modifier les informations détaillés
+	 * de l'élément sélectionné - Les éléments de la liste ne sont pas
+	 * séléctionnables
+	 */
 	public void ChargementModification() {
 		this.code.setEditable(true);
 		this.listeLangues.setEnabled(true);
-		
+
 		this.boutonEnregistrer.setVisible(true);
 		this.boutonAnnuler.setVisible(true);
 		this.boutonNouveau.setVisible(false);
@@ -137,13 +143,17 @@ public class Competences extends JPanel implements MouseListener {
 		this.boutonSupprimer.setVisible(false);
 		this.listeCompetences.setEnabled(false);
 	}
-	
+
+	/**
+	 * Mode Nouveau : - On vide tous les éléments contenus dans les champs du
+	 * formulaire - Les éléments de la liste ne sont pas séléctionnables
+	 */
 	public void ChargementNouveau() {
 	}
-	
-	public void Enregistrement() {
-	}
-	
+
+	/**
+	 * Dessine le fond blanc du formulaire
+	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -152,53 +162,81 @@ public class Competences extends JPanel implements MouseListener {
 		batch.setColor(Color.WHITE);
 		batch.fillRect(330, 40, 930, 510);
 	}
-	
+
+	/**
+	 * Clic sur la souris : - Si c'est un bouton de gestion du formulaire - Si
+	 * c'est un élément de la liste
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() instanceof Button) {
+
+			/**
+			 * TODO Formulaire prêt à l'ajout d'un nouvel élément
+			 */
 			if (e.getSource().equals(this.boutonNouveau)) {
 				ChargementNouveau();
 			}
+
+			/**
+			 * Formulaire prêt à la modification d'un élément existant
+			 */
 			if (e.getSource().equals(this.boutonModifier)) {
 				ChargementModification();
 			}
+
+			/**
+			 * TODO Suppression d'un élément existant : doit demander la
+			 * confirmation de l'utilisateur
+			 */
 			if (e.getSource().equals(this.boutonSupprimer)) {
-				// ChargementSuppression();
-				
+
 			}
+
+			/**
+			 * TODO On annule toutes les modifications faites par l'utilisateur
+			 * depuis l'activation du mode modification / du mode nouveau
+			 */
 			if (e.getSource().equals(this.boutonAnnuler)) {
 				ChargementConsultation();
 			}
+
+			/**
+			 * TODO On enregistre les modifications ou le nouvel élément
+			 */
 			if (e.getSource().equals(this.boutonEnregistrer)) {
-				// enregistrer
-				Enregistrement();
-				ChargementConsultation();
+
 			}
 		}
-		
+
+		/**
+		 * Actualisation des champs du formulaire TODO : Faire passer la
+		 * référence de l'objet !
+		 */
 		if (e.getSource() instanceof JTable) {
 			int ligneSelectionne = this.listeCompetences.getSelectedRow();
 			this.code.setText((listeCompetences.getValueAt(ligneSelectionne, 0)).toString());
-			@SuppressWarnings("unchecked")
-			TableModel dataModel = ListToJTable
-					.LanguesCompetence((ArrayList<String>) this.listeCompetences.getValueAt(ligneSelectionne, 1))
-					.getModel();
-			this.listeLangues.setModel(dataModel);
+			// @SuppressWarnings("unchecked")
+			// TableModel dataModel =
+			// ListToJTable.LanguesCompetence((ArrayList<String>)
+			// this.listeCompetences.getValueAt(ligneSelectionne,
+			// 1)).getModel();
+			// this.listeLangues.setModel(dataModel);
 		}
 	}
-	
+
 	@Override
 	public void mouseEntered(MouseEvent e) {
 	}
-	
+
 	@Override
 	public void mouseExited(MouseEvent e) {
 	}
-	
+
 	@Override
 	public void mousePressed(MouseEvent e) {
 	}
-	
+
 	@Override
 	public void mouseReleased(MouseEvent e) {
 	}
