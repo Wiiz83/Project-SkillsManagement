@@ -11,10 +11,10 @@ import csv.InvalidDataException;
  * compétence dans une mission
  */
 public class CompetenceRequirement extends CSVEntity {
-	private int			id	= -1;
-	private Competence	competence;
-	private int			requiredEmployees;
-	
+	private int id = -1;
+	private Competence competence;
+	private int requiredEmployees;
+
 	/**
 	 * @param competence,
 	 *            la compétence en question
@@ -26,20 +26,20 @@ public class CompetenceRequirement extends CSVEntity {
 		this.competence = competence;
 		this.requiredEmployees = requiredEmployees;
 	}
-	
+
 	public Competence getCompetence() {
 		return competence;
 	}
-	
+
 	public int getNbRequiredEmployees() {
 		return requiredEmployees;
 	}
-	
+
 	@Override
 	public String csvID() {
 		return Integer.toString(id);
 	}
-	
+
 	@Override
 	public void setCsvID(String iD) throws InvalidDataException {
 		try {
@@ -48,19 +48,19 @@ public class CompetenceRequirement extends CSVEntity {
 			throw new InvalidDataException(e);
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return "CompetenceRequirement [id=" + id + ", competence=" + competence + ", requiredEmployees="
 				+ requiredEmployees + "]";
 	}
-	
+
 	@Override
 	public HashMap<Class<? extends CSVEntity>, ArrayList<String>> getReferencedObjectsIDS() {
 		assert (false);
 		return null;
 	}
-	
+
 	@Override
 	public void setReferencedObjects(HashMap<Class<? extends CSVEntity>, ArrayList<Object>> hashMap) {
 		assert (false);

@@ -6,9 +6,9 @@ import csv.InvalidDataException;
  * Représente le code d'une compétence
  */
 public class CompetenceCode {
-	private char	category;
-	private int		subCategory;
-	
+	private char category;
+	private int subCategory;
+
 	/**
 	 * @param category
 	 * @param subCategory
@@ -19,7 +19,7 @@ public class CompetenceCode {
 		this.category = category;
 		this.subCategory = subCategory;
 	}
-	
+
 	/**
 	 * @param code
 	 * @throws InvalidDataException
@@ -39,25 +39,25 @@ public class CompetenceCode {
 			throw new InvalidDataException(e);
 		}
 	}
-	
+
 	public String toString() {
 		return category + "." + subCategory + ".";
 	}
-	
+
 	public char getCategory() {
 		return category;
 	}
-	
+
 	public void setCategory(char category) {
 		this.category = category;
 	}
-	
+
 	public int getSubCategory() {
 		return subCategory;
 	}
-	
+
 	public void setSubCategory(int subCategory) {
 		this.subCategory = subCategory;
 	}
-	
+
 }

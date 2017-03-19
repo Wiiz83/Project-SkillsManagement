@@ -12,17 +12,17 @@ import csv.InvalidDataException;
  * @author David Classe Mission
  */
 public class Mission extends CSVEntity {
-	private String								nomM;
-	private Date								dateDebut;
-	private Date								dateFin;
-	private int									duree;
-	private int									nbPersReq;
-	private int									id	= -1;
-	private ArrayList<Employee>					AffEmp;
-	private ArrayList<CompetenceRequirement>	CompReq;
-	
+	private String nomM;
+	private Date dateDebut;
+	private Date dateFin;
+	private int duree;
+	private int nbPersReq;
+	private int id = -1;
+	private ArrayList<Employee> AffEmp;
+	private ArrayList<CompetenceRequirement> CompReq;
+
 	private boolean forcer_planification = false;
-	
+
 	/**
 	 * @param nomM
 	 * @param dateDebut
@@ -40,33 +40,48 @@ public class Mission extends CSVEntity {
 		this.CompReq = new ArrayList<>();
 		this.setDateFin(setDateFin(duree));
 	}
-	
+
 	/**
 	 * @return le statut actuel de la mission
 	 */
 	public Status getStatus() {
-		
+
 		if (Cal.today().compareTo(dateFin) > 0) {
-			return Status.TERMINEE; 	//Vérification de si la mission est terminée puis retour
+			return Status.TERMINEE; // Vérification de si la mission est
+									// terminée puis retour
 		}
 		if (AffEmp.size() < nbPersReq || forcer_planification)
 			if (Cal.today().compareTo(dateDebut) > 0) {
-				return Status.EN_COURS; //Vérification de si la mission est commencée puis retour
+				return Status.EN_COURS; // Vérification de si la mission est
+										// commencée puis retour
 			} else {
-				return Status.PLANIFIEE;  //Vérification de si la mission est planifiée mais non commencée puis retour
+				return Status.PLANIFIEE; // Vérification de si la mission est
+											// planifiée mais non commencée puis
+											// retour
 			}
 		else
-			return Status.PREPARATION; //Si aucun des états précédents ne correspond alors la mission est encore en préparation
+			return Status.PREPARATION; // Si aucun des états précédents ne
+										// correspond alors la mission est
+										// encore en préparation
 	}
-	
+
 	public void planifier() {
 		this.forcer_planification = true;
 	}
-	
+
 	public boolean estModifiable() {
-		return (getStatus() == Status.PREPARATION || getStatus() == Status.PLANIFIEE); //retourne si oui ou non la mission est toujours modifiable
+		return (getStatus() == Status.PREPARATION || getStatus() == Status.PLANIFIEE); // retourne
+																						// si
+																						// oui
+																						// ou
+																						// non
+																						// la
+																						// mission
+																						// est
+																						// toujours
+																						// modifiable
 	}
-	
+
 	/**
 	 * @param duree
 	 * @return calcul la date de fin et l'instancie sur la mission
@@ -77,7 +92,7 @@ public class Mission extends CSVEntity {
 		cal.add(Calendar.DATE, duree);
 		return cal.getTime();
 	}
-	
+
 	/**
 	 * @param cr
 	 * @return ajoute une compétence a la mission (true si réussi false si echec
@@ -86,14 +101,14 @@ public class Mission extends CSVEntity {
 	public boolean addCompetenceReq(CompetenceRequirement cr) {
 		return CompReq.add(cr);
 	}
-	
+
 	/**
 	 * @return l'arraylist des compétences requises sur le projet
 	 */
 	public ArrayList<CompetenceRequirement> getCompReq() {
 		return CompReq;
 	}
-	
+
 	/**
 	 * @param e
 	 *            Affectation d'un employé sur la mission
@@ -101,66 +116,66 @@ public class Mission extends CSVEntity {
 	public void affectEmployee(Employee e) {
 		AffEmp.add(e);
 	}
-	
+
 	////////// getters - setters
 	public String getNomM() {
 		return nomM;
 	}
-	
+
 	public void setNomM(String nomM) {
 		this.nomM = nomM;
 	}
-	
+
 	public Date getDateDebut() {
 		return dateDebut;
 	}
-	
+
 	public void setDateDebut(Date dateDebut) {
 		this.dateDebut = dateDebut;
 	}
-	
+
 	public int getDuree() {
 		return duree;
 	}
-	
+
 	public void setDuree(int duree) {
 		this.duree = duree;
 	}
-	
+
 	public int getNbPersReq() {
 		return nbPersReq;
 	}
-	
+
 	public void setNbPersReq(int nbPersReq) {
 		this.nbPersReq = nbPersReq;
 	}
-	
+
 	public int getID() {
 		return id;
 	}
-	
+
 	public void setID(int id) {
 		this.id = id;
 	}
-	
+
 	public ArrayList<Employee> getAffEmp() {
 		return AffEmp;
 	}
-	
+
 	public void setAffEmp(ArrayList<Employee> affEmp) {
 		AffEmp = affEmp;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Mission [nomM=" + nomM + ", id=" + id + ", AffEmp=" + AffEmp + ", CompReq=" + CompReq + "]";
 	}
-	
+
 	@Override
 	public String csvID() {
 		return Integer.toString(id);
 	}
-	
+
 	public void setCsvID(String iD) throws InvalidDataException {
 		try {
 			setID(Integer.parseInt(iD));
@@ -168,7 +183,7 @@ public class Mission extends CSVEntity {
 			throw new InvalidDataException(e);
 		}
 	}
-	
+
 	@Override
 	public HashMap<Class<? extends CSVEntity>, ArrayList<String>> getReferencedObjectsIDS() {
 		HashMap<Class<? extends CSVEntity>, ArrayList<String>> IDS = new HashMap<>();
@@ -176,23 +191,23 @@ public class Mission extends CSVEntity {
 		IDS.put(CompetenceRequirement.class, getIDS(CompReq));
 		return IDS;
 	}
-	
+
 	@Override
 	public void setReferencedObjects(HashMap<Class<? extends CSVEntity>, ArrayList<Object>> hashMap) {
 		AffEmp = castArrayList(hashMap, Employee.class);
 		CompReq = castArrayList(hashMap, CompetenceRequirement.class);
 	}
-	
+
 	public Date getDateFin() {
 		return dateFin;
 	}
-	
+
 	public void setDateFin(Date dateFin) {
 		this.dateFin = dateFin;
 	}
-	
+
 	public boolean getForcer_planification() {
 		return forcer_planification;
 	}
-	
+
 }

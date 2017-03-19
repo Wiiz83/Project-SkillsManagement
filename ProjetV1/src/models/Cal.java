@@ -4,7 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Cal {
-	
+
 	/**
 	 * @return La date d'aujourd'hui ou une autre date pour les tests
 	 */
@@ -13,8 +13,8 @@ public class Cal {
 		today.clear(Calendar.HOUR);
 		today.clear(Calendar.MINUTE);
 		today.clear(Calendar.SECOND);
-		
+
 		return today.getTime();
 	}
-	
+
 }

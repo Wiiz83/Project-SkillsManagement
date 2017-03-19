@@ -1,12 +1,8 @@
 package models;
 
 /**
- * @author David
- * Enumération des status de missions
+ * @author David Enumération des status de missions
  */
 public enum Status {
-	PREPARATION,
-	PLANIFIEE,
-	EN_COURS,
-	TERMINEE;	
+	PREPARATION, PLANIFIEE, EN_COURS, TERMINEE;
 }

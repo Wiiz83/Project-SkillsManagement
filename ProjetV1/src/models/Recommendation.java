@@ -11,14 +11,14 @@ import csv.CSVObjects;
  * @author David Classe Recommendation
  */
 public class Recommendation {
-	
-	private static int							recID;
-	private Mission								misToRec;
-	private ArrayList<Employee>					empRec;
-	private ArrayList<CompetenceRequirement>	misCompReq;
-	private ArrayList<Employee>					empAff;
-	private ArrayList<Employee>					empToRec;
-	
+
+	private static int recID;
+	private Mission misToRec;
+	private ArrayList<Employee> empRec;
+	private ArrayList<CompetenceRequirement> misCompReq;
+	private ArrayList<Employee> empAff;
+	private ArrayList<Employee> empToRec;
+
 	/**
 	 * @param misToRec
 	 *            (La mission qui est concernée par les recommendations
@@ -30,7 +30,7 @@ public class Recommendation {
 		this.misCompReq = misToRec.getCompReq();
 		this.empAff = misToRec.getAffEmp();
 	}
-	
+
 	/**
 	 * @throws IOException
 	 * @throws NumberFormatException
@@ -42,7 +42,9 @@ public class Recommendation {
 	public void setRecommendations() throws CSVException {
 		CSVObjects<Employee> employee_csv = new CSVObjects<>(Employee.class);
 		empRec = employee_csv.getAll();
-		for (Employee e : empRec) { //Boucles et conditions pour vérifier si l'employé est recommendable et si oui l'ajoute
+		for (Employee e : empRec) { // Boucles et conditions pour vérifier si
+									// l'employé est recommendable et si oui
+									// l'ajoute
 			for (Competence c : e.getCompetences()) {
 				if (checkCompMission(c) != 0) {
 					if (!this.empToRec.contains(e))
@@ -51,14 +53,14 @@ public class Recommendation {
 			}
 		}
 	}
-	
+
 	/**
 	 * @return la liste des employés recommendés pour la mission
 	 */
 	public ArrayList<Employee> GetEmpToRec() {
 		return this.empToRec;
 	}
-	
+
 	/**
 	 * Efface tout les employés déjà présent sur la mission des recommendations
 	 */
@@ -71,7 +73,7 @@ public class Recommendation {
 			}
 		}
 	}
-	
+
 	/**
 	 * @param Compétence
 	 *            a vérifier concernant la mission
@@ -82,17 +84,22 @@ public class Recommendation {
 		int nbEmpReqComp = 0;
 		for (CompetenceRequirement cr : this.misCompReq) {
 			if (cr.getCompetence() == c) {
-				nbEmpReqComp = cr.getNbRequiredEmployees(); //On récupère le nombre d'employés requis pour la compétence
+				nbEmpReqComp = cr.getNbRequiredEmployees(); // On récupère le
+															// nombre d'employés
+															// requis pour la
+															// compétence
 			}
 		}
 		for (Employee e : this.empAff) {
 			for (Competence cEmp : e.getCompetences()) {
 				if (cEmp == c) {
-					nbEmpReqComp--; //On décrémente le compteur pour avoir au final le nombre d'employés encore requis
+					nbEmpReqComp--; // On décrémente le compteur pour avoir au
+									// final le nombre d'employés encore requis
 				}
 			}
 		}
-		return nbEmpReqComp; //On retourne le nombre d'employé en manque sur la compétence
+		return nbEmpReqComp; // On retourne le nombre d'employé en manque sur la
+								// compétence
 	}
-	
+
 }
