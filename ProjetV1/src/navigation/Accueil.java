@@ -1,15 +1,26 @@
 package navigation;
 
+import java.io.IOException;
+import java.text.ParseException;
+
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import gui.Table;
 import gui.Titre;
+import models.Status;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
+
+import csv.CSVException;
+import csv.InvalidCSVException;
+import csv.InvalidDataException;
 
 public class Accueil extends JPanel  {
 	
@@ -36,9 +47,18 @@ public class Accueil extends JPanel  {
 			titreMEC.setBounds(10, 10, 800, 20);
 			add(titreMEC);
 			
-		    DefaultTableModel modelMEC = new DefaultTableModel(dataTableMEC,headerTableMEC);
-		    Table tableMEC = new Table(modelMEC,10, 40, 800, 250);
-		  	add(tableMEC.getJScrollPane());
+		  	 JTable tableMEC= new JTable();
+				try {
+					tableMEC = JTableRequests.MissionsAvecStatus(Status.EN_COURS);
+				} catch (CSVException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				tableMEC.setFillsViewportHeight(true);
+				JScrollPane jsMEC = new JScrollPane(tableMEC);
+				jsMEC.setVisible(true);
+				jsMEC.setBounds(10, 40, 800, 250);
+				add(jsMEC);
 		    
 		    /*
 		     *  MISSION A VENIR 
@@ -47,9 +67,18 @@ public class Accueil extends JPanel  {
 		  	titreMAV.setBounds(10, 310, 800, 20);
 			add(titreMAV);
 
-		    DefaultTableModel modelMAV = new DefaultTableModel(dataTableMAV,headerTableMAV);
-		    Table tableMAV = new Table(modelMAV,10, 340, 800, 250);
-		  	add(tableMAV.getJScrollPane());
+		  	 JTable tableMAV= new JTable();
+				try {
+					tableMAV = JTableRequests.MissionsduMois();
+				} catch (CSVException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				tableMAV.setFillsViewportHeight(true);
+				JScrollPane jsMAV = new JScrollPane(tableMAV);
+				jsMAV.setVisible(true);
+				jsMAV.setBounds(10, 340, 800, 250);
+				add(jsMAV);
 
 		    /*
 		     *  CAMEMBERT
