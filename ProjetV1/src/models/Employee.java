@@ -13,12 +13,9 @@ import csv.InvalidDataException;
  * Représente un employé
  *
  */
-public class Employee extends CSVEntity {
-	private String name;
-	private String lastName;
+public class Employee extends EmployeeAbstract {
+
 	private Date entryDate;
-	private int ID;
-	private ArrayList<Competence> Competences;
 
 	// Constructeur basique
 	public Employee(String name, String lastName, Date entryDate) {
@@ -47,33 +44,7 @@ public class Employee extends CSVEntity {
 		Competences = new ArrayList<Competence>();
 	}
 
-	public ArrayList<Competence> getCompetences() {
-		return Competences;
-	}
-
-	public void addCompetence(Competence c) {
-		Competences.add(c);
-	}
-
-	public void addCompetences(ArrayList<Competence> list) {
-		Competences.addAll(list);
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+	
 
 	public Date getEntryDate() {
 		return entryDate;
@@ -100,13 +71,7 @@ public class Employee extends CSVEntity {
 				+ Competences + "]";
 	}
 
-	public int getID() {
-		return ID;
-	}
-
-	public void setID(int iD) {
-		ID = iD;
-	}
+	
 
 	public void setCsvID(String iD) throws InvalidDataException {
 		try {

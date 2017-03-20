@@ -11,17 +11,8 @@ import csv.InvalidDataException;
 /**
  * @author David Classe Mission
  */
-public class Mission extends CSVEntity {
-	private String nomM;
-	private Date dateDebut;
-	private Date dateFin;
-	private int duree;
-	private int nbPersReq;
-	private int id = -1;
-	private ArrayList<Employee> AffEmp;
+public class Mission extends MissionAbstract {
 	private ArrayList<CompetenceRequirement> CompReq;
-
-	private boolean forcer_planification = false;
 
 	/**
 	 * @param nomM
@@ -117,31 +108,6 @@ public class Mission extends CSVEntity {
 		AffEmp.add(e);
 	}
 
-	////////// getters - setters
-	public String getNomM() {
-		return nomM;
-	}
-
-	public void setNomM(String nomM) {
-		this.nomM = nomM;
-	}
-
-	public Date getDateDebut() {
-		return dateDebut;
-	}
-
-	public void setDateDebut(Date dateDebut) {
-		this.dateDebut = dateDebut;
-	}
-
-	public int getDuree() {
-		return duree;
-	}
-
-	public void setDuree(int duree) {
-		this.duree = duree;
-	}
-
 	public int getNbPersReq() {
 		return nbPersReq;
 	}
@@ -150,30 +116,9 @@ public class Mission extends CSVEntity {
 		this.nbPersReq = nbPersReq;
 	}
 
-	public int getID() {
-		return id;
-	}
-
-	public void setID(int id) {
-		this.id = id;
-	}
-
-	public ArrayList<Employee> getAffEmp() {
-		return AffEmp;
-	}
-
-	public void setAffEmp(ArrayList<Employee> affEmp) {
-		AffEmp = affEmp;
-	}
-
 	@Override
 	public String toString() {
 		return "Mission [nomM=" + nomM + ", id=" + id + ", AffEmp=" + AffEmp + ", CompReq=" + CompReq + "]";
-	}
-
-	@Override
-	public String csvID() {
-		return Integer.toString(id);
 	}
 
 	public void setCsvID(String iD) throws InvalidDataException {
