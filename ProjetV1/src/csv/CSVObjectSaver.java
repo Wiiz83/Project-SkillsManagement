@@ -13,10 +13,12 @@ import java.util.HashMap;
  */
 public class CSVObjectSaver<E extends CSVEntity> {
 	
-	private CSVDocument doc;
+	private CSVDocument	doc;
+	CSVCache			cache;
 	
-	public CSVObjectSaver(CSVDocument doc) {
+	public CSVObjectSaver(CSVDocument doc, CSVCache cache) {
 		super();
+		this.cache = cache;
 		this.doc = doc;
 	}
 	
@@ -41,7 +43,7 @@ public class CSVObjectSaver<E extends CSVEntity> {
 				continue;
 			CSVAssociation assoc = new CSVAssociation(e.getClass(), N);
 			CSVDocument assocDoc = new CSVDocument(assoc);
-			CSVObjects<? extends CSVEntity> nObjects = new CSVObjects<>(N);
+			CSVObjects<? extends CSVEntity> nObjects = new CSVObjects<>(N, cache);
 			// Check that the referenced objects already exist in the CSV
 			// documents
 			for (String ID : associatedObjectsIDS.get(N)) {

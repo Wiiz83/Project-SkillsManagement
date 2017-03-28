@@ -6,22 +6,26 @@ import java.util.Date;
 
 import csv.CSVEntity;
 
-public abstract class MissionAbstract extends CSVEntity{
-	protected String nomM;
-	protected Date dateDebut;
-	protected Date dateFin;
-	protected int duree;
-	protected int nbPersReq;
-	protected int id = -1;
-	protected ArrayList<Employee> AffEmp;
-	protected boolean forcer_planification = false;
+public abstract class MissionAbstract extends CSVEntity {
+	/**
+	 * 
+	 */
+	private static final long		serialVersionUID		= 6150557649409166209L;
+	protected String				nomM;
+	protected Date					dateDebut;
+	protected Date					dateFin;
+	protected int					duree;
+	protected int					nbPersReq;
+	protected int					id						= -1;
+	protected ArrayList<Employee>	AffEmp;
+	protected boolean				forcer_planification	= false;
 	
 	public Status getStatus() {
-
+		
 		if (Cal.today().compareTo(dateFin) > 0) {
 			return Status.TERMINEE; // Vérification de si la mission est
 									// terminée puis retour
-		}else if (AffEmp.size() < nbPersReq || forcer_planification)
+		} else if (AffEmp.size() < nbPersReq || forcer_planification)
 			if (Cal.today().compareTo(dateDebut) > 0) {
 				return Status.EN_COURS; // Vérification de si la mission est
 										// commencée puis retour
@@ -37,7 +41,7 @@ public abstract class MissionAbstract extends CSVEntity{
 	}
 	
 	public boolean estModifiable() {
-		return (getStatus() == Status.PREPARATION || getStatus() == Status.PLANIFIEE); 
+		return (getStatus() == Status.PREPARATION || getStatus() == Status.PLANIFIEE);
 		// retourne si oui ou non la mission est toujours modifiable
 	}
 	
@@ -55,20 +59,20 @@ public abstract class MissionAbstract extends CSVEntity{
 	public int getID() {
 		return id;
 	}
-
+	
 	public void setID(int id) {
 		this.id = id;
 	}
-
+	
 	public ArrayList<Employee> getAffEmp() {
 		return AffEmp;
 	}
-
+	
 	public void setAffEmp(ArrayList<Employee> affEmp) {
 		AffEmp = affEmp;
 	}
 	
-	//////////getters - setters
+	////////// getters - setters
 	public String getNomM() {
 		return nomM;
 	}

@@ -1,25 +1,31 @@
 package models;
 
+import java.io.Serializable;
+
 import csv.InvalidDataException;
 
 /**
  * Représente le code d'une compétence
  */
-public class CompetenceCode {
-	private char category;
-	private int subCategory;
-
+public class CompetenceCode implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 7950636579110754928L;
+	private char				category;
+	private int					subCategory;
+	
 	/**
 	 * @param category
 	 * @param subCategory
-	 *            Constructeur pour les code de type 'A' . 'A' (A.1)
+	 *            Constructeur pour les code de type 'A' . 1 (A.1)
 	 */
 	public CompetenceCode(char category, int subCategory) {
 		super();
 		this.category = category;
 		this.subCategory = subCategory;
 	}
-
+	
 	/**
 	 * @param code
 	 * @throws InvalidDataException
@@ -39,25 +45,25 @@ public class CompetenceCode {
 			throw new InvalidDataException(e);
 		}
 	}
-
+	
 	public String toString() {
 		return category + "." + subCategory + ".";
 	}
-
+	
 	public char getCategory() {
 		return category;
 	}
-
+	
 	public void setCategory(char category) {
 		this.category = category;
 	}
-
+	
 	public int getSubCategory() {
 		return subCategory;
 	}
-
+	
 	public void setSubCategory(int subCategory) {
 		this.subCategory = subCategory;
 	}
-
+	
 }

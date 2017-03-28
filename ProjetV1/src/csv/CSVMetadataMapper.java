@@ -32,10 +32,7 @@ public class CSVMetadataMapper {
 			Class<? extends CSVEntity> E, Class<? extends CSVEntity> N, String path, boolean ignoreFirstLine,
 			int idColumnPosition
 	) {
-		if (path.equals("./ressources/fichiers/missions_competences.csv")) {
-			@SuppressWarnings("unused")
-			int i = 0;
-		}
+		
 		ArrayList<Class<? extends CSVEntity>> NList;
 		
 		if (!associations.containsKey(E))

@@ -20,7 +20,8 @@ public class CSVDeserializer {
 	 * @throws CSVException
 	 */
 	@SuppressWarnings("unchecked")
-	public static <E extends CSVEntity> E Deserialize(CSVLine line, Class<?> c) throws IOException, CSVException {
+	public static <E extends CSVEntity> E Deserialize(CSVLine line, Class<?> c, CSVCache cache)
+			throws IOException, CSVException {
 		try {
 			if (c == Competence.class)
 				return (E) CSVDeserializer.Competence(line);
@@ -31,7 +32,7 @@ public class CSVDeserializer {
 				return (E) CSVDeserializer.Mission(line);
 			}
 			if (c == CompetenceRequirement.class) {
-				return (E) CSVDeserializer.CompetenceRequirement(line);
+				return (E) CSVDeserializer.CompetenceRequirement(line, cache);
 			} else {
 				throw new IllegalArgumentException("Object not deserializable");
 			}
@@ -40,9 +41,9 @@ public class CSVDeserializer {
 		}
 	}
 	
-	private static CompetenceRequirement CompetenceRequirement(CSVLine line)
+	private static CompetenceRequirement CompetenceRequirement(CSVLine line, CSVCache cache)
 			throws ParseException, NumberFormatException, IOException, CSVException {
-		CSVObjects<Competence> compreq = new CSVObjects<>(Competence.class);
+		CSVObjects<Competence> compreq = new CSVObjects<>(Competence.class, cache);
 		return new CompetenceRequirement(compreq.getByID(line.get(1)), Integer.parseInt(line.get(0)));
 	}
 	

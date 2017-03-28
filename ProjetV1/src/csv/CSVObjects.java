@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,8 @@ public class CSVObjects<E extends CSVEntity> {
 	private CSVObjectLoader<E>	csvloader;
 	private CSVObjectSaver<E>	csvsaver;
 	private CSVObjectDeleter<E>	csvdeleter;
+	private CSVCache			cache;
+	private Class<E>			entityClass;
 	
 	/**
 	 * Constructeur qui prend en paramètre la classe d'entités
@@ -28,19 +31,22 @@ public class CSVObjects<E extends CSVEntity> {
 	 * @param c
 	 * @throws IOException
 	 */
-	public CSVObjects(Class<? extends CSVEntity> c) throws CSVException {
+	public CSVObjects(Class<E> c, CSVCache cache) throws CSVException {
+		
 		super();
+		this.entityClass = c;
+		this.cache = cache;
 		try {
 			this.doc = new CSVDocument(c);
 		} catch (IOException e) {
 			throw new CSVException(e);
 		}
 		try {
-			this.csvloader = new CSVObjectLoader<E>(c);
+			this.csvloader = new CSVObjectLoader<E>(c, cache);
 		} catch (IOException e) {
 			throw new CSVException(e);
 		}
-		this.csvsaver = new CSVObjectSaver<E>(doc);
+		this.csvsaver = new CSVObjectSaver<E>(doc, cache);
 		this.csvdeleter = new CSVObjectDeleter<E>(doc);
 	}
 	
@@ -79,6 +85,7 @@ public class CSVObjects<E extends CSVEntity> {
 		} catch (NumberFormatException | IOException | CSVUpdateException | ParseException e1) {
 			throw new CSVException(e1);
 		}
+		cache.getCache(entityClass).put(e.csvID(), e);
 	}
 	
 	/**
@@ -98,27 +105,7 @@ public class CSVObjects<E extends CSVEntity> {
 	}
 	
 	/**
-	 * @param ID
-	 * @return Retourne un objet par son ID ou NULL si l'ID est introuvable.
-	 * @throws IOException
-	 * @throws NumberFormatException
-	 * @throws ParseException
-	 * @throws CSVException
-	 */
-	public E getByID(String ID) throws CSVException {
-		CSVLine line = doc.getLineByID(ID);
-		if (line == null) {
-			return null;
-		}
-		try {
-			return csvloader.createObject(line);
-		} catch (NumberFormatException | IOException | ParseException e) {
-			throw new CSVException(e);
-		}
-	}
-	
-	/**
-	 * Supprimer un objet et les occurences de son ID dans les associations.
+	 * Supprime un objet et les occurences de son ID dans les associations.
 	 * 
 	 * @param e
 	 * @throws CSVUpdateException
@@ -128,9 +115,11 @@ public class CSVObjects<E extends CSVEntity> {
 	public void delete(E e) throws CSVException {
 		try {
 			csvdeleter.deleteObject(e);
+			
 		} catch (IOException | CSVUpdateException e1) {
 			throw new CSVException(e1);
 		}
+		cache.getCache(entityClass).remove(e.csvID());
 	}
 	
 	/**
@@ -145,7 +134,7 @@ public class CSVObjects<E extends CSVEntity> {
 	 */
 	public void modify(E e) throws CSVException {
 		try {
-			csvdeleter.deleteObject(e, false);
+			csvdeleter.deleteObject(e);
 		} catch (IOException | CSVUpdateException e1) {
 			throw new CSVException(e1);
 		}
@@ -154,10 +143,37 @@ public class CSVObjects<E extends CSVEntity> {
 		} catch (NumberFormatException | IOException | CSVUpdateException | ParseException e1) {
 			throw new CSVException(e1);
 		}
+		cache.getCache(entityClass).put(e.csvID(), e);
 	}
 	
 	/**
-	 * Retourne les objets filtrés par une expression labmda
+	 * @param ID
+	 * @return Retourne un objet par son ID ou NULL si l'ID est introuvable.
+	 * @throws IOException
+	 * @throws NumberFormatException
+	 * @throws ParseException
+	 * @throws CSVException
+	 */
+	public E getByID(String ID) throws CSVException {
+		E entity = cache.getCache(entityClass).get(ID);
+		if (entity != null)
+			return entity;
+		
+		CSVLine line = doc.getLineByID(ID);
+		if (line == null) {
+			return null;
+		}
+		try {
+			entity = csvloader.createObject(line);
+		} catch (NumberFormatException | IOException | ParseException e) {
+			throw new CSVException(e);
+		}
+		cache.getCache(entityClass).put(ID, entity);
+		return entity;
+	}
+	
+	/**
+	 * Retourne les objets filtrés par une prédicat labmda
 	 * 
 	 * @param filter
 	 * @return
@@ -171,7 +187,7 @@ public class CSVObjects<E extends CSVEntity> {
 	}
 	
 	/**
-	 * Retourne les objets filtrés par une expression labmda et triés avec le
+	 * Retourne les objets filtrés par prédicat labmda et triés avec le
 	 * comparateur fourni
 	 * 
 	 * @param filter
@@ -203,13 +219,23 @@ public class CSVObjects<E extends CSVEntity> {
 	 */
 	public ArrayList<E> getAll() throws CSVException {
 		ArrayList<E> all = new ArrayList<>();
+		HashMap<String, E> map = new HashMap<>();
+		int idPosition = doc.getIdColumnPosition();
 		try {
 			for (CSVLine line : doc.getAll()) {
-				all.add(csvloader.createObject(line));
+				E entity;
+				if (cache.getCache(entityClass).containsKey(line.get(idPosition)))
+					entity = cache.getCache(entityClass).get(line.get(idPosition));
+				else {
+					entity = csvloader.createObject(line);
+					map.put(entity.csvID(), entity);
+				}
+				all.add(entity);
 			}
 		} catch (NumberFormatException | IOException | ParseException e) {
 			throw new CSVException(e);
 		}
+		cache.getCache(entityClass).putAll(map);
 		return all;
 	}
 	
@@ -219,7 +245,5 @@ public class CSVObjects<E extends CSVEntity> {
 		ArrayList<Integer> IDs = doc.getIDS();
 		int generatedID = Collections.max(IDs) + 1;
 		return Integer.toString(generatedID);
-		
 	}
-	
 }

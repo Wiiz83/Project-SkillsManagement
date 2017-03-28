@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 
+import csv.CSVCache;
 import csv.CSVException;
 import csv.CSVObjects;
 
@@ -11,26 +12,28 @@ import csv.CSVObjects;
  * @author David Classe Recommendation
  */
 public class Recommendation {
-
-	private static int recID;
-	private Mission misToRec;
-	private ArrayList<Employee> empRec;
-	private ArrayList<CompetenceRequirement> misCompReq;
-	private ArrayList<Employee> empAff;
-	private ArrayList<Employee> empToRec;
-
+	
+	private static int							recID;
+	private Mission								misToRec;
+	private ArrayList<Employee>					empRec;
+	private ArrayList<CompetenceRequirement>	misCompReq;
+	private ArrayList<Employee>					empAff;
+	private ArrayList<Employee>					empToRec;
+	private CSVCache							cache;
+	
 	/**
 	 * @param misToRec
 	 *            (La mission qui est concernée par les recommendations
 	 */
-	public Recommendation(Mission misToRec) {
+	public Recommendation(Mission misToRec, CSVCache cache) {
 		super();
 		this.recID++;
 		this.misToRec = misToRec;
 		this.misCompReq = misToRec.getCompReq();
 		this.empAff = misToRec.getAffEmp();
+		this.cache = cache;
 	}
-
+	
 	/**
 	 * @throws IOException
 	 * @throws NumberFormatException
@@ -40,7 +43,7 @@ public class Recommendation {
 	 * @throws CSVException
 	 */
 	public void setRecommendations() throws CSVException {
-		CSVObjects<Employee> employee_csv = new CSVObjects<>(Employee.class);
+		CSVObjects<Employee> employee_csv = new CSVObjects<>(Employee.class, cache);
 		empRec = employee_csv.getAll();
 		for (Employee e : empRec) { // Boucles et conditions pour vérifier si
 									// l'employé est recommendable et si oui
@@ -53,14 +56,14 @@ public class Recommendation {
 			}
 		}
 	}
-
+	
 	/**
 	 * @return la liste des employés recommendés pour la mission
 	 */
 	public ArrayList<Employee> GetEmpToRec() {
 		return this.empToRec;
 	}
-
+	
 	/**
 	 * Efface tout les employés déjà présent sur la mission des recommendations
 	 */
@@ -73,7 +76,7 @@ public class Recommendation {
 			}
 		}
 	}
-
+	
 	/**
 	 * @param Compétence
 	 *            a vérifier concernant la mission
@@ -101,5 +104,5 @@ public class Recommendation {
 		return nbEmpReqComp; // On retourne le nombre d'employé en manque sur la
 								// compétence
 	}
-
+	
 }

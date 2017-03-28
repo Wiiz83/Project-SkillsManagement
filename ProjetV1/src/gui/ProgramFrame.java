@@ -5,17 +5,19 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
-public class ProgramFrame {
-	private JFrame frame;
-	private Header header;
-	private Image iconImage;
-	public static final int WIDTH = 1280;
-	public static final int HEIGHT = 720;
+import data.Data;
 
+public class ProgramFrame {
+	private JFrame			frame;
+	private Header			header;
+	private Image			iconImage;
+	public static final int	WIDTH	= 1280;
+	public static final int	HEIGHT	= 720;
+	
 	/**
 	 * Création d'une fenêtre et affichage à l'écran de celle-ci
 	 */
-	public void displayGUI() {
+	public void displayGUI(Data data) {
 		this.frame = new JFrame();
 		this.frame.setSize(WIDTH, HEIGHT);
 		this.frame.setTitle("Skill Expert");
@@ -29,8 +31,8 @@ public class ProgramFrame {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		this.header = new Header(this.frame);
+		
+		this.header = new Header(this.frame, data);
 		frame.getContentPane().add(header);
 		this.frame.setVisible(true);
 	}

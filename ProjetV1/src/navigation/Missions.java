@@ -19,43 +19,45 @@ import javax.swing.JTextField;
 import javax.swing.table.TableModel;
 
 import csv.CSVException;
+import data.Data;
 import gui.Button;
 import gui.Titre;
 import models.Competence;
 
 /**
- * Page "Missions" de l'application contenant la liste de toutes les
- * missions avec possibilité d'ajout, suppression et modification
+ * Page "Missions" de l'application contenant la liste de toutes les missions
+ * avec possibilité d'ajout, suppression et modification
  * 
  */
 public class Missions extends JPanel implements MouseListener {
-
-	Button boutonNouveau;
-	Button boutonModifier;
-	Button boutonSupprimer;
-	Button boutonEnregistrer;
-	Button boutonAnnuler;
-	JTable listeMissions;
-	Vector<int[]> selectedCells = new Vector<int[]>();
-	int IDSelect;
-	JTextField nom;
-	JComboBox<String> statut;
-	JTable competences;
-	private static final long serialVersionUID = 1L;
-
 	
-	public Missions() {
-
+	Button						boutonNouveau;
+	Button						boutonModifier;
+	Button						boutonSupprimer;
+	Button						boutonEnregistrer;
+	Button						boutonAnnuler;
+	JTable						listeMissions;
+	Vector<int[]>				selectedCells		= new Vector<int[]>();
+	int							IDSelect;
+	JTextField					nom;
+	JComboBox<String>			statut;
+	JTable						competences;
+	private static final long	serialVersionUID	= 1L;
+	
+	Data data;
+	
+	public Missions(Data data) {
+		
 		setOpaque(false);
 		setLayout(null);
 		setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
-
+		
 		/**
 		 * JTable contenant toutes les missions
 		 */
 		this.listeMissions = new JTable();
 		try {
-			listeMissions = JTableRequests.toutesLesMissions();
+			listeMissions = JTables.missions(data.Missions().tous());
 			listeMissions.setFillsViewportHeight(true);
 			listeMissions.addMouseListener(this);
 			JScrollPane js = new JScrollPane(listeMissions);
@@ -65,7 +67,7 @@ public class Missions extends JPanel implements MouseListener {
 		} catch (CSVException e) {
 			e.printStackTrace();
 		}
-
+		
 		/**
 		 * Création et positionnement des boutons de gestion de formulaire
 		 */
@@ -89,35 +91,35 @@ public class Missions extends JPanel implements MouseListener {
 		add(this.boutonSupprimer);
 		add(this.boutonEnregistrer);
 		add(this.boutonAnnuler);
-
+		
 		/**
 		 * Création et positionnement des éléments du formulaire
 		 */
 		Titre titre = new Titre(" Détails du salarié :");
 		titre.setBounds(330, 10, 930, 20);
 		add(titre);
-
+		
 		JLabel labelNom = new JLabel("Nom :");
 		labelNom.setBounds(350, 50, 150, 25);
 		add(labelNom);
-
+		
 		JLabel labelPrenom = new JLabel("Prénom :");
 		labelPrenom.setBounds(350, 80, 150, 25);
 		add(labelPrenom);
-
+		
 		JLabel labelDate = new JLabel("Date d'entrée :");
 		labelDate.setBounds(350, 110, 150, 25);
 		add(labelDate);
-
+		
 		JLabel labelCompetences = new JLabel("Liste des compétences :");
 		labelCompetences.setBounds(350, 140, 150, 25);
 		add(labelCompetences);
-
+		
 		this.nom = new JTextField();
 		this.nom.addMouseListener(this);
 		this.nom.setBounds(450, 50, 150, 25);
 		add(this.nom);
-
+		
 		this.competences = new JTable();
 		this.competences.addMouseListener(this);
 		this.competences.setFillsViewportHeight(true);
@@ -125,10 +127,9 @@ public class Missions extends JPanel implements MouseListener {
 		js.setVisible(true);
 		js.setBounds(350, 170, 350, 350);
 		add(js);
-
+		
 		ChargementConsultation();
 	}
-	
 	
 	/**
 	 * Mode Consultation : - Lecture des informations détaillés de l'élément
@@ -137,7 +138,7 @@ public class Missions extends JPanel implements MouseListener {
 	public void ChargementConsultation() {
 		this.nom.setEditable(false);
 		this.competences.setEnabled(false);
-
+		
 		this.boutonEnregistrer.setVisible(false);
 		this.boutonAnnuler.setVisible(false);
 		this.boutonNouveau.setVisible(true);
@@ -145,7 +146,7 @@ public class Missions extends JPanel implements MouseListener {
 		this.boutonSupprimer.setVisible(true);
 		this.listeMissions.setEnabled(true);
 	}
-
+	
 	/**
 	 * Mode Modification : - Possibilité de modifier les informations détaillés
 	 * de l'élément sélectionné - Les éléments de la liste ne sont pas
@@ -154,7 +155,7 @@ public class Missions extends JPanel implements MouseListener {
 	public void ChargementModification() {
 		this.nom.setEditable(true);
 		this.competences.setEnabled(true);
-
+		
 		this.boutonEnregistrer.setVisible(true);
 		this.boutonAnnuler.setVisible(true);
 		this.boutonNouveau.setVisible(false);
@@ -168,9 +169,9 @@ public class Missions extends JPanel implements MouseListener {
 	 * formulaire - Les éléments de la liste ne sont pas séléctionnables
 	 */
 	public void ChargementNouveau() {
-
+		
 	}
-
+	
 	/**
 	 * Dessine le fond blanc du formulaire
 	 */
@@ -182,7 +183,7 @@ public class Missions extends JPanel implements MouseListener {
 		batch.setColor(Color.WHITE);
 		batch.fillRect(330, 40, 930, 510);
 	}
-
+	
 	/**
 	 * Clic sur la souris : - Si c'est un bouton de gestion du formulaire - Si
 	 * c'est un élément de la liste
@@ -228,7 +229,7 @@ public class Missions extends JPanel implements MouseListener {
 				ChargementConsultation();
 			}
 		}
-
+		
 		/**
 		 * Actualisation des champs du formulaire TODO : Faire passer la
 		 * référence de l'objet !
@@ -238,24 +239,24 @@ public class Missions extends JPanel implements MouseListener {
 			this.nom.setText((String) listeMissions.getValueAt(ligneSelectionne, 0));
 			this.IDSelect = (int) listeMissions.getValueAt(ligneSelectionne, 3);
 			@SuppressWarnings("unchecked")
-			TableModel dataModel = ListToJTable
+			TableModel dataModel = JTables
 					.competences((ArrayList<Competence>) listeMissions.getValueAt(ligneSelectionne, 4)).getModel();
 			this.competences.setModel(dataModel);
 		}
 	}
-
+	
 	@Override
 	public void mouseEntered(MouseEvent e) {
 	}
-
+	
 	@Override
 	public void mouseExited(MouseEvent e) {
 	}
-
+	
 	@Override
 	public void mousePressed(MouseEvent e) {
 	}
-
+	
 	@Override
 	public void mouseReleased(MouseEvent e) {
 	}

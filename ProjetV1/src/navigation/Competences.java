@@ -14,6 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import csv.CSVException;
+import data.Data;
 import gui.Button;
 import gui.Titre;
 
@@ -24,29 +25,31 @@ import gui.Titre;
  */
 public class Competences extends JPanel implements MouseListener {
 	private static final long serialVersionUID = 1L;
-
-	Button boutonNouveau;
-	Button boutonModifier;
-	Button boutonSupprimer;
-	Button boutonEnregistrer;
-	Button boutonAnnuler;
-	JTable listeCompetences;
-	Vector<int[]> selectedCells = new Vector<int[]>();
-	JTextField code;
-	JTable listeLangues;
-
-	public Competences() {
+	
+	Button			boutonNouveau;
+	Button			boutonModifier;
+	Button			boutonSupprimer;
+	Button			boutonEnregistrer;
+	Button			boutonAnnuler;
+	JTable			listeCompetences;
+	Vector<int[]>	selectedCells	= new Vector<int[]>();
+	JTextField		code;
+	JTable			listeLangues;
+	private Data	data;
+	
+	public Competences(Data data) {
+		this.data = data;
 		setOpaque(false);
 		setLayout(null);
 		setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
-
+		
 		/**
 		 * JTable contenant toutes les compétences
 		 */
 		this.listeCompetences = new JTable();
 		try {
-			listeCompetences = JTableRequests.toutesLesCompetences();
-		} catch (CSVException | NumberFormatException e) {
+			listeCompetences = JTables.competences(data.Competences().tous());
+		} catch (CSVException e) {
 			e.printStackTrace();
 		}
 		listeCompetences.setFillsViewportHeight(true);
@@ -55,7 +58,7 @@ public class Competences extends JPanel implements MouseListener {
 		js.setVisible(true);
 		js.setBounds(10, 10, 300, 600);
 		add(js);
-
+		
 		/**
 		 * Création et positionnement des boutons de gestion de formulaire
 		 */
@@ -79,27 +82,27 @@ public class Competences extends JPanel implements MouseListener {
 		add(this.boutonSupprimer);
 		add(this.boutonEnregistrer);
 		add(this.boutonAnnuler);
-
+		
 		/**
 		 * Création et positionnement des éléments du formulaire
 		 */
 		Titre titre = new Titre(" Détails de la compétence :");
 		titre.setBounds(330, 10, 930, 20);
 		add(titre);
-
+		
 		JLabel labelNom = new JLabel("Code :");
 		labelNom.setBounds(350, 50, 150, 25);
 		add(labelNom);
-
+		
 		JLabel labelCompetences = new JLabel("Liste des langues :");
 		labelCompetences.setBounds(350, 80, 150, 25);
 		add(labelCompetences);
-
+		
 		this.code = new JTextField();
 		this.code.addMouseListener(this);
 		this.code.setBounds(400, 50, 150, 25);
 		add(this.code);
-
+		
 		this.listeLangues = new JTable();
 		this.listeLangues.addMouseListener(this);
 		this.listeLangues.setFillsViewportHeight(true);
@@ -107,10 +110,10 @@ public class Competences extends JPanel implements MouseListener {
 		jsLangues.setVisible(true);
 		jsLangues.setBounds(350, 110, 350, 350);
 		add(jsLangues);
-
+		
 		ChargementConsultation();
 	}
-
+	
 	/**
 	 * Mode Consultation : - Lecture des informations détaillés de l'élément
 	 * sélectionné - Les éléments du formulaire ne sont pas modifiables
@@ -118,7 +121,7 @@ public class Competences extends JPanel implements MouseListener {
 	public void ChargementConsultation() {
 		this.code.setEditable(false);
 		this.listeLangues.setEnabled(false);
-
+		
 		this.boutonEnregistrer.setVisible(false);
 		this.boutonAnnuler.setVisible(false);
 		this.boutonNouveau.setVisible(true);
@@ -126,7 +129,7 @@ public class Competences extends JPanel implements MouseListener {
 		this.boutonSupprimer.setVisible(true);
 		this.listeCompetences.setEnabled(true);
 	}
-
+	
 	/**
 	 * Mode Modification : - Possibilité de modifier les informations détaillés
 	 * de l'élément sélectionné - Les éléments de la liste ne sont pas
@@ -135,7 +138,7 @@ public class Competences extends JPanel implements MouseListener {
 	public void ChargementModification() {
 		this.code.setEditable(true);
 		this.listeLangues.setEnabled(true);
-
+		
 		this.boutonEnregistrer.setVisible(true);
 		this.boutonAnnuler.setVisible(true);
 		this.boutonNouveau.setVisible(false);
@@ -143,14 +146,14 @@ public class Competences extends JPanel implements MouseListener {
 		this.boutonSupprimer.setVisible(false);
 		this.listeCompetences.setEnabled(false);
 	}
-
+	
 	/**
 	 * Mode Nouveau : - On vide tous les éléments contenus dans les champs du
 	 * formulaire - Les éléments de la liste ne sont pas séléctionnables
 	 */
 	public void ChargementNouveau() {
 	}
-
+	
 	/**
 	 * Dessine le fond blanc du formulaire
 	 */
@@ -162,7 +165,7 @@ public class Competences extends JPanel implements MouseListener {
 		batch.setColor(Color.WHITE);
 		batch.fillRect(330, 40, 930, 510);
 	}
-
+	
 	/**
 	 * Clic sur la souris : - Si c'est un bouton de gestion du formulaire - Si
 	 * c'est un élément de la liste
@@ -170,29 +173,29 @@ public class Competences extends JPanel implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() instanceof Button) {
-
+			
 			/**
 			 * TODO Formulaire prêt à l'ajout d'un nouvel élément
 			 */
 			if (e.getSource().equals(this.boutonNouveau)) {
 				ChargementNouveau();
 			}
-
+			
 			/**
 			 * Formulaire prêt à la modification d'un élément existant
 			 */
 			if (e.getSource().equals(this.boutonModifier)) {
 				ChargementModification();
 			}
-
+			
 			/**
 			 * TODO Suppression d'un élément existant : doit demander la
 			 * confirmation de l'utilisateur
 			 */
 			if (e.getSource().equals(this.boutonSupprimer)) {
-
+				
 			}
-
+			
 			/**
 			 * TODO On annule toutes les modifications faites par l'utilisateur
 			 * depuis l'activation du mode modification / du mode nouveau
@@ -200,15 +203,15 @@ public class Competences extends JPanel implements MouseListener {
 			if (e.getSource().equals(this.boutonAnnuler)) {
 				ChargementConsultation();
 			}
-
+			
 			/**
 			 * TODO On enregistre les modifications ou le nouvel élément
 			 */
 			if (e.getSource().equals(this.boutonEnregistrer)) {
-
+				
 			}
 		}
-
+		
 		/**
 		 * Actualisation des champs du formulaire TODO : Faire passer la
 		 * référence de l'objet !
@@ -224,19 +227,19 @@ public class Competences extends JPanel implements MouseListener {
 			// this.listeLangues.setModel(dataModel);
 		}
 	}
-
+	
 	@Override
 	public void mouseEntered(MouseEvent e) {
 	}
-
+	
 	@Override
 	public void mouseExited(MouseEvent e) {
 	}
-
+	
 	@Override
 	public void mousePressed(MouseEvent e) {
 	}
-
+	
 	@Override
 	public void mouseReleased(MouseEvent e) {
 	}

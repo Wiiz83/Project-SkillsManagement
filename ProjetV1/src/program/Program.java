@@ -1,23 +1,35 @@
 package program;
 
-import java.io.IOException;
 import javax.swing.SwingUtilities;
-import java.text.ParseException;
-import csv.*;
-import csv.InvalidDataException;
+
+import csv.CSVCache;
+import csv.CSVException;
+import data.Data;
 import gui.ProgramFrame;
 
 public class Program {
 	
 	/**
-	 * Lancement du programme en appelant la méthode displayGUI de la classe ProgramFrame qui affiche la fenêtre 
+	 * Lancement du programme en appelant la méthode displayGUI de la classe
+	 * ProgramFrame qui affiche la fenêtre
+	 * 
+	 * @throws CSVException
 	 */
-	public static void main(String[] args) throws IOException, InvalidCSVException, InvalidDataException, ParseException, CSVUpdateException {
-		{	
+	public static void main(String[] args) {
+		{
+			CSVCache cache = new CSVCache();
+			Data data;
+			try {
+				data = new Data(cache);
+			} catch (CSVException e) {
+				System.out.println("Problème chargement des CSV");
+				e.printStackTrace();
+				return;
+			}
 			SwingUtilities.invokeLater(
 					new Runnable() {
 						public void run() {
-							new ProgramFrame().displayGUI();
+							new ProgramFrame().displayGUI(data);
 						}
 					}
 			);

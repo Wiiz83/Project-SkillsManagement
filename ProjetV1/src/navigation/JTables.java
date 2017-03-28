@@ -13,7 +13,7 @@ import models.*;
  * Permet de convertir une liste d'objets en JTable
  *
  */
-public class ListToJTable {
+public class JTables {
 	static SimpleDateFormat dateformatter = new SimpleDateFormat("dd/MM/yyyy");
 	
 	public static JTable employes(ArrayList<Employee> employes) {

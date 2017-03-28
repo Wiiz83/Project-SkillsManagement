@@ -12,11 +12,13 @@ import java.util.HashMap;
  */
 public class CSVObjectLoader<E extends CSVEntity> {
 	
-	private Class<? extends CSVEntity> EntityType;
+	private Class<? extends CSVEntity>	EntityType;
+	CSVCache							cache;
 	
-	public CSVObjectLoader(Class<? extends CSVEntity> c) throws IOException {
+	public CSVObjectLoader(Class<? extends CSVEntity> c, CSVCache cache) throws IOException {
 		super();
 		EntityType = c;
+		this.cache = cache;
 	}
 	
 	/**
@@ -30,7 +32,7 @@ public class CSVObjectLoader<E extends CSVEntity> {
 	 * @throws CSVException
 	 */
 	public E createObject(CSVLine line) throws IOException, NumberFormatException, ParseException, CSVException {
-		E object = CSVDeserializer.Deserialize(line, EntityType);
+		E object = CSVDeserializer.Deserialize(line, EntityType, cache);
 		object.setReferencedObjects(getAssociatedObjects(object));
 		object.setAttached();
 		return object;
@@ -45,7 +47,7 @@ public class CSVObjectLoader<E extends CSVEntity> {
 			if (N == null)
 				continue;
 			CSVAssociation assoc = new CSVAssociation(e.getClass(), N);
-			CSVObjects<? extends CSVEntity> nObjects = new CSVObjects<>(N);
+			CSVObjects<? extends CSVEntity> nObjects = new CSVObjects<>(N, cache);
 			ArrayList<Object> AssociatedNObjects;
 			for (String nID : getAssociatedIDS(e.csvID(), assoc)) {
 				Object n = nObjects.getByID(nID);

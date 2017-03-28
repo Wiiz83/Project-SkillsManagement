@@ -18,48 +18,52 @@ import javax.swing.JTextField;
 import javax.swing.table.TableModel;
 
 import csv.CSVException;
-import csv.CSVObjects;
+import csv.InvalidDataException;
+import data.Data;
 import gui.Button;
 import gui.Titre;
 import models.Competence;
 import models.Employee;
 
 /**
- * Page "Personnel" de l'application contenant la liste du
- * personnel avec possibilité d'ajout, suppression et modification
+ * Page "Personnel" de l'application contenant la liste du personnel avec
+ * possibilité d'ajout, suppression et modification
  * 
- * 	TODO ATTENTION : Implémentation différente de Compétences et Personnel 
- * 		- Utilisation de la méthode AffichageListe() qui actualise la liste en cas de modification
+ * TODO ATTENTION : Implémentation différente de Compétences et Personnel -
+ * Utilisation de la méthode AffichageListe() qui actualise la liste en cas de
+ * modification
  * 
  */
 public class Personnel extends JPanel implements MouseListener {
-	Button boutonNouveau;
-	Button boutonModifier;
-	Button boutonSupprimer;
-	Button boutonEnregistrer;
-	Button boutonAnnuler;
-	JTable listePersonnel;
-	Vector<int[]> selectedCells = new Vector<int[]>();
-	JScrollPane jsPersonnel;
-	int IDSelect;
-	JTextField nom;
-	JTextField prenom;
-	JTextField date;
-	JTable competences;
-	String mode;
-	private static final long serialVersionUID = 1L;
+	Button						boutonNouveau;
+	Button						boutonModifier;
+	Button						boutonSupprimer;
+	Button						boutonEnregistrer;
+	Button						boutonAnnuler;
+	JTable						listePersonnel;
+	Vector<int[]>				selectedCells		= new Vector<int[]>();
+	JScrollPane					jsPersonnel;
+	int							IDSelect;
+	JTextField					nom;
+	JTextField					prenom;
+	JTextField					date;
+	JTable						competences;
+	String						mode;
+	private static final long	serialVersionUID	= 1L;
 	
-
-	public Personnel() {
+	private Data data;
+	
+	public Personnel(Data data) {
+		this.data = data;
 		setOpaque(false);
 		setLayout(null);
 		setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
-
+		
 		/**
-		 *  Affichage de la liste gauche
+		 * Affichage de la liste gauche
 		 */
 		AffichageListe();
-
+		
 		/**
 		 * Création et positionnement des boutons de gestion de formulaire
 		 */
@@ -83,7 +87,6 @@ public class Personnel extends JPanel implements MouseListener {
 		add(this.boutonSupprimer);
 		add(this.boutonEnregistrer);
 		add(this.boutonAnnuler);
-
 		
 		/**
 		 * Création et positionnement des éléments du formulaire
@@ -91,38 +94,38 @@ public class Personnel extends JPanel implements MouseListener {
 		Titre titre = new Titre(" Détails du salarié :");
 		titre.setBounds(330, 10, 930, 20);
 		add(titre);
-
+		
 		JLabel labelNom = new JLabel("Nom :");
 		labelNom.setBounds(350, 50, 150, 25);
 		add(labelNom);
-
+		
 		JLabel labelPrenom = new JLabel("Prénom :");
 		labelPrenom.setBounds(350, 80, 150, 25);
 		add(labelPrenom);
-
+		
 		JLabel labelDate = new JLabel("Date d'entrée :");
 		labelDate.setBounds(350, 110, 150, 25);
 		add(labelDate);
-
+		
 		JLabel labelCompetences = new JLabel("Liste des compétences :");
 		labelCompetences.setBounds(350, 140, 150, 25);
 		add(labelCompetences);
-
+		
 		this.nom = new JTextField();
 		this.nom.addMouseListener(this);
 		this.nom.setBounds(450, 50, 150, 25);
 		add(this.nom);
-
+		
 		this.prenom = new JTextField();
 		this.prenom.addMouseListener(this);
 		this.prenom.setBounds(450, 80, 150, 25);
 		add(this.prenom);
-
+		
 		this.date = new JTextField();
 		this.date.addMouseListener(this);
 		this.date.setBounds(450, 110, 150, 25);
 		add(this.date);
-
+		
 		this.competences = new JTable();
 		this.competences.addMouseListener(this);
 		this.competences.setFillsViewportHeight(true);
@@ -130,18 +133,17 @@ public class Personnel extends JPanel implements MouseListener {
 		js.setVisible(true);
 		js.setBounds(350, 170, 350, 350);
 		add(js);
-
+		
 		ChargementConsultation();
 	}
 	
-	
 	/**
-	 * Affiche la liste 
+	 * Affiche la liste
 	 */
 	public void AffichageListe() {
 		this.listePersonnel = new JTable();
 		try {
-			this.listePersonnel = JTableRequests.tousLesEmployes();
+			this.listePersonnel = JTables.employes(data.Employes().tous());
 			this.listePersonnel.setFillsViewportHeight(true);
 			this.listePersonnel.addMouseListener(this);
 			this.jsPersonnel = new JScrollPane(this.listePersonnel);
@@ -153,7 +155,7 @@ public class Personnel extends JPanel implements MouseListener {
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
 	 * Supprime la liste et reinitialise l'ID séléctionné
 	 */
@@ -172,14 +174,14 @@ public class Personnel extends JPanel implements MouseListener {
 		this.prenom.setEditable(false);
 		this.date.setEditable(false);
 		this.competences.setEnabled(false);
-
+		
 		this.boutonEnregistrer.setVisible(false);
 		this.boutonAnnuler.setVisible(false);
 		this.boutonNouveau.setVisible(true);
 		this.boutonModifier.setVisible(true);
 		this.boutonSupprimer.setVisible(true);
 		this.listePersonnel.setEnabled(true);
-
+		
 		this.mode = "consultation";
 	}
 	
@@ -193,17 +195,17 @@ public class Personnel extends JPanel implements MouseListener {
 		this.prenom.setEditable(true);
 		this.date.setEditable(true);
 		this.competences.setEnabled(true);
-
+		
 		this.boutonEnregistrer.setVisible(true);
 		this.boutonAnnuler.setVisible(true);
 		this.boutonNouveau.setVisible(false);
 		this.boutonModifier.setVisible(false);
 		this.boutonSupprimer.setVisible(false);
 		this.listePersonnel.setEnabled(false);
-
+		
 		this.mode = "modification";
 	}
-
+	
 	/**
 	 * Mode Nouveau : - On vide tous les éléments contenus dans les champs du
 	 * formulaire - Les éléments de la liste ne sont pas séléctionnables
@@ -213,42 +215,57 @@ public class Personnel extends JPanel implements MouseListener {
 		this.prenom.setText("");
 		this.date.setText("");
 		ChargementModification();
-
+		
 		this.mode = "nouveau";
 	}
-
+	
 	/**
-	 * Enregistrement des informations dans le cas d'une modification ou d'un ajout
+	 * Enregistrement des informations dans le cas d'une modification ou d'un
+	 * ajout
 	 */
 	public void Enregistrement() {
-		CSVObjects<Employee> employes_csv;
-
+		
 		switch (this.mode) {
 		case "nouveau":
 			try {
-				employes_csv = new CSVObjects<>(Employee.class);
 				Employee emp = new Employee(this.nom.getText(), this.prenom.getText(), this.date.getText());
-				employes_csv.add(emp);
+				data.Employes().ajouter(emp);
 			} catch (CSVException e) {
 				e.printStackTrace();
 			}
 			break;
-
+		
 		case "modification":
+			
+			Employee emp = null;
 			try {
-				employes_csv = new CSVObjects<>(Employee.class);
-				Employee emp = new Employee(this.nom.getText(), this.prenom.getText(), this.date.getText());
-				employes_csv.modify(emp);
+				emp = data.Employes().parID(Integer.toString(IDSelect));
 			} catch (CSVException e) {
+				// erreur lecture
 				e.printStackTrace();
 			}
+			emp.setLastName(this.nom.getText());
+			emp.setName(this.prenom.getText());
+			try {
+				emp.setEntryDate(this.date.getText());
+			} catch (InvalidDataException e) {
+				// date invalide
+				e.printStackTrace();
+			}
+			try {
+				data.Employes().modifier(emp);
+			} catch (CSVException e) {
+				// erreur écriture
+				e.printStackTrace();
+			}
+			
 			break;
-
+		
 		default:
 			break;
 		}
 	}
-
+	
 	/**
 	 * Dessine le fond blanc du formulaire
 	 */
@@ -260,7 +277,6 @@ public class Personnel extends JPanel implements MouseListener {
 		batch.setColor(Color.WHITE);
 		batch.fillRect(330, 40, 930, 510);
 	}
-
 	
 	/**
 	 * Clic sur la souris : - Si c'est un bouton de gestion du formulaire - Si
@@ -289,11 +305,9 @@ public class Personnel extends JPanel implements MouseListener {
 			 * confirmation de l'utilisateur
 			 */
 			if (e.getSource().equals(this.boutonSupprimer)) {
-				CSVObjects<Employee> employes_csv;
 				try {
-					employes_csv = new CSVObjects<>(Employee.class);
-					Employee emp = employes_csv.getByID(String.valueOf(this.IDSelect));
-					employes_csv.delete(emp);
+					Employee emp = data.Employes().parID(Integer.toString(IDSelect));
+					data.Employes().supprimer(emp);
 					Reinitialiser();
 					AffichageListe();
 				} catch (CSVException e1) {
@@ -317,7 +331,7 @@ public class Personnel extends JPanel implements MouseListener {
 				ChargementConsultation();
 			}
 		}
-
+		
 		/**
 		 * Actualisation des champs du formulaire TODO : Faire passer la
 		 * référence de l'objet !
@@ -329,26 +343,26 @@ public class Personnel extends JPanel implements MouseListener {
 			this.date.setText((String) listePersonnel.getValueAt(ligneSelectionne, 2));
 			this.IDSelect = (int) listePersonnel.getValueAt(ligneSelectionne, 3);
 			@SuppressWarnings("unchecked")
-			TableModel dataModel = ListToJTable
+			TableModel dataModel = JTables
 					.competences((ArrayList<Competence>) listePersonnel.getValueAt(ligneSelectionne, 4)).getModel();
 			this.competences.setModel(dataModel);
 		}
 	}
-
+	
 	@Override
 	public void mouseEntered(MouseEvent e) {
 	}
-
+	
 	@Override
 	public void mouseExited(MouseEvent e) {
 	}
-
+	
 	@Override
 	public void mousePressed(MouseEvent e) {
 	}
-
+	
 	@Override
 	public void mouseReleased(MouseEvent e) {
 	}
-
+	
 }
