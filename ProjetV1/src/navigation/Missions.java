@@ -57,7 +57,7 @@ public class Missions extends JPanel implements MouseListener {
 		 */
 		this.listeMissions = new JTable();
 		try {
-			listeMissions = JTables.missions(data.Missions().tous());
+			listeMissions = JTables.Missions(data.Missions().tous());
 			listeMissions.setFillsViewportHeight(true);
 			listeMissions.addMouseListener(this);
 			JScrollPane js = new JScrollPane(listeMissions);
@@ -240,7 +240,7 @@ public class Missions extends JPanel implements MouseListener {
 			this.IDSelect = (int) listeMissions.getValueAt(ligneSelectionne, 3);
 			@SuppressWarnings("unchecked")
 			TableModel dataModel = JTables
-					.competences((ArrayList<Competence>) listeMissions.getValueAt(ligneSelectionne, 4)).getModel();
+					.Competences((ArrayList<Competence>) listeMissions.getValueAt(ligneSelectionne, 4)).getModel();
 			this.competences.setModel(dataModel);
 		}
 	}

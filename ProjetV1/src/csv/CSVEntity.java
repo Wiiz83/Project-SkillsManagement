@@ -65,9 +65,10 @@ public abstract class CSVEntity implements Serializable {
 		return (this.getClass() == o.getClass()) && ((CSVEntity) o).csvID().equals(this.csvID());
 	}
 	
-	public final int hashCode() {
-		return (this.getClass().getName() + ";;" + this.csvID()).hashCode();
-	}
+	/*
+	 * public final int hashCode() { return (this.getClass().getName() + ";;" +
+	 * this.csvID()).hashCode(); }
+	 */
 	
 	/**
 	 * @param ReferencedObjects

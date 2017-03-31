@@ -12,36 +12,21 @@ import java.util.ArrayList;
  *
  */
 public class CSVDocument {
+	private ArrayList<CSVLine>	lines;
 	private String				path;
-	private ArrayList<CSVLine>	set;
 	private boolean				ignoreFirstLine;
 	private int					idColumnPosition;
 	
-	public CSVDocument(CSVAssociation assoc) throws IOException {
-		CSVModel model = new CSVModel();
-		CSVMetadataMapper mapper = model.getMetadata();
-		CSVFileConfig cfg = mapper.getCSVFileConfig(assoc);
+	public CSVDocument(CSVFileConfig cfg) throws IOException {
 		path = cfg.path;
 		ignoreFirstLine = cfg.ignoreFirstLine;
 		idColumnPosition = cfg.idColumnPosition;
-		set = getAll();
-		
-	}
-	
-	public CSVDocument(Class<? extends CSVEntity> entity) throws IOException {
-		assert (entity != null);
-		CSVModel model = new CSVModel();
-		CSVMetadataMapper mapper = model.getMetadata();
-		CSVFileConfig cfg = mapper.getCSVFileConfig(entity);
-		path = cfg.path;
-		ignoreFirstLine = cfg.ignoreFirstLine;
-		idColumnPosition = cfg.idColumnPosition;
-		set = getAll();
+		lines = getAll();
 		
 	}
 	
 	public CSVLine getLineByID(String ID) {
-		for (CSVLine line : set) {
+		for (CSVLine line : lines) {
 			if (line.get(idColumnPosition).equals(ID))
 				return line;
 		}
@@ -86,9 +71,9 @@ public class CSVDocument {
 		)) {
 			writer.write(System.lineSeparator());
 			writer.write(line.toString());
-			set.add(line);
+			lines.add(line);
 		} catch (IOException e) {
-			set.remove(set.size() - 1);
+			lines.remove(lines.size() - 1);
 			throw e;
 		}
 	}
@@ -122,13 +107,13 @@ public class CSVDocument {
 					} else if (csvline.isValid()) {
 						found = true;
 						int i = -1;
-						for (CSVLine set_line : set) {
+						for (CSVLine set_line : lines) {
 							i++;
 							if (set_line.get(idColumnPosition).equals(csvline.get(idColumnPosition))) {
 								break;
 							}
 						}
-						set.remove(i);
+						lines.remove(i);
 					}
 				} else {
 					pw.println(line);
@@ -174,7 +159,7 @@ public class CSVDocument {
 	
 	public ArrayList<Integer> getIDS() throws InvalidDataException {
 		ArrayList<Integer> ids = new ArrayList<Integer>();
-		for (CSVLine line : this.set) {
+		for (CSVLine line : this.lines) {
 			Integer id = -1;
 			try {
 				id = Integer.parseInt(line.get(idColumnPosition));
@@ -187,6 +172,6 @@ public class CSVDocument {
 	}
 	
 	public int lineCount() {
-		return set.size();
+		return lines.size();
 	}
 }

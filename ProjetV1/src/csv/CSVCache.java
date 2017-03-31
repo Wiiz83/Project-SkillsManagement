@@ -2,13 +2,12 @@ package csv;
 
 import javax.cache.Cache;
 import javax.cache.CacheManager;
-import javax.cache.Caching;
 
 public class CSVCache {
 	private CacheManager manager;
 	
-	public CSVCache() {
-		manager = Caching.getCachingProvider().getCacheManager();
+	public CSVCache(CacheManager manager) {
+		this.manager = manager;
 	}
 	
 	public <E extends CSVEntity> Cache<String, E> getCache(Class<E> entityClass) {
@@ -20,6 +19,6 @@ public class CSVCache {
 	}
 	
 	private static String createName(Class<? extends CSVEntity> entityClass) {
-		return "csvcache;" + entityClass.getName();
+		return "csvobjects;" + entityClass.getName();
 	}
 }

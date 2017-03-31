@@ -13,13 +13,14 @@ import csv.InvalidDataException;
  * Représente un employé
  *
  */
-public class Employee extends EmployeeAbstract {
+public class Employee extends Personne {
 	
 	/**
 	 * 
 	 */
-	private static final long	serialVersionUID	= -1356873803668900103L;
-	private Date				entryDate;
+	private static final long		serialVersionUID	= -1356873803668900103L;
+	private Date					entryDate;
+	protected ArrayList<Competence>	Competences;
 	
 	// Constructeur basique
 	public Employee(String name, String lastName, Date entryDate) {
@@ -31,21 +32,34 @@ public class Employee extends EmployeeAbstract {
 	}
 	
 	// Constructeur
-	public Employee(String name, String lastName, String entryDate) throws InvalidDataException {
+	public Employee(String name, String lastName, String entryDate) throws ParseException {
 		this.name = name;
 		this.lastName = lastName;
 		this.ID = -1;
 		Competences = new ArrayList<Competence>();
-		setEntryDate(entryDate);
+		setEntryDate(entryDate, "dd/MM/yyyy");
 	}
 	
 	// Constructeur avec le set de l'ID
-	public Employee(String name, String lastName, String entryDate, String iD) throws InvalidDataException {
+	public Employee(String name, String lastName, String entryDate, String iD)
+			throws ParseException, InvalidDataException {
 		this.name = name;
 		this.lastName = lastName;
-		setEntryDate(entryDate);
+		setEntryDate(entryDate, "dd/MM/yyyy");
 		setCsvID(iD);
 		Competences = new ArrayList<Competence>();
+	}
+	
+	public ArrayList<Competence> getCompetences() {
+		return Competences;
+	}
+	
+	public void addCompetence(Competence c) {
+		Competences.add(c);
+	}
+	
+	public void addCompetences(ArrayList<Competence> list) {
+		Competences.addAll(list);
 	}
 	
 	public Date getEntryDate() {
@@ -57,14 +71,10 @@ public class Employee extends EmployeeAbstract {
 	}
 	
 	// Formatage de l'entryDate avant l'insertion dans l'attribut
-	public void setEntryDate(String entryDate) throws InvalidDataException {
-		String pattern = "dd/MM/yyyy";
+	public void setEntryDate(String entryDate, String pattern) throws ParseException {
 		SimpleDateFormat format = new SimpleDateFormat(pattern);
-		try {
-			setEntryDate(format.parse(entryDate));
-		} catch (ParseException e) {
-			throw new InvalidDataException(e);
-		}
+		setEntryDate(format.parse(entryDate));
+		
 	}
 	
 	@Override
@@ -73,18 +83,7 @@ public class Employee extends EmployeeAbstract {
 				+ Competences + "]";
 	}
 	
-	public void setCsvID(String iD) throws InvalidDataException {
-		try {
-			setID(Integer.parseInt(iD));
-		} catch (NumberFormatException e) {
-			throw new InvalidDataException(e);
-		}
-	}
-	
-	public String csvID() {
-		return Integer.toString(ID);
-	}
-	
+	@Override
 	public HashMap<Class<? extends CSVEntity>, ArrayList<String>> getReferencedObjectsIDS() {
 		HashMap<Class<? extends CSVEntity>, ArrayList<String>> IDS = new HashMap<>();
 		IDS.put(Competence.class, getIDS(Competences));

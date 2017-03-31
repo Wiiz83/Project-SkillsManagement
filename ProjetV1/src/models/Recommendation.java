@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 
-import csv.CSVCache;
+import csv.CSVConfig;
 import csv.CSVException;
 import csv.CSVObjects;
 
@@ -19,19 +19,19 @@ public class Recommendation {
 	private ArrayList<CompetenceRequirement>	misCompReq;
 	private ArrayList<Employee>					empAff;
 	private ArrayList<Employee>					empToRec;
-	private CSVCache							cache;
+	private CSVConfig							config;
 	
 	/**
 	 * @param misToRec
 	 *            (La mission qui est concernée par les recommendations
 	 */
-	public Recommendation(Mission misToRec, CSVCache cache) {
+	public Recommendation(Mission misToRec, CSVConfig config) {
 		super();
 		this.recID++;
 		this.misToRec = misToRec;
 		this.misCompReq = misToRec.getCompReq();
 		this.empAff = misToRec.getAffEmp();
-		this.cache = cache;
+		this.config = config;
 	}
 	
 	/**
@@ -43,7 +43,7 @@ public class Recommendation {
 	 * @throws CSVException
 	 */
 	public void setRecommendations() throws CSVException {
-		CSVObjects<Employee> employee_csv = new CSVObjects<>(Employee.class, cache);
+		CSVObjects<Employee> employee_csv = new CSVObjects<>(Employee.class, config);
 		empRec = employee_csv.getAll();
 		for (Employee e : empRec) { // Boucles et conditions pour vérifier si
 									// l'employé est recommendable et si oui

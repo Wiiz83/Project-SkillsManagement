@@ -4,9 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.swing.JTable;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
+import gui.GenericTableModel;
 import models.*;
 
 /**
@@ -14,26 +14,12 @@ import models.*;
  *
  */
 public class JTables {
-	static SimpleDateFormat dateformatter = new SimpleDateFormat("dd/MM/yyyy");
 	
-	public static JTable employes(ArrayList<Employee> employes) {
-		
+	public static JTable Employes(ArrayList<Employee> employes) {
+		SimpleDateFormat dateformatter = new SimpleDateFormat("yyyy-MM-dd");
+		String[] headers = { "Nom", "Prénom", "Date d'entrée", "ID", "Compétences" };
 		@SuppressWarnings("serial")
-		TableModel dataModel = new AbstractTableModel() {
-			@Override
-			public String getColumnName(int col) {
-				String[] headers = { "Nom", "Prénom", "Date d'entrée", "ID", "Compétences" };
-				return headers[col];
-			}
-			
-			public int getColumnCount() {
-				return 5;
-			}
-			
-			public int getRowCount() {
-				return employes.size();
-			}
-			
+		TableModel dataModel = new GenericTableModel<Employee>(employes, headers) {
 			public Object getValueAt(int row, int col) {
 				Employee emp = employes.get(row);
 				
@@ -62,29 +48,20 @@ public class JTables {
 		table.getColumnModel().getColumn(3).setMaxWidth(0);
 		table.getColumnModel().getColumn(4).setMinWidth(0);
 		table.getColumnModel().getColumn(4).setMaxWidth(0);
+		table.setAutoCreateRowSorter(true);
+		table.getRowSorter().toggleSortOrder(0);
 		
 		return table;
 	}
 	
-	public static JTable competences(ArrayList<Competence> list) {
+	public static JTable Competences(ArrayList<Competence> competences) {
 		
+		String[] headers = { "Code", "FR", "EN" };
 		@SuppressWarnings("serial")
-		TableModel dataModel = new AbstractTableModel() {
-			public String getColumnName(int col) {
-				String[] headers = { "Code", "FR", "EN" };
-				return headers[col];
-			}
-			
-			public int getColumnCount() {
-				return Languages.size + 1;
-			}
-			
-			public int getRowCount() {
-				return list.size();
-			}
+		TableModel dataModel = new GenericTableModel<Competence>(competences, headers) {
 			
 			public Object getValueAt(int row, int col) {
-				Competence comp = list.get(row);
+				Competence comp = competences.get(row);
 				
 				switch (col) {
 				case 0:
@@ -93,66 +70,22 @@ public class JTables {
 				default:
 					if (col <= Languages.size)
 						return comp.getNames().get(col - 1);
-					System.out.println("JTable access ");
+					else
+						System.out.println("Competences JTable access ");
 					break;
 				}
 				return comp;
 			}
 		};
-		JTable table = new JTable(dataModel);
-		return table;
-	}
-
-	public static JTable LanguesCompetence(ArrayList<String> list) {
 		
-		@SuppressWarnings("serial")
-		TableModel dataModel = new AbstractTableModel() {
-			public String getColumnName(int col) {
-				String[] headers = { "Libellé" };
-				return headers[col];
-			}
-			
-			public int getColumnCount() {
-				return Languages.size;
-			}
-			
-			public int getRowCount() {
-				return list.size();
-			}
-			
-			public Object getValueAt(int row, int col) {
-				String nom = list.get(row);
-				
-				switch (col) {
-				case 0:
-					return nom;
-				default:
-					System.out.println("JTable access ");
-					break;
-				}
-				return nom;
-			}
-		};
 		JTable table = new JTable(dataModel);
 		return table;
 	}
 	
-	public static JTable missions(ArrayList<Mission> missions) {
+	public static JTable Missions(ArrayList<Mission> missions) {
+		String[] headers = { "ID", "Nom", "Durée", "Status" };
 		@SuppressWarnings("serial")
-		TableModel dataModel = new AbstractTableModel() {
-			@Override
-			public String getColumnName(int col) {
-				String[] headers = { "Code", "Name", "Duration", "Status" };
-				return headers[col];
-			}
-			
-			public int getColumnCount() {
-				return 3;
-			}
-			
-			public int getRowCount() {
-				return missions.size();
-			}
+		TableModel dataModel = new GenericTableModel<Mission>(missions, headers) {
 			
 			public Object getValueAt(int row, int col) {
 				Mission mis = missions.get(row);

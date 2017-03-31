@@ -1,13 +1,20 @@
 package csv;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
-import models.*;
-
-public class CSVDeserializer {
-	static SimpleDateFormat dateformatter = new SimpleDateFormat("dd/MM/yyyy");
+public abstract class CSVDeserializer {
+	protected CSVConfig csvconfig;
+	
+	public CSVDeserializer() {
+	}
+	
+	public CSVDeserializer(CSVConfig csvconfig) {
+		this.csvconfig = csvconfig;
+	}
+	
+	public void setCSVConfig(CSVConfig csvconfig) {
+		this.csvconfig = csvconfig;
+	}
 	
 	/**
 	 * Crée un objet à partir de sa classe et sa représentation dans un fichier
@@ -19,64 +26,6 @@ public class CSVDeserializer {
 	 * @throws IOException
 	 * @throws CSVException
 	 */
-	@SuppressWarnings("unchecked")
-	public static <E extends CSVEntity> E Deserialize(CSVLine line, Class<?> c, CSVCache cache)
-			throws IOException, CSVException {
-		try {
-			if (c == Competence.class)
-				return (E) CSVDeserializer.Competence(line);
-			if (c == Employee.class) {
-				return (E) CSVDeserializer.Employee(line);
-			}
-			if (c == Mission.class) {
-				return (E) CSVDeserializer.Mission(line);
-			}
-			if (c == CompetenceRequirement.class) {
-				return (E) CSVDeserializer.CompetenceRequirement(line, cache);
-			} else {
-				throw new IllegalArgumentException("Object not deserializable");
-			}
-		} catch (NumberFormatException | ParseException e) {
-			throw new InvalidDataException(e);
-		}
-	}
-	
-	private static CompetenceRequirement CompetenceRequirement(CSVLine line, CSVCache cache)
-			throws ParseException, NumberFormatException, IOException, CSVException {
-		CSVObjects<Competence> compreq = new CSVObjects<>(Competence.class, cache);
-		return new CompetenceRequirement(compreq.getByID(line.get(1)), Integer.parseInt(line.get(0)));
-	}
-	
-	private static CompetenceCode CompetenceCode(CSVLine line) throws InvalidDataException {
-		return new CompetenceCode(line.get(0));
-	}
-	
-	private static Competence Competence(CSVLine line) throws InvalidCSVException, InvalidDataException {
-		if (line.size() != Languages.size + 1)
-			throw new InvalidCSVException();
-		CompetenceCode code = CompetenceCode(line);
-		line.remove(0);
-		return new Competence(code, line);
-	}
-	
-	private static Employee Employee(CSVLine line) throws InvalidCSVException, InvalidDataException {
-		if (line.size() != 4) {
-			throw new InvalidCSVException();
-		}
-		Employee e = new Employee(line.get(0), line.get(1), line.get(2), line.get(3));
-		return e;
-	}
-	
-	private static Mission Mission(CSVLine line) throws NumberFormatException, ParseException, InvalidDataException {
-		Mission m = new Mission(
-				line.get(1), dateformatter.parse(line.get(2)), Integer.parseInt(line.get(3)),
-				Integer.parseInt(line.get(4))
-		);
-		m.setCsvID(line.get(0));
-		if (line.get(6).equals("true"))
-			m.planifier();
-		m.setDateFin(dateformatter.parse(line.get(5)));
-		return m;
-	}
+	public abstract <E extends CSVEntity> E Deserialize(CSVLine line, Class<?> c) throws IOException, CSVException;
 	
 }

@@ -6,6 +6,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -18,9 +20,9 @@ import javax.swing.JTextField;
 import javax.swing.table.TableModel;
 
 import csv.CSVException;
-import csv.InvalidDataException;
 import data.Data;
 import gui.Button;
+import gui.GenericTableModel;
 import gui.Titre;
 import models.Competence;
 import models.Employee;
@@ -51,7 +53,9 @@ public class Personnel extends JPanel implements MouseListener {
 	String						mode;
 	private static final long	serialVersionUID	= 1L;
 	
-	private Data data;
+	private Data		data;
+	SimpleDateFormat	GuiDateFormat		= new SimpleDateFormat("yyyy-MM-dd");
+	SimpleDateFormat	EmployeeDateFormat	= new SimpleDateFormat("dd/MM/yyyy");
 	
 	public Personnel(Data data) {
 		this.data = data;
@@ -143,7 +147,7 @@ public class Personnel extends JPanel implements MouseListener {
 	public void AffichageListe() {
 		this.listePersonnel = new JTable();
 		try {
-			this.listePersonnel = JTables.employes(data.Employes().tous());
+			this.listePersonnel = JTables.Employes(data.Employes().tous());
 			this.listePersonnel.setFillsViewportHeight(true);
 			this.listePersonnel.addMouseListener(this);
 			this.jsPersonnel = new JScrollPane(this.listePersonnel);
@@ -222,43 +226,26 @@ public class Personnel extends JPanel implements MouseListener {
 	/**
 	 * Enregistrement des informations dans le cas d'une modification ou d'un
 	 * ajout
+	 * 
+	 * @throws ParseException
+	 * @throws CSVException
 	 */
-	public void Enregistrement() {
+	public void Enregistrement() throws ParseException, CSVException {
 		
 		switch (this.mode) {
 		case "nouveau":
-			try {
-				Employee emp = new Employee(this.nom.getText(), this.prenom.getText(), this.date.getText());
-				data.Employes().ajouter(emp);
-			} catch (CSVException e) {
-				e.printStackTrace();
-			}
+			Employee nouvEmp = new Employee(this.nom.getText(), this.prenom.getText(), this.date.getText());
+			data.Employes().ajouter(nouvEmp);
 			break;
 		
 		case "modification":
-			
-			Employee emp = null;
-			try {
-				emp = data.Employes().parID(Integer.toString(IDSelect));
-			} catch (CSVException e) {
-				// erreur lecture
-				e.printStackTrace();
-			}
+			@SuppressWarnings("unchecked")
+			GenericTableModel<Employee> model = (GenericTableModel<Employee>) listePersonnel.getModel();
+			Employee emp = model.getRowObject(listePersonnel.convertRowIndexToModel(listePersonnel.getSelectedRow()));
 			emp.setLastName(this.nom.getText());
 			emp.setName(this.prenom.getText());
-			try {
-				emp.setEntryDate(this.date.getText());
-			} catch (InvalidDataException e) {
-				// date invalide
-				e.printStackTrace();
-			}
-			try {
-				data.Employes().modifier(emp);
-			} catch (CSVException e) {
-				// erreur écriture
-				e.printStackTrace();
-			}
-			
+			emp.setEntryDate(this.date.getText(), "yyyy-MM-dd");
+			data.Employes().modifier(emp);
 			break;
 		
 		default:
@@ -327,7 +314,13 @@ public class Personnel extends JPanel implements MouseListener {
 			 * TODO On enregistre les modifications ou le nouvel élément
 			 */
 			if (e.getSource().equals(this.boutonEnregistrer)) {
-				Enregistrement();
+				try {
+					Enregistrement();
+				} catch (ParseException e1) {
+					System.out.println("Format incorrect: " + e1);
+				} catch (CSVException e1) {
+					System.out.println("Problème d'enregistrement: " + e1);
+				}
 				ChargementConsultation();
 			}
 		}
@@ -344,7 +337,7 @@ public class Personnel extends JPanel implements MouseListener {
 			this.IDSelect = (int) listePersonnel.getValueAt(ligneSelectionne, 3);
 			@SuppressWarnings("unchecked")
 			TableModel dataModel = JTables
-					.competences((ArrayList<Competence>) listePersonnel.getValueAt(ligneSelectionne, 4)).getModel();
+					.Competences((ArrayList<Competence>) listePersonnel.getValueAt(ligneSelectionne, 4)).getModel();
 			this.competences.setModel(dataModel);
 		}
 	}

@@ -13,13 +13,11 @@ import java.util.HashMap;
  */
 public class CSVObjectSaver<E extends CSVEntity> {
 	
-	private CSVDocument	doc;
-	CSVCache			cache;
+	CSVConfig config;
 	
-	public CSVObjectSaver(CSVDocument doc, CSVCache cache) {
+	public CSVObjectSaver(CSVConfig config) {
 		super();
-		this.cache = cache;
-		this.doc = doc;
+		this.config = config;
 	}
 	
 	public void addObject(E e)
@@ -29,7 +27,9 @@ public class CSVObjectSaver<E extends CSVEntity> {
 		} else {
 			
 		}
-		CSVLine line = CSVSerializer.Serialize(e);
+		CSVSerializer serializer = config.getSerializer();
+		CSVLine line = serializer.Serialize(e);
+		CSVDocument doc = config.getDocument(e.getClass());
 		doc.addLine(line);
 		saveObjectReferences(e);
 		e.setAttached();
@@ -37,13 +37,13 @@ public class CSVObjectSaver<E extends CSVEntity> {
 	
 	private void saveObjectReferences(E e) throws IOException, NumberFormatException, ParseException, CSVException {
 		HashMap<Class<? extends CSVEntity>, ArrayList<String>> associatedObjectsIDS = e.getReferencedObjectsIDS();
-		CSVModel model = new CSVModel();
-		for (Class<? extends CSVEntity> N : model.getMetadata().getAssociatedEntities(e.getClass())) {
+		CSVModel model = config.getModel();
+		for (Class<? extends CSVEntity> N : model.Metadata().getAssociatedEntities(e.getClass())) {
 			if (N == null)
 				continue;
 			CSVAssociation assoc = new CSVAssociation(e.getClass(), N);
-			CSVDocument assocDoc = new CSVDocument(assoc);
-			CSVObjects<? extends CSVEntity> nObjects = new CSVObjects<>(N, cache);
+			CSVDocument assocDoc = config.getDocument(assoc);
+			CSVObjects<? extends CSVEntity> nObjects = new CSVObjects<>(N, config);
 			// Check that the referenced objects already exist in the CSV
 			// documents
 			for (String ID : associatedObjectsIDS.get(N)) {

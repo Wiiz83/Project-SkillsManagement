@@ -35,6 +35,7 @@ public class Competences extends JPanel implements MouseListener {
 	Vector<int[]>	selectedCells	= new Vector<int[]>();
 	JTextField		code;
 	JTable			listeLangues;
+	@SuppressWarnings("unused")
 	private Data	data;
 	
 	public Competences(Data data) {
@@ -48,7 +49,7 @@ public class Competences extends JPanel implements MouseListener {
 		 */
 		this.listeCompetences = new JTable();
 		try {
-			listeCompetences = JTables.competences(data.Competences().tous());
+			listeCompetences = JTables.Competences(data.Competences().tous());
 		} catch (CSVException e) {
 			e.printStackTrace();
 		}

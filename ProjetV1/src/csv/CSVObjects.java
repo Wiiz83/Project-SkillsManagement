@@ -22,7 +22,7 @@ public class CSVObjects<E extends CSVEntity> {
 	private CSVObjectLoader<E>	csvloader;
 	private CSVObjectSaver<E>	csvsaver;
 	private CSVObjectDeleter<E>	csvdeleter;
-	private CSVCache			cache;
+	private CSVConfig			config;
 	private Class<E>			entityClass;
 	
 	/**
@@ -31,23 +31,23 @@ public class CSVObjects<E extends CSVEntity> {
 	 * @param c
 	 * @throws IOException
 	 */
-	public CSVObjects(Class<E> c, CSVCache cache) throws CSVException {
+	public CSVObjects(Class<E> c, CSVConfig config) throws CSVException {
 		
 		super();
 		this.entityClass = c;
-		this.cache = cache;
+		this.config = config;
 		try {
-			this.doc = new CSVDocument(c);
+			this.doc = config.getDocument(c);
 		} catch (IOException e) {
 			throw new CSVException(e);
 		}
 		try {
-			this.csvloader = new CSVObjectLoader<E>(c, cache);
+			this.csvloader = new CSVObjectLoader<E>(c, config);
 		} catch (IOException e) {
 			throw new CSVException(e);
 		}
-		this.csvsaver = new CSVObjectSaver<E>(doc, cache);
-		this.csvdeleter = new CSVObjectDeleter<E>(doc);
+		this.csvsaver = new CSVObjectSaver<E>(config);
+		this.csvdeleter = new CSVObjectDeleter<E>(config);
 	}
 	
 	/**
@@ -85,7 +85,7 @@ public class CSVObjects<E extends CSVEntity> {
 		} catch (NumberFormatException | IOException | CSVUpdateException | ParseException e1) {
 			throw new CSVException(e1);
 		}
-		cache.getCache(entityClass).put(e.csvID(), e);
+		config.getCSVCache().getCache(entityClass).put(e.csvID(), e);
 	}
 	
 	/**
@@ -119,7 +119,7 @@ public class CSVObjects<E extends CSVEntity> {
 		} catch (IOException | CSVUpdateException e1) {
 			throw new CSVException(e1);
 		}
-		cache.getCache(entityClass).remove(e.csvID());
+		config.getCSVCache().getCache(entityClass).remove(e.csvID());
 	}
 	
 	/**
@@ -143,7 +143,7 @@ public class CSVObjects<E extends CSVEntity> {
 		} catch (NumberFormatException | IOException | CSVUpdateException | ParseException e1) {
 			throw new CSVException(e1);
 		}
-		cache.getCache(entityClass).put(e.csvID(), e);
+		config.getCSVCache().getCache(entityClass).put(e.csvID(), e);
 	}
 	
 	/**
@@ -155,7 +155,7 @@ public class CSVObjects<E extends CSVEntity> {
 	 * @throws CSVException
 	 */
 	public E getByID(String ID) throws CSVException {
-		E entity = cache.getCache(entityClass).get(ID);
+		E entity = config.getCSVCache().getCache(entityClass).get(ID);
 		if (entity != null)
 			return entity;
 		
@@ -168,7 +168,7 @@ public class CSVObjects<E extends CSVEntity> {
 		} catch (NumberFormatException | IOException | ParseException e) {
 			throw new CSVException(e);
 		}
-		cache.getCache(entityClass).put(ID, entity);
+		config.getCSVCache().getCache(entityClass).put(ID, entity);
 		return entity;
 	}
 	
@@ -224,8 +224,8 @@ public class CSVObjects<E extends CSVEntity> {
 		try {
 			for (CSVLine line : doc.getAll()) {
 				E entity;
-				if (cache.getCache(entityClass).containsKey(line.get(idPosition)))
-					entity = cache.getCache(entityClass).get(line.get(idPosition));
+				if (config.getCSVCache().getCache(entityClass).containsKey(line.get(idPosition)))
+					entity = config.getCSVCache().getCache(entityClass).get(line.get(idPosition));
 				else {
 					entity = csvloader.createObject(line);
 					map.put(entity.csvID(), entity);
@@ -235,7 +235,7 @@ public class CSVObjects<E extends CSVEntity> {
 		} catch (NumberFormatException | IOException | ParseException e) {
 			throw new CSVException(e);
 		}
-		cache.getCache(entityClass).putAll(map);
+		config.getCSVCache().getCache(entityClass).putAll(map);
 		return all;
 	}
 	

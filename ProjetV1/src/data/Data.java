@@ -1,23 +1,24 @@
 package data;
 
-import csv.CSVCache;
+import csv.CSVConfig;
 import csv.CSVException;
 
 public class Data {
-	private CSVCache	cache;
+	CSVConfig			config;
 	private Employes	employes;
 	private Missions	missions;
 	private Competences	competences;
 	
-	public Data(CSVCache cache) throws CSVException {
-		this.cache = cache;
+	public Data(CSVConfig config) throws CSVException {
+		this.config = config;
 		this.employes = new Employes(this);
 		this.missions = new Missions(this);
 		this.competences = new Competences(this);
+		
 	}
 	
-	CSVCache getCache() {
-		return cache;
+	public CSVConfig getConfig() {
+		return config;
 	}
 	
 	public Employes Employes() {

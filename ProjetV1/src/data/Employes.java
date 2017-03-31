@@ -9,4 +9,8 @@ public class Employes extends Requests<Employee> {
 		super(data, Employee.class);
 	}
 	
+	public Employee parID(int ID) throws CSVException {
+		return parID(Integer.toString(ID));
+	}
+	
 }

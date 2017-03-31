@@ -10,11 +10,11 @@ import java.io.IOException;
  */
 public class CSVObjectDeleter<E extends CSVEntity> {
 	
-	private CSVDocument doc;
+	private CSVConfig config;
 	
-	public CSVObjectDeleter(CSVDocument doc) {
+	public CSVObjectDeleter(CSVConfig config) {
 		super();
-		this.doc = doc;
+		this.config = config;
 	}
 	
 	public void deleteObject(E e) throws IOException, InvalidCSVException, CSVUpdateException {
@@ -30,17 +30,17 @@ public class CSVObjectDeleter<E extends CSVEntity> {
 		if (deleteReferencesToObject)
 			deleteReferencesToObject(e);
 		deleteAssociations(e);
-		doc.removeLine(e.csvID());
+		config.getDocument(e.getClass()).removeLine(e.csvID());
 		e.setAttached(false);
 	}
 	
 	private void deleteReferencesToObject(E e) throws IOException, InvalidCSVException {
-		CSVModel model = new CSVModel();
-		for (Class<? extends CSVEntity> N : model.getMetadata().getReferencingEntities(e.getClass())) {
+		CSVModel model = config.getModel();
+		for (Class<? extends CSVEntity> N : model.Metadata().getReferencingEntities(e.getClass())) {
 			if (N == null)
 				continue;
 			CSVAssociation assoc = new CSVAssociation(N, e.getClass());
-			CSVDocument assocDoc = new CSVDocument(assoc);
+			CSVDocument assocDoc = config.getDocument(assoc);
 			for (CSVLine line : assocDoc.getAll()) {
 				CSVLine newline = new CSVLine();
 				newline.add(line.get(0));
@@ -61,12 +61,12 @@ public class CSVObjectDeleter<E extends CSVEntity> {
 	}
 	
 	void deleteAssociations(E e) throws IOException {
-		CSVModel model = new CSVModel();
-		for (Class<? extends CSVEntity> N : model.getMetadata().getAssociatedEntities(e.getClass())) {
+		CSVModel model = config.getModel();
+		for (Class<? extends CSVEntity> N : model.Metadata().getAssociatedEntities(e.getClass())) {
 			if (N == null)
 				continue;
 			CSVAssociation assoc = new CSVAssociation(e.getClass(), N);
-			CSVDocument assocDoc = new CSVDocument(assoc);
+			CSVDocument assocDoc = config.getDocument(assoc);
 			assocDoc.removeLine(e.csvID());
 		}
 	}

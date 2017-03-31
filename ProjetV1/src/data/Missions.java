@@ -18,6 +18,10 @@ public class Missions extends Requests<Mission> {
 		super(data, Mission.class);
 	}
 	
+	public Mission parID(int ID) throws CSVException {
+		return parID(Integer.toString(ID));
+	}
+	
 	public ArrayList<Mission> AvecStatus(Status status) throws CSVException {
 		return csvobjects.getFiltered(m -> m.getStatus() == status);
 	}

@@ -13,12 +13,12 @@ import java.util.HashMap;
 public class CSVObjectLoader<E extends CSVEntity> {
 	
 	private Class<? extends CSVEntity>	EntityType;
-	CSVCache							cache;
+	CSVConfig							config;
 	
-	public CSVObjectLoader(Class<? extends CSVEntity> c, CSVCache cache) throws IOException {
+	public CSVObjectLoader(Class<? extends CSVEntity> c, CSVConfig config) throws IOException {
 		super();
 		EntityType = c;
-		this.cache = cache;
+		this.config = config;
 	}
 	
 	/**
@@ -32,7 +32,8 @@ public class CSVObjectLoader<E extends CSVEntity> {
 	 * @throws CSVException
 	 */
 	public E createObject(CSVLine line) throws IOException, NumberFormatException, ParseException, CSVException {
-		E object = CSVDeserializer.Deserialize(line, EntityType, cache);
+		CSVDeserializer deserializer = config.getDeserializer();
+		E object = deserializer.Deserialize(line, EntityType);
 		object.setReferencedObjects(getAssociatedObjects(object));
 		object.setAttached();
 		return object;
@@ -42,12 +43,12 @@ public class CSVObjectLoader<E extends CSVEntity> {
 			throws IOException, NumberFormatException, ParseException, CSVException {
 		
 		HashMap<Class<? extends CSVEntity>, ArrayList<Object>> AssociatedObjects = new HashMap<>();
-		CSVModel model = new CSVModel();
-		for (Class<? extends CSVEntity> N : model.getMetadata().getAssociatedEntities(e.getClass())) {
+		CSVModel model = config.getModel();
+		for (Class<? extends CSVEntity> N : model.Metadata().getAssociatedEntities(e.getClass())) {
 			if (N == null)
 				continue;
 			CSVAssociation assoc = new CSVAssociation(e.getClass(), N);
-			CSVObjects<? extends CSVEntity> nObjects = new CSVObjects<>(N, cache);
+			CSVObjects<? extends CSVEntity> nObjects = new CSVObjects<>(N, config);
 			ArrayList<Object> AssociatedNObjects;
 			for (String nID : getAssociatedIDS(e.csvID(), assoc)) {
 				Object n = nObjects.getByID(nID);
@@ -68,7 +69,7 @@ public class CSVObjectLoader<E extends CSVEntity> {
 	}
 	
 	private ArrayList<String> getAssociatedIDS(String ID, CSVAssociation assoc) throws IOException {
-		CSVDocument assocDoc = new CSVDocument(assoc);
+		CSVDocument assocDoc = config.getDocument(assoc);
 		CSVLine line = assocDoc.getLineByID(ID);
 		if (line != null)
 			line.remove(0);
