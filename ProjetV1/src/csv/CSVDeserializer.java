@@ -12,10 +12,6 @@ public abstract class CSVDeserializer {
 		this.csvconfig = csvconfig;
 	}
 	
-	public void setCSVConfig(CSVConfig csvconfig) {
-		this.csvconfig = csvconfig;
-	}
-	
 	/**
 	 * Crée un objet à partir de sa classe et sa représentation dans un fichier
 	 * CSV
@@ -27,5 +23,9 @@ public abstract class CSVDeserializer {
 	 * @throws CSVException
 	 */
 	public abstract <E extends CSVEntity> E Deserialize(CSVLine line, Class<?> c) throws IOException, CSVException;
+	
+	public void setCSVConfig(CSVConfig csvconfig) {
+		this.csvconfig = csvconfig;
+	}
 	
 }

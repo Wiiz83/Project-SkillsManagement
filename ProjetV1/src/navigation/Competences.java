@@ -15,6 +15,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import csv.CSVException;
 import data.Data;
+import data.DataException;
 import gui.Button;
 import gui.Titre;
 
@@ -50,7 +51,7 @@ public class Competences extends JPanel implements MouseListener {
 		this.listeCompetences = new JTable();
 		try {
 			listeCompetences = JTables.Competences(data.Competences().tous());
-		} catch (CSVException e) {
+		} catch (DataException e) {
 			e.printStackTrace();
 		}
 		listeCompetences.setFillsViewportHeight(true);

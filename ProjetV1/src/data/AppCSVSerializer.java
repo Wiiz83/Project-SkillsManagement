@@ -10,10 +10,10 @@ import csv.*;
  * Crée une ligne CSV à partir des attributs d'un objet
  *
  */
-public class Serializer extends CSVSerializer {
+public class AppCSVSerializer extends CSVSerializer {
 	private DateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
 	
-	public Serializer() {
+	public AppCSVSerializer() {
 		super();
 	}
 	

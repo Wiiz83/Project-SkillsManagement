@@ -13,6 +13,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
 import csv.CSVException;
 import data.Data;
+import data.DataException;
 
 /**
  * Page d'accueil de l'application
@@ -46,7 +47,7 @@ public class Accueil extends JPanel {
 		JTable tableMEC = new JTable();
 		try {
 			tableMEC = JTables.Missions(data.Missions().AvecStatus(Status.EN_COURS));
-		} catch (CSVException e) {
+		} catch (DataException e) {
 			e.printStackTrace();
 		}
 		tableMEC.setFillsViewportHeight(true);
@@ -66,7 +67,7 @@ public class Accueil extends JPanel {
 		JTable tableMAV = new JTable();
 		try {
 			tableMAV = JTables.Missions(data.Missions().duMois());
-		} catch (CSVException e) {
+		} catch (DataException e) {
 			e.printStackTrace();
 		}
 		tableMAV.setFillsViewportHeight(true);

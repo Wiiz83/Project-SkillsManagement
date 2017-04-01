@@ -8,9 +8,10 @@ import javax.cache.Caching;
 import csv.CSVConfig;
 import csv.CSVException;
 import data.Data;
-import data.DataModel;
-import data.Deserializer;
-import data.Serializer;
+import data.DataException;
+import data.AppCSVDataModel;
+import data.AppCSVDeserializer;
+import data.AppCSVSerializer;
 import models.*;
 
 @SuppressWarnings("serial")
@@ -42,9 +43,10 @@ class AssocFrame extends AssociationJFrame<Employee, Competence> {
 }
 
 public class Test {
-	public static void main(String[] args) throws CSVException, InstantiationException, IllegalAccessException {
+	public static void main(String[] args)
+			throws CSVException, InstantiationException, IllegalAccessException, DataException {
 		CSVConfig config = new CSVConfig(
-				Caching.getCachingProvider().getCacheManager(), DataModel.class, Deserializer.class, Serializer.class
+				Caching.getCachingProvider().getCacheManager(), AppCSVDataModel.class, AppCSVDeserializer.class, AppCSVSerializer.class
 		);
 		Data data = new Data(config);
 		AssocFrame frame = new AssocFrame(data, data.Employes().parID(1), Competence.class);

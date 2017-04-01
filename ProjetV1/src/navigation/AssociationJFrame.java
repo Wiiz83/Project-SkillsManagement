@@ -6,9 +6,10 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 
 import csv.CSVEntity;
-import csv.CSVException;
 import data.Data;
-import data.Requests;
+import data.DataException;
+import data.IRequete;
+import data.CSVRequests;
 
 public abstract class AssociationJFrame<E extends CSVEntity, N extends CSVEntity> extends JFrame {
 	/**
@@ -32,9 +33,9 @@ public abstract class AssociationJFrame<E extends CSVEntity, N extends CSVEntity
 	
 	abstract void DissociateEntity(N nEntity);
 	
-	void saveChanges() throws CSVException {
+	void saveChanges() throws DataException {
 		@SuppressWarnings("unchecked")
-		Requests<E> req = new Requests<E>(data, (Class<E>) entity.getClass());
+		IRequete<E> req = new CSVRequests<E>(data, (Class<E>) entity.getClass());
 		req.modifier(entity);
 	}
 }

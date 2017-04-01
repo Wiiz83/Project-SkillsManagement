@@ -21,6 +21,7 @@ import javax.swing.table.TableModel;
 
 import csv.CSVException;
 import data.Data;
+import data.DataException;
 import gui.Button;
 import gui.GenericTableModel;
 import gui.Titre;
@@ -154,7 +155,7 @@ public class Personnel extends JPanel implements MouseListener {
 			this.jsPersonnel.setVisible(true);
 			this.jsPersonnel.setBounds(10, 10, 300, 600);
 			add(this.jsPersonnel);
-		} catch (CSVException e) {
+		} catch (DataException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -230,7 +231,7 @@ public class Personnel extends JPanel implements MouseListener {
 	 * @throws ParseException
 	 * @throws CSVException
 	 */
-	public void Enregistrement() throws ParseException, CSVException {
+	public void Enregistrement() throws ParseException, DataException {
 		
 		switch (this.mode) {
 		case "nouveau":
@@ -297,7 +298,7 @@ public class Personnel extends JPanel implements MouseListener {
 					data.Employes().supprimer(emp);
 					Reinitialiser();
 					AffichageListe();
-				} catch (CSVException e1) {
+				} catch (DataException e1) {
 					e1.printStackTrace();
 				}
 			}
@@ -318,7 +319,7 @@ public class Personnel extends JPanel implements MouseListener {
 					Enregistrement();
 				} catch (ParseException e1) {
 					System.out.println("Format incorrect: " + e1);
-				} catch (CSVException e1) {
+				} catch (DataException e1) {
 					System.out.println("Problème d'enregistrement: " + e1);
 				}
 				ChargementConsultation();

@@ -20,6 +20,7 @@ import javax.swing.table.TableModel;
 
 import csv.CSVException;
 import data.Data;
+import data.DataException;
 import gui.Button;
 import gui.Titre;
 import models.Competence;
@@ -64,7 +65,7 @@ public class Missions extends JPanel implements MouseListener {
 			js.setVisible(true);
 			js.setBounds(10, 10, 300, 600);
 			add(js);
-		} catch (CSVException e) {
+		} catch (DataException e) {
 			e.printStackTrace();
 		}
 		

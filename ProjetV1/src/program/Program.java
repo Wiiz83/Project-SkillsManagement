@@ -6,9 +6,10 @@ import javax.swing.SwingUtilities;
 import csv.CSVConfig;
 import csv.CSVException;
 import data.Data;
-import data.DataModel;
-import data.Deserializer;
-import data.Serializer;
+import data.DataException;
+import data.AppCSVDataModel;
+import data.AppCSVDeserializer;
+import data.AppCSVSerializer;
 import gui.ProgramFrame;
 
 public class Program {
@@ -25,15 +26,15 @@ public class Program {
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException {
 		{
 			CSVConfig config = new CSVConfig(
-					Caching.getCachingProvider().getCacheManager(), DataModel.class, Deserializer.class,
-					Serializer.class
+					Caching.getCachingProvider().getCacheManager(), AppCSVDataModel.class, AppCSVDeserializer.class,
+					AppCSVSerializer.class
 			);
 			Data data;
 			// Objet unique à passer à toutes les classes qui accèdent aux
 			// données.
 			try {
 				data = new Data(config);
-			} catch (CSVException e) {
+			} catch (DataException e) {
 				System.out.println("Problème chargement des CSV" + e.getMessage());
 				e.printStackTrace();
 				return;

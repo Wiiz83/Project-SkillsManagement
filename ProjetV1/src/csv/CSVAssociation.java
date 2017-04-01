@@ -10,7 +10,7 @@ public class CSVAssociation {
 	 * Java: ArrayList
 	 * </p>
 	 * <p>
-	 * CSV : ID_objet; Clé_Etrangère_1, Clé_Etrangère_2 ...
+	 * Format fichier CSV : ID_objet; Clé_Etrangère_1, Clé_Etrangère_2 ...
 	 * </p>
 	 * 
 	 * @param entity

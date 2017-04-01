@@ -6,7 +6,7 @@ import models.CompetenceRequirement;
 import models.Employee;
 import models.Mission;
 
-public class DataModel extends CSVModel {
+public class AppCSVDataModel extends CSVModel {
 	
 	@Override
 	public void defineModel() {

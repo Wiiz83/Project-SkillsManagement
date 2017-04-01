@@ -1,7 +1,6 @@
 package data;
 
 import csv.CSVConfig;
-import csv.CSVException;
 
 public class Data {
 	CSVConfig			config;
@@ -9,7 +8,7 @@ public class Data {
 	private Missions	missions;
 	private Competences	competences;
 	
-	public Data(CSVConfig config) throws CSVException {
+	public Data(CSVConfig config) throws DataException {
 		this.config = config;
 		this.employes = new Employes(this);
 		this.missions = new Missions(this);
@@ -17,7 +16,7 @@ public class Data {
 		
 	}
 	
-	public CSVConfig getConfig() {
+	public CSVConfig getCSVConfig() {
 		return config;
 	}
 	

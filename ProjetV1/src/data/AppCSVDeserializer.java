@@ -17,7 +17,7 @@ import models.Employee;
 import models.Languages;
 import models.Mission;
 
-public class Deserializer extends csv.CSVDeserializer {
+public class AppCSVDeserializer extends csv.CSVDeserializer {
 	SimpleDateFormat dateformatter = new SimpleDateFormat("dd/MM/yyyy");
 	
 	@SuppressWarnings("unchecked")

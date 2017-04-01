@@ -5,18 +5,12 @@ import java.util.HashMap;
 
 import javax.cache.CacheManager;
 
-public class CSVConfig {
+final public class CSVConfig {
 	private CSVCache								csvcache;
 	private CSVModel								model;
 	private CSVDeserializer							deserializer;
 	private CSVSerializer							serializer;
 	private HashMap<CSVAssociation, CSVDocument>	documents;
-	
-	/*
-	 * CSVConfig config = new CSVConfig( new
-	 * CSVCache(Caching.getCachingProvider().getCacheManager()), new
-	 * DataModel(), new Deserializer(config), new Serializer() );
-	 */
 	
 	public CSVConfig(
 			CacheManager manager, Class<? extends CSVModel> model, Class<? extends CSVDeserializer> deserializer,

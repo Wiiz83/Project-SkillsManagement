@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 import javax.cache.Caching;
 
-import data.DataModel;
-import data.Deserializer;
-import data.Serializer;
+import data.AppCSVDataModel;
+import data.AppCSVDeserializer;
+import data.AppCSVSerializer;
 
 import javax.cache.Cache.Entry;
 
@@ -23,8 +23,8 @@ public class Test {
 		CSVConfig config = null;
 		try {
 			config = new CSVConfig(
-					Caching.getCachingProvider().getCacheManager(), DataModel.class, Deserializer.class,
-					Serializer.class
+					Caching.getCachingProvider().getCacheManager(), AppCSVDataModel.class, AppCSVDeserializer.class,
+					AppCSVSerializer.class
 			);
 		} catch (InstantiationException | IllegalAccessException e) {
 			// TODO Auto-generated catch block
