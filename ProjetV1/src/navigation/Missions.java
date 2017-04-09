@@ -6,17 +6,24 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableModel;
+import javax.swing.text.MaskFormatter;
+import javax.swing.text.NumberFormatter;
 
 import csv.CSVException;
 import data.Data;
@@ -24,6 +31,7 @@ import data.DataException;
 import gui.Button;
 import gui.Titre;
 import models.Competence;
+import models.Mission;
 
 /**
  * Page "Missions" de l'application contenant la liste de toutes les missions
@@ -37,12 +45,20 @@ public class Missions extends JPanel implements MouseListener {
 	Button						boutonSupprimer;
 	Button						boutonEnregistrer;
 	Button						boutonAnnuler;
+	Button						boutonAddComp;
+	Button						boutonDeleteComp;
+	Button						boutonAddEmp;
+	Button						boutonDeleteEmp;
+	JFormattedTextField					dateD;
+	JFormattedTextField					duree;
+	JFormattedTextField					nombre;
 	JTable						listeMissions;
 	Vector<int[]>				selectedCells		= new Vector<int[]>();
 	int							IDSelect;
 	JTextField					nom;
 	JComboBox<String>			statut;
 	JTable						competences;
+	JTable						employes;
 	private static final long	serialVersionUID	= 1L;
 	
 	Data data;
@@ -96,7 +112,7 @@ public class Missions extends JPanel implements MouseListener {
 		/**
 		 * Création et positionnement des éléments du formulaire
 		 */
-		Titre titre = new Titre(" Détails du salarié :");
+		Titre titre = new Titre(" Détails de la mission :");
 		titre.setBounds(330, 10, 930, 20);
 		add(titre);
 		
@@ -104,30 +120,105 @@ public class Missions extends JPanel implements MouseListener {
 		labelNom.setBounds(350, 50, 150, 25);
 		add(labelNom);
 		
-		JLabel labelPrenom = new JLabel("Prénom :");
-		labelPrenom.setBounds(350, 80, 150, 25);
-		add(labelPrenom);
-		
-		JLabel labelDate = new JLabel("Date d'entrée :");
-		labelDate.setBounds(350, 110, 150, 25);
+		JLabel labelDate = new JLabel("Nombre de personnes :");
+		labelDate.setBounds(350, 80, 150, 25);
 		add(labelDate);
+		
+		JLabel labelDebut = new JLabel("Date de début :");
+		labelDebut.setBounds(800, 50, 150, 25);
+		add(labelDebut);
+		
+		JLabel labelDuree = new JLabel("Durée :");
+		labelDuree.setBounds(800, 80, 150, 25);
+		add(labelDuree);
 		
 		JLabel labelCompetences = new JLabel("Liste des compétences :");
 		labelCompetences.setBounds(350, 140, 150, 25);
 		add(labelCompetences);
-		
+
+		JLabel labelEmployes = new JLabel("Liste des employés :");
+		labelEmployes.setBounds(800, 140, 150, 25);
+		add(labelEmployes);
+
 		this.nom = new JTextField();
 		this.nom.addMouseListener(this);
-		this.nom.setBounds(450, 50, 150, 25);
+		this.nom.setBounds(500, 50, 150, 25);
 		add(this.nom);
+		
+	    NumberFormat format = NumberFormat.getInstance();
+	    NumberFormatter formatterNumber = new NumberFormatter(format);
+	    formatterNumber.setValueClass(Integer.class);
+	    formatterNumber.setMinimum(0);
+	    formatterNumber.setMaximum(Integer.MAX_VALUE);
+	    formatterNumber.setAllowsInvalid(false);
+	    formatterNumber.setCommitsOnValidEdit(true);	
+		this.nombre = new JFormattedTextField(formatterNumber);
+		this.nombre.addMouseListener(this);
+		this.nombre.setBounds(500, 80, 150, 25);
+		add(this.nombre);
+		
+		MaskFormatter formatterDuree;
+		try {
+			formatterDuree = new MaskFormatter("##:##");
+			formatterDuree.setPlaceholderCharacter('_');
+			this.duree = new JFormattedTextField(formatterDuree);
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		this.duree.addMouseListener(this);
+		this.duree.setBounds(900, 80, 150, 25);
+		add(this.duree);
+		
+		MaskFormatter formatterDate;
+		try {
+			formatterDate = new MaskFormatter("##/##/##");
+			formatterDate.setPlaceholderCharacter('_');
+			this.dateD = new  JFormattedTextField(formatterDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		this.dateD.addMouseListener(this);
+		this.dateD.setBounds(900, 50, 150, 25);
+		add(this.dateD);
 		
 		this.competences = new JTable();
 		this.competences.addMouseListener(this);
 		this.competences.setFillsViewportHeight(true);
-		JScrollPane js = new JScrollPane(this.competences);
-		js.setVisible(true);
-		js.setBounds(350, 170, 350, 350);
-		add(js);
+		JScrollPane jsComp = new JScrollPane(this.competences);
+		jsComp.setVisible(true);
+		jsComp.setBounds(350, 170, 350, 350);
+		add(jsComp);
+		
+		this.employes = new JTable();
+		this.employes.addMouseListener(this);
+		this.employes.setFillsViewportHeight(true);
+		JScrollPane jsEmp = new JScrollPane(this.employes);
+		jsEmp.setVisible(true);
+		jsEmp.setBounds(800, 170, 350, 350);
+		add(jsEmp);
+		
+		
+		this.boutonAddComp = new Button("/boutons/miniadd.png");
+		this.boutonAddComp.setBounds(710, 170);
+		this.boutonAddComp.addMouseListener(this);
+		add(this.boutonAddComp);
+		
+		this.boutonDeleteComp = new Button("/boutons/minidelete.png");
+		this.boutonDeleteComp.setBounds(710, 210);
+		this.boutonDeleteComp.addMouseListener(this);
+		add(this.boutonDeleteComp);
+		
+		this.boutonAddEmp = new Button("/boutons/miniadd.png");
+		this.boutonAddEmp.setBounds(1160, 170);
+		this.boutonAddEmp.addMouseListener(this);
+		add(this.boutonAddEmp);
+		
+		this.boutonDeleteEmp = new Button("/boutons/minidelete.png");
+		this.boutonDeleteEmp.setBounds(1160, 210);
+		this.boutonDeleteEmp.addMouseListener(this);
+		add(this.boutonDeleteEmp);
 		
 		ChargementConsultation();
 	}
@@ -138,7 +229,16 @@ public class Missions extends JPanel implements MouseListener {
 	 */
 	public void ChargementConsultation() {
 		this.nom.setEditable(false);
+		this.duree.setEditable(false);
+		this.nombre.setEditable(false);
+		this.dateD.setEditable(false);
 		this.competences.setEnabled(false);
+		this.employes.setEnabled(false);
+		
+		this.boutonAddComp.setVisible(false);
+		this.boutonAddEmp.setVisible(false);
+		this.boutonDeleteComp.setVisible(false);
+		this.boutonDeleteEmp.setVisible(false);
 		
 		this.boutonEnregistrer.setVisible(false);
 		this.boutonAnnuler.setVisible(false);
@@ -155,7 +255,16 @@ public class Missions extends JPanel implements MouseListener {
 	 */
 	public void ChargementModification() {
 		this.nom.setEditable(true);
+		this.duree.setEditable(true);
+		this.nombre.setEditable(true);
+		this.dateD.setEditable(true);
 		this.competences.setEnabled(true);
+		this.employes.setEnabled(true);
+		
+		this.boutonAddComp.setVisible(true);
+		this.boutonAddEmp.setVisible(true);
+		this.boutonDeleteComp.setVisible(true);
+		this.boutonDeleteEmp.setVisible(true);
 		
 		this.boutonEnregistrer.setVisible(true);
 		this.boutonAnnuler.setVisible(true);
@@ -227,6 +336,12 @@ public class Missions extends JPanel implements MouseListener {
 			 * TODO On enregistre les modifications ou le nouvel élément
 			 */
 			if (e.getSource().equals(this.boutonEnregistrer)) {
+				
+				Date dateD = new Date(this.dateD.getText());
+				int duree = Integer.parseInt(this.duree.getText());
+				int nb = Integer.parseInt(this.nombre.getText());
+				
+				Mission mission = new Mission(this.nom.getText(), dateD, duree, nb);
 				ChargementConsultation();
 			}
 		}

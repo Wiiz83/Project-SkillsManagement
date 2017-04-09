@@ -1,5 +1,10 @@
 package navigation;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -76,6 +81,10 @@ public class Accueil extends JPanel {
 		jsMAV.setBounds(10, 340, 800, 250);
 		add(jsMAV);
 		
+		Titre label4 = new Titre(" Alertes :");
+		label4.setBounds(820, 310, 440, 20);
+		add(label4);
+		
 		/**
 		 * Diagramme cammenbert représentant la répartition des missions par
 		 * leurs statuts
@@ -96,4 +105,15 @@ public class Accueil extends JPanel {
 		validate();
 		
 	}
+	
+	
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Graphics2D batch = (Graphics2D) g;
+		batch.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		batch.setColor(Color.WHITE);
+		batch.fillRect(820, 340, 440, 250);
+	}
+	
 }
