@@ -29,16 +29,21 @@ import models.Employee;
 public class Competences extends JPanel implements MouseListener {
 	private static final long serialVersionUID = 1L;
 	
-	Button			boutonNouveau;
-	Button			boutonModifier;
-	Button			boutonSupprimer;
-	Button			boutonEnregistrer;
-	Button			boutonAnnuler;
-	JTable			listeCompetences;
+	Competence compSelect;
+	JTable					listeCompetences;
+	JScrollPane					jsCompetences;
 	Vector<int[]>	selectedCells	= new Vector<int[]>();
+	
+	Button					boutonNouveau;
+	Button					boutonModifier;
+	Button					boutonSupprimer;
+	Button					boutonEnregistrer;
+	Button					boutonAnnuler;
+	
+
 	JTextField		code;
 	JTable			listeLangues;
-	@SuppressWarnings("unused")
+
 	private Data	data;
 	
 	public Competences(Data data) {
@@ -48,20 +53,10 @@ public class Competences extends JPanel implements MouseListener {
 		setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
 		
 		/**
-		 * JTable contenant toutes les compétences
+		 * Affichage de la liste gauche
 		 */
-		this.listeCompetences = new JTable();
-		try {
-			listeCompetences = JTables.Competences(data.Competences().tous());
-		} catch (DataException e) {
-			e.printStackTrace();
-		}
-		listeCompetences.setFillsViewportHeight(true);
-		listeCompetences.addMouseListener(this);
-		JScrollPane js = new JScrollPane(listeCompetences);
-		js.setVisible(true);
-		js.setBounds(10, 10, 300, 600);
-		add(js);
+		AffichageListe();
+
 		
 		/**
 		 * Création et positionnement des boutons de gestion de formulaire
@@ -116,6 +111,24 @@ public class Competences extends JPanel implements MouseListener {
 		add(jsLangues);
 		
 		ChargementConsultation();
+	}
+	
+	/**
+	 * Affiche la liste
+	 */
+	public void AffichageListe() {
+		this.listeCompetences = new JTable();
+		try {
+			listeCompetences = JTables.Competences(data.Competences().tous());
+			listeCompetences.setFillsViewportHeight(true);
+			listeCompetences.addMouseListener(this);
+			JScrollPane js = new JScrollPane(listeCompetences);
+			js.setVisible(true);
+			js.setBounds(10, 10, 300, 600);
+			add(js);
+		} catch (DataException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
