@@ -56,7 +56,7 @@ public class JTables {
 	
 	public static JTable Competences(ArrayList<Competence> competences) {
 		
-		String[] headers = { "Code", "FR", "EN" };
+		String[] headers = { "Code", "FR"};
 		@SuppressWarnings("serial")
 		TableModel dataModel = new GenericTableModel<Competence>(competences, headers) {
 			
@@ -65,12 +65,10 @@ public class JTables {
 				
 				switch (col) {
 				case 0:
-					return comp.getCode();
-				
+						return comp.getCode();
+				case 1:
+						return comp.getNames().get(1);
 				default:
-					if (col <= Languages.size)
-						return comp.getNames().get(col - 1);
-					else
 						System.out.println("Competences JTable access ");
 					break;
 				}

@@ -12,12 +12,15 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import javax.swing.text.MaskFormatter;
 
 import csv.CSVException;
 import data.Data;
@@ -38,6 +41,9 @@ import models.Employee;
  * 
  */
 public class Personnel extends JPanel implements MouseListener {
+	private static final long	serialVersionUID	= 1L;
+	
+	Employee 				empSelect;
 	Button						boutonNouveau;
 	Button						boutonModifier;
 	Button						boutonSupprimer;
@@ -51,9 +57,8 @@ public class Personnel extends JPanel implements MouseListener {
 	JTextField					prenom;
 	JTextField					date;
 	JTable						competences;
+	TableModel 			competencesModel;
 	String						mode;
-	private static final long	serialVersionUID	= 1L;
-	
 	private Data		data;
 	SimpleDateFormat	GuiDateFormat		= new SimpleDateFormat("yyyy-MM-dd");
 	SimpleDateFormat	EmployeeDateFormat	= new SimpleDateFormat("dd/MM/yyyy");
@@ -126,7 +131,14 @@ public class Personnel extends JPanel implements MouseListener {
 		this.prenom.setBounds(450, 80, 150, 25);
 		add(this.prenom);
 		
-		this.date = new JTextField();
+		MaskFormatter formatterDate;
+		try {
+			formatterDate = new MaskFormatter("##/##/####");
+			formatterDate.setPlaceholderCharacter('_');
+			this.date = new  JFormattedTextField(formatterDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		this.date.addMouseListener(this);
 		this.date.setBounds(450, 110, 150, 25);
 		add(this.date);
@@ -219,8 +231,10 @@ public class Personnel extends JPanel implements MouseListener {
 		this.nom.setText("");
 		this.prenom.setText("");
 		this.date.setText("");
-		ChargementModification();
+	
+		//((DefaultTableModel) this.competencesModel).setRowCount(0);
 		
+		ChargementModification();
 		this.mode = "nouveau";
 	}
 	
@@ -240,13 +254,10 @@ public class Personnel extends JPanel implements MouseListener {
 			break;
 		
 		case "modification":
-			@SuppressWarnings("unchecked")
-			GenericTableModel<Employee> model = (GenericTableModel<Employee>) listePersonnel.getModel();
-			Employee emp = model.getRowObject(listePersonnel.convertRowIndexToModel(listePersonnel.getSelectedRow()));
-			emp.setLastName(this.nom.getText());
-			emp.setName(this.prenom.getText());
-			emp.setEntryDate(this.date.getText(), "yyyy-MM-dd");
-			data.Employes().modifier(emp);
+			this.empSelect.setLastName(this.nom.getText());
+			this.empSelect.setName(this.prenom.getText());
+			this.empSelect.setEntryDate(this.date.getText(), "yyyy-MM-dd");
+			data.Employes().modifier(this.empSelect);
 			break;
 		
 		default:
@@ -331,15 +342,16 @@ public class Personnel extends JPanel implements MouseListener {
 		 * référence de l'objet !
 		 */
 		if (e.getSource() instanceof JTable) {
-			int ligneSelectionne = this.listePersonnel.getSelectedRow();
-			this.nom.setText((String) listePersonnel.getValueAt(ligneSelectionne, 0));
-			this.prenom.setText((String) listePersonnel.getValueAt(ligneSelectionne, 1));
-			this.date.setText((String) listePersonnel.getValueAt(ligneSelectionne, 2));
-			this.IDSelect = (int) listePersonnel.getValueAt(ligneSelectionne, 3);
-			@SuppressWarnings("unchecked")
-			TableModel dataModel = JTables
-					.Competences((ArrayList<Competence>) listePersonnel.getValueAt(ligneSelectionne, 4)).getModel();
-			this.competences.setModel(dataModel);
+			GenericTableModel<Employee> model = (GenericTableModel<Employee>) listePersonnel.getModel();
+			this.empSelect = model.getRowObject(listePersonnel.convertRowIndexToModel(listePersonnel.getSelectedRow()));
+			
+			this.nom.setText(this.empSelect.getLastName());
+			this.prenom.setText(this.empSelect.getName());
+			this.date.setText(EmployeeDateFormat.format(this.empSelect.getEntryDate()));
+			
+			ArrayList<Competence> listCompEmp = this.empSelect.getCompetences();
+			this.competencesModel = JTables.Competences(listCompEmp).getModel();
+			this.competences.setModel(this.competencesModel);
 		}
 	}
 	

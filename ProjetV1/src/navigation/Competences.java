@@ -18,6 +18,8 @@ import data.Data;
 import data.DataException;
 import gui.Button;
 import gui.Titre;
+import models.Competence;
+import models.Employee;
 
 /**
  * Page "Compétences" de l'application contenant la liste de toutes les
@@ -195,6 +197,7 @@ public class Competences extends JPanel implements MouseListener {
 			 * confirmation de l'utilisateur
 			 */
 			if (e.getSource().equals(this.boutonSupprimer)) {
+
 				
 			}
 			
@@ -220,13 +223,7 @@ public class Competences extends JPanel implements MouseListener {
 		 */
 		if (e.getSource() instanceof JTable) {
 			int ligneSelectionne = this.listeCompetences.getSelectedRow();
-			this.code.setText((listeCompetences.getValueAt(ligneSelectionne, 0)).toString());
-			// @SuppressWarnings("unchecked")
-			// TableModel dataModel =
-			// ListToJTable.LanguesCompetence((ArrayList<String>)
-			// this.listeCompetences.getValueAt(ligneSelectionne,
-			// 1)).getModel();
-			// this.listeLangues.setModel(dataModel);
+
 		}
 	}
 	
