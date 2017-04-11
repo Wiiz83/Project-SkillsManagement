@@ -41,24 +41,24 @@ import models.Employee;
  * 
  */
 public class Personnel extends JPanel implements MouseListener {
-	private static final long	serialVersionUID	= 1L;
+	private static final long serialVersionUID = 1L;
 	
-	Employee 				empSelect;
-	Button						boutonNouveau;
-	Button						boutonModifier;
-	Button						boutonSupprimer;
-	Button						boutonEnregistrer;
-	Button						boutonAnnuler;
-	JTable						listePersonnel;
-	Vector<int[]>				selectedCells		= new Vector<int[]>();
-	JScrollPane					jsPersonnel;
-	int							IDSelect;
-	JTextField					nom;
-	JTextField					prenom;
-	JTextField					date;
-	JTable						competences;
-	TableModel 			competencesModel;
-	String						mode;
+	Employee			empSelect;
+	Button				boutonNouveau;
+	Button				boutonModifier;
+	Button				boutonSupprimer;
+	Button				boutonEnregistrer;
+	Button				boutonAnnuler;
+	JTable				listePersonnel;
+	Vector<int[]>		selectedCells		= new Vector<int[]>();
+	JScrollPane			jsPersonnel;
+	int					IDSelect;
+	JTextField			nom;
+	JTextField			prenom;
+	JTextField			date;
+	JTable				competences;
+	TableModel			competencesModel;
+	String				mode;
 	private Data		data;
 	SimpleDateFormat	GuiDateFormat		= new SimpleDateFormat("yyyy-MM-dd");
 	SimpleDateFormat	EmployeeDateFormat	= new SimpleDateFormat("dd/MM/yyyy");
@@ -135,7 +135,7 @@ public class Personnel extends JPanel implements MouseListener {
 		try {
 			formatterDate = new MaskFormatter("##/##/####");
 			formatterDate.setPlaceholderCharacter('_');
-			this.date = new  JFormattedTextField(formatterDate);
+			this.date = new JFormattedTextField(formatterDate);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -231,10 +231,11 @@ public class Personnel extends JPanel implements MouseListener {
 		this.nom.setText("");
 		this.prenom.setText("");
 		this.date.setText("");
-	
-		//((DefaultTableModel) this.competencesModel).setRowCount(0);
 		
 		ChargementModification();
+		
+		this.competencesModel = JTables.Competences(new ArrayList<Competence>()).getModel();
+		this.competences.setModel(this.competencesModel);
 		this.mode = "nouveau";
 	}
 	
