@@ -6,6 +6,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -13,12 +15,17 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.TableModel;
+
 import csv.CSVException;
+import csv.InvalidDataException;
 import data.Data;
 import data.DataException;
 import gui.Button;
+import gui.GenericTableModel;
 import gui.Titre;
 import models.Competence;
+import models.CompetenceCode;
 import models.Employee;
 
 /**
@@ -27,25 +34,28 @@ import models.Employee;
  * 
  */
 public class Competences extends JPanel implements MouseListener {
+
 	private static final long serialVersionUID = 1L;
 	
-	Competence compSelect;
+	Competence		compSelect;
 	JTable					listeCompetences;
-	JScrollPane					jsCompetences;
+	JScrollPane			jsCompetences;
 	Vector<int[]>	selectedCells	= new Vector<int[]>();
+	String					mode;
+	private Data		data;
+	int					IDSelect;
 	
 	Button					boutonNouveau;
 	Button					boutonModifier;
 	Button					boutonSupprimer;
 	Button					boutonEnregistrer;
 	Button					boutonAnnuler;
-	
+	Button					boutonAddLangue;
+	Button					boutonDeleteLangue;
+	JTextField			code;
+	JTable					listeLangues;
+	TableModel			modelLangues;
 
-	JTextField		code;
-	JTable			listeLangues;
-
-	private Data	data;
-	
 	public Competences(Data data) {
 		this.data = data;
 		setOpaque(false);
@@ -90,16 +100,16 @@ public class Competences extends JPanel implements MouseListener {
 		add(titre);
 		
 		JLabel labelNom = new JLabel("Code :");
-		labelNom.setBounds(350, 50, 150, 25);
+		labelNom.setBounds(350, 60, 150, 25);
 		add(labelNom);
 		
 		JLabel labelCompetences = new JLabel("Liste des langues :");
-		labelCompetences.setBounds(350, 80, 150, 25);
+		labelCompetences.setBounds(350, 100, 150, 25);
 		add(labelCompetences);
 		
 		this.code = new JTextField();
 		this.code.addMouseListener(this);
-		this.code.setBounds(400, 50, 150, 25);
+		this.code.setBounds(400, 60, 150, 25);
 		add(this.code);
 		
 		this.listeLangues = new JTable();
@@ -107,8 +117,18 @@ public class Competences extends JPanel implements MouseListener {
 		this.listeLangues.setFillsViewportHeight(true);
 		JScrollPane jsLangues = new JScrollPane(this.listeLangues);
 		jsLangues.setVisible(true);
-		jsLangues.setBounds(350, 110, 350, 350);
+		jsLangues.setBounds(350, 130, 750, 400);
 		add(jsLangues);
+		
+		this.boutonAddLangue = new Button("/boutons/miniadd.png");
+		this.boutonAddLangue.setBounds(710, 170);
+		this.boutonAddLangue.addMouseListener(this);
+		add(this.boutonAddLangue);
+		
+		this.boutonDeleteLangue = new Button("/boutons/minidelete.png");
+		this.boutonDeleteLangue.setBounds(710, 210);
+		this.boutonDeleteLangue.addMouseListener(this);
+		add(this.boutonDeleteLangue);
 		
 		ChargementConsultation();
 	}
@@ -119,16 +139,25 @@ public class Competences extends JPanel implements MouseListener {
 	public void AffichageListe() {
 		this.listeCompetences = new JTable();
 		try {
-			listeCompetences = JTables.Competences(data.Competences().tous());
-			listeCompetences.setFillsViewportHeight(true);
-			listeCompetences.addMouseListener(this);
-			JScrollPane js = new JScrollPane(listeCompetences);
-			js.setVisible(true);
-			js.setBounds(10, 10, 300, 600);
-			add(js);
+			this.listeCompetences = JTables.Competences(data.Competences().tous());
+			this.listeCompetences.setFillsViewportHeight(true);
+			this.listeCompetences.addMouseListener(this);
+			this.jsCompetences = new JScrollPane(this.listeCompetences);
+			this.jsCompetences.setVisible(true);
+			this.jsCompetences.setBounds(10, 10, 300, 600);
+			add(this.jsCompetences);
 		} catch (DataException e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * Supprime la liste et reinitialise l'ID séléctionné
+	 */
+	public void Reinitialiser() {
+		remove(this.listeCompetences);
+		remove(this.jsCompetences);
+		this.IDSelect = 0;
 	}
 	
 	/**
@@ -145,6 +174,8 @@ public class Competences extends JPanel implements MouseListener {
 		this.boutonModifier.setVisible(true);
 		this.boutonSupprimer.setVisible(true);
 		this.listeCompetences.setEnabled(true);
+		
+		this.mode = "consultation";
 	}
 	
 	/**
@@ -169,6 +200,53 @@ public class Competences extends JPanel implements MouseListener {
 	 * formulaire - Les éléments de la liste ne sont pas séléctionnables
 	 */
 	public void ChargementNouveau() {
+		this.code.setText("");
+
+		/*
+		 *  TODO : Création de la liste de langue a partir d'une arraylist
+		 *  this.modelLangues = JTables.Competences(new ArrayList<Competence>()).getModel();
+		 *  this.competences.setModel(this.competencesModel);
+		 */
+
+		this.mode = "nouveau";		
+		ChargementModification();
+	}
+	
+	/**
+	 * Enregistrement des informations dans le cas d'une modification ou d'un
+	 * ajout
+	 * 
+	 * @throws ParseException
+	 * @throws InvalidDataException 
+	 * @throws CSVException
+	 */
+	public void Enregistrement() throws ParseException, DataException, InvalidDataException {
+		
+		CompetenceCode compCode = new CompetenceCode(this.code.getText());
+		
+		switch (this.mode) {
+		case "nouveau":
+
+			/*
+			 * TODO : Mettre Arraylist de langue dans le constructeur 
+			 * Competence nouvComp = new Competence(compCode, names)
+			 * data.Competences().ajouter(nouvComp);	
+			 */
+			break;
+		
+		case "modification":
+			this.compSelect.setCode(compCode);
+		
+			/*
+			 *  TODO : Arraylist de langues
+			 *  this.compSelect.setNames(names);
+			 */
+			data.Competences().modifier(this.compSelect);
+			break;
+		
+		default:
+			break;
+		}
 	}
 	
 	/**
@@ -210,8 +288,14 @@ public class Competences extends JPanel implements MouseListener {
 			 * confirmation de l'utilisateur
 			 */
 			if (e.getSource().equals(this.boutonSupprimer)) {
-
-				
+				try {
+					Competence comp = data.Competences().parID(Integer.toString(this.IDSelect));
+					data.Competences().supprimer(comp);
+					Reinitialiser();
+					AffichageListe();
+				} catch (DataException e1) {
+					e1.printStackTrace();
+				}
 			}
 			
 			/**
@@ -226,7 +310,16 @@ public class Competences extends JPanel implements MouseListener {
 			 * TODO On enregistre les modifications ou le nouvel élément
 			 */
 			if (e.getSource().equals(this.boutonEnregistrer)) {
-				
+				try {
+					Enregistrement();
+				} catch (ParseException e1) {
+					System.out.println("Format incorrect: " + e1);
+				} catch (DataException e1) {
+					System.out.println("Problème d'enregistrement: " + e1);
+				} catch (InvalidDataException e1) {
+					System.out.println("Donnée incorrecte: " + e1);
+				}
+				ChargementConsultation();
 			}
 		}
 		
@@ -235,7 +328,18 @@ public class Competences extends JPanel implements MouseListener {
 		 * référence de l'objet !
 		 */
 		if (e.getSource() instanceof JTable) {
-			int ligneSelectionne = this.listeCompetences.getSelectedRow();
+			GenericTableModel<Competence> model = (GenericTableModel<Competence>) this.listeCompetences.getModel();
+			this.compSelect = model.getRowObject(this.listeCompetences.convertRowIndexToModel(listeCompetences.getSelectedRow()));
+			
+			this.code.setText(this.compSelect.getCode().toString());
+			
+			ArrayList<String> listLanguesComp = this.compSelect.getNames();
+			/*
+			 * TODO : faire une methode pour les langues dans la classe JTables
+			 * this.modelLangues = JTables.Competences(listCompEmp).getModel();
+			 * 	this.competences.setModel(this.competencesModel);
+			 */
+
 
 		}
 	}

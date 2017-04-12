@@ -231,11 +231,10 @@ public class Personnel extends JPanel implements MouseListener {
 		this.nom.setText("");
 		this.prenom.setText("");
 		this.date.setText("");
-		
-		ChargementModification();
-		
 		this.competencesModel = JTables.Competences(new ArrayList<Competence>()).getModel();
 		this.competences.setModel(this.competencesModel);
+		
+		ChargementModification();
 		this.mode = "nouveau";
 	}
 	
@@ -251,6 +250,7 @@ public class Personnel extends JPanel implements MouseListener {
 		switch (this.mode) {
 		case "nouveau":
 			Employee nouvEmp = new Employee(this.nom.getText(), this.prenom.getText(), this.date.getText());
+
 			data.Employes().ajouter(nouvEmp);
 			break;
 		
