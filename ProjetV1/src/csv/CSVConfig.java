@@ -5,34 +5,51 @@ import java.util.HashMap;
 
 import javax.cache.CacheManager;
 
-final public class CSVConfig {
+public class CSVConfig {
 	private CSVCache								csvcache;
 	private CSVModel								model;
 	private CSVDeserializer							deserializer;
 	private CSVSerializer							serializer;
 	private HashMap<CSVAssociation, CSVDocument>	documents;
 	
-	public CSVConfig(
-			CacheManager manager, Class<? extends CSVModel> model, Class<? extends CSVDeserializer> deserializer,
-			Class<? extends CSVSerializer> serializer
-	) throws InstantiationException, IllegalAccessException {
-		this.csvcache = new CSVCache(manager);
-		this.model = model.newInstance();
-		this.serializer = serializer.newInstance();
-		this.deserializer = deserializer.newInstance();
-		this.deserializer.setCSVConfig(this);
-		this.documents = new HashMap<>();
-	}
-	
-	public CSVCache getCSVCache() {
+	protected CSVCache getCsvcache() {
 		return csvcache;
 	}
 	
-	public CSVDocument getDocument(Class<? extends CSVEntity> entityclass) throws IOException {
+	protected void setCacheManager(CacheManager cachemanger) {
+		this.csvcache = new CSVCache(cachemanger);
+	}
+	
+	protected void setModel(CSVModel model) {
+		this.model = model;
+	}
+	
+	protected void setDeserializer(CSVDeserializer deserializer) {
+		this.deserializer = deserializer;
+	}
+	
+	protected void setSerializer(CSVSerializer serializer) {
+		this.serializer = serializer;
+	}
+	
+	final public CSVCache getCSVCache() {
+		return csvcache;
+	}
+	
+	public CSVConfig(CacheManager cachemanger, CSVModel model, CSVDeserializer deserializer, CSVSerializer serializer) {
+		super();
+		this.csvcache = new CSVCache(cachemanger);
+		this.model = model;
+		this.deserializer = deserializer;
+		this.serializer = serializer;
+		this.documents = new HashMap<>();
+	}
+	
+	final public CSVDocument getDocument(Class<? extends CSVEntity> entityclass) throws IOException {
 		return getDocument(new CSVAssociation(entityclass, null));
 	}
 	
-	public CSVDocument getDocument(CSVAssociation assoc) throws IOException {
+	final public CSVDocument getDocument(CSVAssociation assoc) throws IOException {
 		CSVDocument doc = documents.get(assoc);
 		if (doc == null) {
 			CSVFileConfig cfg = model.Metadata().getCSVFileConfig(assoc);
@@ -42,7 +59,7 @@ final public class CSVConfig {
 		return doc;
 	}
 	
-	public CSVModel getModel() {
+	final public CSVModel getModel() {
 		return model;
 	}
 	

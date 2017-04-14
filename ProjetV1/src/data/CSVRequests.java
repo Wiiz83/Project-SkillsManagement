@@ -21,7 +21,9 @@ public class CSVRequests<E extends CSVEntity> implements IRequete<E> {
 		this.data = data;
 	}
 	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see data.IRequete#tous()
 	 */
 	@Override
@@ -33,7 +35,9 @@ public class CSVRequests<E extends CSVEntity> implements IRequete<E> {
 		}
 	}
 	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see data.IRequete#parID(java.lang.String)
 	 */
 	@Override
@@ -53,8 +57,11 @@ public class CSVRequests<E extends CSVEntity> implements IRequete<E> {
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see data.IRequete#filtrerTrier(java.util.function.Predicate, java.util.Comparator)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see data.IRequete#filtrerTrier(java.util.function.Predicate,
+	 * java.util.Comparator)
 	 */
 	@Override
 	public ArrayList<E> filtrerTrier(Predicate<E> predicate, Comparator<E> c) throws DataException {
@@ -65,7 +72,9 @@ public class CSVRequests<E extends CSVEntity> implements IRequete<E> {
 		}
 	}
 	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see data.IRequete#ajouter(E)
 	 */
 	@Override
@@ -77,7 +86,9 @@ public class CSVRequests<E extends CSVEntity> implements IRequete<E> {
 		}
 	}
 	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see data.IRequete#supprimer(E)
 	 */
 	@Override
@@ -89,7 +100,9 @@ public class CSVRequests<E extends CSVEntity> implements IRequete<E> {
 		}
 	}
 	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see data.IRequete#modifier(E)
 	 */
 	@Override

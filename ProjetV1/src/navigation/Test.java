@@ -9,6 +9,7 @@ import csv.CSVConfig;
 import csv.CSVException;
 import data.Data;
 import data.DataException;
+import data.AppCSVConfig;
 import data.AppCSVDataModel;
 import data.AppCSVDeserializer;
 import data.AppCSVSerializer;
@@ -45,9 +46,7 @@ class AssocFrame extends AssociationJFrame<Employee, Competence> {
 public class Test {
 	public static void main(String[] args)
 			throws CSVException, InstantiationException, IllegalAccessException, DataException {
-		CSVConfig config = new CSVConfig(
-				Caching.getCachingProvider().getCacheManager(), AppCSVDataModel.class, AppCSVDeserializer.class, AppCSVSerializer.class
-		);
+		CSVConfig config = AppCSVConfig.getInstance();
 		Data data = new Data(config);
 		AssocFrame frame = new AssocFrame(data, data.Employes().parID(1), Competence.class);
 		frame.saveChanges();

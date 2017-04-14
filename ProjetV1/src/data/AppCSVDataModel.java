@@ -27,5 +27,8 @@ public class AppCSVDataModel extends CSVModel {
 		Metadata().AddAssociationOrEntity(
 				Mission.class, CompetenceRequirement.class, RELATIVEPATH + "missions_competences.csv", true, 0
 		);
+		Metadata().AddAssociationOrEntity(
+				CompetenceRequirement.class, Competence.class, RELATIVEPATH + "compreq_competences.csv", true, 0
+		);
 	}
 }

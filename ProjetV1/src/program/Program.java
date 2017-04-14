@@ -7,6 +7,7 @@ import csv.CSVConfig;
 import csv.CSVException;
 import data.Data;
 import data.DataException;
+import data.AppCSVConfig;
 import data.AppCSVDataModel;
 import data.AppCSVDeserializer;
 import data.AppCSVSerializer;
@@ -25,10 +26,7 @@ public class Program {
 	 */
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException {
 		{
-			CSVConfig config = new CSVConfig(
-					Caching.getCachingProvider().getCacheManager(), AppCSVDataModel.class, AppCSVDeserializer.class,
-					AppCSVSerializer.class
-			);
+			CSVConfig config = AppCSVConfig.getInstance();
 			Data data;
 			// Objet unique à passer à toutes les classes qui accèdent aux
 			// données.

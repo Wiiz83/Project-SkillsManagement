@@ -1,9 +1,6 @@
 package csv;
 
-public abstract class CSVSerializer {
-	public CSVSerializer() {
-		super();
-	}
+public interface CSVSerializer {
 	
-	public abstract CSVLine Serialize(Object o);
+	public CSVLine Serialize(Object o);
 }

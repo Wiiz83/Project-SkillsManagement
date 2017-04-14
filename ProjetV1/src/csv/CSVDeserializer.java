@@ -2,15 +2,7 @@ package csv;
 
 import java.io.IOException;
 
-public abstract class CSVDeserializer {
-	protected CSVConfig csvconfig;
-	
-	public CSVDeserializer() {
-	}
-	
-	public CSVDeserializer(CSVConfig csvconfig) {
-		this.csvconfig = csvconfig;
-	}
+public interface CSVDeserializer {
 	
 	/**
 	 * Crée un objet à partir de sa classe et sa représentation dans un fichier
@@ -22,10 +14,6 @@ public abstract class CSVDeserializer {
 	 * @throws IOException
 	 * @throws CSVException
 	 */
-	public abstract <E extends CSVEntity> E Deserialize(CSVLine line, Class<?> c) throws IOException, CSVException;
-	
-	public void setCSVConfig(CSVConfig csvconfig) {
-		this.csvconfig = csvconfig;
-	}
+	<E extends CSVEntity> E Deserialize(CSVLine line, Class<?> c) throws IOException, CSVException;
 	
 }

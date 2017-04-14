@@ -31,6 +31,11 @@ public class CompetenceRequirement extends CSVEntity {
 		this.requiredEmployees = requiredEmployees;
 	}
 	
+	public CompetenceRequirement(int requiredEmployees) {
+		super();
+		this.requiredEmployees = requiredEmployees;
+	}
+	
 	public Competence getCompetence() {
 		return competence;
 	}
@@ -61,11 +66,17 @@ public class CompetenceRequirement extends CSVEntity {
 	
 	@Override
 	public HashMap<Class<? extends CSVEntity>, ArrayList<String>> getReferencedObjectsIDS() {
-		assert (false);
-		return null;
+		HashMap<Class<? extends CSVEntity>, ArrayList<String>> ids = new HashMap<>();
+		ArrayList<String> id = new ArrayList<>();
+		id.add(competence.csvID());
+		ids.put(Competence.class, id);
+		return ids;
 	}
 	
 	@Override
 	public void setReferencedObjects(HashMap<Class<? extends CSVEntity>, ArrayList<Object>> hashMap) {
+		ArrayList<Competence> competences = castArrayList(hashMap, Competence.class);
+		assert (competences.size() == 1);
+		competence = competences.get(0);
 	}
 }

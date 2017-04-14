@@ -10,7 +10,7 @@ import csv.*;
  * Crée une ligne CSV à partir des attributs d'un objet
  *
  */
-public class AppCSVSerializer extends CSVSerializer {
+public class AppCSVSerializer implements CSVSerializer {
 	private DateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
 	
 	public AppCSVSerializer() {
@@ -64,7 +64,6 @@ public class AppCSVSerializer extends CSVSerializer {
 	private CSVLine CompetenceRequirement(CompetenceRequirement o) {
 		CSVLine line = new CSVLine();
 		line.add(o.csvID());
-		line.add(o.getCompetence().csvID());
 		line.add(Integer.toString(o.getNbRequiredEmployees()));
 		return line;
 	}
