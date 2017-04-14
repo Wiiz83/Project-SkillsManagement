@@ -2,6 +2,7 @@ Prenom;Nom;date entrée entreprise;identifiant
 Ollie;Galasso;13/03/2006;1
 Jon;Seastrunk;12/01/2007;2
 Ted;Luat;17/07/2007;3
+Myron;Quaife;28/09/2007;4
 Hollis;Syres;22/10/2007;5
 Norbert;Tebeest;05/12/2007;6
 Alvaro;Callum;19/11/2010;7
@@ -48,10 +49,3 @@ Luigi;Gerrish;09/03/2015;47
 Greg;Defrancisco;10/03/2015;48
 August;Novinger;20/04/2016;49
 Carmelo;Roosa;16/11/2016;50
-Employé_test;_test;11/11/2011;51
-Employé_test;_test;11/11/2011;52
-
-Myron;test_modif52;28/09/2007;4
-Employé_test;_test;11/11/2011;53
-Employé_test;_test;11/11/2011;54
-Employé_test;_test;11/11/2011;55

@@ -1,1 +1,4 @@
-ID;Nom;DateDebut;Duree;NB_PersReq;DateFin;forcer_planif
+ID;Nom;DateDebut;Duree;NB_PersReq
+1;Mission_test;08/08/2018;20;9;28/08/2018;false
+2;Mission_test;08/08/2018;20;9;28/08/2018;false
+3;Mission_test;08/08/2018;20;9;28/08/2018;false

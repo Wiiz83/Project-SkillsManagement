@@ -65,6 +65,5 @@ public class Competence extends CSVEntity {
 	
 	@Override
 	public void setReferencedObjects(HashMap<Class<? extends CSVEntity>, ArrayList<Object>> hashMap) {
-		assert (false);
 	}
 }
