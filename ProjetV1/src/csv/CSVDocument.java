@@ -38,7 +38,9 @@ public class CSVDocument {
 	 * @throws IOException
 	 */
 	public ArrayList<CSVLine> getAll() throws IOException {
-		BufferedReader br = new BufferedReader(new FileReader(path));
+		File file = new File(path);
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));;
 		String line = null;
 		ArrayList<CSVLine> set = new ArrayList<>();
 		boolean ignore = ignoreFirstLine;

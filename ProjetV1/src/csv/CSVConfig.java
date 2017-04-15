@@ -10,6 +10,7 @@ public class CSVConfig {
 	private CSVModel								model;
 	private CSVDeserializer							deserializer;
 	private CSVSerializer							serializer;
+	@SuppressWarnings("unused")
 	private HashMap<CSVAssociation, CSVDocument>	documents;
 	
 	protected CSVCache getCsvcache() {
