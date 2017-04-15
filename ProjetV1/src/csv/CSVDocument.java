@@ -106,14 +106,12 @@ public class CSVDocument {
 						// pw.flush();
 					} else if (csvline.isValid()) {
 						found = true;
-						int i = -1;
 						for (CSVLine set_line : lines) {
-							i++;
 							if (set_line.get(idColumnPosition).equals(csvline.get(idColumnPosition))) {
 								break;
 							}
 						}
-						lines.remove(i);
+						lines.remove(getLineByID(ID));
 					}
 				} else {
 					pw.println(line);

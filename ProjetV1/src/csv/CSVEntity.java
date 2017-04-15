@@ -33,7 +33,7 @@ public abstract class CSVEntity implements Serializable {
 		attachedObject = b;
 	}
 	
-	boolean isAttached() {
+	public boolean isAttached() {
 		return attachedObject;
 	}
 	
@@ -57,7 +57,7 @@ public abstract class CSVEntity implements Serializable {
 	
 	public abstract void setReferencedObjects(HashMap<Class<? extends CSVEntity>, ArrayList<Object>> hashMap);
 	
-	public final boolean equals(Object o) {
+	public boolean equals(Object o) {
 		if (o == null)
 			return false;
 		if (!(o instanceof CSVEntity))

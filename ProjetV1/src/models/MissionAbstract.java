@@ -102,4 +102,44 @@ public abstract class MissionAbstract extends CSVEntity {
 		return Integer.toString(id);
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (!(obj instanceof MissionAbstract))
+			return false;
+		MissionAbstract other = (MissionAbstract) obj;
+		if (AffEmp == null) {
+			if (other.AffEmp != null)
+				return false;
+		} else if (!AffEmp.equals(other.AffEmp))
+			return false;
+		if (dateDebut == null) {
+			if (other.dateDebut != null)
+				return false;
+		} else if (!dateDebut.equals(other.dateDebut))
+			return false;
+		if (dateFin == null) {
+			if (other.dateFin != null)
+				return false;
+		} else if (!dateFin.equals(other.dateFin))
+			return false;
+		if (duree != other.duree)
+			return false;
+		if (forcer_planification != other.forcer_planification)
+			return false;
+		if (id != other.id)
+			return false;
+		if (nbPersReq != other.nbPersReq)
+			return false;
+		if (nomM == null) {
+			if (other.nomM != null)
+				return false;
+		} else if (!nomM.equals(other.nomM))
+			return false;
+		return true;
+	}
+	
 }

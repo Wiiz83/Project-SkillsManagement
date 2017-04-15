@@ -39,7 +39,9 @@ public class CSVObjectSaver<E extends CSVEntity> {
 		HashMap<Class<? extends CSVEntity>, ArrayList<String>> associatedObjectsIDS = e.getReferencedObjectsIDS();
 		CSVModel model = config.getModel();
 		for (Class<? extends CSVEntity> N : model.Metadata().getAssociatedEntities(e.getClass())) {
-			if (N == null)
+			if (N == null || associatedObjectsIDS.get(N) == null)
+				continue;
+			if (associatedObjectsIDS.get(N).size() == 0)
 				continue;
 			CSVAssociation assoc = new CSVAssociation(e.getClass(), N);
 			CSVDocument assocDoc = config.getDocument(assoc);

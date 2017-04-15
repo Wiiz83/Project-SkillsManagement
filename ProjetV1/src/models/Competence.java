@@ -66,4 +66,27 @@ public class Competence extends CSVEntity {
 	@Override
 	public void setReferencedObjects(HashMap<Class<? extends CSVEntity>, ArrayList<Object>> hashMap) {
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (!(obj instanceof Competence))
+			return false;
+		Competence other = (Competence) obj;
+		if (Names == null) {
+			if (other.Names != null)
+				return false;
+		} else if (!Names.equals(other.Names))
+			return false;
+		if (code == null) {
+			if (other.code != null)
+				return false;
+		} else if (!code.equals(other.code))
+			return false;
+		return true;
+	}
+	
 }

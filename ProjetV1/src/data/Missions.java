@@ -7,8 +7,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 import csv.CSVException;
-
+import csv.CSVObjects;
 import models.Cal;
+import models.CompetenceRequirement;
 import models.Mission;
 import models.Status;
 
@@ -16,6 +17,40 @@ public class Missions extends CSVRequests<Mission> {
 	
 	Missions(Data data) throws DataException {
 		super(data, Mission.class);
+	}
+	
+	@Override
+	public void ajouter(Mission m) throws DataException {
+		try {
+			CSVObjects<CompetenceRequirement> compreq_csv = new CSVObjects<CompetenceRequirement>(
+					CompetenceRequirement.class, data.getCSVConfig()
+			);
+			compreq_csv.addMany(m.getCompReq());
+		} catch (CSVException e2) {
+			throw new DataException(e2);
+		}
+		super.ajouter(m);
+	}
+	
+	@Override
+	public void supprimer(Mission m) throws DataException {
+		try {
+			CSVObjects<CompetenceRequirement> compreq_csv = new CSVObjects<CompetenceRequirement>(
+					CompetenceRequirement.class, data.getCSVConfig()
+			);
+			for (CompetenceRequirement cr : m.getCompReq())
+				if (cr.isAttached())
+					compreq_csv.delete(cr);
+		} catch (CSVException e1) {
+			throw new DataException(e1);
+		}
+		super.supprimer(m);
+	}
+	
+	@Override
+	public void modifier(Mission m) throws DataException {
+		this.supprimer(m);
+		this.ajouter(m);
 	}
 	
 	public Mission parID(int ID) throws DataException {

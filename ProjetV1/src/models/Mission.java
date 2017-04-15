@@ -97,6 +97,13 @@ public class Mission extends MissionAbstract {
 		return CompReq.add(cr);
 	}
 	
+	public boolean removeCompetenceReq(Competence c) {
+		for (CompetenceRequirement cr : CompReq)
+			if (cr.getCompetence().equals(c))
+				return CompReq.remove(cr);
+		return false;
+	}
+	
 	/**
 	 * @return l'arraylist des compétences requises sur le projet
 	 */
@@ -157,6 +164,23 @@ public class Mission extends MissionAbstract {
 	
 	public boolean getForcer_planification() {
 		return forcer_planification;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (!(obj instanceof Mission))
+			return false;
+		Mission other = (Mission) obj;
+		if (CompReq == null) {
+			if (other.CompReq != null)
+				return false;
+		} else if (!CompReq.equals(other.CompReq))
+			return false;
+		return true;
 	}
 	
 }

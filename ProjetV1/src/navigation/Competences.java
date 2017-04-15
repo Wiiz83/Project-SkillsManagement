@@ -26,7 +26,6 @@ import gui.GenericTableModel;
 import gui.Titre;
 import models.Competence;
 import models.CompetenceCode;
-import models.Employee;
 
 /**
  * Page "Compétences" de l'application contenant la liste de toutes les
@@ -34,28 +33,28 @@ import models.Employee;
  * 
  */
 public class Competences extends JPanel implements MouseListener {
-
+	
 	private static final long serialVersionUID = 1L;
 	
 	Competence		compSelect;
-	JTable					listeCompetences;
-	JScrollPane			jsCompetences;
+	JTable			listeCompetences;
+	JScrollPane		jsCompetences;
 	Vector<int[]>	selectedCells	= new Vector<int[]>();
-	String					mode;
-	private Data		data;
-	int					IDSelect;
+	String			mode;
+	private Data	data;
+	int				IDSelect;
 	
-	Button					boutonNouveau;
-	Button					boutonModifier;
-	Button					boutonSupprimer;
-	Button					boutonEnregistrer;
-	Button					boutonAnnuler;
-	Button					boutonAddLangue;
-	Button					boutonDeleteLangue;
-	JTextField			code;
-	JTable					listeLangues;
-	TableModel			modelLangues;
-
+	Button		boutonNouveau;
+	Button		boutonModifier;
+	Button		boutonSupprimer;
+	Button		boutonEnregistrer;
+	Button		boutonAnnuler;
+	Button		boutonAddLangue;
+	Button		boutonDeleteLangue;
+	JTextField	code;
+	JTable		listeLangues;
+	TableModel	modelLangues;
+	
 	public Competences(Data data) {
 		this.data = data;
 		setOpaque(false);
@@ -66,7 +65,6 @@ public class Competences extends JPanel implements MouseListener {
 		 * Affichage de la liste gauche
 		 */
 		AffichageListe();
-
 		
 		/**
 		 * Création et positionnement des boutons de gestion de formulaire
@@ -150,7 +148,7 @@ public class Competences extends JPanel implements MouseListener {
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
 	 * Supprime la liste et reinitialise l'ID séléctionné
 	 */
@@ -201,14 +199,15 @@ public class Competences extends JPanel implements MouseListener {
 	 */
 	public void ChargementNouveau() {
 		this.code.setText("");
-
+		
 		/*
-		 *  TODO : Création de la liste de langue a partir d'une arraylist
-		 *  this.modelLangues = JTables.Competences(new ArrayList<Competence>()).getModel();
-		 *  this.competences.setModel(this.competencesModel);
+		 * TODO : Création de la liste de langue a partir d'une arraylist
+		 * this.modelLangues = JTables.Competences(new
+		 * ArrayList<Competence>()).getModel();
+		 * this.competences.setModel(this.competencesModel);
 		 */
-
-		this.mode = "nouveau";		
+		
+		this.mode = "nouveau";
 		ChargementModification();
 	}
 	
@@ -217,7 +216,7 @@ public class Competences extends JPanel implements MouseListener {
 	 * ajout
 	 * 
 	 * @throws ParseException
-	 * @throws InvalidDataException 
+	 * @throws InvalidDataException
 	 * @throws CSVException
 	 */
 	public void Enregistrement() throws ParseException, DataException, InvalidDataException {
@@ -226,20 +225,19 @@ public class Competences extends JPanel implements MouseListener {
 		
 		switch (this.mode) {
 		case "nouveau":
-
+			
 			/*
-			 * TODO : Mettre Arraylist de langue dans le constructeur 
-			 * Competence nouvComp = new Competence(compCode, names)
-			 * data.Competences().ajouter(nouvComp);	
+			 * TODO : Mettre Arraylist de langue dans le constructeur Competence
+			 * nouvComp = new Competence(compCode, names)
+			 * data.Competences().ajouter(nouvComp);
 			 */
 			break;
 		
 		case "modification":
 			this.compSelect.setCode(compCode);
-		
+			
 			/*
-			 *  TODO : Arraylist de langues
-			 *  this.compSelect.setNames(names);
+			 * TODO : Arraylist de langues this.compSelect.setNames(names);
 			 */
 			data.Competences().modifier(this.compSelect);
 			break;
@@ -329,7 +327,8 @@ public class Competences extends JPanel implements MouseListener {
 		 */
 		if (e.getSource() instanceof JTable) {
 			GenericTableModel<Competence> model = (GenericTableModel<Competence>) this.listeCompetences.getModel();
-			this.compSelect = model.getRowObject(this.listeCompetences.convertRowIndexToModel(listeCompetences.getSelectedRow()));
+			this.compSelect = model
+					.getRowObject(this.listeCompetences.convertRowIndexToModel(listeCompetences.getSelectedRow()));
 			
 			this.code.setText(this.compSelect.getCode().toString());
 			
@@ -337,10 +336,9 @@ public class Competences extends JPanel implements MouseListener {
 			/*
 			 * TODO : faire une methode pour les langues dans la classe JTables
 			 * this.modelLangues = JTables.Competences(listCompEmp).getModel();
-			 * 	this.competences.setModel(this.competencesModel);
+			 * this.competences.setModel(this.competencesModel);
 			 */
-
-
+			
 		}
 	}
 	

@@ -94,4 +94,26 @@ public class Employee extends Personne {
 	public void setReferencedObjects(HashMap<Class<? extends CSVEntity>, ArrayList<Object>> hashMap) {
 		Competences = castArrayList(hashMap, Competence.class);
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (!(obj instanceof Employee))
+			return false;
+		Employee other = (Employee) obj;
+		if (Competences == null) {
+			if (other.Competences != null)
+				return false;
+		} else if (!Competences.equals(other.Competences))
+			return false;
+		if (entryDate == null) {
+			if (other.entryDate != null)
+				return false;
+		} else if (!entryDate.equals(other.entryDate))
+			return false;
+		return true;
+	}
 }

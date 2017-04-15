@@ -16,7 +16,6 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
-import csv.CSVException;
 import data.Data;
 import data.DataException;
 
@@ -105,7 +104,6 @@ public class Accueil extends JPanel {
 		validate();
 		
 	}
-	
 	
 	@Override
 	public void paintComponent(Graphics g) {

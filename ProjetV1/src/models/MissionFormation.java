@@ -35,4 +35,21 @@ public class MissionFormation extends MissionAbstract {
 		AffEmp = castArrayList(hashMap, Employee.class);
 		Comp = castArrayList(hashMap, Competence.class);
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (!(obj instanceof MissionFormation))
+			return false;
+		MissionFormation other = (MissionFormation) obj;
+		if (Comp == null) {
+			if (other.Comp != null)
+				return false;
+		} else if (!Comp.equals(other.Comp))
+			return false;
+		return true;
+	}
 }

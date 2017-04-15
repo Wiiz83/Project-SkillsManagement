@@ -1,6 +1,5 @@
 package program;
 
-import javax.cache.Caching;
 import javax.swing.SwingUtilities;
 
 import csv.CSVConfig;
@@ -8,9 +7,6 @@ import csv.CSVException;
 import data.Data;
 import data.DataException;
 import data.AppCSVConfig;
-import data.AppCSVDataModel;
-import data.AppCSVDeserializer;
-import data.AppCSVSerializer;
 import gui.ProgramFrame;
 
 public class Program {

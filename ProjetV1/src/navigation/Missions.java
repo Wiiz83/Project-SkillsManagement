@@ -8,7 +8,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
@@ -25,7 +24,6 @@ import javax.swing.table.TableModel;
 import javax.swing.text.MaskFormatter;
 import javax.swing.text.NumberFormatter;
 
-import csv.CSVException;
 import data.Data;
 import data.DataException;
 import gui.Button;
@@ -49,9 +47,9 @@ public class Missions extends JPanel implements MouseListener {
 	Button						boutonDeleteComp;
 	Button						boutonAddEmp;
 	Button						boutonDeleteEmp;
-	JFormattedTextField					dateD;
-	JFormattedTextField					duree;
-	JFormattedTextField					nombre;
+	JFormattedTextField			dateD;
+	JFormattedTextField			duree;
+	JFormattedTextField			nombre;
 	JTable						listeMissions;
 	Vector<int[]>				selectedCells		= new Vector<int[]>();
 	int							IDSelect;
@@ -135,23 +133,23 @@ public class Missions extends JPanel implements MouseListener {
 		JLabel labelCompetences = new JLabel("Liste des compétences :");
 		labelCompetences.setBounds(350, 140, 150, 25);
 		add(labelCompetences);
-
+		
 		JLabel labelEmployes = new JLabel("Liste des employés :");
 		labelEmployes.setBounds(800, 140, 150, 25);
 		add(labelEmployes);
-
+		
 		this.nom = new JTextField();
 		this.nom.addMouseListener(this);
 		this.nom.setBounds(500, 50, 150, 25);
 		add(this.nom);
 		
-	    NumberFormat format = NumberFormat.getInstance();
-	    NumberFormatter formatterNumber = new NumberFormatter(format);
-	    formatterNumber.setValueClass(Integer.class);
-	    formatterNumber.setMinimum(0);
-	    formatterNumber.setMaximum(Integer.MAX_VALUE);
-	    formatterNumber.setAllowsInvalid(false);
-	    formatterNumber.setCommitsOnValidEdit(true);	
+		NumberFormat format = NumberFormat.getInstance();
+		NumberFormatter formatterNumber = new NumberFormatter(format);
+		formatterNumber.setValueClass(Integer.class);
+		formatterNumber.setMinimum(0);
+		formatterNumber.setMaximum(Integer.MAX_VALUE);
+		formatterNumber.setAllowsInvalid(false);
+		formatterNumber.setCommitsOnValidEdit(true);
 		this.nombre = new JFormattedTextField(formatterNumber);
 		this.nombre.addMouseListener(this);
 		this.nombre.setBounds(500, 80, 150, 25);
@@ -174,11 +172,11 @@ public class Missions extends JPanel implements MouseListener {
 		try {
 			formatterDate = new MaskFormatter("##/##/##");
 			formatterDate.setPlaceholderCharacter('_');
-			this.dateD = new  JFormattedTextField(formatterDate);
+			this.dateD = new JFormattedTextField(formatterDate);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-
+		
 		this.dateD.addMouseListener(this);
 		this.dateD.setBounds(900, 50, 150, 25);
 		add(this.dateD);
@@ -198,7 +196,6 @@ public class Missions extends JPanel implements MouseListener {
 		jsEmp.setVisible(true);
 		jsEmp.setBounds(800, 170, 350, 350);
 		add(jsEmp);
-		
 		
 		this.boutonAddComp = new Button("/boutons/miniadd.png");
 		this.boutonAddComp.setBounds(710, 170);

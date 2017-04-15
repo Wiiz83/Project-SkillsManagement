@@ -4,8 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import javax.cache.Caching;
-
 import data.AppCSVConfig;
 
 import models.Competence;
@@ -63,8 +61,10 @@ public class Test {
 		
 		CSVObjects<Mission> missions_csv = new CSVObjects<>(Mission.class, config);
 		missions_csv.add(mission_test);
-		
-		System.out.println(missions_csv.getByID(mission_test.csvID()).getCompReq());
+		Mission mission_csv = missions_csv.getByID(mission_test.csvID());
+		System.out.println(mission_test);
+		System.out.println(mission_csv);
+		System.out.println(mission_csv.equals(mission_test));
 	}
 	
 }

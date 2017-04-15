@@ -31,11 +31,6 @@ public class CompetenceRequirement extends CSVEntity {
 		this.requiredEmployees = requiredEmployees;
 	}
 	
-	public CompetenceRequirement(int requiredEmployees) {
-		super();
-		this.requiredEmployees = requiredEmployees;
-	}
-	
 	public Competence getCompetence() {
 		return competence;
 	}
@@ -76,7 +71,30 @@ public class CompetenceRequirement extends CSVEntity {
 	@Override
 	public void setReferencedObjects(HashMap<Class<? extends CSVEntity>, ArrayList<Object>> hashMap) {
 		ArrayList<Competence> competences = castArrayList(hashMap, Competence.class);
-		assert (competences.size() == 1);
-		competence = competences.get(0);
+		if (competences.size() > 0) {
+			assert (competences.size() == 1);
+			competence = competences.get(0);
+		}
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (!(obj instanceof CompetenceRequirement))
+			return false;
+		CompetenceRequirement other = (CompetenceRequirement) obj;
+		if (competence == null) {
+			if (other.competence != null)
+				return false;
+		} else if (!competence.equals(other.competence))
+			return false;
+		if (id != other.id)
+			return false;
+		if (requiredEmployees != other.requiredEmployees)
+			return false;
+		return true;
 	}
 }

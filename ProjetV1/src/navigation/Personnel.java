@@ -18,7 +18,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.text.MaskFormatter;
 
@@ -250,7 +249,7 @@ public class Personnel extends JPanel implements MouseListener {
 		switch (this.mode) {
 		case "nouveau":
 			Employee nouvEmp = new Employee(this.nom.getText(), this.prenom.getText(), this.date.getText());
-
+			
 			data.Employes().ajouter(nouvEmp);
 			break;
 		
