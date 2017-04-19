@@ -1,6 +1,7 @@
 package navigation;
 
 import java.awt.Color;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -13,6 +14,7 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -41,6 +43,10 @@ import models.Employee;
  */
 public class Personnel extends JPanel implements MouseListener {
 	private static final long serialVersionUID = 1L;
+	
+	Button				boutonAddComp;
+	Button				boutonDeleteComp;
+	GestionCompetences gc;
 	
 	Employee			empSelect;
 	Button				boutonNouveau;
@@ -142,6 +148,7 @@ public class Personnel extends JPanel implements MouseListener {
 		this.date.setBounds(450, 110, 150, 25);
 		add(this.date);
 		
+		/*
 		this.competences = new JTable();
 		this.competences.addMouseListener(this);
 		this.competences.setFillsViewportHeight(true);
@@ -149,6 +156,21 @@ public class Personnel extends JPanel implements MouseListener {
 		js.setVisible(true);
 		js.setBounds(350, 170, 350, 350);
 		add(js);
+		
+		this.boutonAddComp = new Button("/boutons/miniadd.png");
+		this.boutonAddComp.setBounds(710, 170);
+		this.boutonAddComp.addMouseListener(this);
+		add(this.boutonAddComp);
+		
+		this.boutonDeleteComp = new Button("/boutons/minidelete.png");
+		this.boutonDeleteComp.setBounds(710, 210);
+		this.boutonDeleteComp.addMouseListener(this);
+		add(this.boutonDeleteComp);
+		*/
+		
+		this.gc = new GestionCompetences(null);
+		this.gc.setBounds(350, 170, 650, 350);
+		add(this.gc);
 		
 		ChargementConsultation();
 	}
@@ -189,7 +211,7 @@ public class Personnel extends JPanel implements MouseListener {
 		this.nom.setEditable(false);
 		this.prenom.setEditable(false);
 		this.date.setEditable(false);
-		this.competences.setEnabled(false);
+		//this.competences.setEnabled(false);
 		
 		this.boutonEnregistrer.setVisible(false);
 		this.boutonAnnuler.setVisible(false);
@@ -285,6 +307,25 @@ public class Personnel extends JPanel implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() instanceof Button) {
 			
+			if (e.getSource().equals(this.boutonAddComp)) {
+				JFrame frame = new JFrame();
+				frame.setSize(600, 300);
+				frame.setTitle("Skill Expert");
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				frame.setResizable(false);
+				frame.setLocation(5, 5);
+				
+				JPanel panel = new JPanel();
+				frame.add(panel);
+				
+				
+				
+				
+				
+				
+				frame.setVisible(true);
+			}
+			
 			/**
 			 * TODO Formulaire prêt à l'ajout d'un nouvel élément
 			 */
@@ -350,8 +391,9 @@ public class Personnel extends JPanel implements MouseListener {
 			this.date.setText(EmployeeDateFormat.format(this.empSelect.getEntryDate()));
 			
 			ArrayList<Competence> listCompEmp = this.empSelect.getCompetences();
-			this.competencesModel = JTables.Competences(listCompEmp).getModel();
-			this.competences.setModel(this.competencesModel);
+			this.gc = new GestionCompetences(listCompEmp);
+		//	this.competencesModel = JTables.Competences(listCompEmp).getModel();
+		//	this.competences.setModel(this.competencesModel);
 		}
 	}
 	

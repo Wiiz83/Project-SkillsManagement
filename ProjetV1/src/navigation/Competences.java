@@ -333,7 +333,7 @@ public class Competences extends JPanel implements MouseListener {
 			
 			this.code.setText(this.compSelect.getCode().toString());
 			
-			String[] headers = { "Libellé" };
+/*			String[] headers = { "Libellé" };
 			ArrayList<String> listLanguesComp = this.compSelect.getNames();
 			
 		    DefaultTableModel modelL = new DefaultTableModel(new Object[]{"Libellé"}, 0);
@@ -341,7 +341,7 @@ public class Competences extends JPanel implements MouseListener {
 		          modelL.addRow(new Object[]{lib});
 		     }
 		     this.listeLangues.setModel(modelL);
-
+*/
 			
 			
 			/*
