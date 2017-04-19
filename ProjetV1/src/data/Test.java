@@ -13,7 +13,7 @@ public class Test {
 	public static void main(String[] args)
 			throws DataException, InstantiationException, IllegalAccessException, CSVException, ParseException {
 		SimpleDateFormat dateformatter = new SimpleDateFormat("dd/MM/yyyy");
-		CSVConfig config = AppCSVConfig.getInstance();
+		CSVConfig config = new AppCSVConfig();
 		Data data = new Data(config);
 		CSVRequests<CompetenceRequirement> crCSV = new CSVRequests<>(data, CompetenceRequirement.class);
 		
