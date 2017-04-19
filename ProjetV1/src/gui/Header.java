@@ -3,11 +3,13 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -16,6 +18,8 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
 import data.Data;
 import navigation.Accueil;
@@ -25,7 +29,6 @@ import navigation.Personnel;
 
 public class Header extends JPanel implements MouseListener {
 	private static final long	serialVersionUID	= 1L;
-	public static Cursor		newCursor			= Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 	private Image				logo;
 	private Image				background;
 	public Button				boutonAccueil;
@@ -76,18 +79,19 @@ public class Header extends JPanel implements MouseListener {
 		this.boutonPersonnel.addMouseListener(this);
 		this.boutonMissions.addMouseListener(this);
 		
-		setLayout(new BorderLayout());
-		setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
+		this.setLayout(new BorderLayout());
+		this.setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
 		
 		this.menu = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		menu.setSize(1280, 70);
-		menu.setLocation(0, 0);
-		menu.setOpaque(false);
-		menu.add(boutonAccueil);
-		menu.add(boutonCompetences);
-		menu.add(boutonPersonnel);
-		menu.add(boutonMissions);
-		add(menu);
+		this.menu.setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
+		this.menu.setSize(1280, 70);
+		this.menu.setLocation(0, 0);
+		this.menu.setOpaque(false);
+		this.menu.add(this.boutonAccueil);
+		this.menu.add(this.boutonCompetences);
+		this.menu.add(this.boutonPersonnel);
+		this.menu.add(this.boutonMissions);
+		this.frame.add(this.menu);
 		
 		this.contenu = new JPanel();
 		contenu.setSize(this.frame.getWidth(), this.frame.getHeight());
@@ -152,6 +156,7 @@ public class Header extends JPanel implements MouseListener {
 			System.out.println("Problème lors du chargement de la page");
 			break;
 		}
+		
 		this.frame.invalidate();
 		this.frame.validate();
 	}
@@ -165,9 +170,9 @@ public class Header extends JPanel implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() instanceof Button) {
-			
 			if (e.getSource().equals(this.boutonAccueil)) {
 				this.etat = "accueil";
+				this.boutonAccueil.setBackground(Color.BLACK);
 			} else if (e.getSource().equals(this.boutonCompetences)) {
 				this.etat = "competences";
 			} else if (e.getSource().equals(this.boutonPersonnel)) {

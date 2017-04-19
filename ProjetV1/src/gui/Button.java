@@ -101,6 +101,8 @@ public class Button extends JComponent implements MouseListener {
 				g2d.drawImage(this.backgroundImageHover, this.x, this.y, this.width, this.height, null);
 			} else if (this.etat == "grisé") {
 				g2d.drawImage(this.backgroundImageDisable, this.x, this.y, this.width, this.height, null);
+			} else if (this.etat == "clicked") {
+				g2d.drawImage(this.backgroundImageHover, this.x, this.y, this.width, this.height, null);
 			}
 
 			g2d.dispose();
@@ -157,6 +159,7 @@ public class Button extends JComponent implements MouseListener {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		
 	}
 
 }
