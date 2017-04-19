@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import csv.CSVConfig;
+import csv.CSVDeserializer;
 import csv.CSVEntity;
 import csv.CSVException;
 import csv.CSVLine;
@@ -17,8 +19,14 @@ import models.Employee;
 import models.Languages;
 import models.Mission;
 
-public class AppCSVDeserializer extends csv.CSVDeserializer {
-	SimpleDateFormat dateformatter = new SimpleDateFormat("dd/MM/yyyy");
+public class AppCSVDeserializer implements CSVDeserializer {
+	SimpleDateFormat	dateformatter	= new SimpleDateFormat("dd/MM/yyyy");
+	CSVConfig			csvconfig;
+	
+	public AppCSVDeserializer(CSVConfig csvconfig) {
+		super();
+		this.csvconfig = csvconfig;
+	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -44,8 +52,9 @@ public class AppCSVDeserializer extends csv.CSVDeserializer {
 	
 	private CompetenceRequirement CompetenceRequirement(CSVLine line)
 			throws ParseException, NumberFormatException, IOException, CSVException {
-		CSVObjects<Competence> compreq = new CSVObjects<>(Competence.class, csvconfig);
-		return new CompetenceRequirement(compreq.getByID(line.get(1)), Integer.parseInt(line.get(0)));
+		CompetenceRequirement cr = new CompetenceRequirement(Integer.parseInt(line.get(1)));
+		cr.setCsvID(line.get(0));
+		return cr;
 	}
 	
 	private CompetenceCode CompetenceCode(CSVLine line) throws InvalidDataException {
