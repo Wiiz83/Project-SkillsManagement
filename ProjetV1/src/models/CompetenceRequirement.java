@@ -31,6 +31,11 @@ public class CompetenceRequirement extends CSVEntity {
 		this.requiredEmployees = requiredEmployees;
 	}
 	
+	public CompetenceRequirement(int requiredEmployees) {
+		super();
+		this.requiredEmployees = requiredEmployees;
+	}
+	
 	public Competence getCompetence() {
 		return competence;
 	}

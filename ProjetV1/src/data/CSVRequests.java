@@ -29,7 +29,7 @@ public class CSVRequests<E extends CSVEntity> implements IRequete<E> {
 	@Override
 	public ArrayList<E> tous() throws DataException {
 		try {
-			return csvobjects.GetFiltered(o -> true, (E e1, E e2) -> e1.csvID().compareTo(e2.csvID()));
+			return csvobjects.getAll();
 		} catch (CSVException e) {
 			throw new DataException(e);
 		}

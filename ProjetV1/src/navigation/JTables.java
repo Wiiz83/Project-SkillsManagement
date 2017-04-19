@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
 
+import csv.CSVEntity;
 import gui.GenericTableModel;
 import models.*;
 
@@ -14,6 +15,24 @@ import models.*;
  *
  */
 public class JTables {
+	
+	@SuppressWarnings("unchecked")
+	public static <E extends CSVEntity> JTable getTable(Class<? extends CSVEntity> c, ArrayList<E> data) {
+		
+		if (c == Competence.class)
+			return Competences((ArrayList<Competence>) data);
+		if (c == Employee.class) {
+			return Employes((ArrayList<Employee>) data);
+		}
+		if (c == Mission.class) {
+			return Missions((ArrayList<Mission>) data);
+		}
+		if (c == CompetenceRequirement.class) {
+			return CompetencesRequises((ArrayList<CompetenceRequirement>) data);
+		} else {
+			return null;
+		}
+	}
 	
 	public static JTable Employes(ArrayList<Employee> employes) {
 		SimpleDateFormat dateformatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -56,7 +75,7 @@ public class JTables {
 	
 	public static JTable Competences(ArrayList<Competence> competences) {
 		
-		String[] headers = { "Code", "FR"};
+		String[] headers = { "Code", "FR" };
 		@SuppressWarnings("serial")
 		TableModel dataModel = new GenericTableModel<Competence>(competences, headers) {
 			
@@ -65,11 +84,39 @@ public class JTables {
 				
 				switch (col) {
 				case 0:
-						return comp.getCode();
+					return comp.getCode();
 				case 1:
-						return comp.getNames().get(1);
+					return comp.getNames().get(1);
 				default:
-						System.out.println("Competences JTable access ");
+					System.out.println("Competences JTable access ");
+					break;
+				}
+				return comp;
+			}
+		};
+		
+		JTable table = new JTable(dataModel);
+		return table;
+	}
+	
+	public static JTable CompetencesRequises(ArrayList<CompetenceRequirement> CompReq) {
+		String[] headers = { "Code", "FR", "Employés requis" };
+		@SuppressWarnings("serial")
+		TableModel dataModel = new GenericTableModel<CompetenceRequirement>(CompReq, headers) {
+			
+			public Object getValueAt(int row, int col) {
+				CompetenceRequirement cr = CompReq.get(row);
+				Competence comp = cr.getCompetence();
+				
+				switch (col) {
+				case 0:
+					return comp.getCode();
+				case 1:
+					return comp.getNames().get(1);
+				case 2:
+					return cr.getNbRequiredEmployees();
+				default:
+					System.out.println("CompetenceRequirement JTable access ");
 					break;
 				}
 				return comp;

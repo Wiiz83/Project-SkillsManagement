@@ -1,8 +1,10 @@
 package navigation;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.HeadlessException;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -13,8 +15,10 @@ import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -27,8 +31,11 @@ import javax.swing.text.NumberFormatter;
 import data.Data;
 import data.DataException;
 import gui.Button;
+import gui.GenericTableModel;
 import gui.Titre;
 import models.Competence;
+import models.CompetenceRequirement;
+import models.Employee;
 import models.Mission;
 
 /**
@@ -52,6 +59,7 @@ public class Missions extends JPanel implements MouseListener {
 	JFormattedTextField			nombre;
 	JTable						listeMissions;
 	Vector<int[]>				selectedCells		= new Vector<int[]>();
+	Mission						missSelect;
 	int							IDSelect;
 	JTextField					nom;
 	JComboBox<String>			statut;
@@ -59,10 +67,10 @@ public class Missions extends JPanel implements MouseListener {
 	JTable						employes;
 	private static final long	serialVersionUID	= 1L;
 	
-	Data data;
+	private Data data;
 	
 	public Missions(Data data) {
-		
+		this.data = data;
 		setOpaque(false);
 		setLayout(null);
 		setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
@@ -143,6 +151,12 @@ public class Missions extends JPanel implements MouseListener {
 		this.nom.setBounds(500, 50, 150, 25);
 		add(this.nom);
 		
+		///
+		this.nom = new JTextField();
+		this.nom.addMouseListener(this);
+		this.nom.setBounds(500, 50, 150, 25);
+		add(this.nom);
+		///
 		NumberFormat format = NumberFormat.getInstance();
 		NumberFormatter formatterNumber = new NumberFormatter(format);
 		formatterNumber.setValueClass(Integer.class);
@@ -295,9 +309,35 @@ public class Missions extends JPanel implements MouseListener {
 	 * Clic sur la souris : - Si c'est un bouton de gestion du formulaire - Si
 	 * c'est un élément de la liste
 	 */
+	
+	@SuppressWarnings("unchecked")
+	private Mission getSelected() {
+		GenericTableModel<Mission> model = (GenericTableModel<Mission>) listeMissions.getModel();
+		return model.getRowObject(listeMissions.convertRowIndexToModel(listeMissions.getSelectedRow()));
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() instanceof Button) {
+			if (e.getSource().equals(this.boutonAddComp)) {
+				
+				JFrame frame = null;
+				System.out.println(getSelected());
+				try {
+					frame = new AdderJFrame<Mission, Employee>(data, getSelected(), Employee.class);
+				} catch (HeadlessException | DataException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				// 2. Optional: What happens when the frame closes?
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				frame.pack();
+				
+				// 5. Show it.
+				frame.setVisible(true);
+				
+			}
 			
 			/**
 			 * TODO Formulaire prêt à l'ajout d'un nouvel élément

@@ -15,6 +15,10 @@ public class Test {
 		SimpleDateFormat dateformatter = new SimpleDateFormat("dd/MM/yyyy");
 		CSVConfig config = AppCSVConfig.getInstance();
 		Data data = new Data(config);
+		CSVRequests<CompetenceRequirement> crCSV = new CSVRequests<>(data, CompetenceRequirement.class);
+		
+		System.out.println(crCSV.tous());
+		
 		System.out.println(data.Competences().tous().size());
 		System.out.println(data.Competences().manquantesEmploye("4").size());
 		System.out.println(data.Employes().parID("4").getCompetences().size());
@@ -22,8 +26,8 @@ public class Test {
 		
 		Mission mission_test = new Mission("Mission_test", dateformatter.parse("08/08/2018"), 20, 9);
 		
-		Competence competence1 = data.Competences().parID("A.1.");
-		Competence competence2 = data.Competences().parID("A.2.");
+		Competence competence1 = data.Competences().parID("B.1.");
+		Competence competence2 = data.Competences().parID("C.2.");
 		CompetenceRequirement cr1 = new CompetenceRequirement(competence1, 1);
 		CompetenceRequirement cr2 = new CompetenceRequirement(competence2, 2);
 		mission_test.addCompetenceReq(cr1);
@@ -34,10 +38,14 @@ public class Test {
 		mission_test.addCompetenceReq(cr2);
 		data.Missions().modifier(mission_test);
 		System.out.println(mission_test.equals(data.Missions().parID(id)));
-		
+		mission_test.affectEmployee(data.Employes().parID("2"));
+		mission_test.affectEmployee(data.Employes().parID("6"));
 		mission_test.removeCompetenceReq(competence1);
 		data.Missions().modifier(mission_test);
 		System.out.println(mission_test.equals(data.Missions().parID(id)));
+		System.out.println(mission_test);
+		// System.out.println(data.Missions().parID(id));
+		// System.out.println(data.Missions().tous());
 		
 	}
 }
