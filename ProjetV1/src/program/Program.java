@@ -22,12 +22,11 @@ public class Program {
 	 */
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException {
 		{
-			CSVConfig config = AppCSVConfig.getInstance();
 			Data data;
 			// Objet unique à passer à toutes les classes qui accèdent aux
 			// données.
 			try {
-				data = new Data(config);
+				data = new Data(new AppCSVConfig());
 			} catch (DataException e) {
 				System.out.println("Problème chargement des CSV" + e.getMessage());
 				e.printStackTrace();

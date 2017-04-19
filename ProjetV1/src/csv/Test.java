@@ -15,7 +15,7 @@ public class Test {
 	public static void main(String[] args) throws CSVException, ParseException {
 		SimpleDateFormat dateformatter = new SimpleDateFormat("dd/MM/yyyy");
 		CSVConfig config = null;
-		config = AppCSVConfig.getInstance();
+		config = new AppCSVConfig();
 		// Charger toutes les compétences
 		CSVObjects<Competence> competences_csv = new CSVObjects<>(Competence.class, config);
 		

@@ -9,7 +9,6 @@ import csv.CSVDeserializer;
 import csv.CSVEntity;
 import csv.CSVException;
 import csv.CSVLine;
-import csv.CSVObjects;
 import csv.InvalidCSVException;
 import csv.InvalidDataException;
 import models.Competence;
@@ -20,12 +19,9 @@ import models.Languages;
 import models.Mission;
 
 public class AppCSVDeserializer implements CSVDeserializer {
-	SimpleDateFormat	dateformatter	= new SimpleDateFormat("dd/MM/yyyy");
-	CSVConfig			csvconfig;
+	SimpleDateFormat dateformatter = new SimpleDateFormat("dd/MM/yyyy");
 	
-	public AppCSVDeserializer(CSVConfig csvconfig) {
-		super();
-		this.csvconfig = csvconfig;
+	public AppCSVDeserializer() {
 	}
 	
 	@SuppressWarnings("unchecked")
