@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import csv.CSVException;
@@ -115,7 +116,7 @@ public class Competences extends JPanel implements MouseListener {
 		this.listeLangues.setFillsViewportHeight(true);
 		JScrollPane jsLangues = new JScrollPane(this.listeLangues);
 		jsLangues.setVisible(true);
-		jsLangues.setBounds(350, 130, 750, 400);
+		jsLangues.setBounds(350, 130, 350, 400);
 		add(jsLangues);
 		
 		this.boutonAddLangue = new Button("/boutons/miniadd.png");
@@ -332,7 +333,17 @@ public class Competences extends JPanel implements MouseListener {
 			
 			this.code.setText(this.compSelect.getCode().toString());
 			
+			String[] headers = { "Libellé" };
 			ArrayList<String> listLanguesComp = this.compSelect.getNames();
+			
+		    DefaultTableModel modelL = new DefaultTableModel(new Object[]{"Libellé"}, 0);
+		     for(String lib : listLanguesComp){
+		          modelL.addRow(new Object[]{lib});
+		     }
+		     this.listeLangues.setModel(modelL);
+
+			
+			
 			/*
 			 * TODO : faire une methode pour les langues dans la classe JTables
 			 * this.modelLangues = JTables.Competences(listCompEmp).getModel();
