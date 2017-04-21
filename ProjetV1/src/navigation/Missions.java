@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
@@ -37,6 +38,7 @@ import models.Competence;
 import models.CompetenceRequirement;
 import models.Employee;
 import models.Mission;
+import models.Status;
 
 /**
  * Page "Missions" de l'application contenant la liste de toutes les missions
@@ -44,6 +46,9 @@ import models.Mission;
  * 
  */
 public class Missions extends JPanel implements MouseListener {
+	
+	private static final long	serialVersionUID	= 1L;
+	private Data data;
 	
 	Button						boutonNouveau;
 	Button						boutonModifier;
@@ -54,20 +59,20 @@ public class Missions extends JPanel implements MouseListener {
 	Button						boutonDeleteComp;
 	Button						boutonAddEmp;
 	Button						boutonDeleteEmp;
-	JFormattedTextField			dateD;
-	JFormattedTextField			duree;
-	JFormattedTextField			nombre;
+	JFormattedTextField	dateD;
+	JFormattedTextField	duree;
+	JFormattedTextField	nombre;
 	JTable						listeMissions;
-	Vector<int[]>				selectedCells		= new Vector<int[]>();
 	Mission						missSelect;
 	int							IDSelect;
 	JTextField					nom;
-	JComboBox<String>			statut;
+	JComboBox<String>	statut;
 	JTable						competences;
 	JTable						employes;
-	private static final long	serialVersionUID	= 1L;
-	
-	private Data data;
+	SimpleDateFormat	GuiDateFormat		= new SimpleDateFormat("yyyy-MM-dd");
+	SimpleDateFormat	MissionDateFormat	= new SimpleDateFormat("dd/MM/yyyy");
+	SimpleDateFormat	MissionDureeFormat	= new SimpleDateFormat("dd/MM/yyyy");
+
 	
 	public Missions(Data data) {
 		this.data = data;
@@ -123,40 +128,43 @@ public class Missions extends JPanel implements MouseListener {
 		add(titre);
 		
 		JLabel labelNom = new JLabel("Nom :");
-		labelNom.setBounds(350, 50, 150, 25);
+		labelNom.setBounds(350, 60, 150, 25);
 		add(labelNom);
 		
-		JLabel labelDate = new JLabel("Nombre de personnes :");
-		labelDate.setBounds(350, 80, 150, 25);
-		add(labelDate);
+		JLabel labelStatut = new JLabel("Statut :");
+		labelStatut.setBounds(350, 100, 150, 25);
+		add(labelStatut);
+		
+		JLabel labelNbPersonnes = new JLabel("Personnes requises :");
+		labelNbPersonnes.setBounds(350, 140, 150, 25);
+		add(labelNbPersonnes);
 		
 		JLabel labelDebut = new JLabel("Date de début :");
-		labelDebut.setBounds(800, 50, 150, 25);
+		labelDebut.setBounds(350, 180, 150, 25);
 		add(labelDebut);
 		
-		JLabel labelDuree = new JLabel("Durée :");
-		labelDuree.setBounds(800, 80, 150, 25);
+		JLabel labelDuree = new JLabel("Durée (en jours) :");
+		labelDuree.setBounds(350, 220, 150, 25);
 		add(labelDuree);
 		
 		JLabel labelCompetences = new JLabel("Liste des compétences :");
-		labelCompetences.setBounds(350, 140, 150, 25);
+		labelCompetences.setBounds(650, 60, 150, 25);
 		add(labelCompetences);
 		
 		JLabel labelEmployes = new JLabel("Liste des employés :");
-		labelEmployes.setBounds(800, 140, 150, 25);
+		labelEmployes.setBounds(650, 250, 150, 25);
 		add(labelEmployes);
 		
 		this.nom = new JTextField();
 		this.nom.addMouseListener(this);
-		this.nom.setBounds(500, 50, 150, 25);
+		this.nom.setBounds(400, 60, 150, 25);
 		add(this.nom);
 		
-		///
-		this.nom = new JTextField();
-		this.nom.addMouseListener(this);
-		this.nom.setBounds(500, 50, 150, 25);
-		add(this.nom);
-		///
+		this.statut = new JComboBox(Status.values());
+		this.statut.addMouseListener(this);
+		this.statut.setBounds(400, 100, 150, 25);
+		add(this.statut);
+		
 		NumberFormat format = NumberFormat.getInstance();
 		NumberFormatter formatterNumber = new NumberFormatter(format);
 		formatterNumber.setValueClass(Integer.class);
@@ -166,20 +174,20 @@ public class Missions extends JPanel implements MouseListener {
 		formatterNumber.setCommitsOnValidEdit(true);
 		this.nombre = new JFormattedTextField(formatterNumber);
 		this.nombre.addMouseListener(this);
-		this.nombre.setBounds(500, 80, 150, 25);
+		this.nombre.setBounds(480, 140, 70, 25);
 		add(this.nombre);
 		
 		MaskFormatter formatterDuree;
 		try {
-			formatterDuree = new MaskFormatter("##:##");
-			formatterDuree.setPlaceholderCharacter('_');
+			formatterDuree = new MaskFormatter("####");
+			//formatterDuree.setPlaceholderCharacter('');
 			this.duree = new JFormattedTextField(formatterDuree);
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		this.duree.addMouseListener(this);
-		this.duree.setBounds(900, 80, 150, 25);
+		this.duree.setBounds(450, 220, 100, 25);
 		add(this.duree);
 		
 		MaskFormatter formatterDate;
@@ -192,7 +200,7 @@ public class Missions extends JPanel implements MouseListener {
 		}
 		
 		this.dateD.addMouseListener(this);
-		this.dateD.setBounds(900, 50, 150, 25);
+		this.dateD.setBounds(440, 180, 110, 25);
 		add(this.dateD);
 		
 		this.competences = new JTable();
@@ -200,7 +208,7 @@ public class Missions extends JPanel implements MouseListener {
 		this.competences.setFillsViewportHeight(true);
 		JScrollPane jsComp = new JScrollPane(this.competences);
 		jsComp.setVisible(true);
-		jsComp.setBounds(350, 170, 350, 350);
+		jsComp.setBounds(650, 90, 500, 150);
 		add(jsComp);
 		
 		this.employes = new JTable();
@@ -208,26 +216,26 @@ public class Missions extends JPanel implements MouseListener {
 		this.employes.setFillsViewportHeight(true);
 		JScrollPane jsEmp = new JScrollPane(this.employes);
 		jsEmp.setVisible(true);
-		jsEmp.setBounds(800, 170, 350, 350);
+		jsEmp.setBounds(650, 280, 500, 200);
 		add(jsEmp);
 		
 		this.boutonAddComp = new Button("/boutons/miniadd.png");
-		this.boutonAddComp.setBounds(710, 170);
+		this.boutonAddComp.setBounds(1160, 90);
 		this.boutonAddComp.addMouseListener(this);
 		add(this.boutonAddComp);
 		
 		this.boutonDeleteComp = new Button("/boutons/minidelete.png");
-		this.boutonDeleteComp.setBounds(710, 210);
+		this.boutonDeleteComp.setBounds(1160, 130);
 		this.boutonDeleteComp.addMouseListener(this);
 		add(this.boutonDeleteComp);
 		
 		this.boutonAddEmp = new Button("/boutons/miniadd.png");
-		this.boutonAddEmp.setBounds(1160, 170);
+		this.boutonAddEmp.setBounds(1160, 280); 
 		this.boutonAddEmp.addMouseListener(this);
 		add(this.boutonAddEmp);
 		
 		this.boutonDeleteEmp = new Button("/boutons/minidelete.png");
-		this.boutonDeleteEmp.setBounds(1160, 210);
+		this.boutonDeleteEmp.setBounds(1160, 320); 
 		this.boutonDeleteEmp.addMouseListener(this);
 		add(this.boutonDeleteEmp);
 		
@@ -384,17 +392,31 @@ public class Missions extends JPanel implements MouseListener {
 		}
 		
 		/**
-		 * Actualisation des champs du formulaire TODO : Faire passer la
-		 * référence de l'objet !
+		 * Actualisation des champs du formulaire
 		 */
 		if (e.getSource() instanceof JTable) {
-			int ligneSelectionne = this.listeMissions.getSelectedRow();
-			this.nom.setText((String) listeMissions.getValueAt(ligneSelectionne, 0));
-			this.IDSelect = (int) listeMissions.getValueAt(ligneSelectionne, 3);
-			@SuppressWarnings("unchecked")
-			TableModel dataModel = JTables
-					.Competences((ArrayList<Competence>) listeMissions.getValueAt(ligneSelectionne, 4)).getModel();
-			this.competences.setModel(dataModel);
+			
+			GenericTableModel<Mission> model = (GenericTableModel<Mission>) listeMissions.getModel();
+			this.missSelect = model.getRowObject(listeMissions.convertRowIndexToModel(listeMissions.getSelectedRow()));
+			
+			this.nom.setText(this.missSelect.getNomM());
+			
+			ArrayList<CompetenceRequirement> listCompMiss = this.missSelect.getCompReq();
+			TableModel tmComp = JTables.CompetencesRequises(listCompMiss).getModel();
+			this.competences.setModel(tmComp);
+			
+			this.dateD.setText(MissionDateFormat.format(this.missSelect.getDateDebut()));
+			this.duree.setText(Integer.toString(this.missSelect.getDuree()));
+			
+			this.nombre.setText(Integer.toString(this.missSelect.getNbPersReq()));
+			
+			this.statut.setSelectedItem(this.missSelect.getStatus());
+			
+			ArrayList<Employee> listEmpMiss = this.missSelect.getAffEmp();
+			TableModel tmEmp = JTables.Employes(listEmpMiss).getModel();
+			this.employes.setModel(tmEmp);
+
+			
 		}
 	}
 	
