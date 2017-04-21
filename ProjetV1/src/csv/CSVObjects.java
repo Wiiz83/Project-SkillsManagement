@@ -246,4 +246,10 @@ public class CSVObjects<E extends CSVEntity> {
 		int generatedID = Collections.max(IDs) + 1;
 		return Integer.toString(generatedID);
 	}
+	
+	@Override
+	public String toString() {
+		return "CSVObjects [doc=" + doc + ", entityClass=" + entityClass + "]";
+	}
+	
 }

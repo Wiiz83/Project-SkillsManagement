@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import csv.CSVConfig;
 import csv.CSVDeserializer;
 import csv.CSVEntity;
 import csv.CSVException;
@@ -15,7 +14,7 @@ import models.Competence;
 import models.CompetenceCode;
 import models.CompetenceRequirement;
 import models.Employee;
-import models.Languages;
+import models.Language;
 import models.Mission;
 
 public class AppCSVDeserializer implements CSVDeserializer {
@@ -38,12 +37,22 @@ public class AppCSVDeserializer implements CSVDeserializer {
 			}
 			if (c == CompetenceRequirement.class) {
 				return (E) CompetenceRequirement(line);
+			}
+			if (c == Language.class) {
+				return (E) Languages(line);
 			} else {
 				throw new IllegalArgumentException("Object not deserializable");
 			}
+			
 		} catch (NumberFormatException | ParseException e) {
 			throw new InvalidDataException(e);
 		}
+	}
+	
+	private Language Languages(CSVLine line) throws InvalidDataException {
+		Language l = new Language(line.get(1), line.get(2));
+		l.setCsvID(line.get(0));
+		return l;
 	}
 	
 	private CompetenceRequirement CompetenceRequirement(CSVLine line)
@@ -58,8 +67,6 @@ public class AppCSVDeserializer implements CSVDeserializer {
 	}
 	
 	private Competence Competence(CSVLine line) throws InvalidCSVException, InvalidDataException {
-		if (line.size() != Languages.size + 1)
-			throw new InvalidCSVException();
 		CompetenceCode code = CompetenceCode(line);
 		line.remove(0);
 		return new Competence(code, line);

@@ -4,6 +4,7 @@ import csv.CSVModel;
 import models.Competence;
 import models.CompetenceRequirement;
 import models.Employee;
+import models.Language;
 import models.Mission;
 
 public class AppCSVDataModel extends CSVModel {
@@ -30,5 +31,7 @@ public class AppCSVDataModel extends CSVModel {
 		Metadata().AddAssociationOrEntity(
 				CompetenceRequirement.class, Competence.class, RELATIVEPATH + "compreq_competences.csv", true, 0
 		);
+		
+		Metadata().AddAssociationOrEntity(Language.class, null, RELATIVEPATH + "langues.csv", true, 0);
 	}
 }

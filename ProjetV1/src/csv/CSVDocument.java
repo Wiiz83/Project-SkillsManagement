@@ -12,10 +12,16 @@ import java.util.ArrayList;
  *
  */
 public class CSVDocument {
-	private ArrayList<CSVLine>	lines;
-	private String				path;
-	private boolean				ignoreFirstLine;
-	private int					idColumnPosition;
+	private ArrayList<CSVLine> lines;
+	
+	@Override
+	public String toString() {
+		return "CSVDocument [lines=" + lines + ", path=" + path + "]";
+	}
+	
+	private String	path;
+	private boolean	ignoreFirstLine;
+	private int		idColumnPosition;
 	
 	public CSVDocument(CSVFileConfig cfg) throws IOException {
 		path = cfg.path;

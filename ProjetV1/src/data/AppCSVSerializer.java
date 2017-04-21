@@ -28,9 +28,20 @@ public class AppCSVSerializer implements CSVSerializer {
 		}
 		if (o.getClass() == Mission.class) {
 			return Mission((Mission) o);
+		}
+		if (o.getClass() == Language.class) {
+			return Language((Language) o);
 		} else {
 			throw new IllegalArgumentException("Object not serializable to CSV");
 		}
+	}
+	
+	private CSVLine Language(Language o) {
+		CSVLine line = new CSVLine();
+		line.add(o.csvID());
+		line.add(o.getName());
+		line.add(o.getCountry());
+		return line;
 	}
 	
 	private CSVLine Mission(Mission o) {
