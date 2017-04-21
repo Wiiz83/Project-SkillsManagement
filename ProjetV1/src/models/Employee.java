@@ -11,16 +11,12 @@ import csv.InvalidDataException;
 
 /**
  * Représente un employé
- *
  */
 public class Employee extends Personne {
-	
-	/**
-	 * 
-	 */
-	private static final long		serialVersionUID	= -1356873803668900103L;
-	private Date					entryDate;
-	protected ArrayList<Competence>	Competences;
+
+	private static final long					serialVersionUID	= -1356873803668900103L;
+	private Date										entryDate;
+	protected ArrayList<Competence>		Competences;
 	
 	// Constructeur basique
 	public Employee(String name, String lastName, Date entryDate) {

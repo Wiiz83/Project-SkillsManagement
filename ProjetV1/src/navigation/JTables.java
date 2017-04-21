@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.TableModel;
 
 import csv.CSVEntity;
@@ -36,7 +37,7 @@ public class JTables {
 	
 	public static JTable Employes(ArrayList<Employee> employes) {
 		SimpleDateFormat dateformatter = new SimpleDateFormat("yyyy-MM-dd");
-		String[] headers = { "Nom", "Prénom", "Date d'entrée", "ID", "Compétences" };
+		String[] headers = { "Nom", "Prénom", "Date d'entrée" };
 		@SuppressWarnings("serial")
 		TableModel dataModel = new GenericTableModel<Employee>(employes, headers) {
 			public Object getValueAt(int row, int col) {
@@ -49,10 +50,6 @@ public class JTables {
 					return emp.getName();
 				case 2:
 					return dateformatter.format(emp.getEntryDate());
-				case 3:
-					return emp.getID();
-				case 4:
-					return emp.getCompetences();
 				default:
 					System.out.println("Employes_JTable access ");
 					break;
@@ -63,13 +60,9 @@ public class JTables {
 		};
 		
 		JTable table = new JTable(dataModel);
-		table.getColumnModel().getColumn(3).setMinWidth(0);
-		table.getColumnModel().getColumn(3).setMaxWidth(0);
-		table.getColumnModel().getColumn(4).setMinWidth(0);
-		table.getColumnModel().getColumn(4).setMaxWidth(0);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setAutoCreateRowSorter(true);
 		table.getRowSorter().toggleSortOrder(0);
-		
 		return table;
 	}
 	
@@ -96,6 +89,9 @@ public class JTables {
 		};
 		
 		JTable table = new JTable(dataModel);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setAutoCreateRowSorter(true);
+		table.getRowSorter().toggleSortOrder(0);
 		return table;
 	}
 	
@@ -124,6 +120,9 @@ public class JTables {
 		};
 		
 		JTable table = new JTable(dataModel);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setAutoCreateRowSorter(true);
+		table.getRowSorter().toggleSortOrder(0);
 		return table;
 	}
 	
@@ -151,6 +150,9 @@ public class JTables {
 			}
 		};
 		JTable table = new JTable(dataModel);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setAutoCreateRowSorter(true);
+		table.getRowSorter().toggleSortOrder(0);
 		return table;
 	}
 	

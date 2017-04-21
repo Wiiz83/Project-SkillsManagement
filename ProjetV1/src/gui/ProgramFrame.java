@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import data.Data;
 
 public class ProgramFrame {
-	private JFrame			frame;
+	public static JFrame			frame;
 	private Header			header;
 	private Image			iconImage;
 	public static final int	WIDTH	= 1280;

@@ -28,6 +28,7 @@ import data.Data;
 import data.DataException;
 import gui.Button;
 import gui.GenericTableModel;
+import gui.ProgramFrame;
 import gui.Titre;
 import models.Competence;
 import models.Employee;
@@ -44,9 +45,9 @@ import models.Employee;
 public class Personnel extends JPanel implements MouseListener {
 	private static final long serialVersionUID = 1L;
 	
-	Button				boutonAddComp;
-	Button				boutonDeleteComp;
-	GestionCompetences gc;
+	Button							boutonEditComp;
+	GestionListe 					gc;
+	ArrayList<Competence> listCompEmp;
 	
 	Employee			empSelect;
 	Button				boutonNouveau;
@@ -148,7 +149,6 @@ public class Personnel extends JPanel implements MouseListener {
 		this.date.setBounds(450, 110, 150, 25);
 		add(this.date);
 		
-		/*
 		this.competences = new JTable();
 		this.competences.addMouseListener(this);
 		this.competences.setFillsViewportHeight(true);
@@ -157,21 +157,11 @@ public class Personnel extends JPanel implements MouseListener {
 		js.setBounds(350, 170, 350, 350);
 		add(js);
 		
-		this.boutonAddComp = new Button("/boutons/miniadd.png");
-		this.boutonAddComp.setBounds(710, 170);
-		this.boutonAddComp.addMouseListener(this);
-		add(this.boutonAddComp);
-		
-		this.boutonDeleteComp = new Button("/boutons/minidelete.png");
-		this.boutonDeleteComp.setBounds(710, 210);
-		this.boutonDeleteComp.addMouseListener(this);
-		add(this.boutonDeleteComp);
-		*/
-		
-		this.gc = new GestionCompetences(null);
-		this.gc.setBounds(350, 170, 650, 350);
-		add(this.gc);
-		
+		this.boutonEditComp = new Button("/boutons/miniedit.png");
+		this.boutonEditComp.setBounds(710, 170);
+		this.boutonEditComp.addMouseListener(this);
+		add(this.boutonEditComp);
+				
 		ChargementConsultation();
 	}
 	
@@ -307,23 +297,22 @@ public class Personnel extends JPanel implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() instanceof Button) {
 			
-			if (e.getSource().equals(this.boutonAddComp)) {
-				JFrame frame = new JFrame();
-				frame.setSize(600, 300);
-				frame.setTitle("Skill Expert");
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame.setResizable(false);
-				frame.setLocation(5, 5);
-				
-				JPanel panel = new JPanel();
-				frame.add(panel);
-				
-				
-				
-				
-				
-				
-				frame.setVisible(true);
+			if (e.getSource().equals(this.boutonEditComp)) {				
+				ProgramFrame.frame.setEnabled(false);
+				try {
+					ArrayList<Competence> listCompNonPoss = data.Competences().manquantesEmploye(Integer.toString(this.empSelect.getID()));
+					TableModel compNonPossModel = JTables.Competences(listCompNonPoss).getModel();
+					JTable compNonPoss = new JTable(compNonPossModel);
+					JTable compPoss = new JTable(competencesModel);
+					
+					this.gc = new GestionListe(compPoss, compNonPoss);
+					this.gc.displayGUI();
+					
+				} catch (DataException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 			}
 			
 			/**
@@ -390,10 +379,9 @@ public class Personnel extends JPanel implements MouseListener {
 			this.prenom.setText(this.empSelect.getName());
 			this.date.setText(EmployeeDateFormat.format(this.empSelect.getEntryDate()));
 			
-			ArrayList<Competence> listCompEmp = this.empSelect.getCompetences();
-			this.gc = new GestionCompetences(listCompEmp);
-		//	this.competencesModel = JTables.Competences(listCompEmp).getModel();
-		//	this.competences.setModel(this.competencesModel);
+			this.listCompEmp = this.empSelect.getCompetences();
+			this.competencesModel = JTables.Competences(listCompEmp).getModel();
+			this.competences.setModel(this.competencesModel);
 		}
 	}
 	
