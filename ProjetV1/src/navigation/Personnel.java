@@ -305,7 +305,7 @@ public class Personnel extends JPanel implements MouseListener {
 					JTable compNonPoss = new JTable(compNonPossModel);
 					JTable compPoss = new JTable(competencesModel);
 					
-					this.gc = new GestionListe(compPoss, compNonPoss);
+					this.gc = new GestionListe(compPoss, compNonPoss, competencesModel, compNonPossModel);
 					this.gc.displayGUI();
 					
 				} catch (DataException e1) {
