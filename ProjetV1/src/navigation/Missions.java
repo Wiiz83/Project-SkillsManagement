@@ -48,7 +48,7 @@ import models.Status;
 public class Missions extends JPanel implements MouseListener {
 	
 	private static final long	serialVersionUID	= 1L;
-	private Data data;
+	private Data 				data;
 	
 	Button						boutonNouveau;
 	Button						boutonModifier;
@@ -69,9 +69,10 @@ public class Missions extends JPanel implements MouseListener {
 	JComboBox<String>	statut;
 	JTable						competences;
 	JTable						employes;
-	SimpleDateFormat	GuiDateFormat		= new SimpleDateFormat("yyyy-MM-dd");
-	SimpleDateFormat	MissionDateFormat	= new SimpleDateFormat("dd/MM/yyyy");
-	SimpleDateFormat	MissionDureeFormat	= new SimpleDateFormat("dd/MM/yyyy");
+	SimpleDateFormat		GuiDateFormat		= new SimpleDateFormat("yyyy-MM-dd");
+	SimpleDateFormat		MissionDateFormat	= new SimpleDateFormat("dd/MM/yyyy");
+	SimpleDateFormat		MissionDureeFormat	= new SimpleDateFormat("dd/MM/yyyy");
+	String						mode;
 
 	
 	public Missions(Data data) {
@@ -165,6 +166,7 @@ public class Missions extends JPanel implements MouseListener {
 		this.statut.setBounds(400, 100, 150, 25);
 		add(this.statut);
 		
+		/*
 		NumberFormat format = NumberFormat.getInstance();
 		NumberFormatter formatterNumber = new NumberFormatter(format);
 		formatterNumber.setValueClass(Integer.class);
@@ -176,11 +178,23 @@ public class Missions extends JPanel implements MouseListener {
 		this.nombre.addMouseListener(this);
 		this.nombre.setBounds(480, 140, 70, 25);
 		add(this.nombre);
+		*/
 		
+		MaskFormatter formatterNombre;
+		try {
+			formatterNombre = new MaskFormatter("####");
+			this.nombre = new JFormattedTextField(formatterNombre);
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+		this.nombre.addMouseListener(this);
+		this.nombre.setBounds(480, 140, 70, 25);
+		add(nombre);
+		
+
 		MaskFormatter formatterDuree;
 		try {
 			formatterDuree = new MaskFormatter("####");
-			//formatterDuree.setPlaceholderCharacter('');
 			this.duree = new JFormattedTextField(formatterDuree);
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
@@ -294,14 +308,6 @@ public class Missions extends JPanel implements MouseListener {
 	}
 	
 	/**
-	 * Mode Nouveau : - On vide tous les éléments contenus dans les champs du
-	 * formulaire - Les éléments de la liste ne sont pas séléctionnables
-	 */
-	public void ChargementNouveau() {
-		
-	}
-	
-	/**
 	 * Dessine le fond blanc du formulaire
 	 */
 	@Override
@@ -316,13 +322,13 @@ public class Missions extends JPanel implements MouseListener {
 	/**
 	 * Clic sur la souris : - Si c'est un bouton de gestion du formulaire - Si
 	 * c'est un élément de la liste
-	 */
+
 	
 	@SuppressWarnings("unchecked")
 	private Mission getSelected() {
 		GenericTableModel<Mission> model = (GenericTableModel<Mission>) listeMissions.getModel();
 		return model.getRowObject(listeMissions.convertRowIndexToModel(listeMissions.getSelectedRow()));
-	}
+	}*/
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -330,9 +336,8 @@ public class Missions extends JPanel implements MouseListener {
 			if (e.getSource().equals(this.boutonAddComp)) {
 				
 				JFrame frame = null;
-				System.out.println(getSelected());
 				try {
-					frame = new AdderJFrame<Mission, Employee>(data, getSelected(), Employee.class);
+					frame = new AdderJFrame<Mission, Employee>(data, this.missSelect, Employee.class);
 				} catch (HeadlessException | DataException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -351,7 +356,21 @@ public class Missions extends JPanel implements MouseListener {
 			 * TODO Formulaire prêt à l'ajout d'un nouvel élément
 			 */
 			if (e.getSource().equals(this.boutonNouveau)) {
-				ChargementNouveau();
+				
+				this.nom.setText("");
+				this.dateD.setText("");
+				this.duree.setText("");
+				this.nombre.setText("");
+				this.statut.setSelectedIndex(0);
+				
+				TableModel resetTMEmp = JTables.Employes(new ArrayList<Employee>()).getModel();
+				this.employes.setModel(resetTMEmp);
+				
+				TableModel resetTMComp = JTables.CompetencesRequises(new ArrayList<CompetenceRequirement>()).getModel();
+				this.competences.setModel(resetTMComp);
+				
+				ChargementModification();
+				this.mode = "nouveau";
 			}
 			
 			/**
@@ -366,7 +385,25 @@ public class Missions extends JPanel implements MouseListener {
 			 * confirmation de l'utilisateur
 			 */
 			if (e.getSource().equals(this.boutonSupprimer)) {
-				// ChargementSuppression();
+
+					try {
+						data.Missions().supprimer(this.missSelect);
+						this.missSelect = null;
+						remove(this.listeMissions);
+						
+						this.listeMissions = new JTable();
+						
+						this.listeMissions = JTables.Missions(data.Missions().tous());
+						this.listeMissions.setFillsViewportHeight(true);
+						this.listeMissions.addMouseListener(this);
+						JScrollPane js = new JScrollPane(this.listeMissions);
+						js.setVisible(true);
+						js.setBounds(10, 10, 300, 600);
+						add(js);
+					} catch (DataException e2) {
+						e2.printStackTrace();
+					}
+
 			}
 			
 			/**
@@ -388,6 +425,42 @@ public class Missions extends JPanel implements MouseListener {
 				
 				Mission mission = new Mission(this.nom.getText(), dateD, duree, nb);
 				ChargementConsultation();
+				
+				switch (this.mode) {
+					case "nouveau":
+						/*
+						Mission nouvEmp = new Mission(this.nom.getText(), this.dateD.getText(), this.duree.getText(), this.nombre.getText());
+						
+						
+				        if (this.employes != null && this.employes.getModel() != null) {
+				        	ArrayList<Employee> listEmp = new ArrayList<Object>;
+
+				        	for(int row = 0; row < table.getRowCount(); row++) {
+				        	    for(int column = 0; column = table.getColumnCount(); column++) {
+				        	      list.add(table.getValueAt(row, column));  
+				        	    }
+				        	}
+				        	
+				        	nouvEmp.setAffEmp(affEmp);
+				        }
+							
+						if(){
+							
+						}
+
+						data.Missions().ajouter(nouvEmp);
+						break;
+					
+					case "modification":
+						/*this.empSelect.setLastName(this.nom.getText());
+						this.empSelect.setName(this.prenom.getText());
+						this.empSelect.setEntryDate(this.date.getText(), "yyyy-MM-dd");
+						data.Employes().modifier(this.empSelect);*/
+						break;
+					
+					default:
+						break;
+				}
 			}
 		}
 		

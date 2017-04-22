@@ -127,24 +127,22 @@ public class JTables {
 	}
 	
 	public static JTable Missions(ArrayList<Mission> missions) {
-		String[] headers = { "ID", "Nom", "Durée", "Status" };
+		String[] headers = {"Nom", "Durée", "Statut"};
 		@SuppressWarnings("serial")
 		TableModel dataModel = new GenericTableModel<Mission>(missions, headers) {
 			
 			public Object getValueAt(int row, int col) {
 				Mission mis = missions.get(row);
 				switch (col) {
-				case 0:
-					return mis.getID();
-				case 1:
-					return mis.getNomM();
-				case 2:
-					return mis.getDuree();
-				case 3:
-					return mis.getStatus();
-				default:
-					System.out.println("JTable access ");
-					break;
+					case 0:
+						return mis.getNomM();
+					case 1:
+						return mis.getDuree();
+					case 2:
+						return mis.getStatus();
+					default:
+						System.out.println("JTable access ");
+						break;
 				}
 				return missions;
 			}
