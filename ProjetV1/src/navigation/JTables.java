@@ -154,4 +154,30 @@ public class JTables {
 		return table;
 	}
 	
+	public static JTable Employee(ArrayList<Employee> Employee) {
+		String[] headers = {"Nom", "Durée", "Statut"};
+		@SuppressWarnings("serial")
+		TableModel dataModel = new GenericTableModel<Employee>(Employee, headers) {
+			
+			public Object getValueAt(int row, int col) {
+				Employee rec = Employee.get(row);
+				switch (col) {
+					case 0:
+						return rec.getName();
+					case 1:
+						return rec.getLastName();
+					default:
+						System.out.println("JTable access ");
+						break;
+				}
+				return Employee;
+			}
+		};
+		JTable table = new JTable(dataModel);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setAutoCreateRowSorter(true);
+		table.getRowSorter().toggleSortOrder(0);
+		return table;
+	}
+	
 }

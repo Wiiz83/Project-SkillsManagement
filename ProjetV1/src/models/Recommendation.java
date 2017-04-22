@@ -20,6 +20,7 @@ public class Recommendation {
 	private ArrayList<Employee>					empAff;
 	private ArrayList<Employee>					empToRec;
 	private CSVConfig							config;
+	private int[]								RLevel;
 	
 	/**
 	 * @param misToRec
@@ -27,7 +28,7 @@ public class Recommendation {
 	 */
 	public Recommendation(Mission misToRec, CSVConfig config) {
 		super();
-		this.recID++;
+		Recommendation.recID++;
 		this.misToRec = misToRec;
 		this.misCompReq = misToRec.getCompReq();
 		this.empAff = misToRec.getAffEmp();
@@ -48,10 +49,12 @@ public class Recommendation {
 		for (Employee e : empRec) { // Boucles et conditions pour vérifier si
 									// l'employé est recommendable et si oui
 									// l'ajoute
+			this.RLevel[e.getID()] = 0;
 			for (Competence c : e.getCompetences()) {
 				if (checkCompMission(c) != 0) {
 					if (!this.empToRec.contains(e))
 						this.empToRec.add(e);
+						this.RLevel[e.getID()]++;
 				}
 			}
 		}
@@ -104,5 +107,23 @@ public class Recommendation {
 		return nbEmpReqComp; // On retourne le nombre d'employé en manque sur la
 								// compétence
 	}
+
+	public ArrayList<Employee> getEmpRec() {
+		return empRec;
+	}
+
+	public void setEmpRec(ArrayList<Employee> empRec) {
+		this.empRec = empRec;
+	}
+
+	public int[] getRLevel() {
+		return RLevel;
+	}
+
+	public void setRLevel(int[] rLevel) {
+		RLevel = rLevel;
+	}
+	
+	
 	
 }
