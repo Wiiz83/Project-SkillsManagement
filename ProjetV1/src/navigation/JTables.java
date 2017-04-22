@@ -155,7 +155,7 @@ public class JTables {
 	}
 	
 	public static JTable Employee(ArrayList<Employee> Employee) {
-		String[] headers = {"Nom", "Durée", "Statut"};
+		String[] headers = {"Prénom", "Nom"};
 		@SuppressWarnings("serial")
 		TableModel dataModel = new GenericTableModel<Employee>(Employee, headers) {
 			
