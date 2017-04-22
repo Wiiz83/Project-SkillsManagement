@@ -38,9 +38,11 @@ public class Missions extends CSVRequests<Mission> {
 			CSVObjects<CompetenceRequirement> compreq_csv = new CSVObjects<CompetenceRequirement>(
 					CompetenceRequirement.class, data.getCSVConfig()
 			);
-			for (CompetenceRequirement cr : m.getCompReq())
-				if (cr.isAttached())
-					compreq_csv.delete(cr);
+			if(m.getCompReq() != null){
+				for (CompetenceRequirement cr : m.getCompReq())
+					if (cr.isAttached())
+						compreq_csv.delete(cr);
+			}
 		} catch (CSVException e1) {
 			throw new DataException(e1);
 		}

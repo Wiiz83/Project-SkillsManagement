@@ -31,7 +31,9 @@ import gui.GenericTableModel;
 import gui.ProgramFrame;
 import gui.Titre;
 import models.Competence;
+import models.CompetenceRequirement;
 import models.Employee;
+import models.Mission;
 
 /**
  * Page "Personnel" de l'application contenant la liste du personnel avec
@@ -42,30 +44,29 @@ import models.Employee;
  * modification
  * 
  */
-public class Personnel extends JPanel implements MouseListener {
+public class Personnel extends Page implements MouseListener {
 	private static final long serialVersionUID = 1L;
-	
-	Button							boutonEditComp;
+	private Data		data;
+
 	GestionListe 					gc;
 	ArrayList<Competence> listCompEmp;
 	
-	Employee			empSelect;
+	JTable									listePersonnel;
+	GenericTableModel<Employee> modelPersonnel;
+	
 	Button				boutonNouveau;
 	Button				boutonModifier;
 	Button				boutonSupprimer;
 	Button				boutonEnregistrer;
 	Button				boutonAnnuler;
-	JTable				listePersonnel;
-	Vector<int[]>		selectedCells		= new Vector<int[]>();
-	JScrollPane			jsPersonnel;
-	int					IDSelect;
+	Button				boutonEditComp;
+	
 	JTextField			nom;
 	JTextField			prenom;
 	JTextField			date;
 	JTable				competences;
-	TableModel			competencesModel;
-	String				mode;
-	private Data		data;
+	TableModel		competencesModel;
+
 	SimpleDateFormat	GuiDateFormat		= new SimpleDateFormat("yyyy-MM-dd");
 	SimpleDateFormat	EmployeeDateFormat	= new SimpleDateFormat("dd/MM/yyyy");
 	
@@ -75,14 +76,21 @@ public class Personnel extends JPanel implements MouseListener {
 		setLayout(null);
 		setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
 		
-		/**
-		 * Affichage de la liste gauche
-		 */
-		AffichageListe();
+		this.listePersonnel = new JTable();
+		try {
+			this.listePersonnel = JTables.Employes(data.Employes().tous());
+			this.listePersonnel.setFillsViewportHeight(true);
+			this.listePersonnel.addMouseListener(this);
+			JScrollPane js  = new JScrollPane(this.listePersonnel);
+			js.setVisible(true);
+			js.setBounds(10, 10, 300, 600);
+			add(js);
+		} catch (DataException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.modelPersonnel = (GenericTableModel<Employee>) this.listePersonnel.getModel();
 		
-		/**
-		 * Création et positionnement des boutons de gestion de formulaire
-		 */
 		this.boutonNouveau = new Button("/boutons/nouveau.png");
 		this.boutonNouveau.setBounds(330, 560);
 		this.boutonNouveau.addMouseListener(this);
@@ -104,9 +112,6 @@ public class Personnel extends JPanel implements MouseListener {
 		add(this.boutonEnregistrer);
 		add(this.boutonAnnuler);
 		
-		/**
-		 * Création et positionnement des éléments du formulaire
-		 */
 		Titre titre = new Titre(" Détails du salarié :");
 		titre.setBounds(330, 10, 930, 20);
 		add(titre);
@@ -161,94 +166,45 @@ public class Personnel extends JPanel implements MouseListener {
 		this.boutonEditComp.setBounds(710, 170);
 		this.boutonEditComp.addMouseListener(this);
 		add(this.boutonEditComp);
-				
-		ChargementConsultation();
-	}
-	
-	/**
-	 * Affiche la liste
-	 */
-	public void AffichageListe() {
-		this.listePersonnel = new JTable();
-		try {
-			this.listePersonnel = JTables.Employes(data.Employes().tous());
-			this.listePersonnel.setFillsViewportHeight(true);
-			this.listePersonnel.addMouseListener(this);
-			this.jsPersonnel = new JScrollPane(this.listePersonnel);
-			this.jsPersonnel.setVisible(true);
-			this.jsPersonnel.setBounds(10, 10, 300, 600);
-			add(this.jsPersonnel);
-		} catch (DataException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * Supprime la liste et reinitialise l'ID séléctionné
-	 */
-	public void Reinitialiser() {
-		remove(this.listePersonnel);
-		remove(this.jsPersonnel);
-		this.IDSelect = 0;
-	}
-	
-	/**
-	 * Mode Consultation : - Lecture des informations détaillés de l'élément
-	 * sélectionné - Les éléments du formulaire ne sont pas modifiables
-	 */
-	public void ChargementConsultation() {
-		this.nom.setEditable(false);
-		this.prenom.setEditable(false);
-		this.date.setEditable(false);
-		//this.competences.setEnabled(false);
 		
-		this.boutonEnregistrer.setVisible(false);
-		this.boutonAnnuler.setVisible(false);
-		this.boutonNouveau.setVisible(true);
-		this.boutonModifier.setVisible(true);
-		this.boutonSupprimer.setVisible(true);
-		this.listePersonnel.setEnabled(true);
+		composantsEdition.add(this.boutonEditComp);
+		composantsEdition.add(this.nom);
+		composantsEdition.add(this.prenom);
+		composantsEdition.add(this.date);
+		composantsEdition.add(this.boutonEnregistrer);
+		composantsEdition.add(this.boutonAnnuler);
 		
-		this.mode = "consultation";
+		composantsConsultation.add(this.boutonNouveau);
+		composantsConsultation.add(this.boutonModifier);
+		composantsConsultation.add(this.boutonNouveau);
+		composantsConsultation.add(this.boutonSupprimer);
+		composantsConsultation.add(this.listePersonnel);
+
+		super.ChargementConsultation();
 	}
 	
 	/**
-	 * Mode Modification : - Possibilité de modifier les informations détaillés
-	 * de l'élément sélectionné - Les éléments de la liste ne sont pas
-	 * séléctionnables
-	 */
-	public void ChargementModification() {
-		this.nom.setEditable(true);
-		this.prenom.setEditable(true);
-		this.date.setEditable(true);
-		this.competences.setEnabled(true);
-		
-		this.boutonEnregistrer.setVisible(true);
-		this.boutonAnnuler.setVisible(true);
-		this.boutonNouveau.setVisible(false);
-		this.boutonModifier.setVisible(false);
-		this.boutonSupprimer.setVisible(false);
-		this.listePersonnel.setEnabled(false);
-		
-		this.mode = "modification";
-	}
-	
-	/**
-	 * Mode Nouveau : - On vide tous les éléments contenus dans les champs du
-	 * formulaire - Les éléments de la liste ne sont pas séléctionnables
+	 * Mode Nouveau : On vide tous les éléments contenus dans les champs du formulaire
 	 */
 	public void ChargementNouveau() {
+		VideChamps();
+		super.ChargementModification();
+		this.mode = "nouveau";
+	}
+	
+	public void VideChamps(){
 		this.nom.setText("");
 		this.prenom.setText("");
 		this.date.setText("");
 		this.competencesModel = JTables.Competences(new ArrayList<Competence>()).getModel();
 		this.competences.setModel(this.competencesModel);
-		
-		ChargementModification();
-		this.mode = "nouveau";
 	}
 	
+ 	public Employee getSelected() {
+		this.modelPersonnel = (GenericTableModel<Employee>) this.listePersonnel.getModel();
+		return this.modelPersonnel.getRowObject(this.listePersonnel.convertRowIndexToModel(this.listePersonnel.getSelectedRow()));
+	}
+
 	/**
 	 * Enregistrement des informations dans le cas d'une modification ou d'un
 	 * ajout
@@ -261,32 +217,20 @@ public class Personnel extends JPanel implements MouseListener {
 		switch (this.mode) {
 		case "nouveau":
 			Employee nouvEmp = new Employee(this.nom.getText(), this.prenom.getText(), this.date.getText());
-			
 			data.Employes().ajouter(nouvEmp);
 			break;
 		
 		case "modification":
-			this.empSelect.setLastName(this.nom.getText());
-			this.empSelect.setName(this.prenom.getText());
-			this.empSelect.setEntryDate(this.date.getText(), "yyyy-MM-dd");
-			data.Employes().modifier(this.empSelect);
+			Employee empSelect = getSelected();
+			empSelect.setLastName(this.nom.getText());
+			empSelect.setName(this.prenom.getText());
+			empSelect.setEntryDate(this.date.getText(), "yyyy-MM-dd");
+			data.Employes().modifier(empSelect);
 			break;
 		
 		default:
 			break;
 		}
-	}
-	
-	/**
-	 * Dessine le fond blanc du formulaire
-	 */
-	@Override
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		Graphics2D batch = (Graphics2D) g;
-		batch.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		batch.setColor(Color.WHITE);
-		batch.fillRect(330, 40, 930, 510);
 	}
 	
 	/**
@@ -300,7 +244,8 @@ public class Personnel extends JPanel implements MouseListener {
 			if (e.getSource().equals(this.boutonEditComp)) {				
 				ProgramFrame.frame.setEnabled(false);
 				try {
-					ArrayList<Competence> listCompNonPoss = data.Competences().manquantesEmploye(Integer.toString(this.empSelect.getID()));
+					Employee empSelect = getSelected();
+					ArrayList<Competence> listCompNonPoss = data.Competences().manquantesEmploye(Integer.toString(empSelect.getID()));
 					TableModel compNonPossModel = JTables.Competences(listCompNonPoss).getModel();
 					JTable compNonPoss = new JTable(compNonPossModel);
 					JTable compPoss = new JTable(competencesModel);
@@ -326,7 +271,7 @@ public class Personnel extends JPanel implements MouseListener {
 			 * Formulaire prêt à la modification d'un élément existant
 			 */
 			if (e.getSource().equals(this.boutonModifier)) {
-				ChargementModification();
+				super.ChargementModification();
 			}
 			
 			/**
@@ -335,12 +280,14 @@ public class Personnel extends JPanel implements MouseListener {
 			 */
 			if (e.getSource().equals(this.boutonSupprimer)) {
 				try {
-					Employee emp = data.Employes().parID(Integer.toString(IDSelect));
-					data.Employes().supprimer(emp);
-					Reinitialiser();
-					AffichageListe();
-				} catch (DataException e1) {
-					e1.printStackTrace();
+					Employee empSelect = getSelected();
+					data.Employes().supprimer(empSelect);
+ 					this.modelPersonnel.deleteRowObject(empSelect);
+ 					this.modelPersonnel.fireTableDataChanged();
+					VideChamps();
+					
+				} catch (DataException e2) {
+					e2.printStackTrace();
 				}
 			}
 			
@@ -372,14 +319,13 @@ public class Personnel extends JPanel implements MouseListener {
 		 * référence de l'objet !
 		 */
 		if (e.getSource() instanceof JTable) {
-			GenericTableModel<Employee> model = (GenericTableModel<Employee>) listePersonnel.getModel();
-			this.empSelect = model.getRowObject(listePersonnel.convertRowIndexToModel(listePersonnel.getSelectedRow()));
+			Employee EmployeSelect = getSelected();
 			
-			this.nom.setText(this.empSelect.getLastName());
-			this.prenom.setText(this.empSelect.getName());
-			this.date.setText(EmployeeDateFormat.format(this.empSelect.getEntryDate()));
+			this.nom.setText(EmployeSelect.getLastName());
+			this.prenom.setText(EmployeSelect.getName());
+			this.date.setText(EmployeeDateFormat.format(EmployeSelect.getEntryDate()));
 			
-			this.listCompEmp = this.empSelect.getCompetences();
+			this.listCompEmp = EmployeSelect.getCompetences();
 			this.competencesModel = JTables.Competences(listCompEmp).getModel();
 			this.competences.setModel(this.competencesModel);
 		}

@@ -63,8 +63,11 @@ public class Missions extends JPanel implements MouseListener {
 	JFormattedTextField	duree;
 	JFormattedTextField	nombre;
 	JTable						listeMissions;
+	GenericTableModel<Mission> modelMissions;
+	/*
 	Mission						missSelect;
 	int							IDSelect;
+	*/
 	JTextField					nom;
 	JComboBox<String>	statut;
 	JTable						competences;
@@ -96,6 +99,7 @@ public class Missions extends JPanel implements MouseListener {
 		} catch (DataException e) {
 			e.printStackTrace();
 		}
+		this.modelMissions = (GenericTableModel<Mission>) this.listeMissions.getModel();
 		
 		/**
 		 * Création et positionnement des boutons de gestion de formulaire
@@ -165,20 +169,6 @@ public class Missions extends JPanel implements MouseListener {
 		this.statut.addMouseListener(this);
 		this.statut.setBounds(400, 100, 150, 25);
 		add(this.statut);
-		
-		/*
-		NumberFormat format = NumberFormat.getInstance();
-		NumberFormatter formatterNumber = new NumberFormatter(format);
-		formatterNumber.setValueClass(Integer.class);
-		formatterNumber.setMinimum(0);
-		formatterNumber.setMaximum(Integer.MAX_VALUE);
-		formatterNumber.setAllowsInvalid(false);
-		formatterNumber.setCommitsOnValidEdit(true);
-		this.nombre = new JFormattedTextField(formatterNumber);
-		this.nombre.addMouseListener(this);
-		this.nombre.setBounds(480, 140, 70, 25);
-		add(this.nombre);
-		*/
 		
 		MaskFormatter formatterNombre;
 		try {
@@ -267,6 +257,7 @@ public class Missions extends JPanel implements MouseListener {
 		this.dateD.setEditable(false);
 		this.competences.setEnabled(false);
 		this.employes.setEnabled(false);
+		this.statut.setEnabled(false);
 		
 		this.boutonAddComp.setVisible(false);
 		this.boutonAddEmp.setVisible(false);
@@ -293,6 +284,7 @@ public class Missions extends JPanel implements MouseListener {
 		this.dateD.setEditable(true);
 		this.competences.setEnabled(true);
 		this.employes.setEnabled(true);
+		this.statut.setEnabled(true);
 		
 		this.boutonAddComp.setVisible(true);
 		this.boutonAddEmp.setVisible(true);
@@ -305,6 +297,20 @@ public class Missions extends JPanel implements MouseListener {
 		this.boutonModifier.setVisible(false);
 		this.boutonSupprimer.setVisible(false);
 		this.listeMissions.setEnabled(false);
+	}
+	
+	public void VideChamps(){
+		this.nom.setText("");
+		this.dateD.setText("");
+		this.duree.setText("");
+		this.nombre.setText("");
+		this.statut.setSelectedIndex(0);
+		
+		TableModel resetTMEmp = JTables.Employes(new ArrayList<Employee>()).getModel();
+		this.employes.setModel(resetTMEmp);
+		
+		TableModel resetTMComp = JTables.CompetencesRequises(new ArrayList<CompetenceRequirement>()).getModel();
+		this.competences.setModel(resetTMComp);
 	}
 	
 	/**
@@ -322,13 +328,11 @@ public class Missions extends JPanel implements MouseListener {
 	/**
 	 * Clic sur la souris : - Si c'est un bouton de gestion du formulaire - Si
 	 * c'est un élément de la liste
-
-	
-	@SuppressWarnings("unchecked")
-	private Mission getSelected() {
-		GenericTableModel<Mission> model = (GenericTableModel<Mission>) listeMissions.getModel();
-		return model.getRowObject(listeMissions.convertRowIndexToModel(listeMissions.getSelectedRow()));
-	}*/
+	 */
+ 	public Mission getSelected() {
+		this.modelMissions = (GenericTableModel<Mission>) this.listeMissions.getModel();
+		return this.modelMissions.getRowObject(this.listeMissions.convertRowIndexToModel(this.listeMissions.getSelectedRow()));
+	}
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -337,17 +341,14 @@ public class Missions extends JPanel implements MouseListener {
 				
 				JFrame frame = null;
 				try {
-					frame = new AdderJFrame<Mission, Employee>(data, this.missSelect, Employee.class);
+					frame = new AdderJFrame<Mission, Employee>(data, getSelected(), Employee.class);
 				} catch (HeadlessException | DataException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
-				// 2. Optional: What happens when the frame closes?
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.pack();
-				
-				// 5. Show it.
+
 				frame.setVisible(true);
 				
 			}
@@ -356,19 +357,7 @@ public class Missions extends JPanel implements MouseListener {
 			 * TODO Formulaire prêt à l'ajout d'un nouvel élément
 			 */
 			if (e.getSource().equals(this.boutonNouveau)) {
-				
-				this.nom.setText("");
-				this.dateD.setText("");
-				this.duree.setText("");
-				this.nombre.setText("");
-				this.statut.setSelectedIndex(0);
-				
-				TableModel resetTMEmp = JTables.Employes(new ArrayList<Employee>()).getModel();
-				this.employes.setModel(resetTMEmp);
-				
-				TableModel resetTMComp = JTables.CompetencesRequises(new ArrayList<CompetenceRequirement>()).getModel();
-				this.competences.setModel(resetTMComp);
-				
+				VideChamps();
 				ChargementModification();
 				this.mode = "nouveau";
 			}
@@ -387,23 +376,14 @@ public class Missions extends JPanel implements MouseListener {
 			if (e.getSource().equals(this.boutonSupprimer)) {
 
 					try {
-						data.Missions().supprimer(this.missSelect);
-						this.missSelect = null;
-						remove(this.listeMissions);
-						
-						this.listeMissions = new JTable();
-						
-						this.listeMissions = JTables.Missions(data.Missions().tous());
-						this.listeMissions.setFillsViewportHeight(true);
-						this.listeMissions.addMouseListener(this);
-						JScrollPane js = new JScrollPane(this.listeMissions);
-						js.setVisible(true);
-						js.setBounds(10, 10, 300, 600);
-						add(js);
+						Mission missSelect = getSelected();
+						data.Missions().supprimer(missSelect);
+	 					this.modelMissions.deleteRowObject(missSelect);
+	 					this.modelMissions.fireTableDataChanged();
+						VideChamps();
 					} catch (DataException e2) {
 						e2.printStackTrace();
 					}
-
 			}
 			
 			/**
@@ -468,28 +448,21 @@ public class Missions extends JPanel implements MouseListener {
 		 * Actualisation des champs du formulaire
 		 */
 		if (e.getSource() instanceof JTable) {
+			Mission missSelect = getSelected();
 			
-			GenericTableModel<Mission> model = (GenericTableModel<Mission>) listeMissions.getModel();
-			this.missSelect = model.getRowObject(listeMissions.convertRowIndexToModel(listeMissions.getSelectedRow()));
+			this.nom.setText(missSelect.getNomM());
+			this.dateD.setText(MissionDateFormat.format(missSelect.getDateDebut()));
+			this.duree.setText(Integer.toString(missSelect.getDuree()));
+			this.nombre.setText(Integer.toString(missSelect.getNbPersReq()));
+			this.statut.setSelectedItem(missSelect.getStatus());
 			
-			this.nom.setText(this.missSelect.getNomM());
-			
-			ArrayList<CompetenceRequirement> listCompMiss = this.missSelect.getCompReq();
+			ArrayList<CompetenceRequirement> listCompMiss = missSelect.getCompReq();
 			TableModel tmComp = JTables.CompetencesRequises(listCompMiss).getModel();
 			this.competences.setModel(tmComp);
-			
-			this.dateD.setText(MissionDateFormat.format(this.missSelect.getDateDebut()));
-			this.duree.setText(Integer.toString(this.missSelect.getDuree()));
-			
-			this.nombre.setText(Integer.toString(this.missSelect.getNbPersReq()));
-			
-			this.statut.setSelectedItem(this.missSelect.getStatus());
-			
-			ArrayList<Employee> listEmpMiss = this.missSelect.getAffEmp();
+
+			ArrayList<Employee> listEmpMiss = missSelect.getAffEmp();
 			TableModel tmEmp = JTables.Employes(listEmpMiss).getModel();
 			this.employes.setModel(tmEmp);
-
-			
 		}
 	}
 	
