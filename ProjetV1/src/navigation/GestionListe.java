@@ -39,24 +39,24 @@ public class GestionListe implements ActionListener {
 	private static final String PRESENTS	= "Élements présents";
 	private static final String RESTANTS	= "Élements restants";
 	
-	Vector selectedCells = new Vector<int[]>();
-	
 	private JLabel ElementPossLabel;
 	private JLabel ElementNonPossLabel;
 	JTable	ElementPoss;
 	JTable	ElementNonPoss;
-	TableModel nonPossModel;
-	TableModel PossModel;
+	
+	GenericTableModel		mJTablePoss;
+	GenericTableModel		mJTableNonPoss;
+	
 	private JButton addButton;
 	private JButton removeButton;
 
-	public GestionListe(JTable Poss, JTable nonPoss, TableModel PossModel,TableModel nonPossModel) {
+	public GestionListe(JTable Poss, JTable nonPoss, GenericTableModel PossModel,GenericTableModel nonPossModel) {
 		this.ElementPoss = Poss;
 		this.ElementNonPoss = nonPoss;
-		this.ElementNonPoss.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		this.ElementNonPoss.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		this.nonPossModel = nonPossModel;
-		this.PossModel = PossModel;
+		this.ElementNonPoss.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		this.ElementNonPoss.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		this.mJTableNonPoss = nonPossModel;
+		this.mJTablePoss = PossModel;
 	}
 	
 	public void displayGUI(){
@@ -94,95 +94,28 @@ public class GestionListe implements ActionListener {
 		content.add(ElementNonPossLabel, new GridBagConstraints(2, 0, 1, 1, 0, 0, GridBagConstraints.CENTER, GridBagConstraints.NONE,EMPTY_INSETS, 0, 0));
 		content.add(new JScrollPane(ElementNonPoss), new GridBagConstraints(2, 1, 1, 5, .5, 1.0, GridBagConstraints.CENTER,GridBagConstraints.BOTH, EMPTY_INSETS, 0, 0));
 		
-		
 		frame.getContentPane().add(content);
 		frame.setVisible(true);
-        
-        
-        
-        
-        
-        
-        
-		/*JPanel content = new JPanel();
-		content.setBorder(BorderFactory.createEtchedBorder());
-		content.setLayout(new GridBagLayout());
-		sourceLabel = new JLabel(DEFAULT_SOURCE_CHOICE_LABEL);
-		sourceListModel = new SortedListModel();
-		sourceList = new JList(sourceListModel);
-		content.add(sourceLabel, new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.CENTER, GridBagConstraints.NONE,
-				EMPTY_INSETS, 0, 0));
-		content.add(new JScrollPane(sourceList), new GridBagConstraints(0, 1, 1, 5, .5, 1, GridBagConstraints.CENTER,
-				GridBagConstraints.BOTH, EMPTY_INSETS, 0, 0));
-
-		addButton = new JButton(ADD_BUTTON_LABEL);
-		content.add(addButton, new GridBagConstraints(1, 2, 1, 2, 0, .25, GridBagConstraints.CENTER, GridBagConstraints.NONE,
-				EMPTY_INSETS, 0, 0));
-
-		removeButton = new JButton(REMOVE_BUTTON_LABEL);
-		content.add(removeButton, new GridBagConstraints(1, 4, 1, 2, 0, .25, GridBagConstraints.CENTER, GridBagConstraints.NONE,
-				new Insets(0, 5, 0, 5), 0, 0));
-
-		destLabel = new JLabel(DEFAULT_DEST_CHOICE_LABEL);
-		destListModel = new SortedListModel();
-		destList = new JList(destListModel);
-		content.add(destLabel, new GridBagConstraints(2, 0, 1, 1, 0, 0, GridBagConstraints.CENTER, GridBagConstraints.NONE,
-				EMPTY_INSETS, 0, 0));
-		content.add(new JScrollPane(destList), new GridBagConstraints(2, 1, 1, 5, .5, 1.0, GridBagConstraints.CENTER,
-				GridBagConstraints.BOTH, EMPTY_INSETS, 0, 0));
-		frame.getContentPane().add(content);
-		frame.setVisible(true);*/
 		
 	}
-	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
 		if (e.getSource().equals(addButton)) {
-			
-			// TODO Mahdi
-			int selectedRowIndex = ElementNonPoss.getSelectedRow();
-			int selectedColIndex = ElementNonPoss.getSelectedColumn();
-			DefaultTableModel curriculumSubjectsModel = (DefaultTableModel) ElementPoss.getModel();
-			curriculumSubjectsModel.addRow((Object[]) ElementNonPoss.getValueAt(selectedRowIndex, selectedColIndex));
-			ElementPoss.setModel(curriculumSubjectsModel);
+			Object o = mJTableNonPoss.getRowObject(ElementNonPoss.getSelectedRow());
+			mJTablePoss.addRowObject(o);
+			mJTableNonPoss.deleteRowObject(o);		
+			mJTablePoss.fireTableDataChanged();
+			mJTableNonPoss.fireTableDataChanged();
 		}
 
 		if (e.getSource().equals(removeButton)) {
-			/*Object selected[] = destList.getSelectedValues();
-			addSourceElements(selected);
-			clearDestinationSelected();*/
+			Object o = mJTablePoss.getRowObject(ElementPoss.getSelectedRow());
+			mJTableNonPoss.addRowObject(o);
+			mJTablePoss.deleteRowObject(o);		
+			mJTableNonPoss.fireTableDataChanged();
+			mJTablePoss.fireTableDataChanged();
 		}
 	}
-	/*
-
-	public void addDestinationElements(Object newValue[]) {
-		fillListModel(destListModel, newValue);
-	}
-
-	private void clearSourceSelected() {
-		Object selected[] = sourceList.getSelectedValues();
-		for (int i = selected.length - 1; i >= 0; --i) {
-			sourceListModel.removeElement(selected[i]);
-		}
-		sourceList.getSelectionModel().clearSelection();
-	}
-
-	private void clearDestinationSelected() {
-		Object selected[] = destList.getSelectedValues();
-		for (int i = selected.length - 1; i >= 0; --i) {
-			destListModel.removeElement(selected[i]);
-		}
-		destList.getSelectionModel().clearSelection();
-	}
-
-	public void addSourceElements(Object newValue[]) {
-		fillListModel(sourceListModel, newValue);
-	}
-
-	private void fillListModel(SortedListModel model, Object newValues[]) {
-		model.addAll(newValues);
-	}*/
-
 }

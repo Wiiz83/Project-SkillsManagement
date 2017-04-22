@@ -18,8 +18,16 @@ public abstract class GenericTableModel<E> extends AbstractTableModel {
 		return objects.get(row);
 	}
 	
+	public ArrayList<E> getArraylist(){
+		return objects;
+	}
+	
 	public void deleteRowObject(E e){
 		objects.remove(e);
+	}
+	
+	public void addRowObject(E e){
+		objects.add(e);
 	}
 	
 	@Override
@@ -36,11 +44,6 @@ public abstract class GenericTableModel<E> extends AbstractTableModel {
 	public int getRowCount() {
 		return objects.size();
 	}
-	
-	//Fonction qui va s'occupper de remettre à jour tout le tableau et qui va mettre à jour aussi l'affichage
-	public void setData(ArrayList<E> o){
-		objects = o;
-		super.fireTableDataChanged();
-	}
+
 	
 }
