@@ -12,7 +12,6 @@ import csv.CSVEntity;
 import data.Data;
 import data.DataException;
 import data.IRequete;
-import gui.Button;
 import data.CSVRequests;
 
 public class AssociationJFrame<E extends CSVEntity, N extends CSVEntity> extends JFrame {

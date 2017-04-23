@@ -5,33 +5,21 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.Vector;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-
 import gui.GenericTableModel;
 import gui.ProgramFrame;
-import models.Competence;
-import models.Employee;
 
 public class GestionListe implements ActionListener {
 
-	private static final long serialVersionUID = 1L;
-	
 	private static final Insets EMPTY_INSETS = new Insets(0, 0, 0, 0);
 	private static final String ADD_BUTTON_LABEL = "<< Add";
 	private static final String REMOVE_BUTTON_LABEL = "Remove >>";

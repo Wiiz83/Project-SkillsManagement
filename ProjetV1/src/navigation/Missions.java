@@ -1,6 +1,5 @@
 package navigation;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -8,15 +7,11 @@ import java.awt.HeadlessException;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Vector;
-
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
@@ -27,14 +22,11 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableModel;
 import javax.swing.text.MaskFormatter;
-import javax.swing.text.NumberFormatter;
-
 import data.Data;
 import data.DataException;
 import gui.Button;
 import gui.GenericTableModel;
 import gui.Titre;
-import models.Competence;
 import models.CompetenceRequirement;
 import models.Employee;
 import models.Mission;
