@@ -89,14 +89,29 @@ public class Accueil extends JPanel {
 		add(label3);
 		
 		DefaultPieDataset datac = new DefaultPieDataset();
-		datac.setValue("Category 1", 43.2);
-		datac.setValue("Category 2", 27.9);
-		datac.setValue("Category 3", 79.5);
-		JFreeChart chart = ChartFactory.createPieChart("", datac, false, true, false);
-		
-		ChartPanel CP = new ChartPanel(chart);
-		CP.setBounds(820, 40, 440, 250);
-		add(CP);
+
+		try {
+			int mPreparation = data.Missions().AvecStatus(Status.PREPARATION).size();
+			int mEnCours = data.Missions().AvecStatus(Status.EN_COURS).size();
+			int mPlanifiee = data.Missions().AvecStatus(Status.PLANIFIEE).size();
+			int mTerminee = data.Missions().AvecStatus(Status.TERMINEE).size();
+			int mWarning  = data.Missions().AvecStatus(Status.WARNING).size();
+
+			datac.setValue("En cours", mEnCours);
+			datac.setValue("En préparation", mPreparation);
+			datac.setValue("Planifiée", mPlanifiee);
+			datac.setValue("Terminée", mTerminee);
+			datac.setValue("Alertée", mWarning);
+			
+			JFreeChart chart = ChartFactory.createPieChart("", datac, false, true, false);
+			
+			ChartPanel CP = new ChartPanel(chart);
+			CP.setBounds(820, 40, 440, 250);
+			add(CP);
+		} catch (DataException e) {
+			e.printStackTrace();
+		}
+
 		validate();
 		
 	}
