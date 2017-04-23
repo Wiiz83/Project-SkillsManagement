@@ -68,7 +68,7 @@ public class GestionListe implements ActionListener {
 		frame.setLocation(5, 5);
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
-            	ProgramFrame.frame.setEnabled(true);
+            	ProgramFrame.getFrame().setEnabled(true);
             	frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	        }
 	    });

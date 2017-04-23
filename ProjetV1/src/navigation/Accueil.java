@@ -27,13 +27,9 @@ public class Accueil extends JPanel {
 	
 	private static final long	serialVersionUID	= 1L;
 	ListSelectionModel			listSelectionModel;
-	JPanel						missionsEnCours;
-	JPanel						missionsTempsIntervalle;
-	
-	String[]	headerTableMEC;
-	String[][]	dataTableMEC;
-	String[]	headerTableMAV;
-	String[][]	dataTableMAV;
+	JPanel							missionsEnCours;
+	JPanel							missionsTempsIntervalle;
+
 	
 	public Accueil(Data data) {
 		

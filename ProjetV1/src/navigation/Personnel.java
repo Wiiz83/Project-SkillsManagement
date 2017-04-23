@@ -13,7 +13,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.TableModel;
 import javax.swing.text.MaskFormatter;
 import data.Data;
 import data.DataException;
@@ -29,7 +28,7 @@ import models.Employee;
  * possibilité d'ajout, suppression et modification
  * 
  */
-public class Personnel extends Page implements MouseListener {
+public class Personnel extends Formulaire implements MouseListener {
 	private static final long	serialVersionUID	= 1L;
 	private Data				data;
 	
@@ -198,7 +197,7 @@ public class Personnel extends Page implements MouseListener {
 		if (e.getSource() instanceof Button) {
 			
 			if (e.getSource().equals(this.boutonEditComp)) {
-				ProgramFrame.frame.setEnabled(false);
+				ProgramFrame.getFrame().setEnabled(false);
 				switch (this.mode) {
 					case "nouveau":
 						try {
@@ -280,32 +279,27 @@ public class Personnel extends Page implements MouseListener {
 			if (e.getSource().equals(this.boutonAnnuler)) {
 				
 				switch (this.mode) {
-				case "nouveau":
-					VideChamps();
+					case "nouveau":
+						VideChamps();
+						ChargementConsultation();
 					break;
-				
-				case "modification":
-					if (getSelected() != null) {
-						Employee EmployeSelect = getSelected();
-						this.nom.setText(EmployeSelect.getLastName());
-						this.prenom.setText(EmployeSelect.getName());
-						this.date.setText(EmployeeDateFormat.format(EmployeSelect.getEntryDate()));
-						this.listCompEmp = EmployeSelect.getCompetences();
-						this.mJTableCompetences = (GenericTableModel<Competence>) JTables.Competences(listCompEmp)
-								.getModel();
-						this.JTableCompetences.setModel(this.mJTableCompetences);
+					
+					case "modification":
+						if (getSelected() != null) {
+							Employee EmployeSelect = getSelected();
+							this.nom.setText(EmployeSelect.getLastName());
+							this.prenom.setText(EmployeSelect.getName());
+							this.date.setText(EmployeeDateFormat.format(EmployeSelect.getEntryDate()));
+							this.listCompEmp = EmployeSelect.getCompetences();
+							this.mJTableCompetences = (GenericTableModel<Competence>) JTables.Competences(listCompEmp)
+									.getModel();
+							this.JTableCompetences.setModel(this.mJTableCompetences);
+							ChargementConsultation();
+						}
+						break;
 					}
-					break;
-				
-				default:
-					break;
-				}
-				ChargementConsultation();
 			}
-			
-			/**
-			 * TODO On enregistre les modifications ou le nouvel élément
-			 */
+
 			if (e.getSource().equals(this.boutonEnregistrer)) {
 				try {
 					switch (this.mode) {
@@ -349,22 +343,14 @@ public class Personnel extends Page implements MouseListener {
 		if (e.getSource() instanceof JTable) {
 			if (getSelected() != null) {
 				Employee EmployeSelect = getSelected();
-				
 				this.nom.setText(EmployeSelect.getLastName());
 				this.prenom.setText(EmployeSelect.getName());
 				this.date.setText(EmployeeDateFormat.format(EmployeSelect.getEntryDate()));
-				
 				this.listCompEmp = EmployeSelect.getCompetences();
 				this.mJTablePersonnel = (GenericTableModel<Employee>) this.JTablePersonnel.getModel();
-				
 				this.mJTableCompetences = (GenericTableModel<Competence>) JTables.Competences(listCompEmp).getModel();
-				
-				// this.mJTableCompetences = (GenericTableModel<Competence>)
-				// this.JTableCompetences.getModel();
-				
 				this.JTableCompetences.setModel(this.mJTableCompetences);
 			}
-			
 		}
 	}
 	

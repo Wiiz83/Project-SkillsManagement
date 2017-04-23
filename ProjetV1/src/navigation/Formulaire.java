@@ -12,16 +12,12 @@ import javax.swing.JPanel;
 
 import gui.Button;
 
-public class Page extends JPanel {
+public class Formulaire extends JPanel {
 	
     ArrayList<JComponent> composantsEdition			= new ArrayList<JComponent>();
     ArrayList<JComponent> composantsConsultation 	= new ArrayList<JComponent>();
 	String	mode;
 	
-    public Page(){
-    	
-    }
-
 	 /*
 	  *   Mode Consultation : Les éléments du formulaire ne sont pas modifiables
 	  */

@@ -1,24 +1,15 @@
 package navigation;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Vector;
 import javax.swing.BorderFactory;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-
-import csv.CSVException;
 import csv.InvalidDataException;
 import data.Data;
 import data.DataException;
@@ -33,43 +24,46 @@ import models.CompetenceCode;
  * compétences avec possibilité d'ajout, suppression et modification
  * 
  */
-public class Competences extends JPanel implements MouseListener {
+public class Competences extends Formulaire implements MouseListener {
 	
 	private static final long serialVersionUID = 1L;
-	
-	Competence		compSelect;
-	JTable			listeCompetences;
-	JScrollPane		jsCompetences;
-	Vector<int[]>	selectedCells	= new Vector<int[]>();
-	String			mode;
 	private Data	data;
-	int				IDSelect;
 	
+	JTable											JTableCompetences;
+	GenericTableModel<Competence>	mJTableCompetences;
+	
+	JTextField	code;
+	
+	JTable	JTableLangues;
+
 	Button		boutonNouveau;
 	Button		boutonModifier;
 	Button		boutonSupprimer;
 	Button		boutonEnregistrer;
 	Button		boutonAnnuler;
-	Button		boutonAddLangue;
-	Button		boutonDeleteLangue;
-	JTextField	code;
-	JTable		listeLangues;
-	TableModel	modelLangues;
+	Button		boutonEditLangue;
 	
+
 	public Competences(Data data) {
 		this.data = data;
 		setOpaque(false);
 		setLayout(null);
 		setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
 		
-		/**
-		 * Affichage de la liste gauche
-		 */
-		AffichageListe();
-		
-		/**
-		 * Création et positionnement des boutons de gestion de formulaire
-		 */
+		this.JTableCompetences = new JTable();
+		try {
+			this.JTableCompetences = JTables.Competences(data.Competences().tous());
+			this.JTableCompetences.setFillsViewportHeight(true);
+			this.JTableCompetences.addMouseListener(this);
+			JScrollPane jsCompetences = new JScrollPane(this.JTableCompetences);
+			jsCompetences.setVisible(true);
+			jsCompetences.setBounds(10, 10, 300, 600);
+			add(jsCompetences);
+		} catch (DataException e) {
+			e.printStackTrace();
+		}
+		this.mJTableCompetences= (GenericTableModel<Competence>) this.JTableCompetences.getModel();
+
 		this.boutonNouveau = new Button("/boutons/nouveau.png");
 		this.boutonNouveau.setBounds(330, 560);
 		this.boutonNouveau.addMouseListener(this);
@@ -85,15 +79,13 @@ public class Competences extends JPanel implements MouseListener {
 		this.boutonAnnuler = new Button("/boutons/annuler.png");
 		this.boutonAnnuler.setBounds(1100, 560);
 		this.boutonAnnuler.addMouseListener(this);
+		
 		add(this.boutonNouveau);
 		add(this.boutonModifier);
 		add(this.boutonSupprimer);
 		add(this.boutonEnregistrer);
 		add(this.boutonAnnuler);
 		
-		/**
-		 * Création et positionnement des éléments du formulaire
-		 */
 		Titre titre = new Titre(" Détails de la compétence :");
 		titre.setBounds(330, 10, 930, 20);
 		add(titre);
@@ -111,153 +103,51 @@ public class Competences extends JPanel implements MouseListener {
 		this.code.setBounds(400, 60, 150, 25);
 		add(this.code);
 		
-		this.listeLangues = new JTable();
-		this.listeLangues.addMouseListener(this);
-		this.listeLangues.setFillsViewportHeight(true);
-		JScrollPane jsLangues = new JScrollPane(this.listeLangues);
+		this.JTableLangues = new JTable();
+		this.JTableLangues.addMouseListener(this);
+		this.JTableLangues.setFillsViewportHeight(true);
+		JScrollPane jsLangues = new JScrollPane(this.JTableLangues);
 		jsLangues.setVisible(true);
 		jsLangues.setBounds(350, 130, 350, 400);
 		add(jsLangues);
 		
-		this.boutonAddLangue = new Button("/boutons/miniadd.png");
-		this.boutonAddLangue.setBounds(710, 170);
-		this.boutonAddLangue.addMouseListener(this);
-		add(this.boutonAddLangue);
+		this.boutonEditLangue = new Button("/boutons/miniedit.png");
+		this.boutonEditLangue.setBounds(710, 170);
+		this.boutonEditLangue.addMouseListener(this);
+		add(this.boutonEditLangue);
 		
-		this.boutonDeleteLangue = new Button("/boutons/minidelete.png");
-		this.boutonDeleteLangue.setBounds(710, 210);
-		this.boutonDeleteLangue.addMouseListener(this);
-		add(this.boutonDeleteLangue);
+		composantsEdition.add(this.boutonEditLangue);
+		composantsEdition.add(this.code);
+		composantsEdition.add(this.boutonEnregistrer);
+		composantsEdition.add(this.boutonAnnuler);
 		
-		ChargementConsultation();
+		composantsConsultation.add(this.boutonNouveau);
+		composantsConsultation.add(this.boutonModifier);
+		composantsConsultation.add(this.boutonNouveau);
+		composantsConsultation.add(this.boutonSupprimer);
+		composantsConsultation.add(this.JTableCompetences);
+		
+		super.ChargementConsultation();
 	}
 	
-	/**
-	 * Affiche la liste
-	 */
-	public void AffichageListe() {
-		this.listeCompetences = new JTable();
-		try {
-			this.listeCompetences = JTables.Competences(data.Competences().tous());
-			this.listeCompetences.setFillsViewportHeight(true);
-			this.listeCompetences.addMouseListener(this);
-			this.jsCompetences = new JScrollPane(this.listeCompetences);
-			this.jsCompetences.setVisible(true);
-			this.jsCompetences.setBounds(10, 10, 300, 600);
-			add(this.jsCompetences);
-		} catch (DataException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * Supprime la liste et reinitialise l'ID séléctionné
-	 */
-	public void Reinitialiser() {
-		remove(this.listeCompetences);
-		remove(this.jsCompetences);
-		this.IDSelect = 0;
-	}
-	
-	/**
-	 * Mode Consultation : - Lecture des informations détaillés de l'élément
-	 * sélectionné - Les éléments du formulaire ne sont pas modifiables
-	 */
-	public void ChargementConsultation() {
-		this.code.setEditable(false);
-		this.listeLangues.setEnabled(false);
-		
-		this.boutonEnregistrer.setVisible(false);
-		this.boutonAnnuler.setVisible(false);
-		this.boutonNouveau.setVisible(true);
-		this.boutonModifier.setVisible(true);
-		this.boutonSupprimer.setVisible(true);
-		this.listeCompetences.setEnabled(true);
-		
-		this.mode = "consultation";
-	}
-	
-	/**
-	 * Mode Modification : - Possibilité de modifier les informations détaillés
-	 * de l'élément sélectionné - Les éléments de la liste ne sont pas
-	 * séléctionnables
-	 */
-	public void ChargementModification() {
-		this.code.setEditable(true);
-		this.listeLangues.setEnabled(true);
-		
-		this.boutonEnregistrer.setVisible(true);
-		this.boutonAnnuler.setVisible(true);
-		this.boutonNouveau.setVisible(false);
-		this.boutonModifier.setVisible(false);
-		this.boutonSupprimer.setVisible(false);
-		this.listeCompetences.setEnabled(false);
-	}
-	
-	/**
-	 * Mode Nouveau : - On vide tous les éléments contenus dans les champs du
-	 * formulaire - Les éléments de la liste ne sont pas séléctionnables
-	 */
-	public void ChargementNouveau() {
+	public void VideChamps() {
 		this.code.setText("");
-		
-		/*
-		 * TODO : Création de la liste de langue a partir d'une arraylist
-		 * this.modelLangues = JTables.Competences(new
-		 * ArrayList<Competence>()).getModel();
-		 * this.competences.setModel(this.competencesModel);
-		 */
-		
-		this.mode = "nouveau";
-		ChargementModification();
+		this.JTableLangues = new JTable();
 	}
 	
-	/**
-	 * Enregistrement des informations dans le cas d'une modification ou d'un
-	 * ajout
-	 * 
-	 * @throws ParseException
-	 * @throws InvalidDataException
-	 * @throws CSVException
-	 */
-	public void Enregistrement() throws ParseException, DataException, InvalidDataException {
-		
-		CompetenceCode compCode = new CompetenceCode(this.code.getText());
-		
-		switch (this.mode) {
-		case "nouveau":
-			
-			/*
-			 * TODO : Mettre Arraylist de langue dans le constructeur Competence
-			 * nouvComp = new Competence(compCode, names)
-			 * data.Competences().ajouter(nouvComp);
-			 */
-			break;
-		
-		case "modification":
-			this.compSelect.setCode(compCode);
-			
-			/*
-			 * TODO : Arraylist de langues this.compSelect.setNames(names);
-			 */
-			data.Competences().modifier(this.compSelect);
-			break;
-		
-		default:
-			break;
+	public Competence getSelected() {
+		try {
+			this.mJTableCompetences = (GenericTableModel<Competence>) this.JTableCompetences.getModel();
+			return this.mJTableCompetences
+					.getRowObject(this.JTableCompetences.convertRowIndexToModel(this.JTableCompetences.getSelectedRow()));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(
+					new JFrame(), "Vous devez sélectionner une compétence pour réaliser cette action.",
+					"Compétence non séléctionnée", JOptionPane.WARNING_MESSAGE
+			);
+			e.printStackTrace();
+			return null;
 		}
-	}
-	
-	/**
-	 * Dessine le fond blanc du formulaire
-	 */
-	@Override
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		Graphics2D batch = (Graphics2D) g;
-		batch.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		batch.setColor(Color.WHITE);
-		batch.fillRect(330, 40, 930, 510);
 	}
 	
 	/**
@@ -268,88 +158,108 @@ public class Competences extends JPanel implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() instanceof Button) {
 			
-			/**
-			 * TODO Formulaire prêt à l'ajout d'un nouvel élément
-			 */
 			if (e.getSource().equals(this.boutonNouveau)) {
-				ChargementNouveau();
+				VideChamps();
+				super.ChargementModification();
+				this.mode = "nouveau";
 			}
-			
-			/**
-			 * Formulaire prêt à la modification d'un élément existant
-			 */
+
 			if (e.getSource().equals(this.boutonModifier)) {
-				ChargementModification();
+				if (getSelected() != null) {
+					super.ChargementModification();
+				}
 			}
 			
-			/**
-			 * TODO Suppression d'un élément existant : doit demander la
-			 * confirmation de l'utilisateur
-			 */
 			if (e.getSource().equals(this.boutonSupprimer)) {
 				try {
-					Competence comp = data.Competences().parID(Integer.toString(this.IDSelect));
-					data.Competences().supprimer(comp);
-					Reinitialiser();
-					AffichageListe();
-				} catch (DataException e1) {
-					e1.printStackTrace();
+					if (getSelected() != null) {
+						int n = JOptionPane.showConfirmDialog(
+								new JFrame(), "Voulez vraiment supprimer cette compétence ?", "Confirmation de suppression",
+								JOptionPane.YES_NO_OPTION
+						);
+						if (n == JOptionPane.YES_OPTION) {
+							Competence compSelect = getSelected();
+							data.Competences().supprimer(compSelect);
+							this.mJTableCompetences.deleteRowObject(compSelect);
+							this.mJTableCompetences.fireTableDataChanged();
+							VideChamps();
+						}
+					}
+				} catch (DataException e2) {
+					e2.printStackTrace();
+				}
+			}
+
+			if (e.getSource().equals(this.boutonAnnuler)) {
+				switch (this.mode) {
+					case "nouveau":
+						VideChamps();
+						ChargementConsultation();
+					break;
+					
+					case "modification":
+						if (getSelected() != null) {
+							Competence compSelect = getSelected();
+							this.code.setText(compSelect.getCode().toString());
+							ArrayList<String> langList = compSelect.getNames();
+							
+							/*
+							this.mJTableCompetences = (GenericTableModel<Competence>) JTables.Competences(listCompEmp)
+									.getModel();
+							this.JTableCompetences.setModel(this.mJTableCompetences);*/
+							ChargementConsultation();
+						}
+						break;
 				}
 			}
 			
-			/**
-			 * TODO On annule toutes les modifications faites par l'utilisateur
-			 * depuis l'activation du mode modification / du mode nouveau
-			 */
-			if (e.getSource().equals(this.boutonAnnuler)) {
-				ChargementConsultation();
-			}
-			
-			/**
-			 * TODO On enregistre les modifications ou le nouvel élément
-			 */
 			if (e.getSource().equals(this.boutonEnregistrer)) {
 				try {
-					Enregistrement();
-				} catch (ParseException e1) {
-					System.out.println("Format incorrect: " + e1);
+					switch (this.mode) {
+					case "nouveau":
+						/* TODO
+						//Competence c = new Competence(this.code.getText(), mJTableLangues.getArraylist());
+						data.Competences().ajouter(c);
+						this.mJTableCompetences.addRowObject(c);
+						this.mJTableCompetences.fireTableDataChanged();
+						*/
+						ChargementConsultation();
+						break;
+					
+					case "modification":
+						if (getSelected() != null) {
+							Competence compSelect = getSelected();
+							CompetenceCode cc;
+							try {
+								cc = new CompetenceCode(this.code.getText());
+								compSelect.setCode(cc);
+								// TODO
+								//	ArrayList<Language> listLangues = mJTableLangues.getArraylist();
+								//	compSelect.setNames(listLangues);
+								data.Competences().modifier(compSelect);
+								this.mJTableCompetences.fireTableDataChanged();
+								ChargementConsultation();
+							} catch (InvalidDataException e1) {
+								e1.printStackTrace();
+							}
+						}
+						break;
+					}
 				} catch (DataException e1) {
 					System.out.println("Problème d'enregistrement: " + e1);
-				} catch (InvalidDataException e1) {
-					System.out.println("Donnée incorrecte: " + e1);
 				}
-				ChargementConsultation();
 			}
 		}
+
 		
-		/**
-		 * Actualisation des champs du formulaire TODO : Faire passer la
-		 * référence de l'objet !
-		 */
 		if (e.getSource() instanceof JTable) {
-			GenericTableModel<Competence> model = (GenericTableModel<Competence>) this.listeCompetences.getModel();
-			this.compSelect = model
-					.getRowObject(this.listeCompetences.convertRowIndexToModel(listeCompetences.getSelectedRow()));
-			
-			this.code.setText(this.compSelect.getCode().toString());
-			
-/*			String[] headers = { "Libellé" };
-			ArrayList<String> listLanguesComp = this.compSelect.getNames();
-			
-		    DefaultTableModel modelL = new DefaultTableModel(new Object[]{"Libellé"}, 0);
-		     for(String lib : listLanguesComp){
-		          modelL.addRow(new Object[]{lib});
-		     }
-		     this.listeLangues.setModel(modelL);
-*/
-			
-			
-			/*
-			 * TODO : faire une methode pour les langues dans la classe JTables
-			 * this.modelLangues = JTables.Competences(listCompEmp).getModel();
-			 * this.competences.setModel(this.competencesModel);
-			 */
-			
+			Competence CompSelect = getSelected();
+			this.code.setText(CompSelect.getCode().toString());
+			// TODO
+			/*ArrayList<Language> listLangues = CompSelect.getNames();
+			this.mJTablePersonnel = (GenericTableModel<Employee>) this.JTablePersonnel.getModel();
+			this.mJTableCompetences = (GenericTableModel<Competence>) JTables.Competences(listCompEmp).getModel();
+			this.JTableCompetences.setModel(this.mJTableCompetences);*/
 		}
 	}
 	
