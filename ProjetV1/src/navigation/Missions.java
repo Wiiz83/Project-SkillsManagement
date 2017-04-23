@@ -333,7 +333,7 @@ public class Missions extends JPanel implements MouseListener {
 				
 				JFrame frame = null;
 				try {
-					frame = new AdderJFrame<Mission, Employee>(data, getSelected(), Employee.class);
+					frame = new FrameAjoutElement<Mission, Employee>(data, getSelected(), Employee.class);
 				} catch (HeadlessException | DataException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

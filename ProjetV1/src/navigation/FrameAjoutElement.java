@@ -15,7 +15,7 @@ import data.DataException;
 import data.IRequete;
 import data.CSVRequests;
 
-public class AdderJFrame<E extends CSVEntity, N extends CSVEntity> extends JFrame {
+public class FrameAjoutElement<E extends CSVEntity, N extends CSVEntity> extends JFrame {
 	/**
 	 * 
 	 */
@@ -28,7 +28,7 @@ public class AdderJFrame<E extends CSVEntity, N extends CSVEntity> extends JFram
 	private JScrollPane	jScrollPane1;
 	private JButton		AddButton;
 	
-	public AdderJFrame(Data data, E entity, Class<N> nEntityClass) throws HeadlessException, DataException {
+	public FrameAjoutElement(Data data, E entity, Class<N> nEntityClass) throws HeadlessException, DataException {
 		super();
 		this.data = data;
 		this.entity = entity;

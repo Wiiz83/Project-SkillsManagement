@@ -28,7 +28,7 @@ public class AssociationJFrame<E extends CSVEntity, N extends CSVEntity> extends
 	private JScrollPane	jScrollPane1;
 	private JScrollPane	jScrollPane2;
 	private JButton		toLeftB;
-	private JButton		toRightB;;
+	private JButton		toRightB;
 	
 	public AssociationJFrame(Data data, E entity, Class<N> nEntityClass) throws HeadlessException, DataException {
 		super();

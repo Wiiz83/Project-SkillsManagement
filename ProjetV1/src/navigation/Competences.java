@@ -42,6 +42,8 @@ public class Competences extends Formulaire implements MouseListener {
 	Button		boutonEnregistrer;
 	Button		boutonAnnuler;
 	Button		boutonEditLangue;
+	Button		boutonNouvelleLangue;
+	Button		boutonSupprimerLangue;
 	
 
 	public Competences(Data data) {
@@ -111,12 +113,24 @@ public class Competences extends Formulaire implements MouseListener {
 		jsLangues.setBounds(350, 130, 350, 400);
 		add(jsLangues);
 		
+		this.boutonNouvelleLangue = new Button("/boutons/miniadd.png");
+		this.boutonNouvelleLangue.setBounds(710, 130);
+		this.boutonNouvelleLangue.addMouseListener(this);
+		add(this.boutonNouvelleLangue);
+		
 		this.boutonEditLangue = new Button("/boutons/miniedit.png");
 		this.boutonEditLangue.setBounds(710, 170);
 		this.boutonEditLangue.addMouseListener(this);
 		add(this.boutonEditLangue);
 		
+		this.boutonSupprimerLangue = new Button("/boutons/minidelete.png");
+		this.boutonSupprimerLangue.setBounds(710, 210);
+		this.boutonSupprimerLangue.addMouseListener(this);
+		add(this.boutonSupprimerLangue);
+		
 		composantsEdition.add(this.boutonEditLangue);
+		composantsEdition.add(this.boutonSupprimerLangue);
+		composantsEdition.add(this.boutonNouvelleLangue);
 		composantsEdition.add(this.code);
 		composantsEdition.add(this.boutonEnregistrer);
 		composantsEdition.add(this.boutonAnnuler);
@@ -149,14 +163,23 @@ public class Competences extends Formulaire implements MouseListener {
 			return null;
 		}
 	}
-	
-	/**
-	 * Clic sur la souris : - Si c'est un bouton de gestion du formulaire - Si
-	 * c'est un élément de la liste
-	 */
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() instanceof Button) {
+			
+			
+			if (e.getSource().equals(this.boutonNouvelleLangue)) {
+
+			}
+			
+			if (e.getSource().equals(this.boutonEditLangue)) {
+
+			}
+			
+			if (e.getSource().equals(this.boutonSupprimerLangue)) {
+
+			}
 			
 			if (e.getSource().equals(this.boutonNouveau)) {
 				VideChamps();
