@@ -199,20 +199,35 @@ public class Personnel extends Page implements MouseListener {
 			
 			if (e.getSource().equals(this.boutonEditComp)) {
 				ProgramFrame.frame.setEnabled(false);
-				try {
-					if (getSelected() != null) {
-						Employee empSelect = getSelected();
-						ArrayList<Competence> listCompNonPoss = data.Competences()
-								.manquantesEmploye(Integer.toString(empSelect.getID()));
-						GenericTableModel<Competence> compNonPossModel = (GenericTableModel<Competence>) JTables
-								.Competences(listCompNonPoss).getModel();
-						JTable compNonPoss = new JTable(compNonPossModel);
-						JTable compPoss = new JTable(mJTableCompetences);
-						this.gc = new GestionListe(compPoss, compNonPoss, mJTableCompetences, compNonPossModel);
-						this.gc.displayGUI();
-					}
-				} catch (DataException e1) {
-					e1.printStackTrace();
+				switch (this.mode) {
+					case "nouveau":
+						try {
+							ArrayList<Competence> listCompNonPoss = data.Competences().tous();
+							GenericTableModel<Competence> compNonPossModel = (GenericTableModel<Competence>) JTables.Competences(listCompNonPoss).getModel();
+							JTable compNonPoss = new JTable(compNonPossModel);
+							JTable compPoss = new JTable(mJTableCompetences);
+							this.gc = new GestionListe(compPoss, compNonPoss, mJTableCompetences, compNonPossModel);
+							this.gc.displayGUI();
+						} catch (DataException e1) {
+							e1.printStackTrace();
+						}
+						break;
+					
+					case "modification":
+						try {
+							if(getSelected() != null){
+								Employee empSelect = getSelected();
+								ArrayList<Competence> listCompNonPoss = data.Competences().manquantesEmploye(Integer.toString(empSelect.getID()));
+								GenericTableModel<Competence> compNonPossModel = (GenericTableModel<Competence>) JTables.Competences(listCompNonPoss).getModel();	 
+								JTable compNonPoss = new JTable(compNonPossModel);
+								JTable compPoss = new JTable(mJTableCompetences);
+								this.gc = new GestionListe(compPoss, compNonPoss, mJTableCompetences, compNonPossModel);
+								this.gc.displayGUI();
+							}
+						} catch (DataException e1) {
+							e1.printStackTrace();
+						}
+						break;
 				}
 			}
 			
@@ -297,6 +312,12 @@ public class Personnel extends Page implements MouseListener {
 					case "nouveau":
 						Employee nouvEmp = new Employee(this.nom.getText(), this.prenom.getText(), this.date.getText());
 						data.Employes().ajouter(nouvEmp);
+						ArrayList<Competence> listCompNouv = mJTableCompetences.getArraylist();
+						nouvEmp.setCompetences(listCompNouv);
+						data.Employes().modifier(nouvEmp);
+						this.mJTablePersonnel.addRowObject(nouvEmp);
+						this.mJTablePersonnel.fireTableDataChanged();
+						ChargementConsultation();
 						break;
 					
 					case "modification":
@@ -308,6 +329,8 @@ public class Personnel extends Page implements MouseListener {
 							ArrayList<Competence> listComp = mJTableCompetences.getArraylist();
 							empSelect.setCompetences(listComp);
 							data.Employes().modifier(empSelect);
+							this.mJTablePersonnel.fireTableDataChanged();
+							ChargementConsultation();
 						}
 						break;
 					}
@@ -316,7 +339,7 @@ public class Personnel extends Page implements MouseListener {
 				} catch (DataException e1) {
 					System.out.println("Problème d'enregistrement: " + e1);
 				}
-				ChargementConsultation();
+
 			}
 		}
 		
