@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
 import csv.CSVEntity;
@@ -127,22 +128,22 @@ public class JTables {
 	}
 	
 	public static JTable Missions(ArrayList<Mission> missions) {
-		String[] headers = {"Nom", "Durée", "Statut"};
+		String[] headers = { "Nom", "Durée", "Statut" };
 		@SuppressWarnings("serial")
 		TableModel dataModel = new GenericTableModel<Mission>(missions, headers) {
 			
 			public Object getValueAt(int row, int col) {
 				Mission mis = missions.get(row);
 				switch (col) {
-					case 0:
-						return mis.getNomM();
-					case 1:
-						return mis.getDuree();
-					case 2:
-						return mis.getStatus();
-					default:
-						System.out.println("JTable access ");
-						break;
+				case 0:
+					return mis.getNomM();
+				case 1:
+					return mis.getDuree();
+				case 2:
+					return mis.getStatus();
+				default:
+					System.out.println("JTable access ");
+					break;
 				}
 				return missions;
 			}
@@ -155,24 +156,64 @@ public class JTables {
 	}
 	
 	public static JTable Employee(ArrayList<Employee> Employee) {
-		String[] headers = {"Prénom", "Nom"};
+		String[] headers = { "Prénom", "Nom" };
 		@SuppressWarnings("serial")
 		TableModel dataModel = new GenericTableModel<Employee>(Employee, headers) {
 			
 			public Object getValueAt(int row, int col) {
 				Employee rec = Employee.get(row);
 				switch (col) {
-					case 0:
-						return rec.getName();
-					case 1:
-						return rec.getLastName();
-					default:
-						System.out.println("JTable access ");
-						break;
+				case 0:
+					return rec.getName();
+				case 1:
+					return rec.getLastName();
+				default:
+					System.out.println("JTable access ");
+					break;
 				}
 				return Employee;
 			}
 		};
+		JTable table = new JTable(dataModel);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setAutoCreateRowSorter(true);
+		table.getRowSorter().toggleSortOrder(0);
+		return table;
+	}
+	
+	public static JTable LanguesCompetence(Competence competence, ArrayList<Language> langues) {
+		
+		String[] headers = { "Pays", "Libellé" };
+		@SuppressWarnings("serial")
+		TableModel dataModel = new AbstractTableModel() {
+			
+			public Object getValueAt(int row, int col) {
+				
+				switch (col) {
+				case 0:
+					return langues.get(row);
+				case 1:
+					return competence.getNames().get(row);
+				default:
+					System.out.println("Competences JTable access ");
+					break;
+				}
+				return null;
+			}
+			
+			@Override
+			public int getColumnCount() {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+			
+			@Override
+			public int getRowCount() {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+		};
+		
 		JTable table = new JTable(dataModel);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setAutoCreateRowSorter(true);
