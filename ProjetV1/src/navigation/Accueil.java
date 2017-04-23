@@ -96,6 +96,7 @@ public class Accueil extends JPanel {
 			int mPlanifiee = data.Missions().AvecStatus(Status.PLANIFIEE).size();
 			int mTerminee = data.Missions().AvecStatus(Status.TERMINEE).size();
 			int mWarning  = data.Missions().AvecStatus(Status.WARNING).size();
+			
 
 			datac.setValue("En cours", mEnCours);
 			datac.setValue("En préparation", mPreparation);
