@@ -191,7 +191,7 @@ public class JTables {
 				
 				switch (col) {
 				case 0:
-					return langues.get(row);
+					return langues.get(row).getCountry();
 				case 1:
 					return competence.getNames().get(row);
 				default:
@@ -204,20 +204,20 @@ public class JTables {
 			@Override
 			public int getColumnCount() {
 				// TODO Auto-generated method stub
-				return 0;
+				return 2;
 			}
 			
 			@Override
 			public int getRowCount() {
 				// TODO Auto-generated method stub
-				return 0;
+				return langues.size();
 			}
 		};
 		
 		JTable table = new JTable(dataModel);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setAutoCreateRowSorter(true);
-		table.getRowSorter().toggleSortOrder(0);
+		
 		return table;
 	}
 	
