@@ -10,6 +10,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.TableModel;
+
 import csv.InvalidDataException;
 import data.Data;
 import data.DataException;
@@ -18,6 +20,8 @@ import gui.GenericTableModel;
 import gui.Titre;
 import models.Competence;
 import models.CompetenceCode;
+import models.Employee;
+import models.Language;
 
 /**
  * Page "Compétences" de l'application contenant la liste de toutes les
@@ -278,11 +282,16 @@ public class Competences extends Formulaire implements MouseListener {
 		if (e.getSource() instanceof JTable) {
 			Competence CompSelect = getSelected();
 			this.code.setText(CompSelect.getCode().toString());
-			// TODO
-			/*ArrayList<Language> listLangues = CompSelect.getNames();
-			this.mJTablePersonnel = (GenericTableModel<Employee>) this.JTablePersonnel.getModel();
-			this.mJTableCompetences = (GenericTableModel<Competence>) JTables.Competences(listCompEmp).getModel();
-			this.JTableCompetences.setModel(this.mJTableCompetences);*/
+			
+			ArrayList<Language> ListeLangues;
+			try {
+				ListeLangues = data.Langues().tous();
+				TableModel mJTableCompetences = JTables.LanguesCompetence(CompSelect, ListeLangues).getModel();
+				this.JTableLangues.setModel(this.mJTableCompetences);
+			} catch (DataException e1) {
+				e1.printStackTrace();
+			}
+			
 		}
 	}
 	
