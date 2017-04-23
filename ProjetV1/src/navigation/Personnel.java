@@ -30,29 +30,29 @@ import models.Employee;
  * 
  */
 public class Personnel extends Page implements MouseListener {
-	private static final long serialVersionUID = 1L;
-	private Data		data;
-
-	GestionListe 					gc;
-	ArrayList<Competence>						listCompEmp;
+	private static final long	serialVersionUID	= 1L;
+	private Data				data;
 	
-	JTable												JTablePersonnel;
-	GenericTableModel<Employee> 		mJTablePersonnel;
+	GestionListe			gc;
+	ArrayList<Competence>	listCompEmp;
 	
-	JTable												JTableCompetences;
-	GenericTableModel<Competence>		mJTableCompetences;
+	JTable						JTablePersonnel;
+	GenericTableModel<Employee>	mJTablePersonnel;
 	
-	Button				boutonNouveau;
-	Button				boutonModifier;
-	Button				boutonSupprimer;
-	Button				boutonEnregistrer;
-	Button				boutonAnnuler;
-	Button				boutonEditComp;
+	JTable							JTableCompetences;
+	GenericTableModel<Competence>	mJTableCompetences;
 	
-	JTextField			nom;
-	JTextField			prenom;
-	JTextField			date;
-
+	Button	boutonNouveau;
+	Button	boutonModifier;
+	Button	boutonSupprimer;
+	Button	boutonEnregistrer;
+	Button	boutonAnnuler;
+	Button	boutonEditComp;
+	
+	JTextField	nom;
+	JTextField	prenom;
+	JTextField	date;
+	
 	SimpleDateFormat	GuiDateFormat		= new SimpleDateFormat("yyyy-MM-dd");
 	SimpleDateFormat	EmployeeDateFormat	= new SimpleDateFormat("dd/MM/yyyy");
 	
@@ -67,7 +67,7 @@ public class Personnel extends Page implements MouseListener {
 			this.JTablePersonnel = JTables.Employes(data.Employes().tous());
 			this.JTablePersonnel.setFillsViewportHeight(true);
 			this.JTablePersonnel.addMouseListener(this);
-			JScrollPane js  = new JScrollPane(this.JTablePersonnel);
+			JScrollPane js = new JScrollPane(this.JTablePersonnel);
 			js.setVisible(true);
 			js.setBounds(10, 10, 300, 600);
 			add(js);
@@ -146,7 +146,8 @@ public class Personnel extends Page implements MouseListener {
 		js.setVisible(true);
 		js.setBounds(350, 170, 350, 350);
 		add(js);
-		//this.mJTableCompetences = (GenericTableModel<Competence>) this.JTableCompetences.getModel();
+		// this.mJTableCompetences = (GenericTableModel<Competence>)
+		// this.JTableCompetences.getModel();
 		
 		this.boutonEditComp = new Button("/boutons/miniedit.png");
 		this.boutonEditComp.setBounds(710, 170);
@@ -165,39 +166,46 @@ public class Personnel extends Page implements MouseListener {
 		composantsConsultation.add(this.boutonNouveau);
 		composantsConsultation.add(this.boutonSupprimer);
 		composantsConsultation.add(this.JTablePersonnel);
-
+		
 		super.ChargementConsultation();
 	}
 	
-	public void VideChamps(){
+	public void VideChamps() {
 		this.nom.setText("");
 		this.prenom.setText("");
 		this.date.setText("");
-		this.mJTableCompetences = (GenericTableModel<Competence>) JTables.Competences(new ArrayList<Competence>()).getModel();
+		this.mJTableCompetences = (GenericTableModel<Competence>) JTables.Competences(new ArrayList<Competence>())
+				.getModel();
 		this.JTableCompetences.setModel(this.mJTableCompetences);
 	}
 	
- 	public Employee getSelected() {
- 		try {
- 			this.mJTablePersonnel = (GenericTableModel<Employee>) this.JTablePersonnel.getModel();
- 			return this.mJTablePersonnel.getRowObject(this.JTablePersonnel.convertRowIndexToModel(this.JTablePersonnel.getSelectedRow()));
- 		} catch(Exception e){
- 			JOptionPane.showMessageDialog(new JFrame(), "Vous devez sélectionner un employé pour réaliser cette action.", "Employé non séléctionné", JOptionPane.WARNING_MESSAGE);
- 			return null;
- 		}
+	public Employee getSelected() {
+		try {
+			this.mJTablePersonnel = (GenericTableModel<Employee>) this.JTablePersonnel.getModel();
+			return this.mJTablePersonnel
+					.getRowObject(this.JTablePersonnel.convertRowIndexToModel(this.JTablePersonnel.getSelectedRow()));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(
+					new JFrame(), "Vous devez sélectionner un employé pour réaliser cette action.",
+					"Employé non séléctionné", JOptionPane.WARNING_MESSAGE
+			);
+			return null;
+		}
 	}
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() instanceof Button) {
 			
-			if (e.getSource().equals(this.boutonEditComp)) {				
+			if (e.getSource().equals(this.boutonEditComp)) {
 				ProgramFrame.frame.setEnabled(false);
 				try {
-					if(getSelected() != null){
+					if (getSelected() != null) {
 						Employee empSelect = getSelected();
-						ArrayList<Competence> listCompNonPoss = data.Competences().manquantesEmploye(Integer.toString(empSelect.getID()));
-						GenericTableModel<Competence> compNonPossModel = (GenericTableModel<Competence>) JTables.Competences(listCompNonPoss).getModel();
+						ArrayList<Competence> listCompNonPoss = data.Competences()
+								.manquantesEmploye(Integer.toString(empSelect.getID()));
+						GenericTableModel<Competence> compNonPossModel = (GenericTableModel<Competence>) JTables
+								.Competences(listCompNonPoss).getModel();
 						JTable compNonPoss = new JTable(compNonPossModel);
 						JTable compPoss = new JTable(mJTableCompetences);
 						this.gc = new GestionListe(compPoss, compNonPoss, mJTableCompetences, compNonPossModel);
@@ -221,23 +229,27 @@ public class Personnel extends Page implements MouseListener {
 			 * Formulaire prêt à la modification d'un élément existant
 			 */
 			if (e.getSource().equals(this.boutonModifier)) {
-				if(getSelected() != null){
+				if (getSelected() != null) {
 					super.ChargementModification();
 				}
 			}
 			
 			/**
-			 * Suppression d'un élément existant : doit demander la confirmation de l'utilisateur
+			 * Suppression d'un élément existant : doit demander la confirmation
+			 * de l'utilisateur
 			 */
 			if (e.getSource().equals(this.boutonSupprimer)) {
 				try {
-					if(getSelected() != null){
-						int n = JOptionPane.showConfirmDialog(new JFrame(),"Voulez vraiment supprimer cet employé ?","Confirmation de suppression",JOptionPane.YES_NO_OPTION);
-						if(n == JOptionPane.YES_OPTION){
+					if (getSelected() != null) {
+						int n = JOptionPane.showConfirmDialog(
+								new JFrame(), "Voulez vraiment supprimer cet employé ?", "Confirmation de suppression",
+								JOptionPane.YES_NO_OPTION
+						);
+						if (n == JOptionPane.YES_OPTION) {
 							Employee empSelect = getSelected();
 							data.Employes().supprimer(empSelect);
-		 					this.mJTablePersonnel.deleteRowObject(empSelect);
-		 					this.mJTablePersonnel.fireTableDataChanged();
+							this.mJTablePersonnel.deleteRowObject(empSelect);
+							this.mJTablePersonnel.fireTableDataChanged();
 							VideChamps();
 						}
 					}
@@ -247,29 +259,31 @@ public class Personnel extends Page implements MouseListener {
 			}
 			
 			/**
-			 * On annule toutes les modifications faites par l'utilisateur depuis l'activation du mode modification ou nouveau
+			 * On annule toutes les modifications faites par l'utilisateur
+			 * depuis l'activation du mode modification ou nouveau
 			 */
 			if (e.getSource().equals(this.boutonAnnuler)) {
 				
 				switch (this.mode) {
-					case "nouveau":
-						VideChamps();
-						break;
-					
-					case "modification":
-						if(getSelected() != null){
-							Employee EmployeSelect = getSelected();
-							this.nom.setText(EmployeSelect.getLastName());
-							this.prenom.setText(EmployeSelect.getName());
-							this.date.setText(EmployeeDateFormat.format(EmployeSelect.getEntryDate()));
-							this.listCompEmp = EmployeSelect.getCompetences();
-							this.mJTableCompetences = (GenericTableModel<Competence>) JTables.Competences(listCompEmp).getModel();
-							this.JTableCompetences.setModel(this.mJTableCompetences);
-						}
-						break;
-					
-					default:
-						break;
+				case "nouveau":
+					VideChamps();
+					break;
+				
+				case "modification":
+					if (getSelected() != null) {
+						Employee EmployeSelect = getSelected();
+						this.nom.setText(EmployeSelect.getLastName());
+						this.prenom.setText(EmployeSelect.getName());
+						this.date.setText(EmployeeDateFormat.format(EmployeSelect.getEntryDate()));
+						this.listCompEmp = EmployeSelect.getCompetences();
+						this.mJTableCompetences = (GenericTableModel<Competence>) JTables.Competences(listCompEmp)
+								.getModel();
+						this.JTableCompetences.setModel(this.mJTableCompetences);
+					}
+					break;
+				
+				default:
+					break;
 				}
 				ChargementConsultation();
 			}
@@ -280,23 +294,23 @@ public class Personnel extends Page implements MouseListener {
 			if (e.getSource().equals(this.boutonEnregistrer)) {
 				try {
 					switch (this.mode) {
-						case "nouveau":
-							Employee nouvEmp = new Employee(this.nom.getText(), this.prenom.getText(), this.date.getText());
-							data.Employes().ajouter(nouvEmp);
-							break;
-						
-						case "modification":
-							if(getSelected() != null){
-								Employee empSelect = getSelected();
-								empSelect.setLastName(this.nom.getText());
-								empSelect.setName(this.prenom.getText());
-								empSelect.setEntryDate(this.date.getText(), "yyyy-MM-dd");
-								ArrayList<Competence> listComp = mJTableCompetences.getArraylist();
-								empSelect.addCompetences(listComp);
-								data.Employes().modifier(empSelect);
-							}
-							break;
-				}
+					case "nouveau":
+						Employee nouvEmp = new Employee(this.nom.getText(), this.prenom.getText(), this.date.getText());
+						data.Employes().ajouter(nouvEmp);
+						break;
+					
+					case "modification":
+						if (getSelected() != null) {
+							Employee empSelect = getSelected();
+							empSelect.setLastName(this.nom.getText());
+							empSelect.setName(this.prenom.getText());
+							empSelect.setEntryDate(this.date.getText(), "dd/MM/yyyy");
+							ArrayList<Competence> listComp = mJTableCompetences.getArraylist();
+							empSelect.addCompetences(listComp);
+							data.Employes().modifier(empSelect);
+						}
+						break;
+					}
 				} catch (ParseException e1) {
 					System.out.println("Format incorrect: " + e1);
 				} catch (DataException e1) {
@@ -310,7 +324,7 @@ public class Personnel extends Page implements MouseListener {
 		 * Actualisation des champs du formulaire
 		 */
 		if (e.getSource() instanceof JTable) {
-			if(getSelected() != null){
+			if (getSelected() != null) {
 				Employee EmployeSelect = getSelected();
 				
 				this.nom.setText(EmployeSelect.getLastName());
@@ -320,27 +334,31 @@ public class Personnel extends Page implements MouseListener {
 				this.listCompEmp = EmployeSelect.getCompetences();
 				this.mJTablePersonnel = (GenericTableModel<Employee>) this.JTablePersonnel.getModel();
 				
+				this.mJTableCompetences = (GenericTableModel<Competence>) JTables.Competences(listCompEmp).getModel();
 				
-				this.mJTableCompetences = (GenericTableModel<Competence>)  JTables.Competences(listCompEmp).getModel();
-				
-				//this.mJTableCompetences = (GenericTableModel<Competence>) this.JTableCompetences.getModel();
+				// this.mJTableCompetences = (GenericTableModel<Competence>)
+				// this.JTableCompetences.getModel();
 				
 				this.JTableCompetences.setModel(this.mJTableCompetences);
 			}
-
+			
 		}
 	}
 	
 	@Override
-	public void mouseEntered(MouseEvent e) {	}
+	public void mouseEntered(MouseEvent e) {
+	}
 	
 	@Override
-	public void mouseExited(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {
+	}
 	
 	@Override
-	public void mousePressed(MouseEvent e) {}
+	public void mousePressed(MouseEvent e) {
+	}
 	
 	@Override
-	public void mouseReleased(MouseEvent e) {	}
+	public void mouseReleased(MouseEvent e) {
+	}
 	
 }
