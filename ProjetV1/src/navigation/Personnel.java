@@ -306,7 +306,7 @@ public class Personnel extends Page implements MouseListener {
 							empSelect.setName(this.prenom.getText());
 							empSelect.setEntryDate(this.date.getText(), "dd/MM/yyyy");
 							ArrayList<Competence> listComp = mJTableCompetences.getArraylist();
-							empSelect.addCompetences(listComp);
+							empSelect.setCompetences(listComp);
 							data.Employes().modifier(empSelect);
 						}
 						break;
