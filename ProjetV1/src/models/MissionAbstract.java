@@ -62,11 +62,11 @@ public abstract class MissionAbstract extends CSVEntity {
 	 * @param duree
 	 * @return calcul la date de fin et l'instancie sur la mission
 	 */
-	public Date setDateFin(int duree) {
+	public void setDateFin(int duree) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(this.dateDebut);
 		cal.add(Calendar.DATE, duree);
-		return cal.getTime();
+		this.dateFinReelle = cal.getTime();
 	}
 	
 	public boolean estModifiable() {
