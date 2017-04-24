@@ -15,6 +15,8 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
+
 import data.Data;
 import navigation.Accueil;
 import navigation.Competences;
@@ -22,24 +24,25 @@ import navigation.Missions;
 import navigation.Personnel;
 
 public class Header extends JPanel implements MouseListener {
+	
 	private static final long	serialVersionUID	= 1L;
 	private Image				logo;
 	private Image				background;
-	public Button				boutonAccueil;
-	public Button				boutonCompetences;
-	public Button				boutonPersonnel;
-	public Button				boutonMissions;
-	public Accueil				panelAccueil;
-	public Personnel			panelPersonnel;
-	public Missions				panelMissions;
-	public Competences			panelCompetences;
-	String						etat;
-	JFrame						frame;
-	JPanel						menu;
-	JPanel						contenu;
-	JPanel						PageActuelle;
-	
-	private Data data;
+	private Button				boutonAccueil;
+	private Button				boutonCompetences;
+	private Button				boutonPersonnel;
+	private Button				boutonMissions;
+	private Button				currentBouton;
+	private Accueil				panelAccueil;
+	private Personnel			panelPersonnel;
+	private Missions			panelMissions;
+	private Competences		panelCompetences;
+	private String				etat;
+	private JFrame				frame;
+	private JPanel				menu;
+	private JPanel				contenu;
+	private JPanel				PageActuelle;	
+	private Data 					data;
 	
 	/**
 	 * La classe Header est la classe maîtresse de notre programme Elle
@@ -94,6 +97,8 @@ public class Header extends JPanel implements MouseListener {
 		contenu.setLayout(new CardLayout());
 		this.frame.getContentPane().add(contenu);
 		
+		this.currentBouton = this.boutonAccueil;
+		this.currentBouton.setBorder(new LineBorder(Color.BLACK));
 		this.etat = "accueil";
 		ChargementPage();
 	}
@@ -164,9 +169,13 @@ public class Header extends JPanel implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() instanceof Button) {
+			
+			if(this.currentBouton != null){
+				this.currentBouton.setBorder(BorderFactory.createEmptyBorder());
+			}
+			
 			if (e.getSource().equals(this.boutonAccueil)) {
 				this.etat = "accueil";
-				this.boutonAccueil.setBackground(Color.BLACK);
 			} else if (e.getSource().equals(this.boutonCompetences)) {
 				this.etat = "competences";
 			} else if (e.getSource().equals(this.boutonPersonnel)) {
@@ -174,6 +183,8 @@ public class Header extends JPanel implements MouseListener {
 			} else if (e.getSource().equals(this.boutonMissions)) {
 				this.etat = "missions";
 			}
+			this.currentBouton = (Button) e.getSource();
+			this.currentBouton.setBorder(new LineBorder(Color.BLACK));
 			ChargementPage();
 		}
 	}
