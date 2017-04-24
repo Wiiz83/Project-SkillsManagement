@@ -7,8 +7,7 @@ import java.text.SimpleDateFormat;
 import csv.*;
 
 /**
- * Crée une ligne CSV à partir des attributs d'un objet
- *
+  *
  */
 public class AppCSVSerializer implements CSVSerializer {
 	private DateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");

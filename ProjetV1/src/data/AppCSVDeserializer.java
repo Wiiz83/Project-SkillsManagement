@@ -3,6 +3,7 @@ package data;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 import csv.CSVDeserializer;
 import csv.CSVEntity;
@@ -68,8 +69,9 @@ public class AppCSVDeserializer implements CSVDeserializer {
 	
 	private Competence Competence(CSVLine line) throws InvalidCSVException, InvalidDataException {
 		CompetenceCode code = CompetenceCode(line);
-		line.remove(0);
-		return new Competence(code, line);
+		ArrayList<String> names = new ArrayList<>(line);
+		names.remove(0);
+		return new Competence(code, names);
 	}
 	
 	private Employee Employee(CSVLine line) throws InvalidCSVException, InvalidDataException {
