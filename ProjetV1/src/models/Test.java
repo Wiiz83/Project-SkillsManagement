@@ -9,8 +9,9 @@ public class Test {
 		SimpleDateFormat dateformatter = new SimpleDateFormat("dd/MM/yyyy");
 		Date d = dateformatter.parse("24/05/2017");
 		
-		Mission m = new Mission("test", d, 10, 5);
-		
+		Mission m = new Mission("test", d, 10, 0);
+		Mission m2 = new Mission("test", d, 10, 5);
 		System.out.println(m.getStatus());
+		System.out.println(m2.getStatus());
 	}
 }

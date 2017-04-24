@@ -39,7 +39,7 @@ public abstract class MissionAbstract extends CSVEntity {
 			return Status.TERMINEE; // Vérification de si la mission est
 									// terminée puis retour
 		}
-		if (AffEmp.size() < nbPersReq || forcer_planification)
+		if (AffEmp.size() >= nbPersReq || forcer_planification)
 			if (Cal.today().compareTo(dateDebut) > 0) {
 				return Status.EN_COURS; // Vérification de si la mission est
 										// commencée puis retour
