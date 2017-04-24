@@ -54,15 +54,10 @@ public class CSVConfig {
 		
 		CSVDocument doc = documents.get(assoc);
 		if (doc == null) {
-			// System.out.println(assoc + "document is null");
 			CSVFileConfig cfg = model.Metadata().getCSVFileConfig(assoc);
 			doc = new CSVDocument(cfg);
 			documents.put(assoc, doc);
 		}
-		// CSVFileConfig cfg = model.Metadata().getCSVFileConfig(assoc);
-		// CSVDocument doc = new CSVDocument(cfg);
-		// else
-		// System.out.println("Document non null:" + doc);
 		return doc;
 		
 	}

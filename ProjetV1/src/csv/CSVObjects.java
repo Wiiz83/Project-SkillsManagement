@@ -163,7 +163,6 @@ public class CSVObjects<E extends CSVEntity> {
 		E entity = null;
 		
 		if (config.getCSVCache().getCache(entityClass).containsKey(ID)) {
-			System.out.println("found cached element:" + config.getCSVCache().getCache(entityClass).get(ID));
 			return config.getCSVCache().getCache(entityClass).get(ID);
 		}
 		
