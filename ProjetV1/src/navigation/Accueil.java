@@ -27,9 +27,8 @@ public class Accueil extends JPanel {
 	
 	private static final long	serialVersionUID	= 1L;
 	ListSelectionModel			listSelectionModel;
-	JPanel							missionsEnCours;
-	JPanel							missionsTempsIntervalle;
-
+	JPanel						missionsEnCours;
+	JPanel						missionsTempsIntervalle;
 	
 	public Accueil(Data data) {
 		
@@ -89,15 +88,14 @@ public class Accueil extends JPanel {
 		add(label3);
 		
 		DefaultPieDataset datac = new DefaultPieDataset();
-
+		
 		try {
 			int mPreparation = data.Missions().AvecStatus(Status.PREPARATION).size();
 			int mEnCours = data.Missions().AvecStatus(Status.EN_COURS).size();
 			int mPlanifiee = data.Missions().AvecStatus(Status.PLANIFIEE).size();
 			int mTerminee = data.Missions().AvecStatus(Status.TERMINEE).size();
-			int mWarning  = data.Missions().AvecStatus(Status.WARNING).size();
+			int mWarning = data.Missions().AvecStatus(Status.WARNING).size();
 			
-
 			datac.setValue("En cours", mEnCours);
 			datac.setValue("En préparation", mPreparation);
 			datac.setValue("Planifiée", mPlanifiee);
@@ -112,7 +110,7 @@ public class Accueil extends JPanel {
 		} catch (DataException e) {
 			e.printStackTrace();
 		}
-
+		
 		validate();
 		
 	}

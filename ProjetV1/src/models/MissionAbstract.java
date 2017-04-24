@@ -5,27 +5,41 @@ import java.util.Calendar;
 import java.util.Date;
 
 import csv.CSVEntity;
+import csv.InvalidDataException;
 
 public abstract class MissionAbstract extends CSVEntity {
 	/**
 	 * 
 	 */
 	private static final long		serialVersionUID		= 6150557649409166209L;
-	protected String				nomM;
+	protected String				nom;
 	protected Date					dateDebut;
-	protected Date					dateFin;
+	protected Date					dateFinReelle;
 	protected int					duree;
 	protected int					nbPersReq;
 	protected int					id						= -1;
 	protected ArrayList<Employee>	AffEmp;
 	protected boolean				forcer_planification	= false;
 	
+	public MissionAbstract(String nomM, Date dateDebut, int duree, int nbPersReq) {
+		this.nom = nomM;
+		this.dateDebut = dateDebut;
+		this.duree = duree;
+		this.nbPersReq = nbPersReq;
+		this.AffEmp = new ArrayList<>();
+		this.setDateFin(duree);
+	}
+	
+	/**
+	 * @return le statut actuel de la mission
+	 */
 	public Status getStatus() {
 		
-		if (Cal.today().compareTo(dateFin) > 0) {
+		if (Cal.today().compareTo(dateFinReelle) > 0) {
 			return Status.TERMINEE; // Vérification de si la mission est
 									// terminée puis retour
-		} else if (AffEmp.size() < nbPersReq || forcer_planification)
+		}
+		if (AffEmp.size() < nbPersReq || forcer_planification)
 			if (Cal.today().compareTo(dateDebut) > 0) {
 				return Status.EN_COURS; // Vérification de si la mission est
 										// commencée puis retour
@@ -40,16 +54,24 @@ public abstract class MissionAbstract extends CSVEntity {
 										// encore en préparation
 	}
 	
-	public boolean estModifiable() {
-		return (getStatus() == Status.PREPARATION || getStatus() == Status.PLANIFIEE);
-		// retourne si oui ou non la mission est toujours modifiable
+	public void planifier() {
+		this.forcer_planification = true;
 	}
 	
+	/**
+	 * @param duree
+	 * @return calcul la date de fin et l'instancie sur la mission
+	 */
 	public Date setDateFin(int duree) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(this.dateDebut);
 		cal.add(Calendar.DATE, duree);
 		return cal.getTime();
+	}
+	
+	public boolean estModifiable() {
+		return (getStatus() == Status.PREPARATION || getStatus() == Status.PLANIFIEE);
+		// retourne si oui ou non la mission est toujours modifiable
 	}
 	
 	public void affectEmployee(Employee e) {
@@ -74,11 +96,11 @@ public abstract class MissionAbstract extends CSVEntity {
 	
 	////////// getters - setters
 	public String getNomM() {
-		return nomM;
+		return nom;
 	}
 	
 	public void setNomM(String nomM) {
-		this.nomM = nomM;
+		this.nom = nomM;
 	}
 	
 	public Date getDateDebut() {
@@ -97,49 +119,38 @@ public abstract class MissionAbstract extends CSVEntity {
 		this.duree = duree;
 	}
 	
+	public void setDateFin(Date dateFin) {
+		this.dateFinReelle = dateFin;
+	}
+	
+	public Date getDateFinReelle() {
+		return dateFinReelle;
+	}
+	
+	public boolean getForcer_planification() {
+		return forcer_planification;
+	}
+	
+	public int getNbPersReq() {
+		return nbPersReq;
+	}
+	
+	public void setNbPersReq(int nbPersReq) {
+		this.nbPersReq = nbPersReq;
+	}
+	
 	@Override
 	public String csvID() {
 		return Integer.toString(id);
 	}
 	
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (!(obj instanceof MissionAbstract))
-			return false;
-		MissionAbstract other = (MissionAbstract) obj;
-		if (AffEmp == null) {
-			if (other.AffEmp != null)
-				return false;
-		} else if (!AffEmp.equals(other.AffEmp))
-			return false;
-		if (dateDebut == null) {
-			if (other.dateDebut != null)
-				return false;
-		} else if (!dateDebut.equals(other.dateDebut))
-			return false;
-		if (dateFin == null) {
-			if (other.dateFin != null)
-				return false;
-		} else if (!dateFin.equals(other.dateFin))
-			return false;
-		if (duree != other.duree)
-			return false;
-		if (forcer_planification != other.forcer_planification)
-			return false;
-		if (id != other.id)
-			return false;
-		if (nbPersReq != other.nbPersReq)
-			return false;
-		if (nomM == null) {
-			if (other.nomM != null)
-				return false;
-		} else if (!nomM.equals(other.nomM))
-			return false;
-		return true;
+	public void setCsvID(String iD) throws InvalidDataException {
+		try {
+			setID(Integer.parseInt(iD));
+		} catch (NumberFormatException e) {
+			throw new InvalidDataException(e);
+		}
 	}
 	
 }
