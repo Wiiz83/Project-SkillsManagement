@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import csv.CSVConfig;
 import csv.CSVException;
 import csv.CSVObjects;
+import data.Data;
+import data.DataException;
 
 /**
  * @author David Classe Recommendation
@@ -19,20 +21,20 @@ public class Recommendation {
 	private ArrayList<CompetenceRequirement>	misCompReq;
 	private ArrayList<Employee>					empAff;
 	private ArrayList<Employee>					empToRec;
-	private CSVConfig							config;
+	private Data								data;
 	private int[]								RLevel;
 	
 	/**
 	 * @param misToRec
-	 *            (La mission qui est concernée par les recommendations
+	 *            La mission qui est concernée par les recommendations
 	 */
-	public Recommendation(Mission misToRec, CSVConfig config) {
+	public Recommendation(Mission misToRec, Data data) {
 		super();
 		Recommendation.recID++;
 		this.misToRec = misToRec;
 		this.misCompReq = misToRec.getCompReq();
 		this.empAff = misToRec.getAffEmp();
-		this.config = config;
+		this.data = data;
 	}
 	
 	/**
@@ -41,20 +43,19 @@ public class Recommendation {
 	 * @throws ParseException
 	 *             Calcul toutes les recommendations de la mission en fonction
 	 *             des besoins
-	 * @throws CSVException
+	 * @throws DataException
 	 */
-	public void setRecommendations() throws CSVException {
-		CSVObjects<Employee> employee_csv = new CSVObjects<>(Employee.class, config);
-		empRec = employee_csv.getAll();
+	public void setRecommendations() throws DataException {
+		empRec = data.Employes().tous();
 		for (Employee e : empRec) { // Boucles et conditions pour vérifier si
-									// l'employé est recommendable et si oui
-									// l'ajoute
+			// l'employé est recommendable et si oui
+			// l'ajoute
 			this.RLevel[e.getID()] = 0;
 			for (Competence c : e.getCompetences()) {
 				if (checkCompMission(c) != 0) {
 					if (!this.empToRec.contains(e))
 						this.empToRec.add(e);
-						this.RLevel[e.getID()]++;
+					this.RLevel[e.getID()]++;
 				}
 			}
 		}
@@ -107,23 +108,21 @@ public class Recommendation {
 		return nbEmpReqComp; // On retourne le nombre d'employé en manque sur la
 								// compétence
 	}
-
+	
 	public ArrayList<Employee> getEmpRec() {
 		return empRec;
 	}
-
+	
 	public void setEmpRec(ArrayList<Employee> empRec) {
 		this.empRec = empRec;
 	}
-
+	
 	public int[] getRLevel() {
 		return RLevel;
 	}
-
+	
 	public void setRLevel(int[] rLevel) {
 		RLevel = rLevel;
 	}
-	
-	
 	
 }

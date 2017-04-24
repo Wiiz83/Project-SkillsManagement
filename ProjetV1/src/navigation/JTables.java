@@ -16,6 +16,7 @@ import models.*;
  * Permet de convertir une liste d'objets en JTable
  *
  */
+
 public class JTables {
 	
 	@SuppressWarnings("unchecked")
@@ -218,6 +219,43 @@ public class JTables {
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setAutoCreateRowSorter(true);
 		
+		return table;
+	}
+	
+	public static JTable Alertes(ArrayList<Alerte> Alertes) {
+		String[] headers = { "Alerte", "Détails" };
+		@SuppressWarnings("serial")
+		TableModel dataModel = new AbstractTableModel() {
+			
+			@Override
+			public int getColumnCount() {
+				return 2;
+			}
+			
+			@Override
+			public int getRowCount() {
+				return Alertes.size();
+			}
+			
+			@Override
+			public Object getValueAt(int row, int col) {
+				switch (col) {
+				case 0:
+					return Alertes.get(row).getType();
+				case 1:
+					return Alertes.get(row).getDesc();
+				default:
+					System.out.println("Alertes JTable access ");
+					break;
+				}
+				return null;
+			}
+			
+		};
+		JTable table = new JTable(dataModel);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setAutoCreateRowSorter(true);
+		table.getRowSorter().toggleSortOrder(0);
 		return table;
 	}
 	

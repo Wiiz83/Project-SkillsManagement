@@ -1,26 +1,22 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import csv.CSVEntity;
-import csv.InvalidDataException;
 
 public class MissionFormation extends MissionAbstract {
+	
+	public MissionFormation(String nomM, Date dateDebut, int duree, int nbPersReq) {
+		super(nomM, dateDebut, duree, nbPersReq);
+	}
 	
 	/**
 	 * 
 	 */
 	private static final long		serialVersionUID	= 4395319872170806127L;
 	private ArrayList<Competence>	Comp;
-	
-	public void setCsvID(String iD) throws InvalidDataException {
-		try {
-			setID(Integer.parseInt(iD));
-		} catch (NumberFormatException e) {
-			throw new InvalidDataException(e);
-		}
-	}
 	
 	@Override
 	public HashMap<Class<? extends CSVEntity>, ArrayList<String>> getReferencedObjectsIDS() {
