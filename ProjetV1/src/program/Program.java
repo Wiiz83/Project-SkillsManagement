@@ -2,7 +2,6 @@ package program;
 
 import javax.swing.SwingUtilities;
 
-import csv.CSVConfig;
 import csv.CSVException;
 import data.Data;
 import data.DataException;

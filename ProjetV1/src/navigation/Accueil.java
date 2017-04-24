@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -11,6 +12,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import gui.Titre;
+import models.Mission;
 import models.Status;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -29,13 +31,15 @@ public class Accueil extends JPanel {
 	ListSelectionModel			listSelectionModel;
 	JPanel						missionsEnCours;
 	JPanel						missionsTempsIntervalle;
+	private JTable				alertesJTable;
+	Data						data;
 	
 	public Accueil(Data data) {
-		
+		this.data = data;
 		setOpaque(false);
 		setLayout(null);
 		setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
-		
+		alertes();
 		/**
 		 * JTable contenant les missions en cours
 		 */
@@ -69,6 +73,7 @@ public class Accueil extends JPanel {
 		} catch (DataException e) {
 			e.printStackTrace();
 		}
+		
 		tableMAV.setFillsViewportHeight(true);
 		JScrollPane jsMAV = new JScrollPane(tableMAV);
 		jsMAV.setVisible(true);
@@ -94,13 +99,11 @@ public class Accueil extends JPanel {
 			int mEnCours = data.Missions().AvecStatus(Status.EN_COURS).size();
 			int mPlanifiee = data.Missions().AvecStatus(Status.PLANIFIEE).size();
 			int mTerminee = data.Missions().AvecStatus(Status.TERMINEE).size();
-			int mWarning = data.Missions().AvecStatus(Status.WARNING).size();
 			
 			datac.setValue("En cours", mEnCours);
 			datac.setValue("En préparation", mPreparation);
 			datac.setValue("Planifiée", mPlanifiee);
 			datac.setValue("Terminée", mTerminee);
-			datac.setValue("Alertée", mWarning);
 			
 			JFreeChart chart = ChartFactory.createPieChart("", datac, false, true, false);
 			
@@ -122,6 +125,27 @@ public class Accueil extends JPanel {
 		batch.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		batch.setColor(Color.WHITE);
 		batch.fillRect(820, 340, 440, 250);
+	}
+	
+	private void alertes() {
+		ArrayList<Mission> missions_alerte = new ArrayList<>();
+		try {
+			missions_alerte = data.Missions().Alertes();
+		} catch (DataException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		ArrayList<Alerte> alertes = new ArrayList<>();
+		
+		for (Mission m : missions_alerte)
+			alertes.add(new Alerte(m));
+		alertesJTable = JTables.Alertes(alertes);
+		alertesJTable.setFillsViewportHeight(true);
+		JScrollPane jsAlertes = new JScrollPane(alertesJTable);
+		jsAlertes.setVisible(true);
+		jsAlertes.setBounds(10, 340, 440, 20);
+		add(alertesJTable);
+		add(jsAlertes);
 	}
 	
 }

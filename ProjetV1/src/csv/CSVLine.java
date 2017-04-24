@@ -7,8 +7,12 @@ import java.util.Arrays;
  * Représente une ligne d'un document CSV
  *
  */
-@SuppressWarnings("serial")
 public class CSVLine extends ArrayList<String> {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5261929444386511832L;
 	
 	public boolean add(String line) {
 		return this.addAll(Arrays.asList(line.split(";")));

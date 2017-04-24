@@ -10,6 +10,7 @@ import models.CompetenceRequirement;
 import models.Language;
 import models.Mission;
 
+@SuppressWarnings("unused")
 public class Test {
 	public static void main(String[] args)
 			throws DataException, InstantiationException, IllegalAccessException, CSVException, ParseException {

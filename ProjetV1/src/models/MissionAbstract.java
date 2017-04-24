@@ -54,6 +54,10 @@ public abstract class MissionAbstract extends CSVEntity {
 										// encore en préparation
 	}
 	
+	public int nbEmployesManquants() {
+		return nbPersReq - AffEmp.size();
+	}
+	
 	public void planifier() {
 		this.forcer_planification = true;
 	}

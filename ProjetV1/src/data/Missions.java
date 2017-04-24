@@ -12,6 +12,7 @@ import models.Cal;
 import models.CompetenceRequirement;
 import models.Mission;
 import models.Status;
+import java.util.Comparator;
 
 public class Missions extends CSVRequests<Mission> {
 	
@@ -95,8 +96,16 @@ public class Missions extends CSVRequests<Mission> {
 		return dansIntervalle(dateDebut, nbJours);
 	}
 	
-	public ArrayList<Mission> MissionsAlertes() {
-		return null;
+	public ArrayList<Mission> Alertes() throws DataException {
+		Comparator<Mission> comp = (m, n) -> m.getDateDebut().compareTo(m.getDateDebut());
+		comp = comp.thenComparing((m, n) -> m.nbEmployesManquants() - n.nbEmployesManquants());
+		ArrayList<Mission> alertes = new ArrayList<>();
+		try {
+			alertes = filtrerTrier(m -> m.getStatus() == Status.PREPARATION && m.nbEmployesManquants() > 0, comp);
+		} catch (DataException e) {
+			throw new DataException(e);
+		}
+		return alertes;
 		
 	}
 	
