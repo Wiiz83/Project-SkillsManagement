@@ -12,22 +12,17 @@ import java.util.ArrayList;
  *
  */
 public class CSVDocument {
-	private ArrayList<CSVLine> lines;
-	
-	@Override
-	public String toString() {
-		return "CSVDocument [lines=" + lines + ", path=" + path + "]";
-	}
-	
-	private String	path;
-	private boolean	ignoreFirstLine;
-	private int		idColumnPosition;
+	private ArrayList<CSVLine>	lines;
+	private String				path;
+	private boolean				ignoreFirstLine;
+	private int					idColumnPosition;
 	
 	public CSVDocument(CSVFileConfig cfg) throws IOException {
 		path = cfg.path;
 		ignoreFirstLine = cfg.ignoreFirstLine;
 		idColumnPosition = cfg.idColumnPosition;
-		lines = getAll();
+		lines = new ArrayList<>();
+		getAll();
 		
 	}
 	
@@ -48,22 +43,21 @@ public class CSVDocument {
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));;
 		String line = null;
-		ArrayList<CSVLine> set = new ArrayList<>();
 		boolean ignore = ignoreFirstLine;
 		while ((line = br.readLine()) != null) {
 			if (!ignore) {
 				CSVLine csvline = new CSVLine();
 				csvline.add(line);
 				if (csvline.isValid())
-					set.add(csvline);
+					lines.add(csvline);
 			} else
 				ignore = false;
 		}
 		br.close();
-		if (set.size() > 0)
-			if (!set.get(set.size() - 1).isValid())
-				set.remove(set.size() - 1);
-		return set;
+		if (lines.size() > 0)
+			if (!lines.get(lines.size() - 1).isValid())
+				lines.remove(lines.size() - 1);
+		return lines;
 	}
 	
 	/**
@@ -179,5 +173,10 @@ public class CSVDocument {
 	
 	public int lineCount() {
 		return lines.size();
+	}
+	
+	@Override
+	public String toString() {
+		return "CSVDocument [lines=" + lines + ", path=" + path + "]";
 	}
 }

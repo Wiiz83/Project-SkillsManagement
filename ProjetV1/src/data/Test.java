@@ -17,9 +17,9 @@ public class Test {
 		CSVConfig config = new AppCSVConfig();
 		Data data = new Data(config);
 		
-		data.Langues().ajouter(new Language("Français", "France"));
 		data.Langues().ajouter(new Language("English", "USA"));
-		System.out.println(data.Langues().tous());
+		System.out.println(data.Competences().tous());
+		System.out.println(data.Competences().tous());
 		/*
 		 * CSVRequests<CompetenceRequirement> crCSV = new CSVRequests<>(data,
 		 * CompetenceRequirement.class);

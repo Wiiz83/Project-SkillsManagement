@@ -60,7 +60,9 @@ public class CSVObjectLoader<E extends CSVEntity> {
 					}
 					AssociatedNObjects.add(n);
 				} else
-					throw new InvalidCSVException("Refrenced object could not be found");
+					throw new InvalidCSVException(
+							"Refrenced object could not be found" + assoc + " : nId= " + nID + "eId:" + e.csvID()
+					);
 				AssociatedObjects.put(N, AssociatedNObjects);
 			}
 		}

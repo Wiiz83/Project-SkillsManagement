@@ -29,7 +29,8 @@ public class CSVRequests<E extends CSVEntity> implements IRequete<E> {
 	@Override
 	public ArrayList<E> tous() throws DataException {
 		try {
-			return csvobjects.getAll();
+			ArrayList<E> tous = csvobjects.getAll();
+			return tous;
 		} catch (CSVException e) {
 			throw new DataException(e);
 		}

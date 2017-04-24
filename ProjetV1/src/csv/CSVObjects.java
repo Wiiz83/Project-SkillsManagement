@@ -1,13 +1,18 @@
 package csv;
 
+import java.awt.List;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import javax.cache.Cache;
 
 /**
  * Fournit les méthodes de lecture / écriture des entités configurées dans
@@ -155,9 +160,12 @@ public class CSVObjects<E extends CSVEntity> {
 	 * @throws CSVException
 	 */
 	public E getByID(String ID) throws CSVException {
-		E entity = config.getCSVCache().getCache(entityClass).get(ID);
-		if (entity != null)
-			return entity;
+		E entity = null;
+		
+		if (config.getCSVCache().getCache(entityClass).containsKey(ID)) {
+			System.out.println("found cached element:" + config.getCSVCache().getCache(entityClass).get(ID));
+			return config.getCSVCache().getCache(entityClass).get(ID);
+		}
 		
 		CSVLine line = doc.getLineByID(ID);
 		if (line == null) {
@@ -218,25 +226,24 @@ public class CSVObjects<E extends CSVEntity> {
 	 * @throws CSVException
 	 */
 	public ArrayList<E> getAll() throws CSVException {
-		ArrayList<E> all = new ArrayList<>();
-		HashMap<String, E> map = new HashMap<>();
+		Cache<String, E> cache = config.getCSVCache().getCache(entityClass);
+		Set<String> ids = new HashSet<>();
 		int idPosition = doc.getIdColumnPosition();
 		try {
 			for (CSVLine line : doc.getAll()) {
 				E entity;
-				if (config.getCSVCache().getCache(entityClass).containsKey(line.get(idPosition)))
-					entity = config.getCSVCache().getCache(entityClass).get(line.get(idPosition));
+				if (cache.containsKey(line.get(idPosition)))
+					entity = cache.get(line.get(idPosition));
 				else {
 					entity = csvloader.createObject(line);
-					map.put(entity.csvID(), entity);
+					cache.put(entity.csvID(), entity);
 				}
-				all.add(entity);
+				ids.add(entity.csvID());
 			}
 		} catch (NumberFormatException | IOException | ParseException e) {
 			throw new CSVException(e);
 		}
-		config.getCSVCache().getCache(entityClass).putAll(map);
-		return all;
+		return new ArrayList<E>(cache.getAll(ids).values());
 	}
 	
 	private String generateID() throws InvalidDataException {

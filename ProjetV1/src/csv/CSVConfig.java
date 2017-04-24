@@ -51,14 +51,18 @@ public class CSVConfig {
 	}
 	
 	final public CSVDocument getDocument(CSVAssociation assoc) throws IOException {
-		/*
-		 * CSVDocument lines <-> file sync bug CSVDocument doc =
-		 * documents.get(assoc); if (doc == null) { CSVFileConfig cfg =
-		 * model.Metadata().getCSVFileConfig(assoc); doc = new CSVDocument(cfg);
-		 * documents.put(assoc, doc); }
-		 */
-		CSVFileConfig cfg = model.Metadata().getCSVFileConfig(assoc);
-		CSVDocument doc = new CSVDocument(cfg);
+		
+		CSVDocument doc = documents.get(assoc);
+		if (doc == null) {
+			// System.out.println(assoc + "document is null");
+			CSVFileConfig cfg = model.Metadata().getCSVFileConfig(assoc);
+			doc = new CSVDocument(cfg);
+			documents.put(assoc, doc);
+		}
+		// CSVFileConfig cfg = model.Metadata().getCSVFileConfig(assoc);
+		// CSVDocument doc = new CSVDocument(cfg);
+		// else
+		// System.out.println("Document non null:" + doc);
 		return doc;
 		
 	}

@@ -32,6 +32,7 @@ public class CompetenceCode implements Serializable {
 	 *             Constructeur pour les codes de types "A.1"
 	 */
 	public CompetenceCode(String code) throws InvalidDataException {
+		System.out.println(code);
 		if (code.length() < 3)
 			throw new InvalidDataException();
 		if (code.charAt(1) != '.' || code.charAt(code.length() - 1) != '.')

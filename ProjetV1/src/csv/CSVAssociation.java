@@ -43,4 +43,9 @@ public class CSVAssociation {
 			return Entity.getName().hashCode();
 	}
 	
+	@Override
+	public String toString() {
+		return "CSVAssociation [Entity=" + Entity + ", NEntity=" + NEntity + "]";
+	}
+	
 }
