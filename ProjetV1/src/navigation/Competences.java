@@ -1,5 +1,6 @@
 package navigation;
 
+import java.awt.EventQueue;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import csv.InvalidDataException;
@@ -39,6 +41,7 @@ public class Competences extends Formulaire implements MouseListener {
 	JTextField code;
 	
 	JTable JTableLangues;
+	TableModel mJTableLangues;
 	
 	Button	boutonNouveau;
 	Button	boutonModifier;
@@ -195,11 +198,25 @@ public class Competences extends Formulaire implements MouseListener {
 			
 			if (e.getSource().equals(this.boutonSupprimerLangue)) {
 				if (getCompetenceSelected() != null) {
-					Competence compSelect = getCompetenceSelected();
-					int rowIndex = JTableLangues.getSelectedRow() ;
-					compSelect.getNames(rowIndex) = "";
+					int n = JOptionPane.showConfirmDialog(
+							new JFrame(), "Voulez vraiment supprimer ce libellé ?", "Confirmation de suppression",
+							JOptionPane.YES_NO_OPTION
+					);
+					if (n == JOptionPane.YES_OPTION) {
+						
+						Competence compSelect = getCompetenceSelected();
+						int rowIndex = JTableLangues.getSelectedRow() ;
+						compSelect.getNames().set(rowIndex, "") ;
+						ArrayList<Language> ListeLangues;
+						try {
+							ListeLangues = data.Langues().tous();
+							TableModel TableLangues = JTables.LanguesCompetence(compSelect, ListeLangues).getModel();
+							this.JTableLangues.setModel(TableLangues);
+						} catch (DataException e1) {
+							e1.printStackTrace();
+						}
+					}
 				}
-				
 			}
 			
 			if (e.getSource().equals(this.boutonNouveau)) {
@@ -310,8 +327,8 @@ public class Competences extends Formulaire implements MouseListener {
 				ArrayList<Language> ListeLangues;
 				try {
 					ListeLangues = data.Langues().tous();
-					TableModel TableLangues = JTables.LanguesCompetence(CompSelect, ListeLangues).getModel();
-					this.JTableLangues.setModel(TableLangues);
+					this.mJTableLangues = JTables.LanguesCompetence(CompSelect, ListeLangues).getModel();
+					this.JTableLangues.setModel(mJTableLangues);
 				} catch (DataException e1) {
 					e1.printStackTrace();
 				}

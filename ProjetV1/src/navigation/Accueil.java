@@ -31,7 +31,6 @@ public class Accueil extends JPanel {
 	ListSelectionModel			listSelectionModel;
 	JPanel						missionsEnCours;
 	JPanel						missionsTempsIntervalle;
-	private JTable				alertesJTable;
 	Data						data;
 	
 	public Accueil(Data data) {
@@ -39,7 +38,6 @@ public class Accueil extends JPanel {
 		setOpaque(false);
 		setLayout(null);
 		setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
-		alertes();
 		/**
 		 * JTable contenant les missions en cours
 		 */
@@ -114,6 +112,25 @@ public class Accueil extends JPanel {
 			e.printStackTrace();
 		}
 		
+		
+		ArrayList<Mission> missions_alerte = new ArrayList<>();
+		try {
+			missions_alerte = data.Missions().Alertes();
+		} catch (DataException e1) {
+			e1.printStackTrace();
+		}
+		ArrayList<Alerte> alertes = new ArrayList<>();
+		
+		for (Mission m : missions_alerte)
+			alertes.add(new Alerte(m));
+		
+		JTable	alertesJTable = JTables.Alertes(alertes);
+		alertesJTable.setFillsViewportHeight(true);
+		JScrollPane jsAlertes = new JScrollPane(alertesJTable);
+		jsAlertes.setVisible(true);
+		jsAlertes.setBounds(820, 340, 440, 250);
+		add(jsAlertes);
+		
 		validate();
 		
 	}
@@ -123,29 +140,7 @@ public class Accueil extends JPanel {
 		super.paintComponent(g);
 		Graphics2D batch = (Graphics2D) g;
 		batch.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		batch.setColor(Color.WHITE);
-		batch.fillRect(820, 340, 440, 250);
 	}
 	
-	private void alertes() {
-		ArrayList<Mission> missions_alerte = new ArrayList<>();
-		try {
-			missions_alerte = data.Missions().Alertes();
-		} catch (DataException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		ArrayList<Alerte> alertes = new ArrayList<>();
-		
-		for (Mission m : missions_alerte)
-			alertes.add(new Alerte(m));
-		alertesJTable = JTables.Alertes(alertes);
-		alertesJTable.setFillsViewportHeight(true);
-		JScrollPane jsAlertes = new JScrollPane(alertesJTable);
-		jsAlertes.setVisible(true);
-		jsAlertes.setBounds(10, 340, 440, 20);
-		add(alertesJTable);
-		add(jsAlertes);
-	}
 	
 }

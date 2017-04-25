@@ -14,6 +14,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SpringLayout;
+
 import gui.ProgramFrame;
 
 public class FrameEditLangue {
@@ -54,40 +56,51 @@ public class FrameEditLangue {
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
         panel.setLayout(new GridBagLayout());
-		
-		JLabel labelPays = new JLabel("Pays");
-		panel.add(labelPays);
-		
-		this.TFpays = new JTextField(this.pays);
-		panel.add(this.TFpays);
-		
-		panel.add(Box.createRigidArea(new Dimension(5,0)));
-		
-		JLabel labelLibelle = new JLabel("Libellé");
-		panel.add(labelLibelle);
-		
-		this.TFlibelle = new JTextField(this.libelle);
-		panel.add(this.TFlibelle);
+        
+        String[] labels = {"Pays: ", "Libellé:"};
+        int numPairs = labels.length;
+
+        //Create and populate the panel.
+        JPanel p = new JPanel(new SpringLayout());
+        
+        
+        
+        for (int i = 0; i < numPairs; i++) {
+            JLabel l = new JLabel(labels[i], JLabel.TRAILING);
+            p.add(l);
+            JTextField textField = new JTextField(10);
+            l.setLabelFor(textField);
+            p.add(textField);
+        }
 		
 		this.valider = new JButton("Valider");
 		this.valider.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 		            ProgramFrame.getFrame().setEnabled(true);
 		            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			}
 		});
-		
-		panel.add(this.valider);
-		
-		frame.add(panel);
-		
-		frame.pack();
-		frame.setVisible(true);
-			
-		return TFlibelle.getText();
-		
+		panel.add(this.valider);        
+
+        //Lay out the panel.
+        SpringUtilities.makeCompactGrid(p,
+                                        numPairs, 2, //rows, cols
+                                        6, 6,        //initX, initY
+                                        6, 6);       //xPad, yPad
+
+        //Create and set up the window.
+        JFrame frame = new JFrame("SpringForm");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        //Set up the content pane.
+        p.setOpaque(true);  //content panes must be opaque
+        frame.setContentPane(p);
+
+        //Display the window.
+        frame.pack();
+        frame.setVisible(true);
+
 	}
 
 }
