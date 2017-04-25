@@ -137,7 +137,7 @@ public class Competences extends Formulaire implements MouseListener {
 		composantsEdition.add(this.code);
 		composantsEdition.add(this.boutonEnregistrer);
 		composantsEdition.add(this.boutonAnnuler);
-		
+		composantsEdition.add(this.JTableLangues);	
 		composantsConsultation.add(this.boutonNouveau);
 		composantsConsultation.add(this.boutonModifier);
 		composantsConsultation.add(this.boutonNouveau);
@@ -152,7 +152,7 @@ public class Competences extends Formulaire implements MouseListener {
 		this.JTableLangues = new JTable();
 	}
 	
-	public Competence getSelected() {
+	public Competence getCompetenceSelected() {
 		try {
 			this.mJTableCompetences = (GenericTableModel<Competence>) this.JTableCompetences.getModel();
 			return this.mJTableCompetences.getRowObject(
@@ -168,19 +168,37 @@ public class Competences extends Formulaire implements MouseListener {
 		}
 	}
 	
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() instanceof Button) {
 			
 			if (e.getSource().equals(this.boutonNouvelleLangue)) {
 				
-			}
-			
-			if (e.getSource().equals(this.boutonEditLangue)) {
 				
 			}
 			
+			if (e.getSource().equals(this.boutonEditLangue)) {
+				if (getCompetenceSelected() != null) {
+					Competence compSelect = getCompetenceSelected();
+					int rowIndex = JTableLangues.getSelectedRow() ;
+					
+					String pays = (String) JTableLangues.getValueAt(rowIndex, 0);		
+					String libelle = (String) JTableLangues.getValueAt(rowIndex, 1);		
+					
+					FrameEditLangue fel = new FrameEditLangue(pays, libelle);
+					String s = fel.displayGUI();
+					
+					//compSelect.getNames(rowIndex) = s;
+				}
+			}
+			
 			if (e.getSource().equals(this.boutonSupprimerLangue)) {
+				if (getCompetenceSelected() != null) {
+					Competence compSelect = getCompetenceSelected();
+					int rowIndex = JTableLangues.getSelectedRow() ;
+					compSelect.getNames(rowIndex) = "";
+				}
 				
 			}
 			
@@ -191,20 +209,20 @@ public class Competences extends Formulaire implements MouseListener {
 			}
 			
 			if (e.getSource().equals(this.boutonModifier)) {
-				if (getSelected() != null) {
+				if (getCompetenceSelected() != null) {		
 					super.ChargementModification();
 				}
 			}
 			
 			if (e.getSource().equals(this.boutonSupprimer)) {
 				try {
-					if (getSelected() != null) {
+					if (getCompetenceSelected() != null) {
 						int n = JOptionPane.showConfirmDialog(
 								new JFrame(), "Voulez vraiment supprimer cette compétence ?",
 								"Confirmation de suppression", JOptionPane.YES_NO_OPTION
 						);
 						if (n == JOptionPane.YES_OPTION) {
-							Competence compSelect = getSelected();
+							Competence compSelect = getCompetenceSelected();
 							data.Competences().supprimer(compSelect);
 							this.mJTableCompetences.deleteRowObject(compSelect);
 							this.mJTableCompetences.fireTableDataChanged();
@@ -224,8 +242,8 @@ public class Competences extends Formulaire implements MouseListener {
 					break;
 				
 				case "modification":
-					if (getSelected() != null) {
-						Competence compSelect = getSelected();
+					if (getCompetenceSelected() != null) {
+						Competence compSelect = getCompetenceSelected();
 						this.code.setText(compSelect.getCode().toString());
 						ArrayList<String> langList = compSelect.getNames();
 						
@@ -258,8 +276,8 @@ public class Competences extends Formulaire implements MouseListener {
 						break;
 					
 					case "modification":
-						if (getSelected() != null) {
-							Competence compSelect = getSelected();
+						if (getCompetenceSelected() != null) {
+							Competence compSelect = getCompetenceSelected();
 							CompetenceCode cc;
 							try {
 								cc = new CompetenceCode(this.code.getText());
@@ -284,17 +302,23 @@ public class Competences extends Formulaire implements MouseListener {
 		}
 		
 		if (e.getSource() instanceof JTable) {
-			Competence CompSelect = getSelected();
-			this.code.setText(CompSelect.getCode().toString());
 			
-			ArrayList<Language> ListeLangues;
-			try {
-				ListeLangues = data.Langues().tous();
-				TableModel TableLangues = JTables.LanguesCompetence(CompSelect, ListeLangues).getModel();
-				this.JTableLangues.setModel(TableLangues);
-			} catch (DataException e1) {
-				e1.printStackTrace();
+			if (e.getSource().equals(this.JTableCompetences)) {
+				Competence CompSelect = getCompetenceSelected();
+				this.code.setText(CompSelect.getCode().toString());
+				
+				ArrayList<Language> ListeLangues;
+				try {
+					ListeLangues = data.Langues().tous();
+					TableModel TableLangues = JTables.LanguesCompetence(CompSelect, ListeLangues).getModel();
+					this.JTableLangues.setModel(TableLangues);
+				} catch (DataException e1) {
+					e1.printStackTrace();
+				}
 			}
+			
+			
+			
 			
 		}
 	}
