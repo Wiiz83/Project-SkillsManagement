@@ -137,7 +137,7 @@ public class CSVObjects<E extends CSVEntity> {
 	 */
 	public void modify(E e) throws CSVException {
 		try {
-			csvdeleter.deleteObject(e);
+			csvdeleter.deleteObject(e, false);
 		} catch (IOException | CSVUpdateException e1) {
 			throw new CSVException(e1);
 		}
@@ -164,7 +164,12 @@ public class CSVObjects<E extends CSVEntity> {
 			return config.getCSVCache().getCache(entityClass).get(ID);
 		}
 		
-		CSVLine line = doc.getLineByID(ID);
+		CSVLine line;
+		try {
+			line = doc.getLineByID(ID);
+		} catch (IOException e1) {
+			throw new CSVException(e1);
+		}
 		if (line == null) {
 			return null;
 		}
@@ -244,9 +249,18 @@ public class CSVObjects<E extends CSVEntity> {
 	}
 	
 	private String generateID() throws InvalidDataException {
-		if (doc.lineCount() == 0)
-			return "1";
-		ArrayList<Integer> IDs = doc.getIDS();
+		try {
+			if (doc.lineCount() == 0)
+				return "1";
+		} catch (IOException e) {
+			throw new InvalidDataException(e);
+		}
+		ArrayList<Integer> IDs;
+		try {
+			IDs = doc.getIDS();
+		} catch (IOException e) {
+			throw new InvalidDataException(e);
+		}
 		int generatedID = Collections.max(IDs) + 1;
 		return Integer.toString(generatedID);
 	}

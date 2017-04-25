@@ -17,10 +17,13 @@ public class Test {
 		SimpleDateFormat dateformatter = new SimpleDateFormat("dd/MM/yyyy");
 		CSVConfig config = new AppCSVConfig();
 		Data data = new Data(config);
+		Competence c = data.Competences().parID("A.1.");
+		c.getNames().set(0, "xd");
+		data.Competences().modifier(c);
 		
-		data.Langues().ajouter(new Language("English", "USA"));
-		System.out.println(data.Competences().tous());
-		System.out.println(data.Competences().tous());
+		// data.Langues().ajouter(new Language("English", "USA"));
+		// System.out.println(data.Competences().tous());
+		// System.out.println(data.Competences().tous());
 		/*
 		 * CSVRequests<CompetenceRequirement> crCSV = new CSVRequests<>(data,
 		 * CompetenceRequirement.class);

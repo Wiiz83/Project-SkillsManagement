@@ -26,7 +26,8 @@ public class CSVDocument {
 		
 	}
 	
-	public CSVLine getLineByID(String ID) {
+	public CSVLine getLineByID(String ID) throws IOException {
+		getAll();
 		for (CSVLine line : lines) {
 			if (line.get(idColumnPosition).equals(ID))
 				return line;
@@ -67,7 +68,7 @@ public class CSVDocument {
 	 * @throws IOException
 	 */
 	public void addLine(CSVLine line) throws IOException {
-		
+		getAll();
 		try (BufferedWriter writer = Files.newBufferedWriter(
 				Paths.get(path), Charset.forName("UTF-8"), StandardOpenOption.APPEND
 		)) {
@@ -86,6 +87,7 @@ public class CSVDocument {
 	 * @throws IOException
 	 */
 	public boolean removeLine(String ID) throws IOException {
+		getAll();
 		boolean ignore = ignoreFirstLine;
 		boolean found = false;
 		
@@ -132,6 +134,7 @@ public class CSVDocument {
 	}
 	
 	public void addOrModifyLine(String ID, CSVLine newLine) throws IOException, InvalidCSVException {
+		getAll();
 		if (getLineByID(ID) == null) {
 			addLine(newLine);
 		} else {
@@ -140,10 +143,12 @@ public class CSVDocument {
 	}
 	
 	public void modifiyLineByID(String ID, CSVLine newLine) throws IOException, InvalidCSVException {
+		getAll();
 		assert (ID.equals(newLine.get(idColumnPosition)));
 		boolean found = removeLine(ID);
 		if (found) {
-			addLine(newLine);
+			if (newLine.size() > 1)
+				addLine(newLine);
 		} else {
 			throw new InvalidCSVException("Line to be modified not found: ID=" + ID);
 		}
@@ -157,7 +162,8 @@ public class CSVDocument {
 		return path;
 	}
 	
-	public ArrayList<Integer> getIDS() throws InvalidDataException {
+	public ArrayList<Integer> getIDS() throws InvalidDataException, IOException {
+		getAll();
 		ArrayList<Integer> ids = new ArrayList<Integer>();
 		for (CSVLine line : this.lines) {
 			Integer id = -1;
@@ -171,7 +177,8 @@ public class CSVDocument {
 		return ids;
 	}
 	
-	public int lineCount() {
+	public int lineCount() throws IOException {
+		getAll();
 		return lines.size();
 	}
 	

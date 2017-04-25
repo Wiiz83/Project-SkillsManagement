@@ -22,21 +22,10 @@ public class Test {
 		
 		CSVObjects<Competence> competences_csv = new CSVObjects<Competence>(Competence.class, config);
 		CSVObjects<Employee> employes_csv = new CSVObjects<>(Employee.class, config);
-		
-		employes_csv.add(new Employee("f", "qsd", "11/11/2011"));
-		employes_csv.add(new Employee("f", "qsd", "11/11/2011"));
-		System.out.println(competences_csv.getAll());
-		
-		System.out.println(competences_csv.getByID("B.3."));
-		System.out.println(competences_csv.getByID("B.3."));
-		
-		System.out.println(employes_csv.getAll());
-		System.out.println(employes_csv.getAll());
-		System.out.println(employes_csv.getAll());
-		System.out.println(competences_csv.getAll());
-		System.out.println(competences_csv.getAll());
-		System.out.println(competences_csv.getAll());
-		System.out.println(competences_csv.getAll());
+		ArrayList<Competence> list = competences_csv.getAll();
+		for (Competence c : list)
+			competences_csv.modify(c);
+		System.out.println(list);
 	}
 	
 }

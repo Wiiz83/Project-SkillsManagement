@@ -1,6 +1,8 @@
 package csv;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 /**
  * Fournit des méthodes de suppression des objets, leurs associations, et les
@@ -41,6 +43,9 @@ public class CSVObjectDeleter<E extends CSVEntity> {
 				continue;
 			CSVAssociation assoc = new CSVAssociation(N, e.getClass());
 			CSVDocument assocDoc = config.getDocument(assoc);
+			
+			HashMap<String, CSVLine> modifiedLines = new HashMap<>();
+			
 			for (CSVLine line : assocDoc.getAll()) {
 				CSVLine newline = new CSVLine();
 				newline.add(line.get(0));
@@ -54,9 +59,11 @@ public class CSVObjectDeleter<E extends CSVEntity> {
 					}
 				}
 				if (found) {
-					assocDoc.modifiyLineByID(line.get(0), newline);
+					modifiedLines.put(line.get(0), newline);
 				}
 			}
+			for (Entry<String, CSVLine> entry : modifiedLines.entrySet())
+				assocDoc.modifiyLineByID(entry.getKey(), entry.getValue());
 		}
 	}
 	
