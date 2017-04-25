@@ -1,42 +1,52 @@
 package navigation;
 
 import java.awt.Dimension;
-import java.awt.GridBagLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.SpringLayout;
-
 import gui.ProgramFrame;
+import models.Competence;
 
 public class FrameEditLangue {
 	
-	private JTextField TFlibelle;
-	private JTextField TFpays;
+	public JTextField TFlibelle;
+	public JTextField TFpays;
 	
 	private JButton valider;
+	private JButton annuler;
 	
-	String libelle;
-	String pays;
+	private String libelle;
+	private String pays;
 	
-	public FrameEditLangue(String p, String l) {
-		this.pays = p;
-		this.libelle = l;
+	public JTable jtable;
+	public int row;
+	public Competence compSelect;
+	Competences competences;
+	public JFrame frame;
+	
+	public FrameEditLangue(int row, JTable jtable, Competence compSelect, Competences c) {
+		this.pays = (String) jtable.getValueAt(row, 0);		
+		this.libelle = (String) jtable.getValueAt(row, 1);	
+		this.row = row;
+		this.jtable = jtable;
+		this.compSelect = compSelect;
+		this.competences = c;
 	}
 	
 	
-	public String displayGUI(){
-		JFrame frame = new JFrame();
-		frame.setSize(200, 300);
+	public void displayGUI(){
+		this.frame = new JFrame("Modification d'un libellé de compétence");
+		frame.setSize(400, 170);
 		frame.setResizable(false);
 		frame.setLocation(150, 150);
 		
@@ -46,61 +56,69 @@ public class FrameEditLangue {
             	frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	        }
 	    });
-		
-        /*
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-        */
-        
+	
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
-        panel.setLayout(new GridBagLayout());
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
         
-        String[] labels = {"Pays: ", "Libellé:"};
-        int numPairs = labels.length;
-
-        //Create and populate the panel.
-        JPanel p = new JPanel(new SpringLayout());
+        JPanel panelPays = new JPanel();
+        panelPays.setLayout( new FlowLayout());
+        
+    	JLabel labelPays = new JLabel("Pays :");
+    	panelPays.add(labelPays);
+        
+        TFpays = new JTextField(pays);
+        TFpays.setEnabled(false);
+        TFpays.setPreferredSize(new Dimension(100, 25));
+        panelPays.add(TFpays);
         
         
+        JPanel panelLibelle = new JPanel();
+        panelLibelle.setLayout( new FlowLayout());
         
-        for (int i = 0; i < numPairs; i++) {
-            JLabel l = new JLabel(labels[i], JLabel.TRAILING);
-            p.add(l);
-            JTextField textField = new JTextField(10);
-            l.setLabelFor(textField);
-            p.add(textField);
-        }
-		
+    	JLabel labelLibelle = new JLabel("Libellé :");
+    	panelLibelle.add(labelLibelle);
+        
+        TFlibelle = new JTextField(libelle);
+        TFlibelle.setPreferredSize(new Dimension(300, 25));
+        panelLibelle.add(TFlibelle);
+        
+        JPanel panelBoutons = new JPanel();
+        panelBoutons.setLayout( new FlowLayout());        
+        
 		this.valider = new JButton("Valider");
 		this.valider.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+					compSelect.getNames().set(row, TFlibelle.getText());
+					competences.ActualisationChamps();
 		            ProgramFrame.getFrame().setEnabled(true);
-		            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		            frame.dispose();
 			}
 		});
-		panel.add(this.valider);        
+		
+		
+		this.annuler = new JButton("Annuler");
+		this.annuler.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+		            ProgramFrame.getFrame().setEnabled(true);
+		            frame.dispose();
+			}
+		});
+		
+		panelBoutons.add(this.annuler);    
+		panelBoutons.add(this.valider);       
 
-        //Lay out the panel.
-        SpringUtilities.makeCompactGrid(p,
-                                        numPairs, 2, //rows, cols
-                                        6, 6,        //initX, initY
-                                        6, 6);       //xPad, yPad
-
-        //Create and set up the window.
-        JFrame frame = new JFrame("SpringForm");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        panel.add(panelPays);
+        panel.add(panelLibelle);
+        panel.add(panelBoutons);
 
         //Set up the content pane.
-        p.setOpaque(true);  //content panes must be opaque
-        frame.setContentPane(p);
+		panel.setOpaque(true);  //content panes must be opaque
+        frame.setContentPane(panel);
 
-        //Display the window.
-        frame.pack();
         frame.setVisible(true);
-
 	}
 
 }

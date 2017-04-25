@@ -1,6 +1,5 @@
 package navigation;
 
-import java.awt.EventQueue;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -11,9 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-
 import csv.InvalidDataException;
 import data.Data;
 import data.DataException;
@@ -22,7 +19,6 @@ import gui.GenericTableModel;
 import gui.Titre;
 import models.Competence;
 import models.CompetenceCode;
-import models.Employee;
 import models.Language;
 
 /**
@@ -49,8 +45,6 @@ public class Competences extends Formulaire implements MouseListener {
 	Button	boutonEnregistrer;
 	Button	boutonAnnuler;
 	Button	boutonEditLangue;
-	Button	boutonNouvelleLangue;
-	Button	boutonSupprimerLangue;
 	
 	public Competences(Data data) {
 		this.data = data;
@@ -118,25 +112,14 @@ public class Competences extends Formulaire implements MouseListener {
 		jsLangues.setVisible(true);
 		jsLangues.setBounds(350, 130, 350, 400);
 		add(jsLangues);
-		
-		this.boutonNouvelleLangue = new Button("/boutons/miniadd.png");
-		this.boutonNouvelleLangue.setBounds(710, 130);
-		this.boutonNouvelleLangue.addMouseListener(this);
-		add(this.boutonNouvelleLangue);
+	
 		
 		this.boutonEditLangue = new Button("/boutons/miniedit.png");
-		this.boutonEditLangue.setBounds(710, 170);
+		this.boutonEditLangue.setBounds(710, 130);
 		this.boutonEditLangue.addMouseListener(this);
 		add(this.boutonEditLangue);
 		
-		this.boutonSupprimerLangue = new Button("/boutons/minidelete.png");
-		this.boutonSupprimerLangue.setBounds(710, 210);
-		this.boutonSupprimerLangue.addMouseListener(this);
-		add(this.boutonSupprimerLangue);
-		
 		composantsEdition.add(this.boutonEditLangue);
-		composantsEdition.add(this.boutonSupprimerLangue);
-		composantsEdition.add(this.boutonNouvelleLangue);
 		composantsEdition.add(this.code);
 		composantsEdition.add(this.boutonEnregistrer);
 		composantsEdition.add(this.boutonAnnuler);
@@ -172,50 +155,30 @@ public class Competences extends Formulaire implements MouseListener {
 	}
 	
 	
+	public void ActualisationChamps(){
+		if (getCompetenceSelected() != null) {
+			Competence compSelect = getCompetenceSelected();
+		   ArrayList<Language> ListeLangues;
+		   try {
+					ListeLangues = data.Langues().tous();
+					TableModel TableLangues = JTables.LanguesCompetence(compSelect, ListeLangues).getModel();
+					this.JTableLangues.setModel(TableLangues);
+				} catch (DataException e1) {
+					e1.printStackTrace();
+				}
+		}
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() instanceof Button) {
 			
-			if (e.getSource().equals(this.boutonNouvelleLangue)) {
-				
-				
-			}
-			
 			if (e.getSource().equals(this.boutonEditLangue)) {
 				if (getCompetenceSelected() != null) {
 					Competence compSelect = getCompetenceSelected();
-					int rowIndex = JTableLangues.getSelectedRow() ;
-					
-					String pays = (String) JTableLangues.getValueAt(rowIndex, 0);		
-					String libelle = (String) JTableLangues.getValueAt(rowIndex, 1);		
-					
-					FrameEditLangue fel = new FrameEditLangue(pays, libelle);
-					String s = fel.displayGUI();
-					
-					//compSelect.getNames(rowIndex) = s;
-				}
-			}
-			
-			if (e.getSource().equals(this.boutonSupprimerLangue)) {
-				if (getCompetenceSelected() != null) {
-					int n = JOptionPane.showConfirmDialog(
-							new JFrame(), "Voulez vraiment supprimer ce libellé ?", "Confirmation de suppression",
-							JOptionPane.YES_NO_OPTION
-					);
-					if (n == JOptionPane.YES_OPTION) {
-						
-						Competence compSelect = getCompetenceSelected();
-						int rowIndex = JTableLangues.getSelectedRow() ;
-						compSelect.getNames().set(rowIndex, "") ;
-						ArrayList<Language> ListeLangues;
-						try {
-							ListeLangues = data.Langues().tous();
-							TableModel TableLangues = JTables.LanguesCompetence(compSelect, ListeLangues).getModel();
-							this.JTableLangues.setModel(TableLangues);
-						} catch (DataException e1) {
-							e1.printStackTrace();
-						}
-					}
+					int rowIndex = JTableLangues.getSelectedRow();
+					FrameEditLangue fel = new FrameEditLangue(rowIndex, JTableLangues, compSelect, this);
+					fel.displayGUI();
 				}
 			}
 			
@@ -299,10 +262,6 @@ public class Competences extends Formulaire implements MouseListener {
 							try {
 								cc = new CompetenceCode(this.code.getText());
 								compSelect.setCode(cc);
-								// TODO
-								// ArrayList<Language> listLangues =
-								// mJTableLangues.getArraylist();
-								// compSelect.setNames(listLangues);
 								data.Competences().modifier(compSelect);
 								this.mJTableCompetences.fireTableDataChanged();
 								ChargementConsultation();
