@@ -143,36 +143,10 @@ public class JTables {
 				case 2:
 					return mis.getStatus();
 				default:
-					System.out.println("JTable access ");
+					System.out.println("Missions JTable access ");
 					break;
 				}
 				return missions;
-			}
-		};
-		JTable table = new JTable(dataModel);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setAutoCreateRowSorter(true);
-		table.getRowSorter().toggleSortOrder(0);
-		return table;
-	}
-	
-	public static JTable Employee(ArrayList<Employee> Employee) {
-		String[] headers = { "Prénom", "Nom" };
-		@SuppressWarnings("serial")
-		TableModel dataModel = new GenericTableModel<Employee>(Employee, headers) {
-			
-			public Object getValueAt(int row, int col) {
-				Employee rec = Employee.get(row);
-				switch (col) {
-				case 0:
-					return rec.getName();
-				case 1:
-					return rec.getLastName();
-				default:
-					System.out.println("JTable access ");
-					break;
-				}
-				return Employee;
 			}
 		};
 		JTable table = new JTable(dataModel);
@@ -187,7 +161,12 @@ public class JTables {
 		String[] headers = { "Pays", "Libellé" };
 		@SuppressWarnings("serial")
 		TableModel dataModel = new AbstractTableModel() {
+			@Override
+			public String getColumnName(int col) {
+				return headers[col];
+			}
 			
+			@Override
 			public Object getValueAt(int row, int col) {
 				
 				switch (col) {
@@ -196,7 +175,7 @@ public class JTables {
 				case 1:
 					return competence.getNames().get(row);
 				default:
-					System.out.println("Competences JTable access ");
+					System.out.println("LanguesCompetence JTable access ");
 					break;
 				}
 				return null;
@@ -204,13 +183,11 @@ public class JTables {
 			
 			@Override
 			public int getColumnCount() {
-				// TODO Auto-generated method stub
 				return 2;
 			}
 			
 			@Override
 			public int getRowCount() {
-				// TODO Auto-generated method stub
 				return langues.size();
 			}
 		};
@@ -225,7 +202,7 @@ public class JTables {
 	public static JTable Alertes(ArrayList<Alerte> Alertes) {
 		String[] headers = { "Alerte", "Détails" };
 		@SuppressWarnings("serial")
-		TableModel dataModel = new AbstractTableModel() {
+		TableModel dataModel = new GenericTableModel<Alerte>(Alertes, headers) {
 			
 			@Override
 			public int getColumnCount() {

@@ -11,6 +11,7 @@ import models.CompetenceRequirement;
 import models.Employee;
 import models.Mission;
 
+@SuppressWarnings("unused")
 public class Test {
 	public static void main(String[] args) throws CSVException, ParseException {
 		SimpleDateFormat dateformatter = new SimpleDateFormat("dd/MM/yyyy");

@@ -1,7 +1,6 @@
 package navigation;
 
 import models.Mission;
-import models.Status;
 
 public class Alerte {
 	String	type;
@@ -14,18 +13,7 @@ public class Alerte {
 	}
 	
 	public Alerte(Mission M) {
-		
-		switch (M.getStatus()) {
-		
-		case PREPARATION:
-			this.type = "Employés non affectés";
-			break;
-		case WARNING:
-			this.type = "Mission en retard";
-			break;
-		default:
-			break;
-		}
+		this.type = "Employés non affectés";
 		this.desc = M.getNomM() + "(" + M.getDateDebut() + ")";
 	}
 	

@@ -1,12 +1,10 @@
 package csv;
 
-import java.awt.List;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -180,7 +178,7 @@ public class CSVObjects<E extends CSVEntity> {
 	}
 	
 	/**
-	 * Retourne les objets filtrés par une prédicat labmda
+	 * Retourne les objets filtrés par un prédicat
 	 * 
 	 * @param filter
 	 * @return
