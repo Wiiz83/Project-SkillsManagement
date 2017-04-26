@@ -205,7 +205,7 @@ public class Personnel extends Formulaire implements MouseListener {
 							GenericTableModel<Competence> compNonPossModel = (GenericTableModel<Competence>) JTables.Competences(listCompNonPoss).getModel();
 							JTable compNonPoss = new JTable(compNonPossModel);
 							JTable compPoss = new JTable(mJTableCompetences);
-							PersonnelAddCompetence gestionListe = new PersonnelAddCompetence(compPoss, compNonPoss, mJTableCompetences, compNonPossModel);
+							PersonnelEditCompetence gestionListe = new PersonnelEditCompetence(compPoss, compNonPoss, mJTableCompetences, compNonPossModel);
 							gestionListe.displayGUI();
 						} catch (DataException e1) {
 							e1.printStackTrace();
@@ -220,7 +220,7 @@ public class Personnel extends Formulaire implements MouseListener {
 								GenericTableModel<Competence> compNonPossModel = (GenericTableModel<Competence>) JTables.Competences(listCompNonPoss).getModel();	 
 								JTable compNonPoss = new JTable(compNonPossModel);
 								JTable compPoss = new JTable(mJTableCompetences);
-								PersonnelAddCompetence gestionListe = new PersonnelAddCompetence(compPoss, compNonPoss, mJTableCompetences, compNonPossModel);
+								PersonnelEditCompetence gestionListe = new PersonnelEditCompetence(compPoss, compNonPoss, mJTableCompetences, compNonPossModel);
 								gestionListe.displayGUI();
 							}
 						} catch (DataException e1) {
