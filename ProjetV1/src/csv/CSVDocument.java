@@ -21,7 +21,6 @@ public class CSVDocument {
 		path = cfg.path;
 		ignoreFirstLine = cfg.ignoreFirstLine;
 		idColumnPosition = cfg.idColumnPosition;
-		lines = new ArrayList<>();
 		getAll();
 		
 	}
@@ -40,6 +39,7 @@ public class CSVDocument {
 	 * @throws IOException
 	 */
 	public ArrayList<CSVLine> getAll() throws IOException {
+		lines = new ArrayList<>();
 		File file = new File(path);
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));;
