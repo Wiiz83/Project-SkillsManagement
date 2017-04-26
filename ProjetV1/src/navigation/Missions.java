@@ -333,6 +333,7 @@ public class Missions extends Formulaire implements MouseListener {
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.pack();
 				frame.setVisible(true);
+				
 			}
 			
 			if (e.getSource().equals(this.boutonEditComp)) {
