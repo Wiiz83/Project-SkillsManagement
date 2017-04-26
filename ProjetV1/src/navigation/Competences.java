@@ -36,8 +36,8 @@ public class Competences extends Formulaire implements MouseListener {
 	
 	JTextField code;
 	
-	JTable JTableLangues;
-	TableModel mJTableLangues;
+	JTable		JTableLangues;
+	TableModel	mJTableLangues;
 	
 	Button	boutonNouveau;
 	Button	boutonModifier;
@@ -46,8 +46,16 @@ public class Competences extends Formulaire implements MouseListener {
 	Button	boutonAnnuler;
 	Button	boutonEditLangue;
 	
+	ArrayList<Language> langues;
+	
 	public Competences(Data data) {
 		this.data = data;
+		try {
+			langues = data.Langues().tous();
+		} catch (DataException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		setOpaque(false);
 		setLayout(null);
 		setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
@@ -112,7 +120,6 @@ public class Competences extends Formulaire implements MouseListener {
 		jsLangues.setVisible(true);
 		jsLangues.setBounds(350, 130, 350, 400);
 		add(jsLangues);
-	
 		
 		this.boutonEditLangue = new Button("/boutons/miniedit.png");
 		this.boutonEditLangue.setBounds(710, 130);
@@ -123,7 +130,7 @@ public class Competences extends Formulaire implements MouseListener {
 		composantsEdition.add(this.code);
 		composantsEdition.add(this.boutonEnregistrer);
 		composantsEdition.add(this.boutonAnnuler);
-		composantsEdition.add(this.JTableLangues);	
+		composantsEdition.add(this.JTableLangues);
 		composantsConsultation.add(this.boutonNouveau);
 		composantsConsultation.add(this.boutonModifier);
 		composantsConsultation.add(this.boutonNouveau);
@@ -135,7 +142,7 @@ public class Competences extends Formulaire implements MouseListener {
 	
 	public void VideChamps() {
 		this.code.setText("");
-		this.JTableLangues = new JTable();
+		this.JTableLangues.setModel(JTables.LanguesCompetence(null, langues).getModel());
 	}
 	
 	public Competence getCompetenceSelected() {
@@ -154,18 +161,17 @@ public class Competences extends Formulaire implements MouseListener {
 		}
 	}
 	
-	
-	public void ActualisationChamps(){
+	public void ActualisationChamps() {
 		if (getCompetenceSelected() != null) {
 			Competence compSelect = getCompetenceSelected();
-		   ArrayList<Language> ListeLangues;
-		   try {
-					ListeLangues = data.Langues().tous();
-					TableModel TableLangues = JTables.LanguesCompetence(compSelect, ListeLangues).getModel();
-					this.JTableLangues.setModel(TableLangues);
-				} catch (DataException e1) {
-					e1.printStackTrace();
-				}
+			ArrayList<Language> ListeLangues;
+			try {
+				ListeLangues = data.Langues().tous();
+				TableModel TableLangues = JTables.LanguesCompetence(compSelect, ListeLangues).getModel();
+				this.JTableLangues.setModel(TableLangues);
+			} catch (DataException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 	
@@ -189,7 +195,7 @@ public class Competences extends Formulaire implements MouseListener {
 			}
 			
 			if (e.getSource().equals(this.boutonModifier)) {
-				if (getCompetenceSelected() != null) {		
+				if (getCompetenceSelected() != null) {
 					super.ChargementModification();
 				}
 			}
@@ -244,14 +250,23 @@ public class Competences extends Formulaire implements MouseListener {
 				try {
 					switch (this.mode) {
 					case "nouveau":
-						/*
-						 * TODO //Competence c = new
-						 * Competence(this.code.getText(),
-						 * mJTableLangues.getArraylist());
-						 * data.Competences().ajouter(c);
-						 * this.mJTableCompetences.addRowObject(c);
-						 * this.mJTableCompetences.fireTableDataChanged();
-						 */
+						ArrayList<String> noms = new ArrayList<>();
+						int nb_langues = langues.size();
+						for (int i = 0; i < nb_langues; i++)
+							noms.add((String) JTableLangues.getModel().getValueAt(i, 1));
+						Competence c = null;
+						try {
+							c = new Competence(this.code.getText(), noms);
+						} catch (InvalidDataException e2) {
+							// TODO Auto-generated catch block
+							e2.printStackTrace();
+							return;
+						}
+						
+						data.Competences().ajouter(c);
+						this.mJTableCompetences.addRowObject(c);
+						this.mJTableCompetences.fireTableDataChanged();
+						
 						ChargementConsultation();
 						break;
 					
@@ -272,7 +287,8 @@ public class Competences extends Formulaire implements MouseListener {
 						break;
 					}
 				} catch (DataException e1) {
-					System.out.println("Problème d'enregistrement: " + e1);
+					System.out.println("Problème d'enregistrement: ");
+					e1.printStackTrace();
 				}
 			}
 		}
@@ -292,9 +308,6 @@ public class Competences extends Formulaire implements MouseListener {
 					e1.printStackTrace();
 				}
 			}
-			
-			
-			
 			
 		}
 	}

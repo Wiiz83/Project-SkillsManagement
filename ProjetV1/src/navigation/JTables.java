@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import csv.CSVEntity;
@@ -160,7 +161,7 @@ public class JTables {
 		
 		String[] headers = { "Pays", "Libellé" };
 		@SuppressWarnings("serial")
-		TableModel dataModel = new AbstractTableModel() {
+		DefaultTableModel dataModel = new DefaultTableModel() {
 			@Override
 			public String getColumnName(int col) {
 				return headers[col];
@@ -172,8 +173,13 @@ public class JTables {
 				switch (col) {
 				case 0:
 					return langues.get(row).getCountry();
-				case 1:
+				case 1: {
+					if (competence == null)
+						return "";
+					if (competence.getNames().get(row) == null)
+						return "";
 					return competence.getNames().get(row);
+				}
 				default:
 					System.out.println("LanguesCompetence JTable access ");
 					break;

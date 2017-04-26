@@ -248,18 +248,18 @@ public class CSVObjects<E extends CSVEntity> {
 		return new ArrayList<E>(cache.getAll(ids).values());
 	}
 	
-	private String generateID() throws InvalidDataException {
+	private String generateID() throws CSVException {
 		try {
 			if (doc.lineCount() == 0)
 				return "1";
 		} catch (IOException e) {
-			throw new InvalidDataException(e);
+			throw new CSVException(e);
 		}
 		ArrayList<Integer> IDs;
 		try {
 			IDs = doc.getIDS();
 		} catch (IOException e) {
-			throw new InvalidDataException(e);
+			throw new CSVException(e);
 		}
 		int generatedID = Collections.max(IDs) + 1;
 		return Integer.toString(generatedID);
