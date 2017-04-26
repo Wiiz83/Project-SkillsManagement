@@ -81,4 +81,11 @@ public abstract class CSVEntity implements Serializable {
 		}
 		return ids;
 	}
+	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
+		
+	}
+	
 }

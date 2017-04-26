@@ -41,14 +41,14 @@ public class Competences extends Formulaire implements MouseListener {
 	JTable		JTableLangues;
 	TableModel	mJTableLangues;
 	
-	Button	boutonNouveau;
-	Button	boutonModifier;
-	Button	boutonSupprimer;
-	Button	boutonEnregistrer;
-	Button	boutonAnnuler;
-	Button	boutonEditLangue;
-	
-	ArrayList<Language> langues;
+	Button				boutonNouveau;
+	Button				boutonModifier;
+	Button				boutonSupprimer;
+	Button				boutonEnregistrer;
+	Button				boutonAnnuler;
+	Button				boutonEditLangue;
+	Competence			cloned;
+	ArrayList<Language>	langues;
 	
 	public Competences(Data data) {
 		this.data = data;
@@ -197,6 +197,7 @@ public class Competences extends Formulaire implements MouseListener {
 			
 			if (e.getSource().equals(this.boutonModifier)) {
 				if (getCompetenceSelected() != null) {
+					cloned = (Competence) getCompetenceSelected().clone();
 					super.ChargementModification();
 					this.code.setEnabled(false);
 				}
@@ -233,15 +234,9 @@ public class Competences extends Formulaire implements MouseListener {
 					if (getCompetenceSelected() != null) {
 						Competence CompSelect = getCompetenceSelected();
 						this.code.setText(CompSelect.getCode().toString());
-						
-						ArrayList<Language> ListeLangues;
-						try {
-							ListeLangues = data.Langues().tous();
-							TableModel mJTableLangues = JTables.LanguesCompetence(CompSelect, ListeLangues).getModel();
-							this.JTableLangues.setModel(mJTableLangues);
-						} catch (DataException e1) {
-							e1.printStackTrace();
-						}
+						CompSelect.setNames(cloned.getNames());
+						TableModel mJTableLangues = JTables.LanguesCompetence(CompSelect, langues).getModel();
+						this.JTableLangues.setModel(mJTableLangues);
 						ChargementConsultation();
 					}
 					break;

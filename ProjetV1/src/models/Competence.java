@@ -9,7 +9,7 @@ import csv.InvalidDataException;
 /**
  * Représente une compétence
  */
-public class Competence extends CSVEntity {
+public class Competence extends CSVEntity implements Cloneable {
 	/**
 	 * 
 	 */
@@ -93,6 +93,21 @@ public class Competence extends CSVEntity {
 		} else if (!code.equals(other.code))
 			return false;
 		return true;
+	}
+	
+	@Override
+	public Object clone() {
+		ArrayList<String> n = new ArrayList<>();
+		for (String s : Names)
+			n.add(s);
+		Competence copy = null;
+		try {
+			copy = (Competence) super.clone();
+		} catch (CloneNotSupportedException e1) {
+			e1.printStackTrace();
+		}
+		copy.setNames(n);
+		return copy;
 	}
 	
 }
