@@ -13,9 +13,10 @@ import csv.CSVEntity;
 import data.Data;
 import data.DataException;
 import data.IRequete;
+import gui.JTables;
 import data.CSVRequests;
 
-public class FrameAjoutElement<E extends CSVEntity, N extends CSVEntity> extends JFrame {
+public class MissionsAddCompetence<E extends CSVEntity, N extends CSVEntity> extends JFrame {
 	/**
 	 * 
 	 */
@@ -28,7 +29,7 @@ public class FrameAjoutElement<E extends CSVEntity, N extends CSVEntity> extends
 	private JScrollPane	jScrollPane1;
 	private JButton		AddButton;
 	
-	public FrameAjoutElement(Data data, E entity, Class<N> nEntityClass) throws HeadlessException, DataException {
+	public MissionsAddCompetence(Data data, E entity, Class<N> nEntityClass) throws HeadlessException, DataException {
 		super();
 		this.data = data;
 		this.entity = entity;

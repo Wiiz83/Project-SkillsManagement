@@ -18,7 +18,7 @@ import javax.swing.ListSelectionModel;
 import gui.GenericTableModel;
 import gui.ProgramFrame;
 
-public class GestionListe implements ActionListener {
+public class PersonnelAddCompetence implements ActionListener {
 
 	private static final Insets EMPTY_INSETS = new Insets(0, 0, 0, 0);
 	private static final String ADD_BUTTON_LABEL = "<< Add";
@@ -38,7 +38,7 @@ public class GestionListe implements ActionListener {
 	private JButton addButton;
 	private JButton removeButton;
 
-	public GestionListe(JTable Poss, JTable nonPoss, GenericTableModel PossModel,GenericTableModel nonPossModel) {
+	public PersonnelAddCompetence(JTable Poss, JTable nonPoss, GenericTableModel PossModel,GenericTableModel nonPossModel) {
 		this.ElementPoss = Poss;
 		this.ElementNonPoss = nonPoss;
 		this.ElementNonPoss.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

@@ -17,7 +17,9 @@ import javax.swing.text.MaskFormatter;
 import data.Data;
 import data.DataException;
 import gui.Button;
+import gui.Formulaire;
 import gui.GenericTableModel;
+import gui.JTables;
 import gui.ProgramFrame;
 import gui.Titre;
 import models.Competence;
@@ -32,7 +34,7 @@ public class Personnel extends Formulaire implements MouseListener {
 	private static final long	serialVersionUID	= 1L;
 	private Data				data;
 	
-	GestionListe			gc;
+	//GestionListe					gc;
 	ArrayList<Competence>	listCompEmp;
 	
 	JTable						JTablePersonnel;
@@ -145,8 +147,6 @@ public class Personnel extends Formulaire implements MouseListener {
 		js.setVisible(true);
 		js.setBounds(350, 170, 350, 350);
 		add(js);
-		// this.mJTableCompetences = (GenericTableModel<Competence>)
-		// this.JTableCompetences.getModel();
 		
 		this.boutonEditComp = new Button("/boutons/miniedit.png");
 		this.boutonEditComp.setBounds(710, 170);
@@ -205,8 +205,8 @@ public class Personnel extends Formulaire implements MouseListener {
 							GenericTableModel<Competence> compNonPossModel = (GenericTableModel<Competence>) JTables.Competences(listCompNonPoss).getModel();
 							JTable compNonPoss = new JTable(compNonPossModel);
 							JTable compPoss = new JTable(mJTableCompetences);
-							this.gc = new GestionListe(compPoss, compNonPoss, mJTableCompetences, compNonPossModel);
-							this.gc.displayGUI();
+							PersonnelAddCompetence gestionListe = new PersonnelAddCompetence(compPoss, compNonPoss, mJTableCompetences, compNonPossModel);
+							gestionListe.displayGUI();
 						} catch (DataException e1) {
 							e1.printStackTrace();
 						}
@@ -220,8 +220,8 @@ public class Personnel extends Formulaire implements MouseListener {
 								GenericTableModel<Competence> compNonPossModel = (GenericTableModel<Competence>) JTables.Competences(listCompNonPoss).getModel();	 
 								JTable compNonPoss = new JTable(compNonPossModel);
 								JTable compPoss = new JTable(mJTableCompetences);
-								this.gc = new GestionListe(compPoss, compNonPoss, mJTableCompetences, compNonPossModel);
-								this.gc.displayGUI();
+								PersonnelAddCompetence gestionListe = new PersonnelAddCompetence(compPoss, compNonPoss, mJTableCompetences, compNonPossModel);
+								gestionListe.displayGUI();
 							}
 						} catch (DataException e1) {
 							e1.printStackTrace();

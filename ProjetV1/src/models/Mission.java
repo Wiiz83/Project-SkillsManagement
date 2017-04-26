@@ -3,16 +3,10 @@ package models;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-
 import csv.CSVEntity;
 
-/**
- * Classe Mission
- */
 public class Mission extends MissionAbstract {
-	/**
-	 * 
-	 */
+
 	private static final long					serialVersionUID	= -6014131798059503343L;
 	private ArrayList<CompetenceRequirement>	CompReq;
 	

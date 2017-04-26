@@ -15,7 +15,9 @@ import csv.InvalidDataException;
 import data.Data;
 import data.DataException;
 import gui.Button;
+import gui.Formulaire;
 import gui.GenericTableModel;
+import gui.JTables;
 import gui.Titre;
 import models.Competence;
 import models.CompetenceCode;
@@ -183,7 +185,7 @@ public class Competences extends Formulaire implements MouseListener {
 				if (getCompetenceSelected() != null) {
 					Competence compSelect = getCompetenceSelected();
 					int rowIndex = JTableLangues.getSelectedRow();
-					FrameEditLangue fel = new FrameEditLangue(rowIndex, JTableLangues, compSelect, this);
+					CompetencesEditLangue fel = new CompetencesEditLangue(rowIndex, JTableLangues, compSelect, this);
 					fel.displayGUI();
 				}
 			}

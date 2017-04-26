@@ -17,7 +17,7 @@ import javax.swing.JTextField;
 import gui.ProgramFrame;
 import models.Competence;
 
-public class FrameEditLangue {
+public class CompetencesEditLangue {
 	
 	public JTextField TFlibelle;
 	public JTextField TFpays;
@@ -34,7 +34,7 @@ public class FrameEditLangue {
 	Competences competences;
 	public JFrame frame;
 	
-	public FrameEditLangue(int row, JTable jtable, Competence compSelect, Competences c) {
+	public CompetencesEditLangue(int row, JTable jtable, Competence compSelect, Competences c) {
 		this.pays = (String) jtable.getValueAt(row, 0);		
 		this.libelle = (String) jtable.getValueAt(row, 1);	
 		this.row = row;

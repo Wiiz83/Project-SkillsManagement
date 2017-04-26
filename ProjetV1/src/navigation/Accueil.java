@@ -11,6 +11,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+
+import gui.Alerte;
+import gui.JTables;
 import gui.Titre;
 import models.Mission;
 import models.Status;

@@ -1,4 +1,4 @@
-package navigation;
+package gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -8,13 +8,11 @@ import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import gui.Button;
-
 public class Formulaire extends JPanel {
 	
-    ArrayList<JComponent> composantsEdition			= new ArrayList<JComponent>();
-    ArrayList<JComponent> composantsConsultation 	= new ArrayList<JComponent>();
-	String	mode;
+	protected  ArrayList<JComponent> composantsEdition			= new ArrayList<JComponent>();
+    protected ArrayList<JComponent> composantsConsultation 	= new ArrayList<JComponent>();
+    protected String	mode;
 	
 	 /*
 	  *   Mode Consultation : Les éléments du formulaire ne sont pas modifiables
