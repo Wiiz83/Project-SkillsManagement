@@ -241,4 +241,30 @@ public class JTables {
 		return table;
 	}
 	
+	public static JTable Recommendation(ArrayList<Recommendation> Rec) {
+		String[] headers = { "Nom", "Durée", "Statut" };
+		@SuppressWarnings("serial")
+		TableModel dataModel = new GenericTableModel<Recommendation>(Rec, headers) {
+			
+			public Object getValueAt(int row, int col) {
+				Recommendation rec = Rec.get(row);
+				switch (col) {
+				case 0:
+					return rec.getEmpRec();
+				case 1:
+					return rec.getRLevel();
+				default:
+					System.out.println("Missions JTable access ");
+					break;
+				}
+				return Rec;
+			}
+		};
+		JTable table = new JTable(dataModel);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setAutoCreateRowSorter(true);
+		table.getRowSorter().toggleSortOrder(0);
+		return table;
+	}
+	
 }
