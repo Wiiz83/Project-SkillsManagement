@@ -55,7 +55,10 @@ public class MissionsAddCompetence<E extends CSVEntity, N extends CSVEntity> ext
 		AddButton.addActionListener(
 				new java.awt.event.ActionListener() {
 					public void actionPerformed(java.awt.event.ActionEvent evt) {
-						AddButtonActionPerformed(evt);
+						
+						
+						
+						
 					}
 				}
 		);
@@ -95,10 +98,6 @@ public class MissionsAddCompetence<E extends CSVEntity, N extends CSVEntity> ext
 		
 		dissocTable.setEnabled(true);
 		pack();
-	}
-	
-	private void AddButtonActionPerformed(ActionEvent evt) {
-		// TODO Auto-generated method stub
 	}
 	
 	void saveChanges() throws DataException {
