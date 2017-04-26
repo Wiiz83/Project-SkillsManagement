@@ -27,7 +27,9 @@ import gui.Button;
 import gui.Formulaire;
 import gui.GenericTableModel;
 import gui.JTables;
+import gui.ProgramFrame;
 import gui.Titre;
+import models.Competence;
 import models.CompetenceRequirement;
 import models.Employee;
 import models.Mission;
@@ -49,9 +51,10 @@ public class Missions extends Formulaire implements MouseListener {
 	Button						boutonEnregistrer;
 	Button						boutonAnnuler;
 	Button						boutonAddComp;
+	Button						boutonEditComp;
 	Button						boutonDeleteComp;
 	Button						boutonAddEmp;
-	Button						boutonDeleteEmp;
+	Button						boutonAddEmpRecom;
 
 	
 	JTable									JTableMissions;
@@ -61,7 +64,7 @@ public class Missions extends Formulaire implements MouseListener {
 	TableModel							mJTableCompetences;
 	
 	JTable										JTableEmployes;
-	TableModel							mJTableEmployes;
+	GenericTableModel<Employee> mJTableEmployes;
 	
 	JTextField					nom;
 	JComboBox<String>	statut;
@@ -214,20 +217,25 @@ public class Missions extends Formulaire implements MouseListener {
 		this.boutonAddComp.addMouseListener(this);
 		add(this.boutonAddComp);
 		
+		this.boutonEditComp = new Button("/boutons/miniedit.png");
+		this.boutonEditComp.setBounds(1160, 120);
+		this.boutonEditComp.addMouseListener(this);
+		add(this.boutonEditComp);
+		
 		this.boutonDeleteComp = new Button("/boutons/minidelete.png");
-		this.boutonDeleteComp.setBounds(1160, 120);
+		this.boutonDeleteComp.setBounds(1160, 160);
 		this.boutonDeleteComp.addMouseListener(this);
 		add(this.boutonDeleteComp);
 		
-		this.boutonAddEmp = new Button("/boutons/miniadd.png");
+		this.boutonAddEmp = new Button("/boutons/miniedit.png");
 		this.boutonAddEmp.setBounds(1160, 280); 
 		this.boutonAddEmp.addMouseListener(this);
 		add(this.boutonAddEmp);
 		
-		this.boutonDeleteEmp = new Button("/boutons/minidelete.png");
-		this.boutonDeleteEmp.setBounds(1160, 320); 
-		this.boutonDeleteEmp.addMouseListener(this);
-		add(this.boutonDeleteEmp);
+		this.boutonAddEmpRecom = new Button("/boutons/minirecommandation.png");
+		this.boutonAddEmpRecom.setBounds(1160, 320); 
+		this.boutonAddEmpRecom.addMouseListener(this);
+		add(this.boutonAddEmpRecom);
 		
 		
 		composantsEdition.add(this.JTableEmployes);
@@ -239,8 +247,9 @@ public class Missions extends Formulaire implements MouseListener {
 		composantsEdition.add(this.nombre);
 		composantsEdition.add(this.boutonAddComp);
 		composantsEdition.add(this.boutonDeleteComp);
+		composantsEdition.add(this.boutonEditComp);
 		composantsEdition.add(this.boutonAddEmp);
-		composantsEdition.add(this.boutonDeleteEmp);
+		composantsEdition.add(this.boutonAddEmpRecom);
 		composantsEdition.add(this.boutonEnregistrer);
 		composantsEdition.add(this.boutonAnnuler);
 		
@@ -259,35 +268,18 @@ public class Missions extends Formulaire implements MouseListener {
 		this.duree.setText("");
 		this.nombre.setText("");
 		this.statut.setSelectedIndex(0);
-		
-		this.mJTableEmployes = JTables.Employes(new ArrayList<Employee>()).getModel();
+		//TODO this.mJTableEmployes = JTables.Employes(new ArrayList<Employee>()).getModel();
 		this.JTableEmployes.setModel(mJTableEmployes);
-		
 		this.mJTableCompetences = JTables.CompetencesRequises(new ArrayList<CompetenceRequirement>()).getModel();
 		this.JTableCompetences.setModel(mJTableCompetences);
 	}
 	
-	/**
-	 * Dessine le fond blanc du formulaire
-	 */
-	@Override
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		Graphics2D batch = (Graphics2D) g;
-		batch.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		batch.setColor(Color.WHITE);
-		batch.fillRect(330, 40, 930, 510);
-	}
-	
-	/**
-	 * Clic sur la souris : - Si c'est un bouton de gestion du formulaire - Si
-	 * c'est un élément de la liste
-	 */
  	public Mission getSelected() {
 		this.mJTableMissions = (GenericTableModel<Mission>) this.JTableMissions.getModel();
 		return this.mJTableMissions.getRowObject(this.JTableMissions.convertRowIndexToModel(this.JTableMissions.getSelectedRow()));
 	}
 	
+ 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() instanceof Button) {
@@ -307,9 +299,46 @@ public class Missions extends Formulaire implements MouseListener {
 				
 			}
 			
-			/**
-			 * TODO Formulaire prêt à l'ajout d'un nouvel élément
-			 */
+			if (e.getSource().equals(this.boutonEditComp)) {
+				VideChamps();
+				ChargementModification();
+				this.mode = "nouveau";
+			}
+			
+			if (e.getSource().equals(this.boutonDeleteComp)) {
+				VideChamps();
+				ChargementModification();
+				this.mode = "nouveau";
+			}
+			
+			if (e.getSource().equals(this.boutonAddEmp)) {
+				ProgramFrame.getFrame().setEnabled(false);
+				switch (this.mode) {
+					case "nouveau":
+						try {
+							ArrayList<Employee> listEmpNonPoss = data.Employes().tous();
+							GenericTableModel<Employee> empNonPossModel = (GenericTableModel<Employee>) JTables.Employes(listEmpNonPoss).getModel();
+							JTable empNonPoss = new JTable(empNonPossModel);
+							JTable empPoss = new JTable(mJTableEmployes);
+							PersonnelEditCompetence gestionListe = new PersonnelEditCompetence(empPoss, empNonPoss, mJTableEmployes, empNonPossModel);
+							gestionListe.displayGUI();
+						} catch (DataException e1) {
+							e1.printStackTrace();
+						}
+						break;
+					
+					case "modification":
+
+						
+						break;
+				}
+			}
+			
+			if (e.getSource().equals(this.boutonAddEmpRecom)) {
+
+			}
+			
+
 			if (e.getSource().equals(this.boutonNouveau)) {
 				VideChamps();
 				ChargementModification();

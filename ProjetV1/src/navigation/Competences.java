@@ -55,7 +55,6 @@ public class Competences extends Formulaire implements MouseListener {
 		try {
 			langues = data.Langues().tous();
 		} catch (DataException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		setOpaque(false);
@@ -199,6 +198,7 @@ public class Competences extends Formulaire implements MouseListener {
 			if (e.getSource().equals(this.boutonModifier)) {
 				if (getCompetenceSelected() != null) {
 					super.ChargementModification();
+					this.code.setEnabled(false);
 				}
 			}
 			
@@ -231,17 +231,17 @@ public class Competences extends Formulaire implements MouseListener {
 				
 				case "modification":
 					if (getCompetenceSelected() != null) {
-						Competence compSelect = getCompetenceSelected();
-						this.code.setText(compSelect.getCode().toString());
-						ArrayList<String> langList = compSelect.getNames();
+						Competence CompSelect = getCompetenceSelected();
+						this.code.setText(CompSelect.getCode().toString());
 						
-						/*
-						 * this.mJTableCompetences =
-						 * (GenericTableModel<Competence>)
-						 * JTables.Competences(listCompEmp) .getModel();
-						 * this.JTableCompetences.setModel(this.
-						 * mJTableCompetences);
-						 */
+						ArrayList<Language> ListeLangues;
+						try {
+							ListeLangues = data.Langues().tous();
+							TableModel mJTableLangues = JTables.LanguesCompetence(CompSelect, ListeLangues).getModel();
+							this.JTableLangues.setModel(mJTableLangues);
+						} catch (DataException e1) {
+							e1.printStackTrace();
+						}
 						ChargementConsultation();
 					}
 					break;
@@ -260,7 +260,6 @@ public class Competences extends Formulaire implements MouseListener {
 						try {
 							c = new Competence(this.code.getText(), noms);
 						} catch (InvalidDataException e2) {
-							// TODO Auto-generated catch block
 							e2.printStackTrace();
 							return;
 						}
