@@ -16,6 +16,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -61,7 +62,7 @@ public class Missions extends Formulaire implements MouseListener {
 	GenericTableModel<Mission> mJTableMissions;
 
 	JTable									JTableCompetences;
-	TableModel							mJTableCompetences;
+	GenericTableModel<CompetenceRequirement>		mJTableCompetences;
 	
 	JTable										JTableEmployes;
 	GenericTableModel<Employee> mJTableEmployes;
@@ -268,15 +269,52 @@ public class Missions extends Formulaire implements MouseListener {
 		this.duree.setText("");
 		this.nombre.setText("");
 		this.statut.setSelectedIndex(0);
-		//TODO this.mJTableEmployes = JTables.Employes(new ArrayList<Employee>()).getModel();
+		this.mJTableEmployes = (GenericTableModel<Employee>)  JTables.Employes(new ArrayList<Employee>()).getModel();
 		this.JTableEmployes.setModel(mJTableEmployes);
-		this.mJTableCompetences = JTables.CompetencesRequises(new ArrayList<CompetenceRequirement>()).getModel();
+		this.mJTableCompetences = (GenericTableModel<CompetenceRequirement>) JTables.CompetencesRequises(new ArrayList<CompetenceRequirement>()).getModel();
 		this.JTableCompetences.setModel(mJTableCompetences);
 	}
 	
- 	public Mission getSelected() {
-		this.mJTableMissions = (GenericTableModel<Mission>) this.JTableMissions.getModel();
-		return this.mJTableMissions.getRowObject(this.JTableMissions.convertRowIndexToModel(this.JTableMissions.getSelectedRow()));
+ 	public Mission getMissionSelected() {
+		try {
+			this.mJTableMissions = (GenericTableModel<Mission>) this.JTableMissions.getModel();
+			return this.mJTableMissions.getRowObject(this.JTableMissions.convertRowIndexToModel(this.JTableMissions.getSelectedRow()));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(
+					new JFrame(), "Vous devez sélectionner une mission pour réaliser cette action.",
+					"Mission non séléctionnée", JOptionPane.WARNING_MESSAGE
+			);
+			e.printStackTrace();
+			return null;
+		}
+	}
+ 	
+ 	public CompetenceRequirement getCompetenceSelected() {
+		try {
+			this.mJTableCompetences = (GenericTableModel<CompetenceRequirement>) this.JTableCompetences.getModel();
+			return this.mJTableCompetences.getRowObject(this.JTableCompetences.convertRowIndexToModel(this.JTableCompetences.getSelectedRow()));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(
+					new JFrame(), "Vous devez sélectionner une compétence pour réaliser cette action.",
+					"Compétence non séléctionnée", JOptionPane.WARNING_MESSAGE
+			);
+			e.printStackTrace();
+			return null;
+		}
+	}
+ 	
+ 	public Employee getEmployeSelected() {
+		try {
+			this.mJTableEmployes = (GenericTableModel<Employee>) this.JTableEmployes.getModel();
+			return this.mJTableEmployes.getRowObject(this.JTableEmployes.convertRowIndexToModel(this.JTableEmployes.getSelectedRow()));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(
+					new JFrame(), "Vous devez sélectionner un employé pour réaliser cette action.",
+					"Employé non séléctionné", JOptionPane.WARNING_MESSAGE
+			);
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
  	
@@ -287,28 +325,27 @@ public class Missions extends Formulaire implements MouseListener {
 				
 				JFrame frame = null;
 				try {
-					frame = new MissionsAddCompetence<Mission, Employee>(data, getSelected(), Employee.class);
+					frame = new MissionsAddCompetence<Mission, Employee>(data, getMissionSelected(), Employee.class);
 				} catch (HeadlessException | DataException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.pack();
-
 				frame.setVisible(true);
-				
 			}
 			
 			if (e.getSource().equals(this.boutonEditComp)) {
-				VideChamps();
-				ChargementModification();
-				this.mode = "nouveau";
+				CompetenceRequirement compSelect = getCompetenceSelected();
+				if (compSelect != null) {
+					int rowIndex = this.JTableCompetences.getSelectedRow();
+					MissionsEditCompetence fel = new MissionsEditCompetence(rowIndex, JTableCompetences, compSelect, this);
+					fel.displayGUI();
+				}
 			}
 			
 			if (e.getSource().equals(this.boutonDeleteComp)) {
-				VideChamps();
-				ChargementModification();
-				this.mode = "nouveau";
+
 			}
 			
 			if (e.getSource().equals(this.boutonAddEmp)) {
@@ -336,6 +373,7 @@ public class Missions extends Formulaire implements MouseListener {
 			
 			if (e.getSource().equals(this.boutonAddEmpRecom)) {
 
+
 			}
 			
 
@@ -349,7 +387,9 @@ public class Missions extends Formulaire implements MouseListener {
 			 * Formulaire prêt à la modification d'un élément existant
 			 */
 			if (e.getSource().equals(this.boutonModifier)) {
-				ChargementModification();
+				if (getMissionSelected() != null) {
+					super.ChargementModification();
+				}
 			}
 			
 			/**
@@ -359,7 +399,7 @@ public class Missions extends Formulaire implements MouseListener {
 			if (e.getSource().equals(this.boutonSupprimer)) {
 
 					try {
-						Mission missSelect = getSelected();
+						Mission missSelect = getMissionSelected();
 						data.Missions().supprimer(missSelect);
 	 					this.mJTableMissions.deleteRowObject(missSelect);
 	 					this.mJTableMissions.fireTableDataChanged();
@@ -431,7 +471,7 @@ public class Missions extends Formulaire implements MouseListener {
 		 * Actualisation des champs du formulaire
 		 */
 		if (e.getSource() instanceof JTable) {
-			Mission missSelect = getSelected();
+			Mission missSelect = getMissionSelected();
 			
 			this.nom.setText(missSelect.getNomM());
 			this.dateD.setText(MissionDateFormat.format(missSelect.getDateDebut()));

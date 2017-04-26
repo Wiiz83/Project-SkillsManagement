@@ -17,9 +17,7 @@ import gui.JTables;
 import data.CSVRequests;
 
 public class MissionsAddCompetence<E extends CSVEntity, N extends CSVEntity> extends JFrame {
-	/**
-	 * 
-	 */
+
 	private static final long	serialVersionUID	= -379824080943045915L;
 	private Data				data;
 	private E					entity;
