@@ -62,6 +62,10 @@ public abstract class MissionAbstract extends CSVEntity {
 		this.forcer_planification = true;
 	}
 	
+	public void deplanifier() {
+		this.forcer_planification = false;
+	}
+	
 	/**
 	 * @param duree
 	 * @return calcul la date de fin et l'instancie sur la mission

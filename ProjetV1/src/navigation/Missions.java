@@ -44,46 +44,44 @@ import models.Status;
 public class Missions extends Formulaire implements MouseListener {
 	
 	private static final long	serialVersionUID	= 1L;
-	private Data 				data;
+	private Data				data;
 	
-	Button						boutonNouveau;
-	Button						boutonModifier;
-	Button						boutonSupprimer;
-	Button						boutonEnregistrer;
-	Button						boutonAnnuler;
-	Button						boutonAddComp;
-	Button						boutonEditComp;
-	Button						boutonDeleteComp;
-	Button						boutonAddEmp;
-	Button						boutonAddEmpRecom;
-
+	Button	boutonNouveau;
+	Button	boutonModifier;
+	Button	boutonSupprimer;
+	Button	boutonEnregistrer;
+	Button	boutonAnnuler;
+	Button	boutonAddComp;
+	Button	boutonEditComp;
+	Button	boutonDeleteComp;
+	Button	boutonAddEmp;
+	Button	boutonAddEmpRecom;
 	
-	JTable									JTableMissions;
-	GenericTableModel<Mission> mJTableMissions;
-
-	JTable									JTableCompetences;
-	GenericTableModel<CompetenceRequirement>		mJTableCompetences;
+	JTable						JTableMissions;
+	GenericTableModel<Mission>	mJTableMissions;
 	
-	JTable										JTableEmployes;
-	GenericTableModel<Employee> mJTableEmployes;
+	JTable										JTableCompetences;
+	GenericTableModel<CompetenceRequirement>	mJTableCompetences;
 	
-	JTextField					nom;
-	JComboBox<String>	statut;
+	JTable						JTableEmployes;
+	GenericTableModel<Employee>	mJTableEmployes;
+	
+	JTextField			nom;
+	JComboBox<Status>	statut;
 	JFormattedTextField	dateD;
 	JFormattedTextField	duree;
 	JFormattedTextField	nombre;
-
-	SimpleDateFormat		GuiDateFormat		= new SimpleDateFormat("yyyy-MM-dd");
-	SimpleDateFormat		MissionDateFormat	= new SimpleDateFormat("dd/MM/yyyy");
-	SimpleDateFormat		MissionDureeFormat	= new SimpleDateFormat("dd/MM/yyyy");
-
+	
+	SimpleDateFormat	GuiDateFormat		= new SimpleDateFormat("yyyy-MM-dd");
+	SimpleDateFormat	MissionDateFormat	= new SimpleDateFormat("dd/MM/yyyy");
+	SimpleDateFormat	MissionDureeFormat	= new SimpleDateFormat("dd/MM/yyyy");
 	
 	public Missions(Data data) {
 		this.data = data;
 		setOpaque(false);
 		setLayout(null);
 		setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
-
+		
 		this.JTableMissions = new JTable();
 		try {
 			JTableMissions = JTables.Missions(data.Missions().tous());
@@ -118,7 +116,7 @@ public class Missions extends Formulaire implements MouseListener {
 		add(this.boutonSupprimer);
 		add(this.boutonEnregistrer);
 		add(this.boutonAnnuler);
-
+		
 		Titre titre = new Titre(" Détails de la mission :");
 		titre.setBounds(330, 10, 930, 20);
 		add(titre);
@@ -156,7 +154,7 @@ public class Missions extends Formulaire implements MouseListener {
 		this.nom.setBounds(400, 60, 150, 25);
 		add(this.nom);
 		
-		this.statut = new JComboBox(Status.values());
+		this.statut = new JComboBox<>(Status.values());
 		this.statut.addMouseListener(this);
 		this.statut.setBounds(400, 100, 150, 25);
 		add(this.statut);
@@ -172,7 +170,6 @@ public class Missions extends Formulaire implements MouseListener {
 		this.nombre.setBounds(480, 140, 70, 25);
 		add(nombre);
 		
-
 		MaskFormatter formatterDuree;
 		try {
 			formatterDuree = new MaskFormatter("####");
@@ -229,15 +226,14 @@ public class Missions extends Formulaire implements MouseListener {
 		add(this.boutonDeleteComp);
 		
 		this.boutonAddEmp = new Button("/boutons/miniedit.png");
-		this.boutonAddEmp.setBounds(1160, 280); 
+		this.boutonAddEmp.setBounds(1160, 280);
 		this.boutonAddEmp.addMouseListener(this);
 		add(this.boutonAddEmp);
 		
 		this.boutonAddEmpRecom = new Button("/boutons/minirecommandation.png");
-		this.boutonAddEmpRecom.setBounds(1160, 320); 
+		this.boutonAddEmpRecom.setBounds(1160, 320);
 		this.boutonAddEmpRecom.addMouseListener(this);
 		add(this.boutonAddEmpRecom);
-		
 		
 		composantsEdition.add(this.JTableEmployes);
 		composantsEdition.add(this.JTableCompetences);
@@ -263,22 +259,24 @@ public class Missions extends Formulaire implements MouseListener {
 		super.ChargementConsultation();
 	}
 	
-	public void VideChamps(){
+	public void VideChamps() {
 		this.nom.setText("");
 		this.dateD.setText("");
 		this.duree.setText("");
 		this.nombre.setText("");
 		this.statut.setSelectedIndex(0);
-		this.mJTableEmployes = (GenericTableModel<Employee>)  JTables.Employes(new ArrayList<Employee>()).getModel();
+		this.mJTableEmployes = (GenericTableModel<Employee>) JTables.Employes(new ArrayList<Employee>()).getModel();
 		this.JTableEmployes.setModel(mJTableEmployes);
-		this.mJTableCompetences = (GenericTableModel<CompetenceRequirement>) JTables.CompetencesRequises(new ArrayList<CompetenceRequirement>()).getModel();
+		this.mJTableCompetences = (GenericTableModel<CompetenceRequirement>) JTables
+				.CompetencesRequises(new ArrayList<CompetenceRequirement>()).getModel();
 		this.JTableCompetences.setModel(mJTableCompetences);
 	}
 	
- 	public Mission getMissionSelected() {
+	public Mission getMissionSelected() {
 		try {
 			this.mJTableMissions = (GenericTableModel<Mission>) this.JTableMissions.getModel();
-			return this.mJTableMissions.getRowObject(this.JTableMissions.convertRowIndexToModel(this.JTableMissions.getSelectedRow()));
+			return this.mJTableMissions
+					.getRowObject(this.JTableMissions.convertRowIndexToModel(this.JTableMissions.getSelectedRow()));
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(
 					new JFrame(), "Vous devez sélectionner une mission pour réaliser cette action.",
@@ -288,11 +286,13 @@ public class Missions extends Formulaire implements MouseListener {
 			return null;
 		}
 	}
- 	
- 	public CompetenceRequirement getCompetenceSelected() {
+	
+	public CompetenceRequirement getCompetenceSelected() {
 		try {
 			this.mJTableCompetences = (GenericTableModel<CompetenceRequirement>) this.JTableCompetences.getModel();
-			return this.mJTableCompetences.getRowObject(this.JTableCompetences.convertRowIndexToModel(this.JTableCompetences.getSelectedRow()));
+			return this.mJTableCompetences.getRowObject(
+					this.JTableCompetences.convertRowIndexToModel(this.JTableCompetences.getSelectedRow())
+			);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(
 					new JFrame(), "Vous devez sélectionner une compétence pour réaliser cette action.",
@@ -302,11 +302,12 @@ public class Missions extends Formulaire implements MouseListener {
 			return null;
 		}
 	}
- 	
- 	public Employee getEmployeSelected() {
+	
+	public Employee getEmployeSelected() {
 		try {
 			this.mJTableEmployes = (GenericTableModel<Employee>) this.JTableEmployes.getModel();
-			return this.mJTableEmployes.getRowObject(this.JTableEmployes.convertRowIndexToModel(this.JTableEmployes.getSelectedRow()));
+			return this.mJTableEmployes
+					.getRowObject(this.JTableEmployes.convertRowIndexToModel(this.JTableEmployes.getSelectedRow()));
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(
 					new JFrame(), "Vous devez sélectionner un employé pour réaliser cette action.",
@@ -317,7 +318,29 @@ public class Missions extends Formulaire implements MouseListener {
 		}
 	}
 	
- 	
+	// TODO : Appeler à chaque modification de champ et affectation d'employés
+	// ou compétences req.
+	private void updateComboBox() {
+		Mission mission = getMissionSelected();
+		statut.removeAllItems();
+		if (mission == null)
+			return;
+		statut.addItem(mission.getStatus());
+		if (mission.getStatus() == Status.PREPARATION)
+			statut.addItem(Status.PLANIFIEE);
+	}
+	
+	// TODO: Appler avant l'enregistrement
+	private void updateMissionStatus() {
+		Status selected = (Status) statut.getSelectedItem();
+		Mission mission = getMissionSelected();
+		if (selected == Status.PLANIFIEE && mission.getStatus() == Status.PREPARATION)
+			mission.planifier();
+		if (selected == Status.PREPARATION && mission.getForcer_planification()
+				&& mission.getStatus() == Status.PLANIFIEE)
+			mission.deplanifier();
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() instanceof Button) {
@@ -340,44 +363,46 @@ public class Missions extends Formulaire implements MouseListener {
 				CompetenceRequirement compSelect = getCompetenceSelected();
 				if (compSelect != null) {
 					int rowIndex = this.JTableCompetences.getSelectedRow();
-					MissionsEditCompetence fel = new MissionsEditCompetence(rowIndex, JTableCompetences, compSelect, this);
+					MissionsEditCompetence fel = new MissionsEditCompetence(
+							rowIndex, JTableCompetences, compSelect, this
+					);
 					fel.displayGUI();
 				}
 			}
 			
 			if (e.getSource().equals(this.boutonDeleteComp)) {
-
+				
 			}
 			
 			if (e.getSource().equals(this.boutonAddEmp)) {
 				ProgramFrame.getFrame().setEnabled(false);
 				switch (this.mode) {
-					case "nouveau":
-						try {
-							ArrayList<Employee> listEmpNonPoss = data.Employes().tous();
-							GenericTableModel<Employee> empNonPossModel = (GenericTableModel<Employee>) JTables.Employes(listEmpNonPoss).getModel();
-							JTable empNonPoss = new JTable(empNonPossModel);
-							JTable empPoss = new JTable(mJTableEmployes);
-							PersonnelEditCompetence gestionListe = new PersonnelEditCompetence(empPoss, empNonPoss, mJTableEmployes, empNonPossModel);
-							gestionListe.displayGUI();
-						} catch (DataException e1) {
-							e1.printStackTrace();
-						}
-						break;
+				case "nouveau":
+					try {
+						ArrayList<Employee> listEmpNonPoss = data.Employes().tous();
+						GenericTableModel<Employee> empNonPossModel = (GenericTableModel<Employee>) JTables
+								.Employes(listEmpNonPoss).getModel();
+						JTable empNonPoss = new JTable(empNonPossModel);
+						JTable empPoss = new JTable(mJTableEmployes);
+						PersonnelEditCompetence gestionListe = new PersonnelEditCompetence(
+								empPoss, empNonPoss, mJTableEmployes, empNonPossModel
+						);
+						gestionListe.displayGUI();
+					} catch (DataException e1) {
+						e1.printStackTrace();
+					}
+					break;
+				
+				case "modification":
 					
-					case "modification":
-
-						
-						break;
+					break;
 				}
 			}
 			
 			if (e.getSource().equals(this.boutonAddEmpRecom)) {
-
-
+				
 			}
 			
-
 			if (e.getSource().equals(this.boutonNouveau)) {
 				VideChamps();
 				ChargementModification();
@@ -398,16 +423,16 @@ public class Missions extends Formulaire implements MouseListener {
 			 * confirmation de l'utilisateur
 			 */
 			if (e.getSource().equals(this.boutonSupprimer)) {
-
-					try {
-						Mission missSelect = getMissionSelected();
-						data.Missions().supprimer(missSelect);
-	 					this.mJTableMissions.deleteRowObject(missSelect);
-	 					this.mJTableMissions.fireTableDataChanged();
-						VideChamps();
-					} catch (DataException e2) {
-						e2.printStackTrace();
-					}
+				
+				try {
+					Mission missSelect = getMissionSelected();
+					data.Missions().supprimer(missSelect);
+					this.mJTableMissions.deleteRowObject(missSelect);
+					this.mJTableMissions.fireTableDataChanged();
+					VideChamps();
+				} catch (DataException e2) {
+					e2.printStackTrace();
+				}
 			}
 			
 			/**
@@ -431,39 +456,39 @@ public class Missions extends Formulaire implements MouseListener {
 				ChargementConsultation();
 				
 				switch (this.mode) {
-					case "nouveau":
-						/*
-						Mission nouvEmp = new Mission(this.nom.getText(), this.dateD.getText(), this.duree.getText(), this.nombre.getText());
-						
-						
-				        if (this.JTableEmployes != null && this.JTableEmployes.getModel() != null) {
-				        	ArrayList<Employee> listEmp = new ArrayList<Object>;
-
-				        	for(int row = 0; row < table.getRowCount(); row++) {
-				        	    for(int column = 0; column = table.getColumnCount(); column++) {
-				        	      list.add(table.getValueAt(row, column));  
-				        	    }
-				        	}
-				        	
-				        	nouvEmp.setAffEmp(affEmp);
-				        }
-							
-						if(){
-							
-						}
-
-						data.Missions().ajouter(nouvEmp);
-						break;
-					
-					case "modification":
-						/*this.empSelect.setLastName(this.nom.getText());
-						this.empSelect.setName(this.prenom.getText());
-						this.empSelect.setEntryDate(this.date.getText(), "yyyy-MM-dd");
-						data.Employes().modifier(this.empSelect);*/
-						break;
-					
-					default:
-						break;
+				case "nouveau":
+					/*
+					 * Mission nouvEmp = new Mission(this.nom.getText(),
+					 * this.dateD.getText(), this.duree.getText(),
+					 * this.nombre.getText());
+					 * 
+					 * 
+					 * if (this.JTableEmployes != null &&
+					 * this.JTableEmployes.getModel() != null) {
+					 * ArrayList<Employee> listEmp = new ArrayList<Object>;
+					 * 
+					 * for(int row = 0; row < table.getRowCount(); row++) {
+					 * for(int column = 0; column = table.getColumnCount();
+					 * column++) { list.add(table.getValueAt(row, column)); } }
+					 * 
+					 * nouvEmp.setAffEmp(affEmp); }
+					 * 
+					 * if(){
+					 * 
+					 * }
+					 * 
+					 * data.Missions().ajouter(nouvEmp); break;
+					 * 
+					 * case "modification":
+					 * /*this.empSelect.setLastName(this.nom.getText());
+					 * this.empSelect.setName(this.prenom.getText());
+					 * this.empSelect.setEntryDate(this.date.getText(),
+					 * "yyyy-MM-dd"); data.Employes().modifier(this.empSelect);
+					 */
+					break;
+				
+				default:
+					break;
 				}
 			}
 		}
@@ -483,7 +508,7 @@ public class Missions extends Formulaire implements MouseListener {
 			ArrayList<CompetenceRequirement> listCompMiss = missSelect.getCompReq();
 			TableModel tmComp = JTables.CompetencesRequises(listCompMiss).getModel();
 			this.JTableCompetences.setModel(tmComp);
-
+			
 			ArrayList<Employee> listEmpMiss = missSelect.getAffEmp();
 			TableModel tmEmp = JTables.Employes(listEmpMiss).getModel();
 			this.JTableEmployes.setModel(tmEmp);
