@@ -371,7 +371,10 @@ public class Missions extends Formulaire implements MouseListener {
 			}
 			
 			if (e.getSource().equals(this.boutonDeleteComp)) {
-				
+				CompetenceRequirement compSelect = getCompetenceSelected();
+				if (compSelect != null) {
+					
+				}
 			}
 			
 			if (e.getSource().equals(this.boutonAddEmp)) {
@@ -380,13 +383,10 @@ public class Missions extends Formulaire implements MouseListener {
 				case "nouveau":
 					try {
 						ArrayList<Employee> listEmpNonPoss = data.Employes().tous();
-						GenericTableModel<Employee> empNonPossModel = (GenericTableModel<Employee>) JTables
-								.Employes(listEmpNonPoss).getModel();
+						GenericTableModel<Employee> empNonPossModel = (GenericTableModel<Employee>) JTables.Employes(listEmpNonPoss).getModel();
 						JTable empNonPoss = new JTable(empNonPossModel);
 						JTable empPoss = new JTable(mJTableEmployes);
-						PersonnelEditCompetence gestionListe = new PersonnelEditCompetence(
-								empPoss, empNonPoss, mJTableEmployes, empNonPossModel
-						);
+						PersonnelEditCompetence gestionListe = new PersonnelEditCompetence(empPoss, empNonPoss, mJTableEmployes, empNonPossModel);
 						gestionListe.displayGUI();
 					} catch (DataException e1) {
 						e1.printStackTrace();
@@ -394,7 +394,35 @@ public class Missions extends Formulaire implements MouseListener {
 					break;
 				
 				case "modification":
-					
+					Mission missSelect = getMissionSelected();
+					if (missSelect != null) {
+
+							// ArrayList<Employee> listEmpNonPoss = data.Missions();
+							//
+							// Récuperer les Employés manquants
+							// GenericTableModel<Employee> empNonPossModel = (GenericTableModel<Employee>) JTables.Employes(listEmpNonPoss).getModel();
+							// JTable empNonPoss = new JTable(empNonPossModel);
+							
+							/*
+							 * 
+							 * 							JTable empPoss = new JTable(mJTableEmployes);
+									PersonnelEditCompetence gestionListe = new PersonnelEditCompetence(empPoss, empNonPoss, mJTableEmployes, empNonPossModel);
+									gestionListe.displayGUI();
+							 * 
+							 * 
+							 */
+
+							/*
+							 * 							GenericTableModel<Competence> compNonPossModel = (GenericTableModel<Competence>) JTables.Competences(listCompNonPoss).getModel();	 
+							JTable compNonPoss = new JTable(compNonPossModel);
+							JTable compPoss = new JTable(mJTableCompetences);
+							PersonnelEditCompetence gestionListe = new PersonnelEditCompetence(compPoss, compNonPoss, mJTableCompetences, compNonPossModel);
+							gestionListe.displayGUI();
+							 * 
+							 * 
+							 */
+
+					}
 					break;
 				}
 			}
@@ -413,34 +441,79 @@ public class Missions extends Formulaire implements MouseListener {
 			 * Formulaire prêt à la modification d'un élément existant
 			 */
 			if (e.getSource().equals(this.boutonModifier)) {
-				if (getMissionSelected() != null) {
-					super.ChargementModification();
+				Mission missSelect = getMissionSelected();
+				if (missSelect != null) {
+					if(missSelect.estModifiable()){
+						super.ChargementModification();
+					} else if(missSelect.getStatus() == Status.EN_COURS) {
+						JOptionPane.showMessageDialog(
+								new JFrame(), "La mission est en cours : elle n'est donc plus modifiable.",
+								"Mission en cours", JOptionPane.WARNING_MESSAGE
+						);
+					} else if(missSelect.getStatus() == Status.TERMINEE) {
+						JOptionPane.showMessageDialog(
+								new JFrame(), "La mission est terminée : elle n'est donc plus modifiable.",
+								"Mission terminée", JOptionPane.WARNING_MESSAGE
+						);
+					}
+					
 				}
 			}
 			
 			/**
-			 * TODO Suppression d'un élément existant : doit demander la
+			 * Suppression d'un élément existant : doit demander la
 			 * confirmation de l'utilisateur
 			 */
 			if (e.getSource().equals(this.boutonSupprimer)) {
-				
-				try {
-					Mission missSelect = getMissionSelected();
-					data.Missions().supprimer(missSelect);
-					this.mJTableMissions.deleteRowObject(missSelect);
-					this.mJTableMissions.fireTableDataChanged();
-					VideChamps();
-				} catch (DataException e2) {
-					e2.printStackTrace();
+				Mission missSelect = getMissionSelected();
+				if (missSelect != null) {
+					int n = JOptionPane.showConfirmDialog(
+							new JFrame(), "Voulez vraiment supprimer cette mission ?", "Confirmation de suppression",
+							JOptionPane.YES_NO_OPTION
+					);
+					if (n == JOptionPane.YES_OPTION) {
+						try {
+							data.Missions().supprimer(missSelect);
+							this.mJTableMissions.deleteRowObject(missSelect);
+							this.mJTableMissions.fireTableDataChanged();
+							VideChamps();
+						} catch (DataException e1) {
+							e1.printStackTrace();
+						}
+					}
 				}
 			}
 			
 			/**
-			 * TODO On annule toutes les modifications faites par l'utilisateur
-			 * depuis l'activation du mode modification / du mode nouveau
+			 * On annule toutes les modifications faites par l'utilisateur depuis l'activation du mode modification / du mode nouveau
 			 */
 			if (e.getSource().equals(this.boutonAnnuler)) {
-				ChargementConsultation();
+				switch (this.mode) {
+				case "nouveau":
+					VideChamps();
+					ChargementConsultation();
+				break;
+				
+				case "modification":
+					Mission missSelect = getMissionSelected();
+					if (missSelect != null) {
+						this.nom.setText(missSelect.getNomM());
+						this.dateD.setText(MissionDateFormat.format(missSelect.getDateDebut()));
+						this.duree.setText(Integer.toString(missSelect.getDuree()));
+						this.nombre.setText(Integer.toString(missSelect.getNbPersReq()));
+						this.statut.setSelectedItem(missSelect.getStatus());
+						
+						ArrayList<CompetenceRequirement> listCompMiss = missSelect.getCompReq();
+						TableModel tmComp = JTables.CompetencesRequises(listCompMiss).getModel();
+						this.JTableCompetences.setModel(tmComp);
+						
+						ArrayList<Employee> listEmpMiss = missSelect.getAffEmp();
+						TableModel tmEmp = JTables.Employes(listEmpMiss).getModel();
+						this.JTableEmployes.setModel(tmEmp);
+						ChargementConsultation();
+					}
+					break;
+				}
 			}
 			
 			/**
