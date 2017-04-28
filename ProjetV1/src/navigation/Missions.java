@@ -345,18 +345,18 @@ public class Missions extends Formulaire implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() instanceof Button) {
 			if (e.getSource().equals(this.boutonAddComp)) {
-				
-				JFrame frame = null;
-				try {
-					frame = new MissionsAddCompetence<Mission, Employee>(data, getMissionSelected(), Employee.class);
-				} catch (HeadlessException | DataException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				CompetenceRequirement compSelect = getCompetenceSelected();
+				if (compSelect != null) {
+					JFrame frame;
+					try {
+						frame = new MissionsAddCompetence<Mission, Employee>(data, getMissionSelected(), Employee.class);
+						frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+						frame.pack();
+						frame.setVisible(true);
+					} catch (HeadlessException | DataException e1) {
+						e1.printStackTrace();
+					}
 				}
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame.pack();
-				frame.setVisible(true);
-				
 			}
 			
 			if (e.getSource().equals(this.boutonEditComp)) {
@@ -371,9 +371,21 @@ public class Missions extends Formulaire implements MouseListener {
 			}
 			
 			if (e.getSource().equals(this.boutonDeleteComp)) {
-				CompetenceRequirement compSelect = getCompetenceSelected();
-				if (compSelect != null) {
-					
+				Mission missSelect = getMissionSelected();
+				if (missSelect != null) {
+					CompetenceRequirement compSelect = getCompetenceSelected();
+					if (compSelect != null) {
+						int n = JOptionPane.showConfirmDialog(
+								new JFrame(), "Voulez vraiment supprimer cette compétence ?", "Confirmation de suppression",
+								JOptionPane.YES_NO_OPTION
+						);
+						if (n == JOptionPane.YES_OPTION) {
+							missSelect.removeCompetenceReq(compSelect);
+							this.mJTableCompetences.deleteRowObject(compSelect);
+							this.mJTableCompetences.fireTableDataChanged();
+							VideChamps();
+						}
+					}
 				}
 			}
 			

@@ -30,7 +30,7 @@ public class Mission extends MissionAbstract {
 		return CompReq.add(cr);
 	}
 	
-	public boolean removeCompetenceReq(Competence c) {
+	public boolean removeCompetenceReq(CompetenceRequirement c) {
 		for (CompetenceRequirement cr : CompReq)
 			if (cr.getCompetence().equals(c))
 				return CompReq.remove(cr);
