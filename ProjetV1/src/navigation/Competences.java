@@ -10,13 +10,19 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+
 import csv.InvalidDataException;
 import data.Data;
 import data.DataException;
 import gui.Button;
 import gui.Formulaire;
 import gui.GenericTableModel;
+import gui.HintTextField;
 import gui.JTables;
 import gui.Titre;
 import models.Competence;
@@ -50,6 +56,8 @@ public class Competences extends Formulaire implements MouseListener {
 	Competence			cloned;
 	ArrayList<Language>	langues;
 	
+	HintTextField recherche;
+	
 	public Competences(Data data) {
 		this.data = data;
 		try {
@@ -66,16 +74,51 @@ public class Competences extends Formulaire implements MouseListener {
 			this.JTableCompetences = JTables.Competences(data.Competences().tous());
 			this.JTableCompetences.setFillsViewportHeight(true);
 			this.JTableCompetences.addMouseListener(this);
-			JScrollPane jsCompetences = new JScrollPane(this.JTableCompetences);
-			jsCompetences.setVisible(true);
-			jsCompetences.setBounds(10, 10, 300, 600);
-			add(jsCompetences);
+			JScrollPane js = new JScrollPane(this.JTableCompetences);
+			js.setVisible(true);
+			js.setBounds(10, 45, 300, 565);
+			add(js);
 		} catch (DataException e) {
 			e.printStackTrace();
 		}
 		this.mJTableCompetences = (GenericTableModel<Competence>) this.JTableCompetences.getModel();
 		this.JTableCompetences.getColumnModel().getColumn(0).setPreferredWidth(75);
 		this.JTableCompetences.getColumnModel().getColumn(1).setPreferredWidth(225);
+		
+		this.recherche = new HintTextField(" Rechercher un code ou un libellé..."); 
+		this.recherche.setBounds(10, 10, 300, 25);
+		TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(JTableCompetences.getModel());
+		this.recherche.getDocument().addDocumentListener(new DocumentListener(){
+
+	            @Override
+	            public void insertUpdate(DocumentEvent e) {
+	                String text = recherche.getText();
+
+	                if (text.trim().length() == 0) {
+	                    rowSorter.setRowFilter(null);
+	                } else {
+	                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+	                }
+	            }
+
+	            @Override
+	            public void removeUpdate(DocumentEvent e) {
+	                String text = recherche.getText();
+
+	                if (text.trim().length() == 0) {
+	                    rowSorter.setRowFilter(null);
+	                } else {
+	                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+	                }
+	            }
+
+	            @Override
+	            public void changedUpdate(DocumentEvent e) {
+	            }
+
+	        });
+		add(this.recherche);
+		JTableCompetences.setRowSorter(rowSorter);
 		
 		this.boutonNouveau = new Button("/boutons/nouveau.png");
 		this.boutonNouveau.setBounds(330, 560);
