@@ -144,11 +144,11 @@ public class Personnel extends Formulaire implements MouseListener {
 		this.JTableCompetences.setFillsViewportHeight(true);
 		JScrollPane js = new JScrollPane(this.JTableCompetences);
 		js.setVisible(true);
-		js.setBounds(350, 170, 350, 350);
+		js.setBounds(350, 170, 800, 350);
 		add(js);
 		
 		this.boutonEditComp = new Button("/boutons/miniedit.png");
-		this.boutonEditComp.setBounds(710, 170);
+		this.boutonEditComp.setBounds(1160, 170);
 		this.boutonEditComp.addMouseListener(this);
 		add(this.boutonEditComp);
 		
@@ -175,6 +175,8 @@ public class Personnel extends Formulaire implements MouseListener {
 		this.mJTableCompetences = (GenericTableModel<Competence>) JTables.Competences(new ArrayList<Competence>())
 				.getModel();
 		this.JTableCompetences.setModel(this.mJTableCompetences);
+		this.JTableCompetences.getColumnModel().getColumn(0).setPreferredWidth(200);
+		this.JTableCompetences.getColumnModel().getColumn(1).setPreferredWidth(600);
 	}
 	
 	public Employee getSelected() {
@@ -293,6 +295,8 @@ public class Personnel extends Formulaire implements MouseListener {
 							this.mJTableCompetences = (GenericTableModel<Competence>) JTables.Competences(listCompEmp)
 									.getModel();
 							this.JTableCompetences.setModel(this.mJTableCompetences);
+							this.JTableCompetences.getColumnModel().getColumn(0).setPreferredWidth(200);
+							this.JTableCompetences.getColumnModel().getColumn(1).setPreferredWidth(600);
 							ChargementConsultation();
 						}
 						break;
@@ -300,38 +304,48 @@ public class Personnel extends Formulaire implements MouseListener {
 			}
 
 			if (e.getSource().equals(this.boutonEnregistrer)) {
-				try {
-					switch (this.mode) {
-					case "nouveau":
-						Employee nouvEmp = new Employee(this.nom.getText(), this.prenom.getText(), this.date.getText());
-						data.Employes().ajouter(nouvEmp);
-						ArrayList<Competence> listCompNouv = mJTableCompetences.getArraylist();
-						nouvEmp.setCompetences(listCompNouv);
-						data.Employes().modifier(nouvEmp);
-						this.mJTablePersonnel.addRowObject(nouvEmp);
-						this.mJTablePersonnel.fireTableDataChanged();
-						ChargementConsultation();
-						break;
-					
-					case "modification":
-						if (getSelected() != null) {
-							Employee empSelect = getSelected();
-							empSelect.setLastName(this.nom.getText());
-							empSelect.setName(this.prenom.getText());
-							empSelect.setEntryDate(this.date.getText(), "dd/MM/yyyy");
-							ArrayList<Competence> listComp = mJTableCompetences.getArraylist();
-							empSelect.setCompetences(listComp);
-							data.Employes().modifier(empSelect);
+				if((this.nom.getText().equals("")) || (this.prenom.getText().equals("")) || (this.date.getText().equals(""))){
+					JOptionPane.showMessageDialog(
+							new JFrame(), "Vous devez renseigner toutes les informations pour enregistrer.",
+							"Informations non renseignés", JOptionPane.WARNING_MESSAGE
+					);
+				} else {
+
+					try {
+						switch (this.mode) {
+						case "nouveau":
+							Employee nouvEmp = new Employee(this.nom.getText(), this.prenom.getText(), this.date.getText());
+							data.Employes().ajouter(nouvEmp);
+							ArrayList<Competence> listCompNouv = mJTableCompetences.getArraylist();
+							nouvEmp.setCompetences(listCompNouv);
+							data.Employes().modifier(nouvEmp);
+							this.mJTablePersonnel.addRowObject(nouvEmp);
 							this.mJTablePersonnel.fireTableDataChanged();
 							ChargementConsultation();
+							break;
+						
+						case "modification":
+							if (getSelected() != null) {
+								Employee empSelect = getSelected();
+								empSelect.setLastName(this.nom.getText());
+								empSelect.setName(this.prenom.getText());
+								empSelect.setEntryDate(this.date.getText(), "dd/MM/yyyy");
+								ArrayList<Competence> listComp = mJTableCompetences.getArraylist();
+								empSelect.setCompetences(listComp);
+								data.Employes().modifier(empSelect);
+								this.mJTablePersonnel.fireTableDataChanged();
+								ChargementConsultation();
+							}
+							break;
 						}
-						break;
+					} catch (ParseException e1) {
+						System.out.println("Format incorrect: " + e1);
+					} catch (DataException e1) {
+						System.out.println("Problème d'enregistrement: " + e1);
 					}
-				} catch (ParseException e1) {
-					System.out.println("Format incorrect: " + e1);
-				} catch (DataException e1) {
-					System.out.println("Problème d'enregistrement: " + e1);
+					
 				}
+
 
 			}
 		}
@@ -349,6 +363,8 @@ public class Personnel extends Formulaire implements MouseListener {
 				this.mJTablePersonnel = (GenericTableModel<Employee>) this.JTablePersonnel.getModel();
 				this.mJTableCompetences = (GenericTableModel<Competence>) JTables.Competences(listCompEmp).getModel();
 				this.JTableCompetences.setModel(this.mJTableCompetences);
+				this.JTableCompetences.getColumnModel().getColumn(0).setPreferredWidth(200);
+				this.JTableCompetences.getColumnModel().getColumn(1).setPreferredWidth(600);
 			}
 		}
 	}

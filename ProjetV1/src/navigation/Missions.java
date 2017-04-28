@@ -545,12 +545,19 @@ public class Missions extends Formulaire implements MouseListener {
 			 * TODO On enregistre les modifications ou le nouvel élément
 			 */
 			if (e.getSource().equals(this.boutonEnregistrer)) {
+				if((this.dateD.getText().equals("")) ||  (this.duree.getText().equals("")) || (this.nombre.getText().equals(""))  ||  (this.nom.getText().equals(""))){
+					JOptionPane.showMessageDialog(
+							new JFrame(), "Vous devez renseigner toutes les informations pour enregistrer.",
+							"Informations non renseignés", JOptionPane.WARNING_MESSAGE
+					);
+				} else {
 				
 				Date dateD = new Date(this.dateD.getText());
 				int duree = Integer.parseInt(this.duree.getText());
 				int nb = Integer.parseInt(this.nombre.getText());
+				String nom = this.nom.getText();
 				
-				Mission mission = new Mission(this.nom.getText(), dateD, duree, nb);
+				Mission mission = new Mission(nom, dateD, duree, nb);
 				ChargementConsultation();
 				
 				switch (this.mode) {
@@ -588,6 +595,7 @@ public class Missions extends Formulaire implements MouseListener {
 				default:
 					break;
 				}
+			}
 			}
 		}
 		
