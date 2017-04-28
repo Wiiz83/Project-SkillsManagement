@@ -108,7 +108,9 @@ public class Missions extends Formulaire implements MouseListener {
 		}
 		this.mJTableMissions = (GenericTableModel<Mission>) this.JTableMissions.getModel();
 		
-		this.recherche = new HintTextField(" Rechercher un nom de mission..."); 
+		
+		String indication =  "Rechercher un nom de mission...";
+		this.recherche = new HintTextField(indication); 
 		this.recherche.setBounds(10, 10, 300, 25);
 		TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(JTableMissions.getModel());
 		this.recherche.getDocument().addDocumentListener(new DocumentListener(){
@@ -117,7 +119,7 @@ public class Missions extends Formulaire implements MouseListener {
 	            public void insertUpdate(DocumentEvent e) {
 	                String text = recherche.getText();
 
-	                if (text.trim().length() == 0) {
+	                if (text.equals(indication)) {
 	                    rowSorter.setRowFilter(null);
 	                } else {
 	                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
@@ -128,7 +130,7 @@ public class Missions extends Formulaire implements MouseListener {
 	            public void removeUpdate(DocumentEvent e) {
 	                String text = recherche.getText();
 
-	                if (text.trim().length() == 0) {
+	                if (text.equals(indication)) {
 	                    rowSorter.setRowFilter(null);
 	                } else {
 	                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));

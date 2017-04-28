@@ -1,5 +1,8 @@
 package navigation;
 
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -24,6 +27,7 @@ import gui.Formulaire;
 import gui.GenericTableModel;
 import gui.HintTextField;
 import gui.JTables;
+import gui.ProgramFrame;
 import gui.Titre;
 import models.Competence;
 import models.CompetenceCode;
@@ -85,16 +89,18 @@ public class Competences extends Formulaire implements MouseListener {
 		this.JTableCompetences.getColumnModel().getColumn(0).setPreferredWidth(75);
 		this.JTableCompetences.getColumnModel().getColumn(1).setPreferredWidth(225);
 		
-		this.recherche = new HintTextField(" Rechercher un code ou un libellé..."); 
+		String indication =  "Rechercher un code ou un libellé...";
+		this.recherche = new HintTextField(indication); 
 		this.recherche.setBounds(10, 10, 300, 25);
 		TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(JTableCompetences.getModel());
+		
 		this.recherche.getDocument().addDocumentListener(new DocumentListener(){
 
 	            @Override
 	            public void insertUpdate(DocumentEvent e) {
 	                String text = recherche.getText();
 
-	                if (text.trim().length() == 0) {
+	                if (text.equals(indication)) {
 	                    rowSorter.setRowFilter(null);
 	                } else {
 	                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
@@ -105,7 +111,7 @@ public class Competences extends Formulaire implements MouseListener {
 	            public void removeUpdate(DocumentEvent e) {
 	                String text = recherche.getText();
 
-	                if (text.trim().length() == 0) {
+	                if (text.equals(indication)) {
 	                    rowSorter.setRowFilter(null);
 	                } else {
 	                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));

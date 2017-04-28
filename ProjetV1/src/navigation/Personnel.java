@@ -84,7 +84,8 @@ public class Personnel extends Formulaire implements MouseListener {
 		}
 		this.mJTablePersonnel = (GenericTableModel<Employee>) this.JTablePersonnel.getModel();
 		
-		this.recherche = new HintTextField(" Rechercher un nom ou prénom..."); 
+		String indication =  "Rechercher un nom ou prénom...";
+		this.recherche = new HintTextField(indication); 
 		this.recherche.setBounds(10, 10, 300, 25);
 		TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(JTablePersonnel.getModel());
 		this.recherche.getDocument().addDocumentListener(new DocumentListener(){
@@ -93,7 +94,7 @@ public class Personnel extends Formulaire implements MouseListener {
 	            public void insertUpdate(DocumentEvent e) {
 	                String text = recherche.getText();
 
-	                if (text.trim().length() == 0) {
+	                if (text.equals(indication)) {
 	                    rowSorter.setRowFilter(null);
 	                } else {
 	                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
@@ -104,7 +105,7 @@ public class Personnel extends Formulaire implements MouseListener {
 	            public void removeUpdate(DocumentEvent e) {
 	                String text = recherche.getText();
 
-	                if (text.trim().length() == 0) {
+	                if (text.equals(indication)) {
 	                    rowSorter.setRowFilter(null);
 	                } else {
 	                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
