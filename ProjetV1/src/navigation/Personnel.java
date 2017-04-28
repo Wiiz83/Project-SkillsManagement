@@ -34,7 +34,6 @@ public class Personnel extends Formulaire implements MouseListener {
 	private static final long	serialVersionUID	= 1L;
 	private Data				data;
 	
-	//GestionListe					gc;
 	ArrayList<Competence>	listCompEmp;
 	
 	JTable						JTablePersonnel;

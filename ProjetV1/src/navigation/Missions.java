@@ -34,6 +34,7 @@ import models.Competence;
 import models.CompetenceRequirement;
 import models.Employee;
 import models.Mission;
+import models.Recommendation;
 import models.Status;
 
 /**
@@ -345,8 +346,8 @@ public class Missions extends Formulaire implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() instanceof Button) {
 			if (e.getSource().equals(this.boutonAddComp)) {
-				CompetenceRequirement compSelect = getCompetenceSelected();
-				if (compSelect != null) {
+				Mission missSelect = getMissionSelected();
+				if (missSelect != null) {
 					JFrame frame;
 					try {
 						frame = new MissionsAddCompetence<Mission, Employee>(data, getMissionSelected(), Employee.class);
@@ -440,6 +441,18 @@ public class Missions extends Formulaire implements MouseListener {
 			}
 			
 			if (e.getSource().equals(this.boutonAddEmpRecom)) {
+				ProgramFrame.getFrame().setEnabled(false);
+				switch (this.mode) {
+				case "nouveau":
+					break;
+				
+				case "modification":
+					Mission missSelect = getMissionSelected();
+					if (missSelect != null) {
+
+					}
+					break;
+				}
 				
 			}
 			
