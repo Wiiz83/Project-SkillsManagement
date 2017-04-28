@@ -64,6 +64,7 @@ public class Missions extends Formulaire implements MouseListener {
 	Button	boutonDeleteComp;
 	Button	boutonAddEmp;
 	Button	boutonAddEmpRecom;
+	Button  missionTermine;
 	
 	JTable						JTableMissions;
 	GenericTableModel<Mission>	mJTableMissions;
