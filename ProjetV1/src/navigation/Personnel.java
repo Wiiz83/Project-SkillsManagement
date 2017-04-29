@@ -13,12 +13,18 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import javax.swing.text.MaskFormatter;
 import data.Data;
 import data.DataException;
 import gui.Button;
 import gui.Formulaire;
 import gui.GenericTableModel;
+import gui.HintTextField;
 import gui.JTables;
 import gui.ProgramFrame;
 import gui.Titre;
@@ -56,6 +62,8 @@ public class Personnel extends Formulaire implements MouseListener {
 	SimpleDateFormat	GuiDateFormat		= new SimpleDateFormat("yyyy-MM-dd");
 	SimpleDateFormat	EmployeeDateFormat	= new SimpleDateFormat("dd/MM/yyyy");
 	
+	HintTextField recherche;
+	
 	public Personnel(Data data) {
 		this.data = data;
 		setOpaque(false);
@@ -69,12 +77,49 @@ public class Personnel extends Formulaire implements MouseListener {
 			this.JTablePersonnel.addMouseListener(this);
 			JScrollPane js = new JScrollPane(this.JTablePersonnel);
 			js.setVisible(true);
-			js.setBounds(10, 10, 300, 600);
+			js.setBounds(10, 45, 300, 565);
 			add(js);
 		} catch (DataException e) {
 			e.printStackTrace();
 		}
 		this.mJTablePersonnel = (GenericTableModel<Employee>) this.JTablePersonnel.getModel();
+		
+		String indication =  "Rechercher un nom ou prénom...";
+		this.recherche = new HintTextField(indication); 
+		this.recherche.setBounds(10, 10, 300, 25);
+		TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(JTablePersonnel.getModel());
+		this.recherche.getDocument().addDocumentListener(new DocumentListener(){
+
+	            @Override
+	            public void insertUpdate(DocumentEvent e) {
+	                String text = recherche.getText();
+
+	                if (text.equals(indication)) {
+	                    rowSorter.setRowFilter(null);
+	                } else {
+	                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+	                }
+	            }
+
+	            @Override
+	            public void removeUpdate(DocumentEvent e) {
+	                String text = recherche.getText();
+
+	                if (text.equals(indication)) {
+	                    rowSorter.setRowFilter(null);
+	                } else {
+	                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+	                }
+	            }
+
+	            @Override
+	            public void changedUpdate(DocumentEvent e) {
+	            }
+
+	        });
+		add(this.recherche);
+		JTablePersonnel.setRowSorter(rowSorter);
+
 		
 		this.boutonNouveau = new Button("/boutons/nouveau.png");
 		this.boutonNouveau.setBounds(330, 560);

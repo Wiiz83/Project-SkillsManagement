@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.HeadlessException;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.ParseException;
@@ -20,13 +22,18 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import javax.swing.text.MaskFormatter;
 import data.Data;
 import data.DataException;
 import gui.Button;
 import gui.Formulaire;
 import gui.GenericTableModel;
+import gui.HintTextField;
 import gui.JTables;
 import gui.ProgramFrame;
 import gui.Titre;
@@ -57,6 +64,7 @@ public class Missions extends Formulaire implements MouseListener {
 	Button	boutonDeleteComp;
 	Button	boutonAddEmp;
 	Button	boutonAddEmpRecom;
+	Button  missionTermine;
 	
 	JTable						JTableMissions;
 	GenericTableModel<Mission>	mJTableMissions;
@@ -77,6 +85,9 @@ public class Missions extends Formulaire implements MouseListener {
 	SimpleDateFormat	MissionDateFormat	= new SimpleDateFormat("dd/MM/yyyy");
 	SimpleDateFormat	MissionDureeFormat	= new SimpleDateFormat("dd/MM/yyyy");
 	
+	 HintTextField recherche;
+	 JComboBox<String>	filtre;
+	
 	public Missions(Data data) {
 		this.data = data;
 		setOpaque(false);
@@ -90,12 +101,67 @@ public class Missions extends Formulaire implements MouseListener {
 			JTableMissions.addMouseListener(this);
 			JScrollPane js = new JScrollPane(JTableMissions);
 			js.setVisible(true);
-			js.setBounds(10, 10, 300, 600);
+			js.setBounds(10, 80, 300, 520);
 			add(js);
 		} catch (DataException e) {
 			e.printStackTrace();
 		}
 		this.mJTableMissions = (GenericTableModel<Mission>) this.JTableMissions.getModel();
+		
+		
+		String indication =  "Rechercher un nom de mission...";
+		this.recherche = new HintTextField(indication); 
+		this.recherche.setBounds(10, 10, 300, 25);
+		TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(JTableMissions.getModel());
+		this.recherche.getDocument().addDocumentListener(new DocumentListener(){
+
+	            @Override
+	            public void insertUpdate(DocumentEvent e) {
+	                String text = recherche.getText();
+
+	                if (text.equals(indication)) {
+	                    rowSorter.setRowFilter(null);
+	                } else {
+	                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+	                }
+	            }
+
+	            @Override
+	            public void removeUpdate(DocumentEvent e) {
+	                String text = recherche.getText();
+
+	                if (text.equals(indication)) {
+	                    rowSorter.setRowFilter(null);
+	                } else {
+	                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+	                }
+	            }
+
+	            @Override
+	            public void changedUpdate(DocumentEvent e) {
+	            }
+
+	        });
+		add(this.recherche);
+
+		
+		this.filtre = new JComboBox<>();
+		this.filtre.addItem("Toutes");
+		this.filtre.addItem(Status.EN_COURS.toString());
+		this.filtre.addItem(Status.PLANIFIEE.toString());
+		this.filtre.addItem(Status.PREPARATION.toString());
+		this.filtre.addItem(Status.TERMINEE.toString());
+		this.filtre.setBounds(10, 45, 300, 25);
+		this.filtre.addActionListener (new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	if(filtre.getSelectedItem().toString() != "Tous"){
+			    	rowSorter.setRowFilter(RowFilter.regexFilter(filtre.getSelectedItem().toString(), 2));
+		    	}
+		    }
+		});
+		add(this.filtre);
+		
+		JTableMissions.setRowSorter(rowSorter);
 		
 		this.boutonNouveau = new Button("/boutons/nouveau.png");
 		this.boutonNouveau.setBounds(330, 560);
