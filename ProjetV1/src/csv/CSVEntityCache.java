@@ -11,7 +11,7 @@ public class CSVEntityCache<E extends CSVEntity> {
 	private Cache<String, E> cache;
 	
 	public CSVEntityCache(CacheManager manager, Class<E> entity, String name) {
-		
+		// Store by reference
 		Configuration<String, E> config = new MutableConfiguration<String, E>().setTypes(String.class, entity)
 				.setWriteThrough(false).setReadThrough(false).setStoreByValue(false);
 		
