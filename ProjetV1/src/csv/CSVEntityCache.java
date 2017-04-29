@@ -13,7 +13,7 @@ public class CSVEntityCache<E extends CSVEntity> {
 	public CSVEntityCache(CacheManager manager, Class<E> entity, String name) {
 		
 		Configuration<String, E> config = new MutableConfiguration<String, E>().setTypes(String.class, entity)
-				.setWriteThrough(false).setReadThrough(false);
+				.setWriteThrough(false).setReadThrough(false).setStoreByValue(false);
 		
 		this.cache = manager.createCache(name, config);
 	}

@@ -7,6 +7,7 @@ import csv.CSVConfig;
 import csv.CSVException;
 import models.Competence;
 import models.CompetenceRequirement;
+import models.Employee;
 import models.Language;
 import models.Mission;
 
@@ -17,9 +18,15 @@ public class Test {
 		SimpleDateFormat dateformatter = new SimpleDateFormat("dd/MM/yyyy");
 		CSVConfig config = new AppCSVConfig();
 		Data data = new Data(config);
-		Competence c = data.Competences().parID("A.1.");
-		c.getNames().set(0, "xd");
+		Employee e = data.Employes().parID(1);
+		System.out.println(e);
+		Competence c = data.Competences().parID("B.3.");
+		System.out.println(c);
+		c.getNames().set(0, "844");
 		data.Competences().modifier(c);
+		
+		System.out.println(data.Competences().parID("B.3."));
+		System.out.println(data.Employes().parID(1));
 		
 		// data.Langues().ajouter(new Language("English", "USA"));
 		// System.out.println(data.Competences().tous());
