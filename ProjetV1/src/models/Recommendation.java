@@ -100,13 +100,11 @@ public class Recommendation {
 		for (Employee e : this.empAff) {
 			for (Competence cEmp : e.getCompetences()) {
 				if (cEmp == c) {
-					nbEmpReqComp--; // On décrémente le compteur pour avoir au
-									// final le nombre d'employés encore requis
+					nbEmpReqComp--; // On décrémente le compteur pour avoir au final le nombre d'employés encore requis
 				}
 			}
 		}
-		return nbEmpReqComp; // On retourne le nombre d'employé en manque sur la
-								// compétence
+		return nbEmpReqComp; // On retourne le nombre d'employé en manque sur la compétence
 	}
 	
 	public ArrayList<Employee> getEmpRec() {

@@ -90,10 +90,10 @@ public class CompetencesEditLangue {
 		this.valider.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					compSelect.getNames().set(row, TFlibelle.getText());
-					competences.ActualisationChamps();
-		            ProgramFrame.getFrame().setEnabled(true);
-		            frame.dispose();
+				compSelect.getNames().set(row, TFlibelle.getText());
+				competences.ActualisationChamps();
+	            ProgramFrame.getFrame().setEnabled(true);
+	            frame.dispose();
 			}
 		});
 		
