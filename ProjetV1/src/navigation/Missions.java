@@ -420,7 +420,7 @@ public class Missions extends Formulaire implements MouseListener {
 					JFrame frame;
 					try {
 						frame = new MissionsAddCompetence(data, getMissionSelected());
-						frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+						frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 						frame.pack();
 						frame.setVisible(true);
 					} catch (HeadlessException | DataException e1) {
