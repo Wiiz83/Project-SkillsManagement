@@ -481,40 +481,18 @@ public class Missions extends Formulaire implements MouseListener {
 				case "modification":
 					Mission missSelect = getMissionSelected();
 					if (missSelect != null) {
-						
-						// ArrayList<Employee> listEmpNonPoss = data.Missions();
-						//
-						// Récuperer les Employés manquants
-						// GenericTableModel<Employee> empNonPossModel =
-						// (GenericTableModel<Employee>)
-						// JTables.Employes(listEmpNonPoss).getModel();
-						// JTable empNonPoss = new JTable(empNonPossModel);
-						
-						/*
-						 * 
-						 * JTable empPoss = new JTable(mJTableEmployes);
-						 * PersonnelEditCompetence gestionListe = new
-						 * PersonnelEditCompetence(empPoss, empNonPoss,
-						 * mJTableEmployes, empNonPossModel);
-						 * gestionListe.displayGUI();
-						 * 
-						 * 
-						 */
-						
-						/*
-						 * GenericTableModel<Competence> compNonPossModel =
-						 * (GenericTableModel<Competence>)
-						 * JTables.Competences(listCompNonPoss).getModel();
-						 * JTable compNonPoss = new JTable(compNonPossModel);
-						 * JTable compPoss = new JTable(mJTableCompetences);
-						 * PersonnelEditCompetence gestionListe = new
-						 * PersonnelEditCompetence(compPoss, compNonPoss,
-						 * mJTableCompetences, compNonPossModel);
-						 * gestionListe.displayGUI();
-						 * 
-						 * 
-						 */
-						
+						ArrayList<Employee> listEmpNonPoss;
+						try {
+							listEmpNonPoss = data.Employes().Autres(mJTableEmployes.getArraylist());
+							 GenericTableModel<Employee> empNonPossModel = (GenericTableModel<Employee>) JTables.Employes(listEmpNonPoss).getModel();
+							 JTable empNonPoss = new JTable(empNonPossModel);
+							 JTable empPoss = new JTable(mJTableEmployes);
+							 PersonnelEditCompetence gestionListe = new PersonnelEditCompetence(empPoss, empNonPoss, mJTableCompetences, empNonPossModel);
+							gestionListe.displayGUI();
+						} catch (DataException e1) {
+							e1.printStackTrace();
+						}
+
 					}
 					break;
 				}
@@ -687,21 +665,28 @@ public class Missions extends Formulaire implements MouseListener {
 		 * Actualisation des champs du formulaire
 		 */
 		if (e.getSource() instanceof JTable) {
-			Mission missSelect = getMissionSelected();
 			
-			this.nom.setText(missSelect.getNomM());
-			this.dateD.setText(MissionDateFormat.format(missSelect.getDateDebut()));
-			this.duree.setText(Integer.toString(missSelect.getDuree()));
-			this.nombre.setText(Integer.toString(missSelect.getNbPersReq()));
-			this.statut.setSelectedItem(missSelect.getStatus());
-			
-			ArrayList<CompetenceRequirement> listCompMiss = missSelect.getCompReq();
-			TableModel tmComp = JTables.CompetencesRequises(listCompMiss).getModel();
-			this.JTableCompetences.setModel(tmComp);
-			
-			ArrayList<Employee> listEmpMiss = missSelect.getAffEmp();
-			TableModel tmEmp = JTables.Employes(listEmpMiss).getModel();
-			this.JTableEmployes.setModel(tmEmp);
+			if (e.getSource().equals(this.JTableMissions)) {
+				Mission missSelect = getMissionSelected();
+				
+				this.nom.setText(missSelect.getNomM());
+				this.dateD.setText(MissionDateFormat.format(missSelect.getDateDebut()));
+				this.duree.setText(Integer.toString(missSelect.getDuree()));
+				this.nombre.setText(Integer.toString(missSelect.getNbPersReq()));
+				this.statut.setSelectedItem(missSelect.getStatus());
+				
+				ArrayList<CompetenceRequirement> listCompMiss = missSelect.getCompReq();
+				TableModel tmComp = JTables.CompetencesRequises(listCompMiss).getModel();
+				this.JTableCompetences.setModel(tmComp);
+				
+				ArrayList<Employee> listEmpMiss = missSelect.getAffEmp();
+				TableModel tmEmp = JTables.Employes(listEmpMiss).getModel();
+				this.JTableEmployes.setModel(tmEmp);
+				
+				this.mJTableEmployes = (GenericTableModel<Employee>) this.JTableEmployes.getModel();
+				this.mJTableCompetences = (GenericTableModel<CompetenceRequirement>) this.JTableCompetences.getModel();
+				
+			}
 		}
 	}
 	
