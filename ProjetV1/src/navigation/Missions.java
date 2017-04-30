@@ -64,7 +64,7 @@ public class Missions extends Formulaire implements MouseListener {
 	Button	boutonDeleteComp;
 	Button	boutonAddEmp;
 	Button	boutonAddEmpRecom;
-	Button  missionTermine;
+	Button	missionTermine;
 	
 	JTable						JTableMissions;
 	GenericTableModel<Mission>	mJTableMissions;
@@ -85,8 +85,8 @@ public class Missions extends Formulaire implements MouseListener {
 	SimpleDateFormat	MissionDateFormat	= new SimpleDateFormat("dd/MM/yyyy");
 	SimpleDateFormat	MissionDureeFormat	= new SimpleDateFormat("dd/MM/yyyy");
 	
-	 HintTextField recherche;
-	 JComboBox<String>	filtre;
+	HintTextField		recherche;
+	JComboBox<String>	filtre;
 	
 	public Missions(Data data) {
 		this.data = data;
@@ -108,42 +108,42 @@ public class Missions extends Formulaire implements MouseListener {
 		}
 		this.mJTableMissions = (GenericTableModel<Mission>) this.JTableMissions.getModel();
 		
-		
-		String indication =  "Rechercher un nom de mission...";
-		this.recherche = new HintTextField(indication); 
+		String indication = "Rechercher un nom de mission...";
+		this.recherche = new HintTextField(indication);
 		this.recherche.setBounds(10, 10, 300, 25);
 		TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(JTableMissions.getModel());
-		this.recherche.getDocument().addDocumentListener(new DocumentListener(){
-
-	            @Override
-	            public void insertUpdate(DocumentEvent e) {
-	                String text = recherche.getText();
-
-	                if (text.equals(indication)) {
-	                    rowSorter.setRowFilter(null);
-	                } else {
-	                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
-	                }
-	            }
-
-	            @Override
-	            public void removeUpdate(DocumentEvent e) {
-	                String text = recherche.getText();
-
-	                if (text.equals(indication)) {
-	                    rowSorter.setRowFilter(null);
-	                } else {
-	                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
-	                }
-	            }
-
-	            @Override
-	            public void changedUpdate(DocumentEvent e) {
-	            }
-
-	        });
+		this.recherche.getDocument().addDocumentListener(
+				new DocumentListener() {
+					
+					@Override
+					public void insertUpdate(DocumentEvent e) {
+						String text = recherche.getText();
+						
+						if (text.equals(indication)) {
+							rowSorter.setRowFilter(null);
+						} else {
+							rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+						}
+					}
+					
+					@Override
+					public void removeUpdate(DocumentEvent e) {
+						String text = recherche.getText();
+						
+						if (text.equals(indication)) {
+							rowSorter.setRowFilter(null);
+						} else {
+							rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+						}
+					}
+					
+					@Override
+					public void changedUpdate(DocumentEvent e) {
+					}
+					
+				}
+		);
 		add(this.recherche);
-
 		
 		this.filtre = new JComboBox<>();
 		this.filtre.addItem("Toutes");
@@ -152,13 +152,15 @@ public class Missions extends Formulaire implements MouseListener {
 		this.filtre.addItem(Status.PREPARATION.toString());
 		this.filtre.addItem(Status.TERMINEE.toString());
 		this.filtre.setBounds(10, 45, 300, 25);
-		this.filtre.addActionListener (new ActionListener () {
-		    public void actionPerformed(ActionEvent e) {
-		    	if(filtre.getSelectedItem().toString() != "Tous"){
-			    	rowSorter.setRowFilter(RowFilter.regexFilter(filtre.getSelectedItem().toString(), 2));
-		    	}
-		    }
-		});
+		this.filtre.addActionListener(
+				new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						if (filtre.getSelectedItem().toString() != "Tous") {
+							rowSorter.setRowFilter(RowFilter.regexFilter(filtre.getSelectedItem().toString(), 2));
+						}
+					}
+				}
+		);
 		add(this.filtre);
 		
 		JTableMissions.setRowSorter(rowSorter);
@@ -416,7 +418,7 @@ public class Missions extends Formulaire implements MouseListener {
 				if (missSelect != null) {
 					JFrame frame;
 					try {
-						frame = new MissionsAddCompetence<Mission, Employee>(data, getMissionSelected(), Employee.class);
+						frame = new MissionsAddCompetence(data, getMissionSelected());
 						frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 						frame.pack();
 						frame.setVisible(true);
@@ -443,8 +445,8 @@ public class Missions extends Formulaire implements MouseListener {
 					CompetenceRequirement compSelect = getCompetenceSelected();
 					if (compSelect != null) {
 						int n = JOptionPane.showConfirmDialog(
-								new JFrame(), "Voulez vraiment supprimer cette compétence ?", "Confirmation de suppression",
-								JOptionPane.YES_NO_OPTION
+								new JFrame(), "Voulez vraiment supprimer cette compétence ?",
+								"Confirmation de suppression", JOptionPane.YES_NO_OPTION
 						);
 						if (n == JOptionPane.YES_OPTION) {
 							missSelect.removeCompetenceReq(compSelect);
@@ -462,10 +464,13 @@ public class Missions extends Formulaire implements MouseListener {
 				case "nouveau":
 					try {
 						ArrayList<Employee> listEmpNonPoss = data.Employes().tous();
-						GenericTableModel<Employee> empNonPossModel = (GenericTableModel<Employee>) JTables.Employes(listEmpNonPoss).getModel();
+						GenericTableModel<Employee> empNonPossModel = (GenericTableModel<Employee>) JTables
+								.Employes(listEmpNonPoss).getModel();
 						JTable empNonPoss = new JTable(empNonPossModel);
 						JTable empPoss = new JTable(mJTableEmployes);
-						PersonnelEditCompetence gestionListe = new PersonnelEditCompetence(empPoss, empNonPoss, mJTableEmployes, empNonPossModel);
+						PersonnelEditCompetence gestionListe = new PersonnelEditCompetence(
+								empPoss, empNonPoss, mJTableEmployes, empNonPossModel
+						);
 						gestionListe.displayGUI();
 					} catch (DataException e1) {
 						e1.printStackTrace();
@@ -475,32 +480,40 @@ public class Missions extends Formulaire implements MouseListener {
 				case "modification":
 					Mission missSelect = getMissionSelected();
 					if (missSelect != null) {
-
-							// ArrayList<Employee> listEmpNonPoss = data.Missions();
-							//
-							// Récuperer les Employés manquants
-							// GenericTableModel<Employee> empNonPossModel = (GenericTableModel<Employee>) JTables.Employes(listEmpNonPoss).getModel();
-							// JTable empNonPoss = new JTable(empNonPossModel);
-							
-							/*
-							 * 
-							 * 							JTable empPoss = new JTable(mJTableEmployes);
-									PersonnelEditCompetence gestionListe = new PersonnelEditCompetence(empPoss, empNonPoss, mJTableEmployes, empNonPossModel);
-									gestionListe.displayGUI();
-							 * 
-							 * 
-							 */
-
-							/*
-							 * 							GenericTableModel<Competence> compNonPossModel = (GenericTableModel<Competence>) JTables.Competences(listCompNonPoss).getModel();	 
-							JTable compNonPoss = new JTable(compNonPossModel);
-							JTable compPoss = new JTable(mJTableCompetences);
-							PersonnelEditCompetence gestionListe = new PersonnelEditCompetence(compPoss, compNonPoss, mJTableCompetences, compNonPossModel);
-							gestionListe.displayGUI();
-							 * 
-							 * 
-							 */
-
+						
+						// ArrayList<Employee> listEmpNonPoss = data.Missions();
+						//
+						// Récuperer les Employés manquants
+						// GenericTableModel<Employee> empNonPossModel =
+						// (GenericTableModel<Employee>)
+						// JTables.Employes(listEmpNonPoss).getModel();
+						// JTable empNonPoss = new JTable(empNonPossModel);
+						
+						/*
+						 * 
+						 * JTable empPoss = new JTable(mJTableEmployes);
+						 * PersonnelEditCompetence gestionListe = new
+						 * PersonnelEditCompetence(empPoss, empNonPoss,
+						 * mJTableEmployes, empNonPossModel);
+						 * gestionListe.displayGUI();
+						 * 
+						 * 
+						 */
+						
+						/*
+						 * GenericTableModel<Competence> compNonPossModel =
+						 * (GenericTableModel<Competence>)
+						 * JTables.Competences(listCompNonPoss).getModel();
+						 * JTable compNonPoss = new JTable(compNonPossModel);
+						 * JTable compPoss = new JTable(mJTableCompetences);
+						 * PersonnelEditCompetence gestionListe = new
+						 * PersonnelEditCompetence(compPoss, compNonPoss,
+						 * mJTableCompetences, compNonPossModel);
+						 * gestionListe.displayGUI();
+						 * 
+						 * 
+						 */
+						
 					}
 					break;
 				}
@@ -515,7 +528,7 @@ public class Missions extends Formulaire implements MouseListener {
 				case "modification":
 					Mission missSelect = getMissionSelected();
 					if (missSelect != null) {
-
+						
 					}
 					break;
 				}
@@ -534,14 +547,14 @@ public class Missions extends Formulaire implements MouseListener {
 			if (e.getSource().equals(this.boutonModifier)) {
 				Mission missSelect = getMissionSelected();
 				if (missSelect != null) {
-					if(missSelect.estModifiable()){
+					if (missSelect.estModifiable()) {
 						super.ChargementModification();
-					} else if(missSelect.getStatus() == Status.EN_COURS) {
+					} else if (missSelect.getStatus() == Status.EN_COURS) {
 						JOptionPane.showMessageDialog(
 								new JFrame(), "La mission est en cours : elle n'est donc plus modifiable.",
 								"Mission en cours", JOptionPane.WARNING_MESSAGE
 						);
-					} else if(missSelect.getStatus() == Status.TERMINEE) {
+					} else if (missSelect.getStatus() == Status.TERMINEE) {
 						JOptionPane.showMessageDialog(
 								new JFrame(), "La mission est terminée : elle n'est donc plus modifiable.",
 								"Mission terminée", JOptionPane.WARNING_MESSAGE
@@ -552,8 +565,8 @@ public class Missions extends Formulaire implements MouseListener {
 			}
 			
 			/**
-			 * Suppression d'un élément existant : doit demander la
-			 * confirmation de l'utilisateur
+			 * Suppression d'un élément existant : doit demander la confirmation
+			 * de l'utilisateur
 			 */
 			if (e.getSource().equals(this.boutonSupprimer)) {
 				Mission missSelect = getMissionSelected();
@@ -576,14 +589,15 @@ public class Missions extends Formulaire implements MouseListener {
 			}
 			
 			/**
-			 * On annule toutes les modifications faites par l'utilisateur depuis l'activation du mode modification / du mode nouveau
+			 * On annule toutes les modifications faites par l'utilisateur
+			 * depuis l'activation du mode modification / du mode nouveau
 			 */
 			if (e.getSource().equals(this.boutonAnnuler)) {
 				switch (this.mode) {
 				case "nouveau":
 					VideChamps();
 					ChargementConsultation();
-				break;
+					break;
 				
 				case "modification":
 					Mission missSelect = getMissionSelected();
@@ -611,57 +625,60 @@ public class Missions extends Formulaire implements MouseListener {
 			 * TODO On enregistre les modifications ou le nouvel élément
 			 */
 			if (e.getSource().equals(this.boutonEnregistrer)) {
-				if((this.dateD.getText().equals("")) ||  (this.duree.getText().equals("")) || (this.nombre.getText().equals(""))  ||  (this.nom.getText().equals(""))){
+				if ((this.dateD.getText().equals("")) || (this.duree.getText().equals(""))
+						|| (this.nombre.getText().equals("")) || (this.nom.getText().equals(""))) {
 					JOptionPane.showMessageDialog(
 							new JFrame(), "Vous devez renseigner toutes les informations pour enregistrer.",
 							"Informations non renseignés", JOptionPane.WARNING_MESSAGE
 					);
 				} else {
-				
-				Date dateD = new Date(this.dateD.getText());
-				int duree = Integer.parseInt(this.duree.getText());
-				int nb = Integer.parseInt(this.nombre.getText());
-				String nom = this.nom.getText();
-				
-				Mission mission = new Mission(nom, dateD, duree, nb);
-				ChargementConsultation();
-				
-				switch (this.mode) {
-				case "nouveau":
-					/*
-					 * Mission nouvEmp = new Mission(this.nom.getText(),
-					 * this.dateD.getText(), this.duree.getText(),
-					 * this.nombre.getText());
-					 * 
-					 * 
-					 * if (this.JTableEmployes != null &&
-					 * this.JTableEmployes.getModel() != null) {
-					 * ArrayList<Employee> listEmp = new ArrayList<Object>;
-					 * 
-					 * for(int row = 0; row < table.getRowCount(); row++) {
-					 * for(int column = 0; column = table.getColumnCount();
-					 * column++) { list.add(table.getValueAt(row, column)); } }
-					 * 
-					 * nouvEmp.setAffEmp(affEmp); }
-					 * 
-					 * if(){
-					 * 
-					 * }
-					 * 
-					 * data.Missions().ajouter(nouvEmp); break;
-					 * 
-					 * case "modification":
-					 * /*this.empSelect.setLastName(this.nom.getText());
-					 * this.empSelect.setName(this.prenom.getText());
-					 * this.empSelect.setEntryDate(this.date.getText(),
-					 * "yyyy-MM-dd"); data.Employes().modifier(this.empSelect);
-					 */
-					break;
-				
-				default:
-					break;
+					
+					Date dateD = new Date(this.dateD.getText());
+					int duree = Integer.parseInt(this.duree.getText());
+					int nb = Integer.parseInt(this.nombre.getText());
+					String nom = this.nom.getText();
+					
+					Mission mission = new Mission(nom, dateD, duree, nb);
+					ChargementConsultation();
+					
+					switch (this.mode) {
+					case "nouveau":
+						/*
+						 * Mission nouvEmp = new Mission(this.nom.getText(),
+						 * this.dateD.getText(), this.duree.getText(),
+						 * this.nombre.getText());
+						 * 
+						 * 
+						 * if (this.JTableEmployes != null &&
+						 * this.JTableEmployes.getModel() != null) {
+						 * ArrayList<Employee> listEmp = new ArrayList<Object>;
+						 * 
+						 * for(int row = 0; row < table.getRowCount(); row++) {
+						 * for(int column = 0; column = table.getColumnCount();
+						 * column++) { list.add(table.getValueAt(row, column));
+						 * } }
+						 * 
+						 * nouvEmp.setAffEmp(affEmp); }
+						 * 
+						 * if(){
+						 * 
+						 * }
+						 * 
+						 * data.Missions().ajouter(nouvEmp); break;
+						 * 
+						 * case "modification":
+						 * /*this.empSelect.setLastName(this.nom.getText());
+						 * this.empSelect.setName(this.prenom.getText());
+						 * this.empSelect.setEntryDate(this.date.getText(),
+						 * "yyyy-MM-dd");
+						 * data.Employes().modifier(this.empSelect);
+						 */
+						break;
+					
+					default:
+						break;
+					}
 				}
-			}
 			}
 		}
 		
