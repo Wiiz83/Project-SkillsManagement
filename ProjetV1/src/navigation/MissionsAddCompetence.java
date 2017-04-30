@@ -31,16 +31,18 @@ public class MissionsAddCompetence extends JFrame {
 	private static final long	serialVersionUID	= -379824080943045915L;
 	private Data				data;
 	
-	private JTable				dissocTable;
-	private JScrollPane			jScrollPane1;
-	private JButton				AddButton;
-	private JTextField			nbEmployes;
-	private javax.swing.JLabel	nbEmpLable;
+	private JTable		dissocTable;
+	private JScrollPane	jScrollPane1;
+	private JButton		AddButton;
+	private JTextField	nbEmployes;
+	private JLabel		nbEmpLable;
+	private Missions	parent;
 	
 	private Mission mission;
 	
-	public MissionsAddCompetence(Data data, Mission mission) throws HeadlessException, DataException {
+	public MissionsAddCompetence(Data data, Mission mission, Missions parent) throws HeadlessException, DataException {
 		super();
+		this.parent = parent;
 		this.data = data;
 		this.mission = mission;
 		loadData();
@@ -147,6 +149,7 @@ public class MissionsAddCompetence extends JFrame {
 		}
 		getCompModel().deleteRowObject(comp);
 		getCompModel().fireTableDataChanged();
+		parent.updateCompReq();
 	}
 	
 	@SuppressWarnings("unchecked")

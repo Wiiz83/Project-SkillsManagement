@@ -411,6 +411,10 @@ public class Missions extends Formulaire implements MouseListener {
 			mission.deplanifier();
 	}
 	
+	public void updateCompReq() {
+		mJTableCompetences.fireTableDataChanged();
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() instanceof Button) {
@@ -419,7 +423,7 @@ public class Missions extends Formulaire implements MouseListener {
 				if (missSelect != null) {
 					JFrame frame;
 					try {
-						frame = new MissionsAddCompetence(data, getMissionSelected());
+						frame = new MissionsAddCompetence(data, getMissionSelected(), this);
 						frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 						frame.pack();
 						frame.setVisible(true);
@@ -484,15 +488,18 @@ public class Missions extends Formulaire implements MouseListener {
 						ArrayList<Employee> listEmpNonPoss;
 						try {
 							listEmpNonPoss = data.Employes().Autres(mJTableEmployes.getArraylist());
-							 GenericTableModel<Employee> empNonPossModel = (GenericTableModel<Employee>) JTables.Employes(listEmpNonPoss).getModel();
-							 JTable empNonPoss = new JTable(empNonPossModel);
-							 JTable empPoss = new JTable(mJTableEmployes);
-							 PersonnelEditCompetence gestionListe = new PersonnelEditCompetence(empPoss, empNonPoss, mJTableCompetences, empNonPossModel);
+							GenericTableModel<Employee> empNonPossModel = (GenericTableModel<Employee>) JTables
+									.Employes(listEmpNonPoss).getModel();
+							JTable empNonPoss = new JTable(empNonPossModel);
+							JTable empPoss = new JTable(mJTableEmployes);
+							PersonnelEditCompetence gestionListe = new PersonnelEditCompetence(
+									empPoss, empNonPoss, mJTableCompetences, empNonPossModel
+							);
 							gestionListe.displayGUI();
 						} catch (DataException e1) {
 							e1.printStackTrace();
 						}
-
+						
 					}
 					break;
 				}
