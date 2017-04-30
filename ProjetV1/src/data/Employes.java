@@ -14,8 +14,11 @@ public class Employes extends CSVRequests<Employee> {
 		return parID(Integer.toString(ID));
 	}
 	
-	public ArrayList<Employee> Autres(ArrayList<Employee> autres) {
-		return null;
+	public ArrayList<Employee> Autres(ArrayList<Employee> autres) throws DataException {
+		ArrayList<String> ids = new ArrayList<>();
+		for (Employee e : autres)
+			ids.add(e.csvID());
+		return filtrer(e -> !ids.contains(e.csvID()));
 	}
 	
 }

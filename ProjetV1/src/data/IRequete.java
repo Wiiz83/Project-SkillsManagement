@@ -13,6 +13,8 @@ public interface IRequete<E extends Serializable> {
 	
 	ArrayList<E> filtrerTrier(Predicate<E> predicate, Comparator<E> c) throws DataException;
 	
+	public ArrayList<E> filtrer(Predicate<E> predicate) throws DataException;
+	
 	void ajouter(E e) throws DataException;
 	
 	void supprimer(E e) throws DataException;
