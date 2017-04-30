@@ -44,6 +44,10 @@ public class CompetenceRequirement extends CSVEntity {
 		return requiredEmployees;
 	}
 	
+	public void setRequiredEmployees(int requiredEmployees) {
+		this.requiredEmployees = requiredEmployees;
+	}
+	
 	@Override
 	public String csvID() {
 		return Integer.toString(id);
