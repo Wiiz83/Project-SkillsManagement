@@ -6,12 +6,14 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import data.Data;
 import data.DataException;
+import gui.GenericTableModel;
 import gui.JTables;
 import models.*;
 
@@ -129,5 +131,39 @@ public class MissionsAddCompetence extends JFrame {
 	}
 	
 	private void AjoutCompReq() {
+		Competence comp = getSelectedCompetence();
+		if (comp == null)
+			return;
+		int nbEmpReq = Integer.parseInt(nbEmployes.getText());
+		CompetenceRequirement cr = new CompetenceRequirement(comp, nbEmpReq);
+		mission.addCompetenceReq(cr);
+		try {
+			data.Missions().modifier(mission);
+		} catch (DataException e) {
+			JOptionPane.showMessageDialog(
+					new JFrame(), "Problème lors de la mise à jour des données.", "Erreur", JOptionPane.WARNING_MESSAGE
+			);
+			e.printStackTrace();
+		}
+		getCompModel().deleteRowObject(comp);
 	}
+	
+	@SuppressWarnings("unchecked")
+	private GenericTableModel<Competence> getCompModel() {
+		return (GenericTableModel<Competence>) dissocTable.getModel();
+	}
+	
+	private Competence getSelectedCompetence() {
+		try {
+			return getCompModel().getRowObject(dissocTable.convertRowIndexToModel(dissocTable.getSelectedRow()));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(
+					new JFrame(), "Vous devez sélectionner un employé pour réaliser cette action.",
+					"Employé non séléctionné", JOptionPane.WARNING_MESSAGE
+			);
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 }
