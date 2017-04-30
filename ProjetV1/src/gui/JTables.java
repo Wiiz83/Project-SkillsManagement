@@ -42,6 +42,11 @@ public class JTables {
 		String[] headers = { "Nom", "Prénom", "Date d'entrée" };
 		@SuppressWarnings("serial")
 		TableModel dataModel = new GenericTableModel<Employee>(employes, headers) {
+			
+			  public boolean isCellEditable(int rowIndex, int mColIndex) {
+			        return false;
+			  }
+			  
 			public Object getValueAt(int row, int col) {
 				Employee emp = employes.get(row);
 				
@@ -74,6 +79,10 @@ public class JTables {
 		@SuppressWarnings("serial")
 		TableModel dataModel = new GenericTableModel<Competence>(competences, headers) {
 			
+			  public boolean isCellEditable(int rowIndex, int mColIndex) {
+			        return false;
+			  }
+			
 			public Object getValueAt(int row, int col) {
 				Competence comp = competences.get(row);
 				
@@ -101,6 +110,10 @@ public class JTables {
 		String[] headers = { "Code", "FR", "Employés requis" };
 		@SuppressWarnings("serial")
 		TableModel dataModel = new GenericTableModel<CompetenceRequirement>(CompReq, headers) {
+			
+			  public boolean isCellEditable(int rowIndex, int mColIndex) {
+			        return false;
+			  }
 			
 			public Object getValueAt(int row, int col) {
 				CompetenceRequirement cr = CompReq.get(row);
@@ -133,6 +146,10 @@ public class JTables {
 		@SuppressWarnings("serial")
 		TableModel dataModel = new GenericTableModel<Mission>(missions, headers) {
 			
+			  public boolean isCellEditable(int rowIndex, int mColIndex) {
+			        return false;
+			  }
+			
 			public Object getValueAt(int row, int col) {
 				Mission mis = missions.get(row);
 				switch (col) {
@@ -160,7 +177,12 @@ public class JTables {
 		
 		String[] headers = { "Pays", "Libellé" };
 		@SuppressWarnings("serial")
-		DefaultTableModel dataModel = new DefaultTableModel() {
+		TableModel dataModel = new DefaultTableModel() {
+			
+			  public boolean isCellEditable(int rowIndex, int mColIndex) {
+			        return false;
+			  }
+			
 			@Override
 			public String getColumnName(int col) {
 				return headers[col];
@@ -200,7 +222,7 @@ public class JTables {
 		JTable table = new JTable(dataModel);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setAutoCreateRowSorter(true);
-		
+		table.getRowSorter().toggleSortOrder(0);
 		return table;
 	}
 	
@@ -208,6 +230,10 @@ public class JTables {
 		String[] headers = { "Alerte", "Détails" };
 		@SuppressWarnings("serial")
 		TableModel dataModel = new GenericTableModel<Alerte>(Alertes, headers) {
+			
+			  public boolean isCellEditable(int rowIndex, int mColIndex) {
+			        return false;
+			  }
 			
 			@Override
 			public int getColumnCount() {
@@ -242,9 +268,13 @@ public class JTables {
 	}
 	
 	public static JTable Recommendation(ArrayList<Recommendation> Rec) {
-		String[] headers = { "Nom", "Durée", "Statut" };
+		String[] headers = { "Employé", "Niveau de recommandation"};
 		@SuppressWarnings("serial")
 		TableModel dataModel = new GenericTableModel<Recommendation>(Rec, headers) {
+			
+			  public boolean isCellEditable(int rowIndex, int mColIndex) {
+			        return false;
+			  }
 			
 			public Object getValueAt(int row, int col) {
 				Recommendation rec = Rec.get(row);

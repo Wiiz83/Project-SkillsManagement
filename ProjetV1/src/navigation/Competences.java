@@ -61,6 +61,7 @@ public class Competences extends Formulaire implements MouseListener {
 	ArrayList<Language>	langues;
 	
 	HintTextField recherche;
+	Competence tempComp;
 	
 	public Competences(Data data) {
 		this.data = data;
@@ -183,6 +184,7 @@ public class Competences extends Formulaire implements MouseListener {
 		composantsEdition.add(this.boutonEnregistrer);
 		composantsEdition.add(this.boutonAnnuler);
 		composantsEdition.add(this.JTableLangues);
+		
 		composantsConsultation.add(this.boutonNouveau);
 		composantsConsultation.add(this.boutonModifier);
 		composantsConsultation.add(this.boutonNouveau);
@@ -215,20 +217,49 @@ public class Competences extends Formulaire implements MouseListener {
 		}
 	}
 	
+	
+	public int getLangueSelected() {
+		try {
+			return JTableLangues.getSelectedRow();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(new JFrame(), "Vous devez sélectionner un libellé pour réaliser cette action.","Libellé non séléctionné", JOptionPane.WARNING_MESSAGE);
+			e.printStackTrace();
+			return -1;
+		}
+	}
+	
 	public void ActualisationChamps() {
-		if (getCompetenceSelected() != null) {
-			Competence compSelect = getCompetenceSelected();
-			ArrayList<Language> ListeLangues;
+		
+	ArrayList<Language> ListeLangues;
+	switch (this.mode) {
+		case "nouveau":
 			try {
 				ListeLangues = data.Langues().tous();
-				TableModel TableLangues = JTables.LanguesCompetence(compSelect, ListeLangues).getModel();
+				TableModel TableLangues = JTables.LanguesCompetence(tempComp, ListeLangues).getModel();
 				this.JTableLangues.setModel(TableLangues);
 				this.JTableLangues.getColumnModel().getColumn(0).setPreferredWidth(200);
 				this.JTableLangues.getColumnModel().getColumn(1).setPreferredWidth(600);
 			} catch (DataException e1) {
 				e1.printStackTrace();
 			}
+			break;
+		
+		case "modification":
+			Competence CompSelect = getCompetenceSelected();
+			if (CompSelect != null) {
+				try {
+					ListeLangues = data.Langues().tous();
+					TableModel TableLangues = JTables.LanguesCompetence(CompSelect, ListeLangues).getModel();
+					this.JTableLangues.setModel(TableLangues);
+					this.JTableLangues.getColumnModel().getColumn(0).setPreferredWidth(200);
+					this.JTableLangues.getColumnModel().getColumn(1).setPreferredWidth(600);
+				} catch (DataException e1) {
+					e1.printStackTrace();
+				}
+			}
+			break;
 		}
+	
 	}
 	
 	@Override
@@ -236,15 +267,32 @@ public class Competences extends Formulaire implements MouseListener {
 		if (e.getSource() instanceof Button) {
 			
 			if (e.getSource().equals(this.boutonEditLangue)) {
-				if (getCompetenceSelected() != null) {
-					Competence compSelect = getCompetenceSelected();
-					int rowIndex = JTableLangues.getSelectedRow();
-					CompetencesEditLangue fel = new CompetencesEditLangue(rowIndex, JTableLangues, compSelect, this);
-					fel.displayGUI();
+				
+				int rowIndex = JTableLangues.getSelectedRow();
+				if(rowIndex > -1){
+					switch (this.mode) {
+					case "nouveau":
+						CompetencesEditLangue felnouv = new CompetencesEditLangue(rowIndex, JTableLangues, this.tempComp, this);
+						felnouv.displayGUI();
+						break;
+					
+					case "modification":
+						Competence CompSelect = getCompetenceSelected();
+						if (CompSelect != null) {
+							CompetencesEditLangue fel = new CompetencesEditLangue(rowIndex, JTableLangues, CompSelect, this);
+							fel.displayGUI();
+						}
+						break;
+					}
 				}
 			}
 			
 			if (e.getSource().equals(this.boutonNouveau)) {
+				ArrayList<String> liste = new ArrayList<>();
+				for(int i = 0; i<langues.size(); i++){
+					liste.add("");
+				}
+				this.tempComp = new Competence((CompetenceCode) null, liste);
 				VideChamps();
 				super.ChargementModification();
 				this.mode = "nouveau";

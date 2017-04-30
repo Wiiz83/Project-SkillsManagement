@@ -1,6 +1,8 @@
 package gui;
 
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -20,6 +22,12 @@ public class ProgramFrame {
 		ProgramFrame.getFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ProgramFrame.getFrame().setResizable(false);
 		ProgramFrame.getFrame().setLocation(5, 5);
+		ProgramFrame.getFrame().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e){
+				ProgramFrame.getFrame().requestFocusInWindow();
+			}
+		});
 		
 		try {
 			iconImage = ImageIO.read(getClass().getResourceAsStream("/images/icon.png"));

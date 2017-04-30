@@ -203,6 +203,7 @@ public class Personnel extends Formulaire implements MouseListener {
 		composantsEdition.add(this.date);
 		composantsEdition.add(this.boutonEnregistrer);
 		composantsEdition.add(this.boutonAnnuler);
+		composantsEdition.add(this.JTableCompetences);
 		
 		composantsConsultation.add(this.boutonNouveau);
 		composantsConsultation.add(this.boutonModifier);
@@ -399,17 +400,19 @@ public class Personnel extends Formulaire implements MouseListener {
 		 * Actualisation des champs du formulaire
 		 */
 		if (e.getSource() instanceof JTable) {
-			if (getSelected() != null) {
+			if (e.getSource().equals(this.JTablePersonnel)) {
 				Employee EmployeSelect = getSelected();
-				this.nom.setText(EmployeSelect.getLastName());
-				this.prenom.setText(EmployeSelect.getName());
-				this.date.setText(EmployeeDateFormat.format(EmployeSelect.getEntryDate()));
-				this.listCompEmp = EmployeSelect.getCompetences();
-				this.mJTablePersonnel = (GenericTableModel<Employee>) this.JTablePersonnel.getModel();
-				this.mJTableCompetences = (GenericTableModel<Competence>) JTables.Competences(listCompEmp).getModel();
-				this.JTableCompetences.setModel(this.mJTableCompetences);
-				this.JTableCompetences.getColumnModel().getColumn(0).setPreferredWidth(200);
-				this.JTableCompetences.getColumnModel().getColumn(1).setPreferredWidth(600);
+				if (EmployeSelect != null) {
+					this.nom.setText(EmployeSelect.getLastName());
+					this.prenom.setText(EmployeSelect.getName());
+					this.date.setText(EmployeeDateFormat.format(EmployeSelect.getEntryDate()));
+					this.listCompEmp = EmployeSelect.getCompetences();
+					this.mJTablePersonnel = (GenericTableModel<Employee>) this.JTablePersonnel.getModel();
+					this.mJTableCompetences = (GenericTableModel<Competence>) JTables.Competences(listCompEmp).getModel();
+					this.JTableCompetences.setModel(this.mJTableCompetences);
+					this.JTableCompetences.getColumnModel().getColumn(0).setPreferredWidth(200);
+					this.JTableCompetences.getColumnModel().getColumn(1).setPreferredWidth(600);
+				}
 			}
 		}
 	}
