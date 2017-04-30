@@ -16,6 +16,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import gui.ProgramFrame;
 import models.Competence;
+import models.CompetenceCode;
 import models.CompetenceRequirement;
 
 public class MissionsEditCompetence {
@@ -27,7 +28,7 @@ public class MissionsEditCompetence {
 	private JButton valider;
 	private JButton annuler;
 	
-	private String pays;
+	private String code;
 	private String libelle;
 	private String nombre;
 	
@@ -38,9 +39,11 @@ public class MissionsEditCompetence {
 	public JFrame frame;
 	
 	public MissionsEditCompetence(int row, JTable jtable, CompetenceRequirement compSelect, Missions m) {
-		this.pays = (String) jtable.getValueAt(row, 0);		
+		CompetenceCode cc = (CompetenceCode) jtable.getValueAt(row, 0);		
+		this.code = cc.toString();
 		this.libelle = (String) jtable.getValueAt(row, 1);	
-		this.nombre = (String) jtable.getValueAt(row, 2);	
+		int nb = (int) jtable.getValueAt(row, 2);	
+		this.nombre = Integer.toString(nb);
 		this.row = row;
 		this.jtable = jtable;
 		this.compSelect = compSelect;
@@ -50,9 +53,9 @@ public class MissionsEditCompetence {
 	
 	public void displayGUI(){
 		this.frame = new JFrame("Modification d'une compétence requise pour une mission");
-		frame.setSize(400, 170);
+		frame.setSize(500, 200);
 		frame.setResizable(false);
-		frame.setLocation(150, 150);
+		frame.setLocation(150, 20);
 		
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
@@ -71,7 +74,7 @@ public class MissionsEditCompetence {
     	JLabel labelPays = new JLabel("Pays :");
     	panelPays.add(labelPays);
         
-        TFpays = new JTextField(pays);
+        TFpays = new JTextField(code);
         TFpays.setEnabled(false);
         TFpays.setPreferredSize(new Dimension(100, 25));
         panelPays.add(TFpays);
@@ -83,13 +86,14 @@ public class MissionsEditCompetence {
     	panelLibelle.add(labelLibelle);
         
         TFlibelle = new JTextField(libelle);
+        TFlibelle.setEnabled(false);
         TFlibelle.setPreferredSize(new Dimension(300, 25));
         panelLibelle.add(TFlibelle);
         
         JPanel panelNombre = new JPanel();
         panelNombre.setLayout( new FlowLayout());
         
-    	JLabel labeNombre = new JLabel("Nombre d'employés requis :");
+    	JLabel labeNombre = new JLabel("Nombre d'employés :");
     	panelNombre.add(labeNombre);
         
         TFNombre = new JTextField(nombre);
@@ -103,9 +107,10 @@ public class MissionsEditCompetence {
 		this.valider.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					// TODO
-					//compSelect.getNames().set(row, TFlibelle.getText());
-					//competences.ActualisationChamps();
+					compSelect.setRequiredEmployees(Integer.parseInt(TFNombre.getText()));
+					missions.mJTableCompetences.setValueAt(TFNombre.getText(), row, 2);
+					missions.mJTableCompetences.fireTableDataChanged();
+				//	missions.ActualisationChamps();
 		            ProgramFrame.getFrame().setEnabled(true);
 		            frame.dispose();
 			}
@@ -126,6 +131,7 @@ public class MissionsEditCompetence {
 
         panel.add(panelPays);
         panel.add(panelLibelle);
+        panel.add(panelNombre);
         panel.add(panelBoutons);
 
         //Set up the content pane.

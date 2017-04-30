@@ -40,6 +40,7 @@ import gui.Titre;
 import models.Competence;
 import models.CompetenceRequirement;
 import models.Employee;
+import models.Language;
 import models.Mission;
 import models.Recommendation;
 import models.Status;
@@ -388,6 +389,42 @@ public class Missions extends Formulaire implements MouseListener {
 		}
 	}
 	
+	
+	/*
+	public void ActualisationChamps() {
+		
+	ArrayList<CompetenceRequirement> ListeLangues;
+		switch (this.mode) {
+			case "nouveau":
+				try {
+					ListeLangues = data.Langues().tous();
+					TableModel TableLangues = JTables.LanguesCompetence(tempComp, ListeLangues).getModel();
+					this.JTableLangues.setModel(TableLangues);
+					this.JTableLangues.getColumnModel().getColumn(0).setPreferredWidth(200);
+					this.JTableLangues.getColumnModel().getColumn(1).setPreferredWidth(600);
+				} catch (DataException e1) {
+					e1.printStackTrace();
+				}
+				break;
+			
+			case "modification":
+				Competence CompSelect = getCompetenceSelected();
+				if (CompSelect != null) {
+					try {
+						ListeLangues = data.Langues().tous();
+						TableModel TableLangues = JTables.LanguesCompetence(CompSelect, ListeLangues).getModel();
+						this.JTableLangues.setModel(TableLangues);
+						this.JTableLangues.getColumnModel().getColumn(0).setPreferredWidth(200);
+						this.JTableLangues.getColumnModel().getColumn(1).setPreferredWidth(600);
+					} catch (DataException e1) {
+						e1.printStackTrace();
+					}
+				}
+				break;
+		}
+	
+	}*/
+	
 	// TODO : Appeler à chaque modification de champ et affectation d'employés
 	// ou compétences req.
 	private void updateComboBox() {
@@ -437,9 +474,7 @@ public class Missions extends Formulaire implements MouseListener {
 				CompetenceRequirement compSelect = getCompetenceSelected();
 				if (compSelect != null) {
 					int rowIndex = this.JTableCompetences.getSelectedRow();
-					MissionsEditCompetence fel = new MissionsEditCompetence(
-							rowIndex, JTableCompetences, compSelect, this
-					);
+					MissionsEditCompetence fel = new MissionsEditCompetence(rowIndex, JTableCompetences, compSelect, this);
 					fel.displayGUI();
 				}
 			}
@@ -457,7 +492,6 @@ public class Missions extends Formulaire implements MouseListener {
 							missSelect.removeCompetenceReq(compSelect);
 							this.mJTableCompetences.deleteRowObject(compSelect);
 							this.mJTableCompetences.fireTableDataChanged();
-							VideChamps();
 						}
 					}
 				}
@@ -492,9 +526,7 @@ public class Missions extends Formulaire implements MouseListener {
 									.Employes(listEmpNonPoss).getModel();
 							JTable empNonPoss = new JTable(empNonPossModel);
 							JTable empPoss = new JTable(mJTableEmployes);
-							PersonnelEditCompetence gestionListe = new PersonnelEditCompetence(
-									empPoss, empNonPoss, mJTableCompetences, empNonPossModel
-							);
+							MissionsEditEmploye gestionListe = new MissionsEditEmploye(empPoss, empNonPoss, mJTableEmployes, empNonPossModel);
 							gestionListe.displayGUI();
 						} catch (DataException e1) {
 							e1.printStackTrace();
@@ -676,23 +708,24 @@ public class Missions extends Formulaire implements MouseListener {
 			if (e.getSource().equals(this.JTableMissions)) {
 				Mission missSelect = getMissionSelected();
 				
-				this.nom.setText(missSelect.getNomM());
-				this.dateD.setText(MissionDateFormat.format(missSelect.getDateDebut()));
-				this.duree.setText(Integer.toString(missSelect.getDuree()));
-				this.nombre.setText(Integer.toString(missSelect.getNbPersReq()));
-				this.statut.setSelectedItem(missSelect.getStatus());
-				
-				ArrayList<CompetenceRequirement> listCompMiss = missSelect.getCompReq();
-				TableModel tmComp = JTables.CompetencesRequises(listCompMiss).getModel();
-				this.JTableCompetences.setModel(tmComp);
-				
-				ArrayList<Employee> listEmpMiss = missSelect.getAffEmp();
-				TableModel tmEmp = JTables.Employes(listEmpMiss).getModel();
-				this.JTableEmployes.setModel(tmEmp);
-				
-				this.mJTableEmployes = (GenericTableModel<Employee>) this.JTableEmployes.getModel();
-				this.mJTableCompetences = (GenericTableModel<CompetenceRequirement>) this.JTableCompetences.getModel();
-				
+				if (missSelect != null) {
+					this.nom.setText(missSelect.getNomM());
+					this.dateD.setText(MissionDateFormat.format(missSelect.getDateDebut()));
+					this.duree.setText(Integer.toString(missSelect.getDuree()));
+					this.nombre.setText(Integer.toString(missSelect.getNbPersReq()));
+					this.statut.setSelectedItem(missSelect.getStatus());
+					
+					ArrayList<CompetenceRequirement> listCompMiss = missSelect.getCompReq();
+					TableModel tmComp = JTables.CompetencesRequises(listCompMiss).getModel();
+					this.JTableCompetences.setModel(tmComp);
+					
+					ArrayList<Employee> listEmpMiss = missSelect.getAffEmp();
+					TableModel tmEmp = JTables.Employes(listEmpMiss).getModel();
+					this.JTableEmployes.setModel(tmEmp);
+					
+					this.mJTableEmployes = (GenericTableModel<Employee>) this.JTableEmployes.getModel();
+					this.mJTableCompetences = (GenericTableModel<CompetenceRequirement>) this.JTableCompetences.getModel();
+				}
 			}
 		}
 	}

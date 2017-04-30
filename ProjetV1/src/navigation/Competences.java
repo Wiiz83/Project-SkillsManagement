@@ -231,33 +231,33 @@ public class Competences extends Formulaire implements MouseListener {
 	public void ActualisationChamps() {
 		
 	ArrayList<Language> ListeLangues;
-	switch (this.mode) {
-		case "nouveau":
-			try {
-				ListeLangues = data.Langues().tous();
-				TableModel TableLangues = JTables.LanguesCompetence(tempComp, ListeLangues).getModel();
-				this.JTableLangues.setModel(TableLangues);
-				this.JTableLangues.getColumnModel().getColumn(0).setPreferredWidth(200);
-				this.JTableLangues.getColumnModel().getColumn(1).setPreferredWidth(600);
-			} catch (DataException e1) {
-				e1.printStackTrace();
-			}
-			break;
-		
-		case "modification":
-			Competence CompSelect = getCompetenceSelected();
-			if (CompSelect != null) {
+		switch (this.mode) {
+			case "nouveau":
 				try {
 					ListeLangues = data.Langues().tous();
-					TableModel TableLangues = JTables.LanguesCompetence(CompSelect, ListeLangues).getModel();
+					TableModel TableLangues = JTables.LanguesCompetence(tempComp, ListeLangues).getModel();
 					this.JTableLangues.setModel(TableLangues);
 					this.JTableLangues.getColumnModel().getColumn(0).setPreferredWidth(200);
 					this.JTableLangues.getColumnModel().getColumn(1).setPreferredWidth(600);
 				} catch (DataException e1) {
 					e1.printStackTrace();
 				}
-			}
-			break;
+				break;
+			
+			case "modification":
+				Competence CompSelect = getCompetenceSelected();
+				if (CompSelect != null) {
+					try {
+						ListeLangues = data.Langues().tous();
+						TableModel TableLangues = JTables.LanguesCompetence(CompSelect, ListeLangues).getModel();
+						this.JTableLangues.setModel(TableLangues);
+						this.JTableLangues.getColumnModel().getColumn(0).setPreferredWidth(200);
+						this.JTableLangues.getColumnModel().getColumn(1).setPreferredWidth(600);
+					} catch (DataException e1) {
+						e1.printStackTrace();
+					}
+				}
+				break;
 		}
 	
 	}
