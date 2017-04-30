@@ -388,43 +388,7 @@ public class Missions extends Formulaire implements MouseListener {
 			return null;
 		}
 	}
-	
-	
-	/*
-	public void ActualisationChamps() {
-		
-	ArrayList<CompetenceRequirement> ListeLangues;
-		switch (this.mode) {
-			case "nouveau":
-				try {
-					ListeLangues = data.Langues().tous();
-					TableModel TableLangues = JTables.LanguesCompetence(tempComp, ListeLangues).getModel();
-					this.JTableLangues.setModel(TableLangues);
-					this.JTableLangues.getColumnModel().getColumn(0).setPreferredWidth(200);
-					this.JTableLangues.getColumnModel().getColumn(1).setPreferredWidth(600);
-				} catch (DataException e1) {
-					e1.printStackTrace();
-				}
-				break;
-			
-			case "modification":
-				Competence CompSelect = getCompetenceSelected();
-				if (CompSelect != null) {
-					try {
-						ListeLangues = data.Langues().tous();
-						TableModel TableLangues = JTables.LanguesCompetence(CompSelect, ListeLangues).getModel();
-						this.JTableLangues.setModel(TableLangues);
-						this.JTableLangues.getColumnModel().getColumn(0).setPreferredWidth(200);
-						this.JTableLangues.getColumnModel().getColumn(1).setPreferredWidth(600);
-					} catch (DataException e1) {
-						e1.printStackTrace();
-					}
-				}
-				break;
-		}
-	
-	}*/
-	
+
 	// TODO : Appeler à chaque modification de champ et affectation d'employés
 	// ou compétences req.
 	private void updateComboBox() {

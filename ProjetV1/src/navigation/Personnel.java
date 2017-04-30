@@ -245,10 +245,8 @@ public class Personnel extends Formulaire implements MouseListener {
 			
 			if (e.getSource().equals(this.boutonEditComp)) {
 				ProgramFrame.getFrame().setEnabled(false);
-				switch (this.mode) {
-					case "nouveau":
 						try {
-							ArrayList<Competence> listCompNonPoss = data.Competences().tous();
+							ArrayList<Competence> listCompNonPoss = data.Competences().Autres(mJTableCompetences.getArraylist());
 							GenericTableModel<Competence> compNonPossModel = (GenericTableModel<Competence>) JTables.Competences(listCompNonPoss).getModel();
 							JTable compNonPoss = new JTable(compNonPossModel);
 							JTable compPoss = new JTable(mJTableCompetences);
@@ -257,25 +255,7 @@ public class Personnel extends Formulaire implements MouseListener {
 						} catch (DataException e1) {
 							e1.printStackTrace();
 						}
-						break;
-					
-					case "modification":
-						try {
-							if(getSelected() != null){
-								Employee empSelect = getSelected();
-								ArrayList<Competence> listCompNonPoss = data.Competences().manquantesEmploye(Integer.toString(empSelect.getID()));
-								GenericTableModel<Competence> compNonPossModel = (GenericTableModel<Competence>) JTables.Competences(listCompNonPoss).getModel();	 
-								JTable compNonPoss = new JTable(compNonPossModel);
-								JTable compPoss = new JTable(mJTableCompetences);
-								PersonnelEditCompetence gestionListe = new PersonnelEditCompetence(compPoss, compNonPoss, mJTableCompetences, compNonPossModel);
-								gestionListe.displayGUI();
-							}
-						} catch (DataException e1) {
-							e1.printStackTrace();
-						}
-						break;
 				}
-			}
 			
 			/**
 			 * Formulaire prêt à l'ajout d'un nouvel élément

@@ -110,7 +110,6 @@ public class MissionsEditCompetence {
 					compSelect.setRequiredEmployees(Integer.parseInt(TFNombre.getText()));
 					missions.mJTableCompetences.setValueAt(TFNombre.getText(), row, 2);
 					missions.mJTableCompetences.fireTableDataChanged();
-				//	missions.ActualisationChamps();
 		            ProgramFrame.getFrame().setEnabled(true);
 		            frame.dispose();
 			}
