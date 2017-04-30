@@ -145,7 +145,7 @@ public class MissionsAddCompetence extends JFrame {
 			);
 			e.printStackTrace();
 		}
-		getCompModel().deleteRowObject(comp);
+		getCompModel().deleteRowObject(comp);//
 	}
 	
 	@SuppressWarnings("unchecked")

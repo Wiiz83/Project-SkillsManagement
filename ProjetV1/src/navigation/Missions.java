@@ -373,7 +373,8 @@ public class Missions extends Formulaire implements MouseListener {
 	}
 	
 	public Employee getEmployeSelected() {
-		try {//
+		try {
+			//
 			this.mJTableEmployes = (GenericTableModel<Employee>) this.JTableEmployes.getModel();
 			return this.mJTableEmployes
 					.getRowObject(this.JTableEmployes.convertRowIndexToModel(this.JTableEmployes.getSelectedRow()));
