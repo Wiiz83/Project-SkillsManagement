@@ -115,4 +115,11 @@ public class CSVRequests<E extends CSVEntity> implements IRequete<E> {
 		}
 	}
 	
+	public ArrayList<E> Autres(ArrayList<E> autres) throws DataException {
+		ArrayList<String> ids = new ArrayList<>();
+		for (E e : autres)
+			ids.add(e.csvID());
+		return filtrer(e -> !ids.contains(e.csvID()));
+	}
+	
 }
