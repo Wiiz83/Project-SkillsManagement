@@ -113,6 +113,7 @@ public class MissionsEditCompetence {
 					GenericTableModel<Competence>	mJTableCompetences = (GenericTableModel<Competence>) jtable.getModel();
 					mJTableCompetences.setValueAt(TFNombre.getText(), row, 2);
 					mJTableCompetences.fireTableDataChanged();
+					missions.updateComboBox();
 		            ProgramFrame.getFrame().setEnabled(true);
 		            frame.dispose();
 			}

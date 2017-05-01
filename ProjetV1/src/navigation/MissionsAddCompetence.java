@@ -150,6 +150,7 @@ public class MissionsAddCompetence extends JFrame {
 		getCompModel().deleteRowObject(comp);
 		getCompModel().fireTableDataChanged();
 		parent.updateCompReq();
+		parent.updateComboBox();
 	}
 	
 	@SuppressWarnings("unchecked")

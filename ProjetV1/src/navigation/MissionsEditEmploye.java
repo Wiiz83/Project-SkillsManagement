@@ -35,16 +35,19 @@ public class MissionsEditEmploye implements ActionListener {
 	GenericTableModel		mJTablePoss;
 	GenericTableModel		mJTableNonPoss;
 	
+	Missions missions;
+	
 	private JButton addButton;
 	private JButton removeButton;
 
-	public MissionsEditEmploye(JTable Poss, JTable nonPoss, GenericTableModel PossModel,GenericTableModel nonPossModel) {
+	public MissionsEditEmploye(JTable Poss, JTable nonPoss, GenericTableModel PossModel,GenericTableModel nonPossModel, Missions m) {
 		this.ElementPoss = Poss;
 		this.ElementNonPoss = nonPoss;
 		this.ElementNonPoss.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.ElementNonPoss.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.mJTableNonPoss = nonPossModel;
 		this.mJTablePoss = PossModel;
+		this.missions = m;
 	}
 	
 	public void displayGUI(){
@@ -56,6 +59,7 @@ public class MissionsEditEmploye implements ActionListener {
 		frame.setLocation(5, 5);
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
+            	missions.updateComboBox();
             	ProgramFrame.getFrame().setEnabled(true);
             	frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	        }

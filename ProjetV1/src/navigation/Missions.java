@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,8 +19,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.MaskFormatter;
@@ -35,7 +32,6 @@ import gui.JTables;
 import gui.ProgramFrame;
 import gui.RechercheJTable;
 import gui.Titre;
-import models.Competence;
 import models.CompetenceRequirement;
 import models.Employee;
 import models.Mission;
@@ -154,7 +150,7 @@ public class Missions extends Formulaire {
 		this.nom.setBounds(400, 60, 150, 25);
 		add(this.nom);
 		
-		this.statut = new JComboBox<>(Status.values());
+		this.statut = new JComboBox<>();
 		this.statut.setBounds(400, 100, 150, 25);
 		add(this.statut);
 		
@@ -387,9 +383,8 @@ public class Missions extends Formulaire {
 		}
 	}
 
-	// TODO : Appeler à chaque modification de champ et affectation d'employés
-	// ou compétences req.
-	private void updateComboBox() {
+	// TODO : Appeler à chaque modification de champ et affectation d'employés ou compétences req.
+	void updateComboBox() {
 		Mission mission = getMissionSelected();
 		statut.removeAllItems();
 		if (mission == null)
@@ -399,7 +394,7 @@ public class Missions extends Formulaire {
 			statut.addItem(Status.PLANIFIEE);
 	}
 	
-	// TODO: Appler avant l'enregistrement
+	// TODO: Appeler avant l'enregistrement
 	private void updateMissionStatus() {
 		Status selected = (Status) statut.getSelectedItem();
 		Mission mission = getMissionSelected();
@@ -409,6 +404,7 @@ public class Missions extends Formulaire {
 				&& mission.getStatus() == Status.PLANIFIEE)
 			mission.deplanifier();
 	}
+	
 	
 	public void updateCompReq() {
 		mJTableCompetences.fireTableDataChanged();
@@ -438,6 +434,8 @@ public class Missions extends Formulaire {
 			
 			this.mJTableEmployes = (GenericTableModel<Employee>) this.JTableEmployes.getModel();
 			this.mJTableCompetences = (GenericTableModel<CompetenceRequirement>) this.JTableCompetences.getModel();
+			
+			updateComboBox();
 		}
 	}
 	
@@ -462,6 +460,9 @@ public class Missions extends Formulaire {
 					"Informations non renseignés", JOptionPane.WARNING_MESSAGE
 			);
 		} else {
+			
+			
+			updateMissionStatus();
 			
 			Date dateD = new Date(this.dateD.getText());
 			int duree = Integer.parseInt(this.duree.getText());
@@ -628,6 +629,7 @@ public class Missions extends Formulaire {
 					missSelect.removeCompetenceReq(compSelect);
 					this.mJTableCompetences.deleteRowObject(compSelect);
 					this.mJTableCompetences.fireTableDataChanged();
+					updateComboBox();
 				}
 			}
 		}
@@ -635,56 +637,31 @@ public class Missions extends Formulaire {
 	
 	public void AjouterEmploye(){
 		ProgramFrame.getFrame().setEnabled(false);
-		switch (this.mode) {
-		case "nouveau":
-			try {
-				ArrayList<Employee> listEmpNonPoss = data.Employes().tous();
-				GenericTableModel<Employee> empNonPossModel = (GenericTableModel<Employee>) JTables
-						.Employes(listEmpNonPoss).getModel();
-				JTable empNonPoss = new JTable(empNonPossModel);
-				JTable empPoss = new JTable(mJTableEmployes);
-				PersonnelEditCompetence gestionListe = new PersonnelEditCompetence(
-						empPoss, empNonPoss, mJTableEmployes, empNonPossModel
-				);
-				gestionListe.displayGUI();
-			} catch (DataException e1) {
-				e1.printStackTrace();
-			}
-			break;
-		
-		case "modification":
-			Mission missSelect = getMissionSelected();
-			if (missSelect != null) {
-				ArrayList<Employee> listEmpNonPoss;
-				try {
-					listEmpNonPoss = data.Employes().Autres(mJTableEmployes.getArraylist());
-					GenericTableModel<Employee> empNonPossModel = (GenericTableModel<Employee>) JTables
-							.Employes(listEmpNonPoss).getModel();
-					JTable empNonPoss = new JTable(empNonPossModel);
-					JTable empPoss = new JTable(mJTableEmployes);
-					MissionsEditEmploye gestionListe = new MissionsEditEmploye(empPoss, empNonPoss, mJTableEmployes, empNonPossModel);
-					gestionListe.displayGUI();
-				} catch (DataException e1) {
-					e1.printStackTrace();
-				}
-				
-			}
-			break;
+		ArrayList<Employee> listEmpNonPoss;
+		try {
+			listEmpNonPoss = data.Employes().Autres(mJTableEmployes.getArraylist());
+			GenericTableModel<Employee> empNonPossModel = (GenericTableModel<Employee>) JTables.Employes(listEmpNonPoss).getModel();
+			JTable empNonPoss = new JTable(empNonPossModel);
+			JTable empPoss = new JTable(mJTableEmployes);
+			MissionsEditEmploye gestionListe = new MissionsEditEmploye(empPoss, empNonPoss, mJTableEmployes, empNonPossModel, this);
+			gestionListe.displayGUI();
+		} catch (DataException e1) {
+			e1.printStackTrace();
 		}
 	}
 	
 	public void AjouterEmployeRecommande(){
 		ProgramFrame.getFrame().setEnabled(false);
-		switch (this.mode) {
-		case "nouveau":
-			break;
-		
-		case "modification":
-			Mission missSelect = getMissionSelected();
-			if (missSelect != null) {
-				
-			}
-			break;
+		ArrayList<Employee> listEmpNonPoss;
+		try {
+			listEmpNonPoss = data.Employes().Autres(mJTableEmployes.getArraylist());
+			GenericTableModel<Employee> empNonPossModel = (GenericTableModel<Employee>) JTables.Employes(listEmpNonPoss).getModel();
+			JTable empNonPoss = new JTable(empNonPossModel);
+			JTable empPoss = new JTable(mJTableEmployes);
+			MissionsEditEmploye gestionListe = new MissionsEditEmploye(empPoss, empNonPoss, mJTableEmployes, empNonPossModel, this);
+			gestionListe.displayGUI();
+		} catch (DataException e1) {
+			e1.printStackTrace();
 		}
 	}
 
