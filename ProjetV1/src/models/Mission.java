@@ -1,14 +1,16 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import csv.CSVEntity;
 
 public class Mission extends MissionAbstract {
-
+	
 	private static final long					serialVersionUID	= -6014131798059503343L;
 	private ArrayList<CompetenceRequirement>	CompReq;
+	protected Date								dateFinReelle;
 	
 	/**
 	 * @param nomM
@@ -26,6 +28,21 @@ public class Mission extends MissionAbstract {
 	 * @return ajoute une compétence a la mission (true si réussi false si echec
 	 *         de l'ajout
 	 */
+	public void setDateFinRelle(int duree) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(this.dateDebut);
+		cal.add(Calendar.DATE, duree);
+		this.dateFinReelle = cal.getTime();
+	}
+	
+	public void setDateFinRelle(Date dateFin) {
+		this.dateFinReelle = dateFin;
+	}
+	
+	public Date getDateFinReelle() {
+		return dateFinReelle;
+	}
+	
 	public boolean addCompetenceReq(CompetenceRequirement cr) {
 		return CompReq.add(cr);
 	}
