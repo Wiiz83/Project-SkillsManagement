@@ -20,6 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.MaskFormatter;
@@ -36,6 +37,7 @@ import gui.Titre;
 import models.CompetenceRequirement;
 import models.Employee;
 import models.Mission;
+import models.Recommendation;
 import models.Status;
 
 /**
@@ -640,17 +642,19 @@ public class Missions extends Formulaire {
 	
 	public void AjouterEmployeRecommande(){
 		ProgramFrame.getFrame().setEnabled(false);
-		ArrayList<Employee> listEmpNonPoss;
+		Mission missEnCours = getMissionSelected();
+		Recommendation recommandation  = new Recommendation(missEnCours, mJTableEmployes.getArraylist());
 		try {
-			listEmpNonPoss = data.Employes().Autres(mJTableEmployes.getArraylist());
-			GenericTableModel<Employee> empNonPossModel = (GenericTableModel<Employee>) JTables.Employes(listEmpNonPoss).getModel();
-			JTable empNonPoss = new JTable(empNonPossModel);
-			JTable empPoss = new JTable(mJTableEmployes);
-			MissionsEditEmploye gestionListe = new MissionsEditEmploye(empPoss, empNonPoss, mJTableEmployes, empNonPossModel, this);
-			gestionListe.displayGUI();
-		} catch (DataException e1) {
-			e1.printStackTrace();
+			recommandation.setRecommendations(data);
+		} catch (DataException e) {
+			e.printStackTrace();
 		}
+		ArrayList<Employee> listEmpNonPoss = recommandation.getEmpRec();
+		JTable empNonPoss = JTables.Recommendation(recommandation);
+		TableModel empNonPossModel = empNonPoss.getModel();
+		JTable empPoss = new JTable(mJTableEmployes);
+		MissionsEditEmployeRecommande gestionListe = new MissionsEditEmployeRecommande(empPoss, empNonPoss, mJTableEmployes, empNonPossModel, this);
+		gestionListe.displayGUI();
 	}
 
 

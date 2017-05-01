@@ -270,17 +270,18 @@ public class JTables {
 		return table;
 	}
 	
-	public static JTable Recommendation(ArrayList<Recommendation> Rec) {
+	/*
+	public static JTable Recommendation(Recommendation rec) {
 		String[] headers = { "Employé", "Niveau de recommandation"};
 		@SuppressWarnings("serial")
-		TableModel dataModel = new GenericTableModel<Recommendation>(Rec, headers) {
+		TableModel dataModel = new GenericTableModel<Employee>(rec, headers) {
 			
 			  public boolean isCellEditable(int rowIndex, int mColIndex) {
 			        return false;
 			  }
 			
 			public Object getValueAt(int row, int col) {
-				Recommendation rec = Rec.get(row);
+
 				switch (col) {
 				case 0:
 					return rec.getEmpRec();
@@ -290,13 +291,66 @@ public class JTables {
 					System.out.println("Missions JTable access ");
 					break;
 				}
-				return Rec;
+				return rec;
 			}
 		};
 		JTable table = new JTable(dataModel);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setAutoCreateRowSorter(true);
 		table.getRowSorter().toggleSortOrder(0);
+		return table;
+	}*/
+	
+	
+	public static JTable Recommendation(Recommendation recom) {
+		
+		String[] headers = { "Nom", "Prénom", "Niveau de recommandation"};
+		@SuppressWarnings("serial")
+		DefaultTableModel dataModel = new DefaultTableModel() {
+			
+			  public boolean isCellEditable(int rowIndex, int mColIndex) {
+			        return false;
+			  }
+			
+			@Override
+			public String getColumnName(int col) {
+				return headers[col];
+			}
+			
+			@Override
+			public Object getValueAt(int row, int col) {
+				
+				switch (col) {
+				case 0:
+					return recom.getEmpRec().get(row).getLastName();
+				case 1: 
+					return recom.getEmpRec().get(row).getName();
+				case 2: 
+					return recom.getRLevel()[row];
+				default:
+					System.out.println("LanguesCompetence JTable access ");
+					break;
+				}
+				return null;
+			}
+			
+			@Override
+			public int getColumnCount() {
+				return 3;
+			}
+			
+			@Override
+			public int getRowCount() {
+				return recom.getEmpRec().size();
+			}
+		};
+		
+		JTable table = new JTable(dataModel);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setAutoCreateRowSorter(true);
+		table.getRowSorter().toggleSortOrder(0);
+		table.getColumnModel().getColumn(0).setPreferredWidth(200);
+		table.getColumnModel().getColumn(1).setPreferredWidth(600);
 		return table;
 	}
 	

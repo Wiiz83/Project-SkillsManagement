@@ -25,15 +25,14 @@ public class Recommendation {
 	private int[]								RLevel;
 	
 	/**
-	 * @param misToRec
-	 *            La mission qui est concernée par les recommendations
-	 */
-	public Recommendation(Mission misToRec, Data data) {
+	 * @param misToRec  La mission qui est concernée par les recommendations
+	 */	
+	public Recommendation(Mission misToRec, ArrayList<Employee> emp) {
 		super();
 		Recommendation.recID++;
 		this.misToRec = misToRec;
 		this.misCompReq = misToRec.getCompReq();
-		this.empAff = misToRec.getAffEmp();
+		this.empAff = emp;
 		this.data = data;
 	}
 	
@@ -45,11 +44,9 @@ public class Recommendation {
 	 *             des besoins
 	 * @throws DataException
 	 */
-	public void setRecommendations() throws DataException {
+	public void setRecommendations(Data data) throws DataException {
 		empRec = data.Employes().tous();
-		for (Employee e : empRec) { // Boucles et conditions pour vérifier si
-			// l'employé est recommendable et si oui
-			// l'ajoute
+		for (Employee e : empRec) { // Boucles et conditions pour vérifier si l'employé est recommendable et si oui l'ajoute
 			this.RLevel[e.getID()] = 0;
 			for (Competence c : e.getCompetences()) {
 				if (checkCompMission(c) != 0) {
