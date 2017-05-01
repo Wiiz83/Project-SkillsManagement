@@ -208,11 +208,6 @@ public class Missions extends Formulaire {
 		this.boutonAddEmp.setBounds(1160, 280);
 		add(this.boutonAddEmp);
 		
-		this.boutonAddEmpRecom = new Button("/boutons/minirecommandation.png");
-		this.boutonAddEmpRecom.setBounds(1160, 320);
-		add(this.boutonAddEmpRecom);
-		
-		
 		this.JTableMissions.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e){
 				AffichageSelection();
@@ -273,12 +268,6 @@ public class Missions extends Formulaire {
 			}
 		});
 		
-		this.boutonAddEmpRecom.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e){
-				AjouterEmployeRecommande();
-			}
-		});
-		
 		composantsEdition.add(this.JTableEmployes);
 		composantsEdition.add(this.JTableCompetences);
 		composantsEdition.add(this.nom);
@@ -290,7 +279,6 @@ public class Missions extends Formulaire {
 		composantsEdition.add(this.boutonDeleteComp);
 		composantsEdition.add(this.boutonEditComp);
 		composantsEdition.add(this.boutonAddEmp);
-		composantsEdition.add(this.boutonAddEmpRecom);
 		composantsEdition.add(this.boutonEnregistrer);
 		composantsEdition.add(this.boutonAnnuler);
 		
@@ -586,21 +574,6 @@ public class Missions extends Formulaire {
 	
 	public void AjouterEmploye(){
 		ProgramFrame.getFrame().setEnabled(false);
-		ArrayList<Employee> listEmpNonPoss;
-		try {
-			listEmpNonPoss = data.Employes().Autres(mJTableEmployes.getArraylist());
-			GenericTableModel<Employee> empNonPossModel = (GenericTableModel<Employee>) JTables.Employes(listEmpNonPoss).getModel();
-			JTable empNonPoss = new JTable(empNonPossModel);
-			JTable empPoss = new JTable(mJTableEmployes);
-			MissionsEditEmploye gestionListe = new MissionsEditEmploye(empPoss, empNonPoss, mJTableEmployes, empNonPossModel, this, missionEnCours);
-			gestionListe.displayGUI();
-		} catch (DataException e1) {
-			e1.printStackTrace();
-		}
-	}
-	
-	public void AjouterEmployeRecommande(){
-		ProgramFrame.getFrame().setEnabled(false);
 		try {
 			ArrayList<Employee> absentEmployes = data.Employes().tous();
 			ArrayList<Employee> presentEmployes = mJTableEmployes.getArraylist();
@@ -618,11 +591,12 @@ public class Missions extends Formulaire {
 			JTable empNonPoss = JTables.Recommendation(recommandation);
 			TableModel empNonPossModel = empNonPoss.getModel();
 			JTable empPoss = new JTable(mJTableEmployes);
-			MissionsEditEmployeRecommande gestionListe = new MissionsEditEmployeRecommande(empPoss, empNonPoss, mJTableEmployes, empNonPossModel, this);
+			MissionsEditEmploye gestionListe = new MissionsEditEmploye(empPoss, empNonPoss, mJTableEmployes, empNonPossModel, this, missionEnCours);
 			gestionListe.displayGUI();
 			
 		} catch (DataException e1) {
 			e1.printStackTrace();
 		}
 	}
+
 }

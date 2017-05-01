@@ -15,6 +15,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
+
 import gui.GenericTableModel;
 import gui.ProgramFrame;
 import models.Employee;
@@ -35,7 +38,7 @@ public class MissionsEditEmploye implements ActionListener {
 	JTable	ElementNonPoss;
 	
 	GenericTableModel		mJTablePoss;
-	GenericTableModel		mJTableNonPoss;
+	TableModel		mJTableNonPoss;
 	
 	Missions missions;
 	Mission missionEnCours;
@@ -43,7 +46,7 @@ public class MissionsEditEmploye implements ActionListener {
 	private JButton addButton;
 	private JButton removeButton;
 
-	public MissionsEditEmploye(JTable Poss, JTable nonPoss, GenericTableModel PossModel,GenericTableModel nonPossModel, Missions m, Mission mEnCours) {
+	public MissionsEditEmploye(JTable Poss, JTable nonPoss, GenericTableModel PossModel,TableModel nonPossModel, Missions m, Mission missionEnCours) {
 		this.ElementPoss = Poss;
 		this.ElementNonPoss = nonPoss;
 		this.ElementNonPoss.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -51,7 +54,7 @@ public class MissionsEditEmploye implements ActionListener {
 		this.mJTableNonPoss = nonPossModel;
 		this.mJTablePoss = PossModel;
 		this.missions = m;
-		this.missionEnCours = mEnCours;
+		this.missionEnCours = missionEnCours;
 	}
 	
 	public void displayGUI(){
@@ -92,27 +95,26 @@ public class MissionsEditEmploye implements ActionListener {
 		
 		frame.getContentPane().add(content);
 		frame.setVisible(true);
-		
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
 		if (e.getSource().equals(addButton)) {
-			Object o = mJTableNonPoss.getRowObject(ElementNonPoss.getSelectedRow());
+			Object o = ((GenericTableModel) mJTableNonPoss).getRowObject(ElementNonPoss.getSelectedRow());
 			missionEnCours.affectEmployee((Employee) o);
 			mJTablePoss.addRowObject(o);
-			mJTableNonPoss.deleteRowObject(o);		
+			((GenericTableModel) mJTableNonPoss).deleteRowObject(o);		
 			mJTablePoss.fireTableDataChanged();
-			mJTableNonPoss.fireTableDataChanged();
+			((AbstractTableModel) mJTableNonPoss).fireTableDataChanged();
 		}
 
 		if (e.getSource().equals(removeButton)) {
 			Object o = mJTablePoss.getRowObject(ElementPoss.getSelectedRow());
 			missionEnCours.removeEmployee((Employee) o);
-			mJTableNonPoss.addRowObject(o);
+			((GenericTableModel) mJTableNonPoss).addRowObject(o);
 			mJTablePoss.deleteRowObject(o);		
-			mJTableNonPoss.fireTableDataChanged();
+			((AbstractTableModel) mJTableNonPoss).fireTableDataChanged();
 			mJTablePoss.fireTableDataChanged();
 		}
 	}

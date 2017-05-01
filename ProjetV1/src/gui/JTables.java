@@ -270,38 +270,6 @@ public class JTables {
 		return table;
 	}
 	
-	/*
-	public static JTable Recommendation(Recommendation rec) {
-		String[] headers = { "Employé", "Niveau de recommandation"};
-		@SuppressWarnings("serial")
-		TableModel dataModel = new GenericTableModel<Employee>(rec, headers) {
-			
-			  public boolean isCellEditable(int rowIndex, int mColIndex) {
-			        return false;
-			  }
-			
-			public Object getValueAt(int row, int col) {
-
-				switch (col) {
-				case 0:
-					return rec.getEmpRec();
-				case 1:
-					return rec.getRLevel();
-				default:
-					System.out.println("Missions JTable access ");
-					break;
-				}
-				return rec;
-			}
-		};
-		JTable table = new JTable(dataModel);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setAutoCreateRowSorter(true);
-		table.getRowSorter().toggleSortOrder(0);
-		return table;
-	}*/
-	
-	
 	public static JTable Recommendation(Recommendation recom) {
 		
 		String[] headers = { "Nom", "Prénom", "Recommandation"};
