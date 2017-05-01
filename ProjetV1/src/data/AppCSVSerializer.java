@@ -28,6 +28,9 @@ public class AppCSVSerializer implements CSVSerializer {
 		if (o.getClass() == Mission.class) {
 			return Mission((Mission) o);
 		}
+		if (o.getClass() == MissionFormation.class) {
+			return MissionFormation((MissionFormation) o);
+		}
 		if (o.getClass() == Language.class) {
 			return Language((Language) o);
 		} else {
@@ -35,6 +38,7 @@ public class AppCSVSerializer implements CSVSerializer {
 		}
 	}
 	
+
 	private CSVLine Language(Language o) {
 		CSVLine line = new CSVLine();
 		line.add(o.csvID());
@@ -51,6 +55,17 @@ public class AppCSVSerializer implements CSVSerializer {
 		line.add(Integer.toString(o.getDuree()));
 		line.add(Integer.toString(o.getNbPersReq()));
 		line.add(dateformat.format(o.getDateFinReelle()));
+		line.add(String.valueOf(o.getForcer_planification()));
+		return line;
+	}
+	
+	private CSVLine MissionFormation(MissionFormation o) {
+		CSVLine line = new CSVLine();
+		line.add(o.csvID());
+		line.add(o.getNomM());
+		line.add(dateformat.format(o.getDateDebut()));
+		line.add(Integer.toString(o.getDuree()));
+		line.add(Integer.toString(o.getNbPersReq()));
 		line.add(String.valueOf(o.getForcer_planification()));
 		return line;
 	}

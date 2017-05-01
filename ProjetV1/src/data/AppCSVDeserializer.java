@@ -17,6 +17,7 @@ import models.CompetenceRequirement;
 import models.Employee;
 import models.Language;
 import models.Mission;
+import models.MissionFormation;
 
 public class AppCSVDeserializer implements CSVDeserializer {
 	SimpleDateFormat dateformatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -41,6 +42,9 @@ public class AppCSVDeserializer implements CSVDeserializer {
 			}
 			if (c == Language.class) {
 				return (E) Languages(line);
+			}
+			if (c == MissionFormation.class) {
+				return (E) MissionFormation(line);
 			} else {
 				throw new IllegalArgumentException("Object not deserializable");
 			}
@@ -48,6 +52,17 @@ public class AppCSVDeserializer implements CSVDeserializer {
 		} catch (NumberFormatException | ParseException e) {
 			throw new InvalidDataException(e);
 		}
+	}
+	
+	private MissionFormation MissionFormation(CSVLine line)
+			throws NumberFormatException, ParseException, InvalidDataException {
+		MissionFormation formation = new MissionFormation(line.get(1), dateformatter.parse(line.get(2)), Integer.parseInt(line.get(3)),
+				Integer.parseInt(line.get(4))
+		);
+		formation.setCsvID(line.get(0));
+		if (line.get(6).equals("true"))
+			formation.planifier();
+		return formation;
 	}
 	
 	private Language Languages(CSVLine line) throws InvalidDataException {

@@ -8,28 +8,33 @@ import csv.CSVEntity;
 
 public class MissionFormation extends MissionAbstract {
 	
+	private static final long		serialVersionUID	= 4395319872170806127L;
+	private ArrayList<Competence>	Competences;
+	
 	public MissionFormation(String nomM, Date dateDebut, int duree, int nbPersReq) {
 		super(nomM, dateDebut, duree, nbPersReq);
+ 	}
+	
+	public void addCompetence(Competence c) {
+		Competences.add(c);
 	}
 	
-	/**
-	 * 
-	 */
-	private static final long		serialVersionUID	= 4395319872170806127L;
-	private ArrayList<Competence>	Comp;
+	public ArrayList<Competence> getCompetences() {
+		return Competences;
+	}
 	
 	@Override
 	public HashMap<Class<? extends CSVEntity>, ArrayList<String>> getReferencedObjectsIDS() {
 		HashMap<Class<? extends CSVEntity>, ArrayList<String>> IDS = new HashMap<>();
 		IDS.put(Employee.class, getIDS(AffEmp));
-		IDS.put(Competence.class, getIDS(Comp));
+		IDS.put(Competence.class, getIDS(Competences));
 		return IDS;
 	}
 	
 	@Override
 	public void setReferencedObjects(HashMap<Class<? extends CSVEntity>, ArrayList<Object>> hashMap) {
 		AffEmp = castArrayList(hashMap, Employee.class);
-		Comp = castArrayList(hashMap, Competence.class);
+		Competences = castArrayList(hashMap, Competence.class);
 	}
 	
 	@Override
@@ -41,10 +46,10 @@ public class MissionFormation extends MissionAbstract {
 		if (!(obj instanceof MissionFormation))
 			return false;
 		MissionFormation other = (MissionFormation) obj;
-		if (Comp == null) {
-			if (other.Comp != null)
+		if (Competences == null) {
+			if (other.Competences != null)
 				return false;
-		} else if (!Comp.equals(other.Comp))
+		} else if (!Competences.equals(other.Competences))
 			return false;
 		return true;
 	}

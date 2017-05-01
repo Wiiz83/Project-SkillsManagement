@@ -1,11 +1,7 @@
 package data;
 
 import csv.CSVModel;
-import models.Competence;
-import models.CompetenceRequirement;
-import models.Employee;
-import models.Language;
-import models.Mission;
+import models.*;
 
 public class AppCSVDataModel extends CSVModel {
 	
@@ -33,5 +29,12 @@ public class AppCSVDataModel extends CSVModel {
 		);
 		
 		Metadata().AddAssociationOrEntity(Language.class, null, RELATIVEPATH + "langues.csv", true, 0);
+		Metadata().AddAssociationOrEntity(MissionFormation.class, null, RELATIVEPATH + "liste_formations.csv", true, 0);
+		Metadata().AddAssociationOrEntity(
+				MissionFormation.class, Competence.class, RELATIVEPATH + "formations_comp.csv", true, 0
+		);
+		Metadata().AddAssociationOrEntity(
+				MissionFormation.class, Employee.class, RELATIVEPATH + "formations_personnel.csv", true, 0
+		);
 	}
 }
