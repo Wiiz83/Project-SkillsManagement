@@ -33,6 +33,7 @@ public class Recommendation {
 		this.misCompReq = misToRec.getCompReq();
 		this.empRec = emp;
 		this.empAff = this.misToRec.getAffEmp(); //blabla bla test
+		this.RLevel = new int[emp.size()];
 	}
 	
 	/**
@@ -44,6 +45,7 @@ public class Recommendation {
 	 * @throws DataException
 	 */
 	public void setRecommendations() throws DataException {
+		deleteAff();
 		for (Employee e : empRec) { // Boucles et conditions pour vérifier si l'employé est recommendable et si oui l'ajoute
 			this.RLevel[e.getID()] = 0;
 			for (Competence c : e.getCompetences()) {
@@ -103,8 +105,7 @@ public class Recommendation {
 	}
 	
 	public int getLevel(int idEmp){
-		
-		return 0;
+		return this.RLevel[idEmp];
 	}
 	
 	public ArrayList<Employee> getEmpRec() {
