@@ -11,6 +11,8 @@ import gui.ProgramFrame;
 public class Program {
 	
 	/**
+	 * 
+	 * 
 	 * Lancement du programme en appelant la méthode displayGUI de la classe
 	 * ProgramFrame qui affiche la fenêtre
 	 * 
