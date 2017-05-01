@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -147,33 +148,22 @@ public class Missions extends Formulaire {
 		add(labelEmployes);
 		
 		this.nom = new JTextField();
-		this.nom.setBounds(400, 60, 150, 25);
+		this.nom.setBounds(400, 60, 200, 25);
 		add(this.nom);
 		
 		this.statut = new JComboBox<>();
-		this.statut.setBounds(400, 100, 150, 25);
+		this.statut.setBounds(400, 100, 200, 25);
 		add(this.statut);
 		
-		MaskFormatter formatterNombre;
-		try {
-			formatterNombre = new MaskFormatter("####");
-			this.nombre = new JFormattedTextField(formatterNombre);
-		} catch (ParseException e1) {
-			e1.printStackTrace();
-		}
-		this.nombre.setBounds(480, 140, 70, 25);
-		add(nombre);
-		
-		MaskFormatter formatterDuree;
-		try {
-			formatterDuree = new MaskFormatter("####");
-			this.duree = new JFormattedTextField(formatterDuree);
-		} catch (ParseException e1) {
-			e1.printStackTrace();
-		}
-		this.duree.setBounds(450, 220, 100, 25);
+		NumberFormat numberFormat = NumberFormat.getNumberInstance();
+		this.duree = new JFormattedTextField(numberFormat);
+		this.duree.setBounds(450, 220, 150, 25);
 		add(this.duree);
 		
+		this.nombre = new JFormattedTextField(numberFormat);
+		this.nombre.setBounds(480, 140, 120, 25);
+		add(nombre);
+
 		MaskFormatter formatterDate;
 		try {
 			formatterDate = new MaskFormatter("##/##/####");
@@ -182,7 +172,7 @@ public class Missions extends Formulaire {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		this.dateD.setBounds(440, 180, 110, 25);
+		this.dateD.setBounds(440, 180, 160, 25);
 		add(this.dateD);
 		
 		this.JTableCompetences = new JTable();
@@ -460,21 +450,23 @@ public class Missions extends Formulaire {
 					"Informations non renseignés", JOptionPane.WARNING_MESSAGE
 			);
 		} else {
-			
-			
+
 			updateMissionStatus();
-			
+
 			Date dateD = new Date(this.dateD.getText());
-			int duree = Integer.parseInt(this.duree.getText());
-			int nb = Integer.parseInt(this.nombre.getText());
+			String strDuree = this.duree.getText().replaceAll("\\D+","");
+			int duree = Integer.parseInt(strDuree);
+			String strNombre = this.nombre.getText().replaceAll("\\D+","");
+			int nb = Integer.parseInt(strNombre);
 			String nom = this.nom.getText();
 			
 			Mission mission = new Mission(nom, dateD, duree, nb);
 			ChargementConsultation();
 			
+			/*
 			switch (this.mode) {
 			case "nouveau":
-				/*
+				
 				 * Mission nouvEmp = new Mission(this.nom.getText(),
 				 * this.dateD.getText(), this.duree.getText(),
 				 * this.nombre.getText());
@@ -504,14 +496,10 @@ public class Missions extends Formulaire {
 				 * "yyyy-MM-dd");
 				 * data.Employes().modifier(this.empSelect);
 				 */
-				break;
-			
-			default:
-				break;
+
 			}
 		}
 		
-	}
 	
 	/*
 	 * MODIFIER : Modification de l'employé séléctionné
