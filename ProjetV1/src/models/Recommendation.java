@@ -32,7 +32,7 @@ public class Recommendation {
 		this.misToRec = misToRec;
 		this.misCompReq = misToRec.getCompReq();
 		this.empRec = emp;
-		this.empAff = this.misToRec.getAffEmp();
+		this.empAff = this.misToRec.getAffEmp(); //blabla bla test
 	}
 	
 	/**
