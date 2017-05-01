@@ -3,19 +3,13 @@ package models;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-
-import csv.CSVConfig;
-import csv.CSVException;
-import csv.CSVObjects;
-import data.Data;
 import data.DataException;
 
 /**
  * @author David Classe Recommendation
  */
 public class Recommendation {
-	
-	private static int											recID; 						//id du groupe de recommendations
+
 	private Mission												misToRec; 					//Mission qui a besoin des recommendations
 	private ArrayList<Employee>							empRec; 					//ArrayList des employés à tester pour les recommendations
 	private ArrayList<CompetenceRequirement>	misCompReq; 			//ArrayList des compétences requises dans la missions
@@ -27,12 +21,10 @@ public class Recommendation {
 	 * @param misToRec  La mission qui est concernée par les recommendations
 	 */	
 	public Recommendation(Mission misToRec, ArrayList<Employee> emp) {
-		super();
-		Recommendation.recID++;
 		this.misToRec = misToRec;
 		this.misCompReq = misToRec.getCompReq();
 		this.empRec = emp;
-		this.empAff = this.misToRec.getAffEmp(); //blabla bla test	
+		this.empAff = this.misToRec.getAffEmp(); 
 		this.RLevel = new int[250];
 	}
 	
@@ -50,7 +42,7 @@ public class Recommendation {
 			this.RLevel[e.getID()] = 0;
 			for (Competence c : e.getCompetences()) {
 				if (checkCompMission(c) != 0) {
-					if (!this.empToRec.contains(e))
+					if (!this.empRec.contains(e))
 						this.empToRec.add(e);
 					this.RLevel[e.getID()]++;
 				}
@@ -105,8 +97,6 @@ public class Recommendation {
 	}
 	
 	public int getLevel(int idEmp){
-		System.out.println(idEmp);
-		System.out.println(this.RLevel[idEmp]);
 		return this.RLevel[idEmp];
 	}
 	
