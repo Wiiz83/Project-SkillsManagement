@@ -645,10 +645,12 @@ public class Missions extends Formulaire {
 		Mission missEnCours = getMissionSelected();
 		Recommendation recommandation  = new Recommendation(missEnCours, mJTableEmployes.getArraylist());
 		try {
-			recommandation.setRecommendations(data);
+			recommandation.setRecommendations();
 		} catch (DataException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		ArrayList<Employee> listEmpNonPoss = recommandation.getEmpRec();
 		JTable empNonPoss = JTables.Recommendation(recommandation);
 		TableModel empNonPossModel = empNonPoss.getModel();
