@@ -2,7 +2,6 @@ package navigation;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -28,8 +27,7 @@ import models.CompetenceCode;
 import models.Language;
 
 /**
- * Page "Compétences" de l'application contenant la liste de toutes les
- * compétences avec possibilité d'ajout, suppression et modification
+ * Page "Compétences" de l'application contenant la liste de toutes les compétences avec possibilité d'ajout, suppression et modification
  */
 public class Competences extends Formulaire {
 	
@@ -72,7 +70,6 @@ public class Competences extends Formulaire {
 			e.printStackTrace();
 		}
 		this.mJTableCompetences = (GenericTableModel<Competence>) this.JTableCompetences.getModel();
-		
 		
 		String indication =  "Rechercher un code ou un libellé...";
 		this.recherche = new HintTextField(indication); 
@@ -163,17 +160,22 @@ public class Competences extends Formulaire {
 		composantsConsultation.add(this.boutonNouveau);
 		composantsConsultation.add(this.boutonSupprimer);
 		composantsConsultation.add(this.JTableCompetences);
+		composantsConsultation.add(this.recherche);
 		
 		super.ChargementConsultation();
 	}
 	
+	/*
+	 * Vide tous les champs du formulaire
+	 */
 	public void VideChamps() {
 		this.code.setText("");
 		this.JTableLangues.setModel(JTables.LanguesCompetence(null, langues).getModel());
-		this.JTableLangues.getColumnModel().getColumn(0).setPreferredWidth(200);
-		this.JTableLangues.getColumnModel().getColumn(1).setPreferredWidth(600);
 	}
 	
+	/*
+	 * Renvoi la compétence séléctionnée 
+	 */
 	public Competence getCompetenceSelected() {
 		try {
 			this.mJTableCompetences = (GenericTableModel<Competence>) this.JTableCompetences.getModel();
@@ -190,7 +192,9 @@ public class Competences extends Formulaire {
 		}
 	}
 	
-	
+	/*
+	 * Renvoi la ligne de la langue séléctionnée 
+	 */
 	public int getLangueSelected() {
 		try {
 			return JTableLangues.getSelectedRow();
@@ -201,6 +205,9 @@ public class Competences extends Formulaire {
 		}
 	}
 	
+	/*
+	 * Actualise la JTable des langues après une modification 
+	 */
 	public void ActualisationChamps() {
 		
 	ArrayList<Language> ListeLangues;
@@ -210,8 +217,6 @@ public class Competences extends Formulaire {
 					ListeLangues = data.Langues().tous();
 					TableModel TableLangues = JTables.LanguesCompetence(tempComp, ListeLangues).getModel();
 					this.JTableLangues.setModel(TableLangues);
-					this.JTableLangues.getColumnModel().getColumn(0).setPreferredWidth(200);
-					this.JTableLangues.getColumnModel().getColumn(1).setPreferredWidth(600);
 				} catch (DataException e1) {
 					e1.printStackTrace();
 				}
@@ -224,19 +229,16 @@ public class Competences extends Formulaire {
 						ListeLangues = data.Langues().tous();
 						TableModel TableLangues = JTables.LanguesCompetence(CompSelect, ListeLangues).getModel();
 						this.JTableLangues.setModel(TableLangues);
-						this.JTableLangues.getColumnModel().getColumn(0).setPreferredWidth(200);
-						this.JTableLangues.getColumnModel().getColumn(1).setPreferredWidth(600);
 					} catch (DataException e1) {
 						e1.printStackTrace();
 					}
 				}
 				break;
 		}
-	
 	}
 	
 	/*
-	 * AFFICHAGE 
+	 * Affichage des détails de la compétence sélectionnée 
 	 */
 	public void AffichageSelection(){
 		Competence CompSelect = getCompetenceSelected();
@@ -247,8 +249,6 @@ public class Competences extends Formulaire {
 			ListeLangues = data.Langues().tous();
 			this.mJTableLangues = JTables.LanguesCompetence(CompSelect, ListeLangues).getModel();
 			this.JTableLangues.setModel(mJTableLangues);
-			this.JTableLangues.getColumnModel().getColumn(0).setPreferredWidth(200);
-			this.JTableLangues.getColumnModel().getColumn(1).setPreferredWidth(600);
 		} catch (DataException e1) {
 			e1.printStackTrace();
 		}
@@ -351,8 +351,6 @@ public class Competences extends Formulaire {
 				CompSelect.setNames(cloned.getNames());
 				TableModel mJTableLangues = JTables.LanguesCompetence(CompSelect, langues).getModel();
 				this.JTableLangues.setModel(mJTableLangues);
-				this.JTableLangues.getColumnModel().getColumn(0).setPreferredWidth(200);
-				this.JTableLangues.getColumnModel().getColumn(1).setPreferredWidth(600);
 				ChargementConsultation();
 			}
 			break;
@@ -382,6 +380,9 @@ public class Competences extends Formulaire {
 		}
 	}
 	
+	/*
+	 * Modifier le libellé d'une compétence 
+	 */
 	public void ModifierLibelle(){
 		int rowIndex = JTableLangues.getSelectedRow();
 		if(rowIndex > -1){
