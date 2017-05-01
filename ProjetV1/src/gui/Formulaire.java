@@ -13,7 +13,36 @@ public class Formulaire extends JPanel {
 	protected  ArrayList<JComponent> composantsEdition			= new ArrayList<JComponent>();
     protected ArrayList<JComponent> composantsConsultation 	= new ArrayList<JComponent>();
     protected String	mode;
+    protected Button				boutonNouveau;
+    protected Button				boutonModifier;
+    protected Button				boutonSupprimer;
+    protected Button				boutonEnregistrer;
+    protected Button				boutonAnnuler;
+    
+    public Formulaire(){
+		
+		this.boutonNouveau = new Button("/boutons/nouveau.png");
+		this.boutonNouveau.setBounds(330, 560);
+
+		this.boutonModifier = new Button("/boutons/modifier.png");
+		this.boutonModifier.setBounds(510, 560);
 	
+		this.boutonSupprimer = new Button("/boutons/supprimer.png");
+		this.boutonSupprimer.setBounds(690, 560);
+		
+		this.boutonEnregistrer = new Button("/boutons/enregistrer.png");
+		this.boutonEnregistrer.setBounds(885, 560);
+		
+		this.boutonAnnuler = new Button("/boutons/annuler.png");
+		this.boutonAnnuler.setBounds(1100, 560);
+		
+		add(this.boutonNouveau);
+		add(this.boutonModifier);
+		add(this.boutonSupprimer);
+		add(this.boutonEnregistrer);
+		add(this.boutonAnnuler);
+    }
+    
 	 /*
 	  *   Mode Consultation : Les éléments du formulaire ne sont pas modifiables
 	  */

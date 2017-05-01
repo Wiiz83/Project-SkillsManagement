@@ -102,6 +102,8 @@ public class JTables {
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setAutoCreateRowSorter(true);
 		table.getRowSorter().toggleSortOrder(0);
+		table.getColumnModel().getColumn(0).setPreferredWidth(75);
+		table.getColumnModel().getColumn(1).setPreferredWidth(225);
 		return table;
 	}
 	
