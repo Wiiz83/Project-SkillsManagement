@@ -15,14 +15,14 @@ import data.DataException;
  */
 public class Recommendation {
 	
-	private static int							recID; //id du groupe de recommendations
-	private Mission								misToRec; //Mission qui a besoin des recommendations
-	private ArrayList<Employee>					empRec; //ArrayList des employés à tester pour les recommendations
-	private ArrayList<CompetenceRequirement>	misCompReq; //ArrayList des compétences requises dans la missions
-	private ArrayList<Employee>					empAff; //ArrayList affectés à la mission
-	private ArrayList<Employee>					empToRec; //ArrayList des employés recommendés
-	private int[]								RLevel; //Tableau des niveaux de recommendations par employés
-	
+	private static int											recID; 						//id du groupe de recommendations
+	private Mission												misToRec; 					//Mission qui a besoin des recommendations
+	private ArrayList<Employee>							empRec; 					//ArrayList des employés à tester pour les recommendations
+	private ArrayList<CompetenceRequirement>	misCompReq; 			//ArrayList des compétences requises dans la missions
+	private ArrayList<Employee>							empAff;						 //ArrayList affectés à la mission
+	private ArrayList<Employee>							empToRec; 				//ArrayList des employés recommendés
+	private int[]													RLevel; 						//Tableau des niveaux de recommendations par employés
+			
 	/**
 	 * @param misToRec  La mission qui est concernée par les recommendations
 	 */	

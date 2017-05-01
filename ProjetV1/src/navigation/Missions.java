@@ -20,7 +20,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.MaskFormatter;
@@ -69,6 +68,7 @@ public class Missions extends Formulaire {
 	private JTable																JTableEmployes;
 	private GenericTableModel<Employee>							mJTableEmployes;
 	private SimpleDateFormat	MissionDateFormat				= new SimpleDateFormat("dd/MM/yyyy");
+	private Mission																missionEnCours;
 
 	public Missions(Data data) {
 		super();
@@ -436,6 +436,7 @@ public class Missions extends Formulaire {
 	 * NOUVEAU : Création d'une nouvelle mission
 	 */
 	public void Nouveau(){
+		this.missionEnCours = new Mission("", null, 0, 0);
 		VideChamps();
 		ChargementModification();
 		this.mode = "nouveau";
@@ -464,41 +465,6 @@ public class Missions extends Formulaire {
 			
 			Mission mission = new Mission(nom, dateD, duree, nb);
 			ChargementConsultation();
-			
-			/*
-			switch (this.mode) {
-			case "nouveau":
-				
-				 * Mission nouvEmp = new Mission(this.nom.getText(),
-				 * this.dateD.getText(), this.duree.getText(),
-				 * this.nombre.getText());
-				 * 
-				 * 
-				 * if (this.JTableEmployes != null &&
-				 * this.JTableEmployes.getModel() != null) {
-				 * ArrayList<Employee> listEmp = new ArrayList<Object>;
-				 * 
-				 * for(int row = 0; row < table.getRowCount(); row++) {
-				 * for(int column = 0; column = table.getColumnCount();
-				 * column++) { list.add(table.getValueAt(row, column));
-				 * } }
-				 * 
-				 * nouvEmp.setAffEmp(affEmp); }
-				 * 
-				 * if(){
-				 * 
-				 * }
-				 * 
-				 * data.Missions().ajouter(nouvEmp); break;
-				 * 
-				 * case "modification":
-				 * /*this.empSelect.setLastName(this.nom.getText());
-				 * this.empSelect.setName(this.prenom.getText());
-				 * this.empSelect.setEntryDate(this.date.getText(),
-				 * "yyyy-MM-dd");
-				 * data.Employes().modifier(this.empSelect);
-				 */
-
 			}
 		}
 		
@@ -507,16 +473,16 @@ public class Missions extends Formulaire {
 	 * MODIFIER : Modification de l'employé séléctionné
 	 */
 	public void Modifier(){
-		Mission missSelect = getMissionSelected();
-		if (missSelect != null) {
-			if (missSelect.estModifiable()) {
+		this.missionEnCours = getMissionSelected();
+		if (missionEnCours != null) {
+			if (missionEnCours.estModifiable()) {
 				super.ChargementModification();
-			} else if (missSelect.getStatus() == Status.EN_COURS) {
+			} else if (missionEnCours.getStatus() == Status.EN_COURS) {
 				JOptionPane.showMessageDialog(
 						new JFrame(), "La mission est en cours : elle n'est donc plus modifiable.",
 						"Mission en cours", JOptionPane.WARNING_MESSAGE
 				);
-			} else if (missSelect.getStatus() == Status.TERMINEE) {
+			} else if (missionEnCours.getStatus() == Status.TERMINEE) {
 				JOptionPane.showMessageDialog(
 						new JFrame(), "La mission est terminée : elle n'est donc plus modifiable.",
 						"Mission terminée", JOptionPane.WARNING_MESSAGE
@@ -529,31 +495,33 @@ public class Missions extends Formulaire {
 	 * ANNULER : Annulation de toutes les modifications précédemment effectuées 
 	 */
 	public void Annuler(){
-		switch (this.mode) {
-		case "nouveau":
-			VideChamps();
-			ChargementConsultation();
-			break;
+		this.missionEnCours = null;
 		
-		case "modification":
-			Mission missSelect = getMissionSelected();
-			if (missSelect != null) {
-				this.nom.setText(missSelect.getNomM());
-				this.dateD.setText(MissionDateFormat.format(missSelect.getDateDebut()));
-				this.duree.setText(Integer.toString(missSelect.getDuree()));
-				this.nombre.setText(Integer.toString(missSelect.getNbPersReq()));
-				this.statut.setSelectedItem(missSelect.getStatus());
-				
-				ArrayList<CompetenceRequirement> listCompMiss = missSelect.getCompReq();
-				TableModel tmComp = JTables.CompetencesRequises(listCompMiss).getModel();
-				this.JTableCompetences.setModel(tmComp);
-				
-				ArrayList<Employee> listEmpMiss = missSelect.getAffEmp();
-				TableModel tmEmp = JTables.Employes(listEmpMiss).getModel();
-				this.JTableEmployes.setModel(tmEmp);
+		switch (this.mode) {
+			case "nouveau":
+				VideChamps();
 				ChargementConsultation();
-			}
-			break;
+				break;
+			
+			case "modification":
+				Mission missSelect = getMissionSelected();
+				if (missSelect != null) {
+					this.nom.setText(missSelect.getNomM());
+					this.dateD.setText(MissionDateFormat.format(missSelect.getDateDebut()));
+					this.duree.setText(Integer.toString(missSelect.getDuree()));
+					this.nombre.setText(Integer.toString(missSelect.getNbPersReq()));
+					this.statut.setSelectedItem(missSelect.getStatus());
+					
+					ArrayList<CompetenceRequirement> listCompMiss = missSelect.getCompReq();
+					TableModel tmComp = JTables.CompetencesRequises(listCompMiss).getModel();
+					this.JTableCompetences.setModel(tmComp);
+					
+					ArrayList<Employee> listEmpMiss = missSelect.getAffEmp();
+					TableModel tmEmp = JTables.Employes(listEmpMiss).getModel();
+					this.JTableEmployes.setModel(tmEmp);
+					ChargementConsultation();
+				}
+				break;
 		}
 	}
 	
@@ -582,17 +550,14 @@ public class Missions extends Formulaire {
 	
 	
 	public void AjouterCompetence(){
-		Mission missSelect = getMissionSelected();
-		if (missSelect != null) {
-			JFrame frame;
-			try {
-				frame = new MissionsAddCompetence(data, getMissionSelected(), this);
-				frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-				frame.pack();
-				frame.setVisible(true);
-			} catch (HeadlessException | DataException e1) {
-				e1.printStackTrace();
-			}
+		JFrame frame;
+		try {
+			frame = new MissionsAddCompetence(data, this.missionEnCours, this);
+			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			frame.pack();
+			frame.setVisible(true);
+		} catch (HeadlessException | DataException e1) {
+			e1.printStackTrace();
 		}
 	}
 	
@@ -607,20 +572,14 @@ public class Missions extends Formulaire {
 	}
 	
 	public void SupprimerCompetence(){
-		Mission missSelect = getMissionSelected();
-		if (missSelect != null) {
-			CompetenceRequirement compSelect = getCompetenceSelected();
-			if (compSelect != null) {
-				int n = JOptionPane.showConfirmDialog(
-						new JFrame(), "Voulez vraiment supprimer cette compétence ?",
-						"Confirmation de suppression", JOptionPane.YES_NO_OPTION
-				);
-				if (n == JOptionPane.YES_OPTION) {
-					missSelect.removeCompetenceReq(compSelect);
-					this.mJTableCompetences.deleteRowObject(compSelect);
-					this.mJTableCompetences.fireTableDataChanged();
-					updateComboBox();
-				}
+		CompetenceRequirement compSelect = getCompetenceSelected();
+		if (compSelect != null) {
+			int n = JOptionPane.showConfirmDialog(new JFrame(), "Voulez vraiment supprimer cette compétence ?","Confirmation de suppression", JOptionPane.YES_NO_OPTION);
+			if (n == JOptionPane.YES_OPTION) {
+				missionEnCours.removeCompetenceReq(compSelect);
+				this.mJTableCompetences.deleteRowObject(compSelect);
+				this.mJTableCompetences.fireTableDataChanged();
+				updateComboBox();
 			}
 		}
 	}
@@ -633,7 +592,7 @@ public class Missions extends Formulaire {
 			GenericTableModel<Employee> empNonPossModel = (GenericTableModel<Employee>) JTables.Employes(listEmpNonPoss).getModel();
 			JTable empNonPoss = new JTable(empNonPossModel);
 			JTable empPoss = new JTable(mJTableEmployes);
-			MissionsEditEmploye gestionListe = new MissionsEditEmploye(empPoss, empNonPoss, mJTableEmployes, empNonPossModel, this);
+			MissionsEditEmploye gestionListe = new MissionsEditEmploye(empPoss, empNonPoss, mJTableEmployes, empNonPossModel, this, missionEnCours);
 			gestionListe.displayGUI();
 		} catch (DataException e1) {
 			e1.printStackTrace();
@@ -642,22 +601,30 @@ public class Missions extends Formulaire {
 	
 	public void AjouterEmployeRecommande(){
 		ProgramFrame.getFrame().setEnabled(false);
-		Mission missEnCours = getMissionSelected();
-		Recommendation recommandation  = new Recommendation(missEnCours, mJTableEmployes.getArraylist());
 		try {
+			ArrayList<Employee> absentEmployes = data.Employes().tous();
+			ArrayList<Employee> presentEmployes = mJTableEmployes.getArraylist();
+			
+			for (Employee emp : presentEmployes) {
+				if(absentEmployes.contains(emp)){
+					absentEmployes.remove(emp);
+				}
+			}
+
+			missionEnCours.setAffEmp(presentEmployes);
+			
+			Recommendation recommandation  = new Recommendation(missionEnCours, absentEmployes);
 			recommandation.setRecommendations();
-		} catch (DataException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
+			ArrayList<Employee> listEmpNonPoss = recommandation.getEmpRec();
+			JTable empNonPoss = JTables.Recommendation(recommandation);
+			TableModel empNonPossModel = empNonPoss.getModel();
+			JTable empPoss = new JTable(mJTableEmployes);
+			MissionsEditEmployeRecommande gestionListe = new MissionsEditEmployeRecommande(empPoss, empNonPoss, mJTableEmployes, empNonPossModel, this);
+			gestionListe.displayGUI();
+			
+		} catch (DataException e1) {
+			e1.printStackTrace();
 		}
-		
-		ArrayList<Employee> listEmpNonPoss = recommandation.getEmpRec();
-		JTable empNonPoss = JTables.Recommendation(recommandation);
-		TableModel empNonPossModel = empNonPoss.getModel();
-		JTable empPoss = new JTable(mJTableEmployes);
-		MissionsEditEmployeRecommande gestionListe = new MissionsEditEmployeRecommande(empPoss, empNonPoss, mJTableEmployes, empNonPossModel, this);
-		gestionListe.displayGUI();
 	}
-
-
 }

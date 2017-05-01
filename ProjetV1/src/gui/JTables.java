@@ -304,7 +304,7 @@ public class JTables {
 	
 	public static JTable Recommendation(Recommendation recom) {
 		
-		String[] headers = { "Nom", "Prénom", "Niveau de recommandation"};
+		String[] headers = { "Nom", "Prénom", "Recommandation"};
 		@SuppressWarnings("serial")
 		DefaultTableModel dataModel = new DefaultTableModel() {
 			
@@ -326,7 +326,7 @@ public class JTables {
 				case 1: 
 					return recom.getEmpRec().get(row).getName();
 				case 2: 
-					return recom.getRLevel()[row];
+					return recom.getLevel(recom.getEmpRec().get(row).getID());
 				default:
 					System.out.println("LanguesCompetence JTable access ");
 					break;
@@ -349,8 +349,6 @@ public class JTables {
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setAutoCreateRowSorter(true);
 		table.getRowSorter().toggleSortOrder(0);
-		table.getColumnModel().getColumn(0).setPreferredWidth(200);
-		table.getColumnModel().getColumn(1).setPreferredWidth(600);
 		return table;
 	}
 	

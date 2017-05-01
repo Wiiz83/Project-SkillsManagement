@@ -139,14 +139,6 @@ public class MissionsAddCompetence extends JFrame {
 		int nbEmpReq = Integer.parseInt(nbEmployes.getText());
 		CompetenceRequirement cr = new CompetenceRequirement(comp, nbEmpReq);
 		mission.addCompetenceReq(cr);
-		try {
-			data.Missions().modifier(mission);
-		} catch (DataException e) {
-			JOptionPane.showMessageDialog(
-					new JFrame(), "Problème lors de la mise à jour des données.", "Erreur", JOptionPane.WARNING_MESSAGE
-			);
-			e.printStackTrace();
-		}
 		getCompModel().deleteRowObject(comp);
 		getCompModel().fireTableDataChanged();
 		parent.updateCompReq();

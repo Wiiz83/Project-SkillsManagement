@@ -17,6 +17,8 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import gui.GenericTableModel;
 import gui.ProgramFrame;
+import models.Employee;
+import models.Mission;
 
 public class MissionsEditEmploye implements ActionListener {
 
@@ -36,11 +38,12 @@ public class MissionsEditEmploye implements ActionListener {
 	GenericTableModel		mJTableNonPoss;
 	
 	Missions missions;
+	Mission missionEnCours;
 	
 	private JButton addButton;
 	private JButton removeButton;
 
-	public MissionsEditEmploye(JTable Poss, JTable nonPoss, GenericTableModel PossModel,GenericTableModel nonPossModel, Missions m) {
+	public MissionsEditEmploye(JTable Poss, JTable nonPoss, GenericTableModel PossModel,GenericTableModel nonPossModel, Missions m, Mission mEnCours) {
 		this.ElementPoss = Poss;
 		this.ElementNonPoss = nonPoss;
 		this.ElementNonPoss.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -48,6 +51,7 @@ public class MissionsEditEmploye implements ActionListener {
 		this.mJTableNonPoss = nonPossModel;
 		this.mJTablePoss = PossModel;
 		this.missions = m;
+		this.missionEnCours = mEnCours;
 	}
 	
 	public void displayGUI(){
@@ -96,6 +100,7 @@ public class MissionsEditEmploye implements ActionListener {
 		
 		if (e.getSource().equals(addButton)) {
 			Object o = mJTableNonPoss.getRowObject(ElementNonPoss.getSelectedRow());
+			missionEnCours.affectEmployee((Employee) o);
 			mJTablePoss.addRowObject(o);
 			mJTableNonPoss.deleteRowObject(o);		
 			mJTablePoss.fireTableDataChanged();
@@ -104,6 +109,7 @@ public class MissionsEditEmploye implements ActionListener {
 
 		if (e.getSource().equals(removeButton)) {
 			Object o = mJTablePoss.getRowObject(ElementPoss.getSelectedRow());
+			missionEnCours.removeEmployee((Employee) o);
 			mJTableNonPoss.addRowObject(o);
 			mJTablePoss.deleteRowObject(o);		
 			mJTableNonPoss.fireTableDataChanged();
