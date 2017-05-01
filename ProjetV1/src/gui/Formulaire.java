@@ -9,10 +9,11 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 public class Formulaire extends JPanel {
-	
+
+	private static final long serialVersionUID = 1L;
 	protected  ArrayList<JComponent> composantsEdition			= new ArrayList<JComponent>();
     protected ArrayList<JComponent> composantsConsultation 	= new ArrayList<JComponent>();
-    protected String	mode;
+    protected String				mode;
     protected Button				boutonNouveau;
     protected Button				boutonModifier;
     protected Button				boutonSupprimer;

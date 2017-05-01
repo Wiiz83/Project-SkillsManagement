@@ -48,8 +48,6 @@ public class Personnel extends Formulaire {
 	private JTextField										prenom;
 	private JTextField										date;
 	private HintTextField 									recherche;
-	
-	private SimpleDateFormat	GuiDateFormat	= new SimpleDateFormat("yyyy-MM-dd");
 	private SimpleDateFormat	EmployeeDateFormat	= new SimpleDateFormat("dd/MM/yyyy");
 
 	public Personnel(Data data) {
@@ -173,9 +171,7 @@ public class Personnel extends Formulaire {
 				ModifierCompetence();
 			}
 		});
-		
-		
-		
+
 		composantsEdition.add(this.boutonEditComp);
 		composantsEdition.add(this.nom);
 		composantsEdition.add(this.prenom);

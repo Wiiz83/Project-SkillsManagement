@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+
+import gui.GenericTableModel;
 import gui.ProgramFrame;
 import models.Competence;
 import models.CompetenceCode;
@@ -108,8 +110,9 @@ public class MissionsEditCompetence {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 					compSelect.setRequiredEmployees(Integer.parseInt(TFNombre.getText()));
-					missions.mJTableCompetences.setValueAt(TFNombre.getText(), row, 2);
-					missions.mJTableCompetences.fireTableDataChanged();
+					GenericTableModel<Competence>	mJTableCompetences = (GenericTableModel<Competence>) jtable.getModel();
+					mJTableCompetences.setValueAt(TFNombre.getText(), row, 2);
+					mJTableCompetences.fireTableDataChanged();
 		            ProgramFrame.getFrame().setEnabled(true);
 		            frame.dispose();
 			}

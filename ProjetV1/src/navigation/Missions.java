@@ -1,12 +1,9 @@
 package navigation;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.HeadlessException;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.ParseException;
@@ -36,13 +33,12 @@ import gui.GenericTableModel;
 import gui.HintTextField;
 import gui.JTables;
 import gui.ProgramFrame;
+import gui.RechercheJTable;
 import gui.Titre;
 import models.Competence;
 import models.CompetenceRequirement;
 import models.Employee;
-import models.Language;
 import models.Mission;
-import models.Recommendation;
 import models.Status;
 
 /**
@@ -50,46 +46,34 @@ import models.Status;
  * avec possibilité d'ajout, suppression et modification
  * 
  */
-public class Missions extends Formulaire implements MouseListener {
+public class Missions extends Formulaire {
 	
-	private static final long	serialVersionUID	= 1L;
-	private Data				data;
-	
-	Button	boutonNouveau;
-	Button	boutonModifier;
-	Button	boutonSupprimer;
-	Button	boutonEnregistrer;
-	Button	boutonAnnuler;
-	Button	boutonAddComp;
-	Button	boutonEditComp;
-	Button	boutonDeleteComp;
-	Button	boutonAddEmp;
-	Button	boutonAddEmpRecom;
-	Button	missionTermine;
-	
-	JTable						JTableMissions;
-	GenericTableModel<Mission>	mJTableMissions;
-	
-	JTable										JTableCompetences;
-	GenericTableModel<CompetenceRequirement>	mJTableCompetences;
-	
-	JTable						JTableEmployes;
-	GenericTableModel<Employee>	mJTableEmployes;
-	
-	JTextField			nom;
-	JComboBox<Status>	statut;
-	JFormattedTextField	dateD;
-	JFormattedTextField	duree;
-	JFormattedTextField	nombre;
-	
-	SimpleDateFormat	GuiDateFormat		= new SimpleDateFormat("yyyy-MM-dd");
-	SimpleDateFormat	MissionDateFormat	= new SimpleDateFormat("dd/MM/yyyy");
-	SimpleDateFormat	MissionDureeFormat	= new SimpleDateFormat("dd/MM/yyyy");
-	
-	HintTextField		recherche;
-	JComboBox<String>	filtre;
-	
+	private static final long												serialVersionUID	= 1L;
+	private Data																	data;
+	private Button																boutonAddComp;
+	private Button																boutonEditComp;
+	private Button																boutonDeleteComp;
+	private Button																boutonAddEmp;
+	private Button																boutonAddEmpRecom;
+	private Button																boutonMissionTermine;
+	private JTextField															nom;
+	private JComboBox<Status>											statut;
+	private JFormattedTextField											dateD;
+	private JFormattedTextField											duree;
+	private JFormattedTextField											nombre;
+	private HintTextField														recherche;
+	private JComboBox<String>											filtre;
+	private JTable																JTableMissions;
+	private GenericTableModel<Mission>								mJTableMissions;
+	private JTable																JTableCompetences;
+	private GenericTableModel<CompetenceRequirement>	mJTableCompetences;
+	private JTable																JTableEmployes;
+	private GenericTableModel<Employee>							mJTableEmployes;
+	private SimpleDateFormat	MissionDateFormat				= new SimpleDateFormat("dd/MM/yyyy");
+
 	public Missions(Data data) {
+		super();
+		
 		this.data = data;
 		setOpaque(false);
 		setLayout(null);
@@ -99,7 +83,6 @@ public class Missions extends Formulaire implements MouseListener {
 		try {
 			JTableMissions = JTables.Missions(data.Missions().tous());
 			JTableMissions.setFillsViewportHeight(true);
-			JTableMissions.addMouseListener(this);
 			JScrollPane js = new JScrollPane(JTableMissions);
 			js.setVisible(true);
 			js.setBounds(10, 80, 300, 520);
@@ -113,37 +96,7 @@ public class Missions extends Formulaire implements MouseListener {
 		this.recherche = new HintTextField(indication);
 		this.recherche.setBounds(10, 10, 300, 25);
 		TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(JTableMissions.getModel());
-		this.recherche.getDocument().addDocumentListener(
-				new DocumentListener() {
-					
-					@Override
-					public void insertUpdate(DocumentEvent e) {
-						String text = recherche.getText();
-						
-						if (text.equals(indication)) {
-							rowSorter.setRowFilter(null);
-						} else {
-							rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
-						}
-					}
-					
-					@Override
-					public void removeUpdate(DocumentEvent e) {
-						String text = recherche.getText();
-						
-						if (text.equals(indication)) {
-							rowSorter.setRowFilter(null);
-						} else {
-							rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
-						}
-					}
-					
-					@Override
-					public void changedUpdate(DocumentEvent e) {
-					}
-					
-				}
-		);
+		this.recherche.getDocument().addDocumentListener(new RechercheJTable(recherche, indication, rowSorter));
 		add(this.recherche);
 		
 		this.filtre = new JComboBox<>();
@@ -163,29 +116,7 @@ public class Missions extends Formulaire implements MouseListener {
 				}
 		);
 		add(this.filtre);
-		
 		JTableMissions.setRowSorter(rowSorter);
-		
-		this.boutonNouveau = new Button("/boutons/nouveau.png");
-		this.boutonNouveau.setBounds(330, 560);
-		this.boutonNouveau.addMouseListener(this);
-		this.boutonModifier = new Button("/boutons/modifier.png");
-		this.boutonModifier.setBounds(510, 560);
-		this.boutonModifier.addMouseListener(this);
-		this.boutonSupprimer = new Button("/boutons/supprimer.png");
-		this.boutonSupprimer.setBounds(690, 560);
-		this.boutonSupprimer.addMouseListener(this);
-		this.boutonEnregistrer = new Button("/boutons/enregistrer.png");
-		this.boutonEnregistrer.setBounds(885, 560);
-		this.boutonEnregistrer.addMouseListener(this);
-		this.boutonAnnuler = new Button("/boutons/annuler.png");
-		this.boutonAnnuler.setBounds(1100, 560);
-		this.boutonAnnuler.addMouseListener(this);
-		add(this.boutonNouveau);
-		add(this.boutonModifier);
-		add(this.boutonSupprimer);
-		add(this.boutonEnregistrer);
-		add(this.boutonAnnuler);
 		
 		Titre titre = new Titre(" Détails de la mission :");
 		titre.setBounds(330, 10, 930, 20);
@@ -220,12 +151,10 @@ public class Missions extends Formulaire implements MouseListener {
 		add(labelEmployes);
 		
 		this.nom = new JTextField();
-		this.nom.addMouseListener(this);
 		this.nom.setBounds(400, 60, 150, 25);
 		add(this.nom);
 		
 		this.statut = new JComboBox<>(Status.values());
-		this.statut.addMouseListener(this);
 		this.statut.setBounds(400, 100, 150, 25);
 		add(this.statut);
 		
@@ -236,7 +165,6 @@ public class Missions extends Formulaire implements MouseListener {
 		} catch (ParseException e1) {
 			e1.printStackTrace();
 		}
-		this.nombre.addMouseListener(this);
 		this.nombre.setBounds(480, 140, 70, 25);
 		add(nombre);
 		
@@ -247,7 +175,6 @@ public class Missions extends Formulaire implements MouseListener {
 		} catch (ParseException e1) {
 			e1.printStackTrace();
 		}
-		this.duree.addMouseListener(this);
 		this.duree.setBounds(450, 220, 100, 25);
 		add(this.duree);
 		
@@ -259,13 +186,11 @@ public class Missions extends Formulaire implements MouseListener {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
-		this.dateD.addMouseListener(this);
 		this.dateD.setBounds(440, 180, 110, 25);
 		add(this.dateD);
 		
 		this.JTableCompetences = new JTable();
-		this.JTableCompetences.addMouseListener(this);
+
 		this.JTableCompetences.setFillsViewportHeight(true);
 		JScrollPane jsComp = new JScrollPane(this.JTableCompetences);
 		jsComp.setVisible(true);
@@ -273,7 +198,6 @@ public class Missions extends Formulaire implements MouseListener {
 		add(jsComp);
 		
 		this.JTableEmployes = new JTable();
-		this.JTableEmployes.addMouseListener(this);
 		this.JTableEmployes.setFillsViewportHeight(true);
 		JScrollPane jsEmp = new JScrollPane(this.JTableEmployes);
 		jsEmp.setVisible(true);
@@ -282,28 +206,90 @@ public class Missions extends Formulaire implements MouseListener {
 		
 		this.boutonAddComp = new Button("/boutons/miniadd.png");
 		this.boutonAddComp.setBounds(1160, 80);
-		this.boutonAddComp.addMouseListener(this);
 		add(this.boutonAddComp);
 		
 		this.boutonEditComp = new Button("/boutons/miniedit.png");
 		this.boutonEditComp.setBounds(1160, 120);
-		this.boutonEditComp.addMouseListener(this);
 		add(this.boutonEditComp);
 		
 		this.boutonDeleteComp = new Button("/boutons/minidelete.png");
 		this.boutonDeleteComp.setBounds(1160, 160);
-		this.boutonDeleteComp.addMouseListener(this);
 		add(this.boutonDeleteComp);
 		
 		this.boutonAddEmp = new Button("/boutons/miniedit.png");
 		this.boutonAddEmp.setBounds(1160, 280);
-		this.boutonAddEmp.addMouseListener(this);
 		add(this.boutonAddEmp);
 		
 		this.boutonAddEmpRecom = new Button("/boutons/minirecommandation.png");
 		this.boutonAddEmpRecom.setBounds(1160, 320);
-		this.boutonAddEmpRecom.addMouseListener(this);
 		add(this.boutonAddEmpRecom);
+		
+		
+		this.JTableMissions.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+				AffichageSelection();
+			}
+		});
+		
+		this.boutonNouveau.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+				Nouveau();
+			}
+		});
+		
+		this.boutonModifier.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+				Modifier();
+			}
+		});
+		
+		this.boutonSupprimer.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+				Supprimer();
+			}
+		});
+		
+		this.boutonEnregistrer.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+				Enregistrer();
+			}
+		});
+		
+		this.boutonAnnuler.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+				Annuler();
+			}
+		});
+		
+		this.boutonAddComp.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+				AjouterCompetence();
+			}
+		});
+		
+		this.boutonEditComp.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+				ModifierCompetence();
+			}
+		});
+		
+		this.boutonDeleteComp.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+				SupprimerCompetence();
+			}
+		});
+		
+		this.boutonAddEmp.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+				AjouterEmploye();
+			}
+		});
+		
+		this.boutonAddEmpRecom.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+				AjouterEmployeRecommande();
+			}
+		});
 		
 		composantsEdition.add(this.JTableEmployes);
 		composantsEdition.add(this.JTableCompetences);
@@ -329,6 +315,9 @@ public class Missions extends Formulaire implements MouseListener {
 		super.ChargementConsultation();
 	}
 	
+	/*
+	 * Vide tous les champs du formulaire
+	 */
 	public void VideChamps() {
 		this.nom.setText("");
 		this.dateD.setText("");
@@ -342,6 +331,10 @@ public class Missions extends Formulaire implements MouseListener {
 		this.JTableCompetences.setModel(mJTableCompetences);
 	}
 	
+	
+	/*
+	 * Renvoi la mission séléctionnée
+	 */
 	public Mission getMissionSelected() {
 		try {
 			this.mJTableMissions = (GenericTableModel<Mission>) this.JTableMissions.getModel();
@@ -357,6 +350,9 @@ public class Missions extends Formulaire implements MouseListener {
 		}
 	}
 	
+	/*
+	 * Renvoi la compétence séléctionnée
+	 */
 	public CompetenceRequirement getCompetenceSelected() {
 		try {
 			this.mJTableCompetences = (GenericTableModel<CompetenceRequirement>) this.JTableCompetences.getModel();
@@ -373,9 +369,11 @@ public class Missions extends Formulaire implements MouseListener {
 		}
 	}
 	
+	/*
+	 * Renvoi l'employé séléctionné
+	 */
 	public Employee getEmployeSelected() {
 		try {
-			//
 			this.mJTableEmployes = (GenericTableModel<Employee>) this.JTableEmployes.getModel();
 			return this.mJTableEmployes
 					.getRowObject(this.JTableEmployes.convertRowIndexToModel(this.JTableEmployes.getSelectedRow()));
@@ -416,297 +414,279 @@ public class Missions extends Formulaire implements MouseListener {
 		mJTableCompetences.fireTableDataChanged();
 	}
 	
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		if (e.getSource() instanceof Button) {
-			if (e.getSource().equals(this.boutonAddComp)) {
-				Mission missSelect = getMissionSelected();
-				if (missSelect != null) {
-					JFrame frame;
-					try {
-						frame = new MissionsAddCompetence(data, getMissionSelected(), this);
-						frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-						frame.pack();
-						frame.setVisible(true);
-					} catch (HeadlessException | DataException e1) {
-						e1.printStackTrace();
-					}
-				}
-			}
+	
+	/*
+	 * Affichage des détails de la mission sélectionnée
+	 */
+	public void AffichageSelection(){
+		Mission missSelect = getMissionSelected();
+		
+		if (missSelect != null) {
+			this.nom.setText(missSelect.getNomM());
+			this.dateD.setText(MissionDateFormat.format(missSelect.getDateDebut()));
+			this.duree.setText(Integer.toString(missSelect.getDuree()));
+			this.nombre.setText(Integer.toString(missSelect.getNbPersReq()));
+			this.statut.setSelectedItem(missSelect.getStatus());
 			
-			if (e.getSource().equals(this.boutonEditComp)) {
-				CompetenceRequirement compSelect = getCompetenceSelected();
-				if (compSelect != null) {
-					int rowIndex = this.JTableCompetences.getSelectedRow();
-					MissionsEditCompetence fel = new MissionsEditCompetence(rowIndex, JTableCompetences, compSelect, this);
-					fel.displayGUI();
-				}
-			}
+			ArrayList<CompetenceRequirement> listCompMiss = missSelect.getCompReq();
+			TableModel tmComp = JTables.CompetencesRequises(listCompMiss).getModel();
+			this.JTableCompetences.setModel(tmComp);
 			
-			if (e.getSource().equals(this.boutonDeleteComp)) {
-				Mission missSelect = getMissionSelected();
-				if (missSelect != null) {
-					CompetenceRequirement compSelect = getCompetenceSelected();
-					if (compSelect != null) {
-						int n = JOptionPane.showConfirmDialog(
-								new JFrame(), "Voulez vraiment supprimer cette compétence ?",
-								"Confirmation de suppression", JOptionPane.YES_NO_OPTION
-						);
-						if (n == JOptionPane.YES_OPTION) {
-							missSelect.removeCompetenceReq(compSelect);
-							this.mJTableCompetences.deleteRowObject(compSelect);
-							this.mJTableCompetences.fireTableDataChanged();
-						}
-					}
-				}
-			}
+			ArrayList<Employee> listEmpMiss = missSelect.getAffEmp();
+			TableModel tmEmp = JTables.Employes(listEmpMiss).getModel();
+			this.JTableEmployes.setModel(tmEmp);
 			
-			if (e.getSource().equals(this.boutonAddEmp)) {
-				ProgramFrame.getFrame().setEnabled(false);
-				switch (this.mode) {
-				case "nouveau":
-					try {
-						ArrayList<Employee> listEmpNonPoss = data.Employes().tous();
-						GenericTableModel<Employee> empNonPossModel = (GenericTableModel<Employee>) JTables
-								.Employes(listEmpNonPoss).getModel();
-						JTable empNonPoss = new JTable(empNonPossModel);
-						JTable empPoss = new JTable(mJTableEmployes);
-						PersonnelEditCompetence gestionListe = new PersonnelEditCompetence(
-								empPoss, empNonPoss, mJTableEmployes, empNonPossModel
-						);
-						gestionListe.displayGUI();
-					} catch (DataException e1) {
-						e1.printStackTrace();
-					}
-					break;
-				
-				case "modification":
-					Mission missSelect = getMissionSelected();
-					if (missSelect != null) {
-						ArrayList<Employee> listEmpNonPoss;
-						try {
-							listEmpNonPoss = data.Employes().Autres(mJTableEmployes.getArraylist());
-							GenericTableModel<Employee> empNonPossModel = (GenericTableModel<Employee>) JTables
-									.Employes(listEmpNonPoss).getModel();
-							JTable empNonPoss = new JTable(empNonPossModel);
-							JTable empPoss = new JTable(mJTableEmployes);
-							MissionsEditEmploye gestionListe = new MissionsEditEmploye(empPoss, empNonPoss, mJTableEmployes, empNonPossModel);
-							gestionListe.displayGUI();
-						} catch (DataException e1) {
-							e1.printStackTrace();
-						}
-						
-					}
-					break;
-				}
-			}
+			this.mJTableEmployes = (GenericTableModel<Employee>) this.JTableEmployes.getModel();
+			this.mJTableCompetences = (GenericTableModel<CompetenceRequirement>) this.JTableCompetences.getModel();
+		}
+	}
+	
+	
+	/*
+	 * NOUVEAU : Création d'une nouvelle mission
+	 */
+	public void Nouveau(){
+		VideChamps();
+		ChargementModification();
+		this.mode = "nouveau";
+	}
+	
+	/*
+	 * TODO ENREGISTRER : Enregistrement de la mission
+	 */
+	public void Enregistrer(){
+		if ((this.dateD.getText().equals("")) || (this.duree.getText().equals(""))
+				|| (this.nombre.getText().equals("")) || (this.nom.getText().equals(""))) {
+			JOptionPane.showMessageDialog(
+					new JFrame(), "Vous devez renseigner toutes les informations pour enregistrer.",
+					"Informations non renseignés", JOptionPane.WARNING_MESSAGE
+			);
+		} else {
 			
-			if (e.getSource().equals(this.boutonAddEmpRecom)) {
-				ProgramFrame.getFrame().setEnabled(false);
-				switch (this.mode) {
-				case "nouveau":
-					break;
-				
-				case "modification":
-					Mission missSelect = getMissionSelected();
-					if (missSelect != null) {
-						
-					}
-					break;
-				}
-				
-			}
+			Date dateD = new Date(this.dateD.getText());
+			int duree = Integer.parseInt(this.duree.getText());
+			int nb = Integer.parseInt(this.nombre.getText());
+			String nom = this.nom.getText();
 			
-			if (e.getSource().equals(this.boutonNouveau)) {
-				VideChamps();
-				ChargementModification();
-				this.mode = "nouveau";
-			}
+			Mission mission = new Mission(nom, dateD, duree, nb);
+			ChargementConsultation();
 			
-			/**
-			 * Formulaire prêt à la modification d'un élément existant
-			 */
-			if (e.getSource().equals(this.boutonModifier)) {
-				Mission missSelect = getMissionSelected();
-				if (missSelect != null) {
-					if (missSelect.estModifiable()) {
-						super.ChargementModification();
-					} else if (missSelect.getStatus() == Status.EN_COURS) {
-						JOptionPane.showMessageDialog(
-								new JFrame(), "La mission est en cours : elle n'est donc plus modifiable.",
-								"Mission en cours", JOptionPane.WARNING_MESSAGE
-						);
-					} else if (missSelect.getStatus() == Status.TERMINEE) {
-						JOptionPane.showMessageDialog(
-								new JFrame(), "La mission est terminée : elle n'est donc plus modifiable.",
-								"Mission terminée", JOptionPane.WARNING_MESSAGE
-						);
-					}
-					
-				}
-			}
+			switch (this.mode) {
+			case "nouveau":
+				/*
+				 * Mission nouvEmp = new Mission(this.nom.getText(),
+				 * this.dateD.getText(), this.duree.getText(),
+				 * this.nombre.getText());
+				 * 
+				 * 
+				 * if (this.JTableEmployes != null &&
+				 * this.JTableEmployes.getModel() != null) {
+				 * ArrayList<Employee> listEmp = new ArrayList<Object>;
+				 * 
+				 * for(int row = 0; row < table.getRowCount(); row++) {
+				 * for(int column = 0; column = table.getColumnCount();
+				 * column++) { list.add(table.getValueAt(row, column));
+				 * } }
+				 * 
+				 * nouvEmp.setAffEmp(affEmp); }
+				 * 
+				 * if(){
+				 * 
+				 * }
+				 * 
+				 * data.Missions().ajouter(nouvEmp); break;
+				 * 
+				 * case "modification":
+				 * /*this.empSelect.setLastName(this.nom.getText());
+				 * this.empSelect.setName(this.prenom.getText());
+				 * this.empSelect.setEntryDate(this.date.getText(),
+				 * "yyyy-MM-dd");
+				 * data.Employes().modifier(this.empSelect);
+				 */
+				break;
 			
-			/**
-			 * Suppression d'un élément existant : doit demander la confirmation
-			 * de l'utilisateur
-			 */
-			if (e.getSource().equals(this.boutonSupprimer)) {
-				Mission missSelect = getMissionSelected();
-				if (missSelect != null) {
-					int n = JOptionPane.showConfirmDialog(
-							new JFrame(), "Voulez vraiment supprimer cette mission ?", "Confirmation de suppression",
-							JOptionPane.YES_NO_OPTION
-					);
-					if (n == JOptionPane.YES_OPTION) {
-						try {
-							data.Missions().supprimer(missSelect);
-							this.mJTableMissions.deleteRowObject(missSelect);
-							this.mJTableMissions.fireTableDataChanged();
-							VideChamps();
-						} catch (DataException e1) {
-							e1.printStackTrace();
-						}
-					}
-				}
-			}
-			
-			/**
-			 * On annule toutes les modifications faites par l'utilisateur
-			 * depuis l'activation du mode modification / du mode nouveau
-			 */
-			if (e.getSource().equals(this.boutonAnnuler)) {
-				switch (this.mode) {
-				case "nouveau":
-					VideChamps();
-					ChargementConsultation();
-					break;
-				
-				case "modification":
-					Mission missSelect = getMissionSelected();
-					if (missSelect != null) {
-						this.nom.setText(missSelect.getNomM());
-						this.dateD.setText(MissionDateFormat.format(missSelect.getDateDebut()));
-						this.duree.setText(Integer.toString(missSelect.getDuree()));
-						this.nombre.setText(Integer.toString(missSelect.getNbPersReq()));
-						this.statut.setSelectedItem(missSelect.getStatus());
-						
-						ArrayList<CompetenceRequirement> listCompMiss = missSelect.getCompReq();
-						TableModel tmComp = JTables.CompetencesRequises(listCompMiss).getModel();
-						this.JTableCompetences.setModel(tmComp);
-						
-						ArrayList<Employee> listEmpMiss = missSelect.getAffEmp();
-						TableModel tmEmp = JTables.Employes(listEmpMiss).getModel();
-						this.JTableEmployes.setModel(tmEmp);
-						ChargementConsultation();
-					}
-					break;
-				}
-			}
-			
-			/**
-			 * TODO On enregistre les modifications ou le nouvel élément
-			 */
-			if (e.getSource().equals(this.boutonEnregistrer)) {
-				if ((this.dateD.getText().equals("")) || (this.duree.getText().equals(""))
-						|| (this.nombre.getText().equals("")) || (this.nom.getText().equals(""))) {
-					JOptionPane.showMessageDialog(
-							new JFrame(), "Vous devez renseigner toutes les informations pour enregistrer.",
-							"Informations non renseignés", JOptionPane.WARNING_MESSAGE
-					);
-				} else {
-					
-					Date dateD = new Date(this.dateD.getText());
-					int duree = Integer.parseInt(this.duree.getText());
-					int nb = Integer.parseInt(this.nombre.getText());
-					String nom = this.nom.getText();
-					
-					Mission mission = new Mission(nom, dateD, duree, nb);
-					ChargementConsultation();
-					
-					switch (this.mode) {
-					case "nouveau":
-						/*
-						 * Mission nouvEmp = new Mission(this.nom.getText(),
-						 * this.dateD.getText(), this.duree.getText(),
-						 * this.nombre.getText());
-						 * 
-						 * 
-						 * if (this.JTableEmployes != null &&
-						 * this.JTableEmployes.getModel() != null) {
-						 * ArrayList<Employee> listEmp = new ArrayList<Object>;
-						 * 
-						 * for(int row = 0; row < table.getRowCount(); row++) {
-						 * for(int column = 0; column = table.getColumnCount();
-						 * column++) { list.add(table.getValueAt(row, column));
-						 * } }
-						 * 
-						 * nouvEmp.setAffEmp(affEmp); }
-						 * 
-						 * if(){
-						 * 
-						 * }
-						 * 
-						 * data.Missions().ajouter(nouvEmp); break;
-						 * 
-						 * case "modification":
-						 * /*this.empSelect.setLastName(this.nom.getText());
-						 * this.empSelect.setName(this.prenom.getText());
-						 * this.empSelect.setEntryDate(this.date.getText(),
-						 * "yyyy-MM-dd");
-						 * data.Employes().modifier(this.empSelect);
-						 */
-						break;
-					
-					default:
-						break;
-					}
-				}
+			default:
+				break;
 			}
 		}
 		
-		/**
-		 * Actualisation des champs du formulaire
-		 */
-		if (e.getSource() instanceof JTable) {
-			
-			if (e.getSource().equals(this.JTableMissions)) {
-				Mission missSelect = getMissionSelected();
+	}
+	
+	/*
+	 * MODIFIER : Modification de l'employé séléctionné
+	 */
+	public void Modifier(){
+		Mission missSelect = getMissionSelected();
+		if (missSelect != null) {
+			if (missSelect.estModifiable()) {
+				super.ChargementModification();
+			} else if (missSelect.getStatus() == Status.EN_COURS) {
+				JOptionPane.showMessageDialog(
+						new JFrame(), "La mission est en cours : elle n'est donc plus modifiable.",
+						"Mission en cours", JOptionPane.WARNING_MESSAGE
+				);
+			} else if (missSelect.getStatus() == Status.TERMINEE) {
+				JOptionPane.showMessageDialog(
+						new JFrame(), "La mission est terminée : elle n'est donc plus modifiable.",
+						"Mission terminée", JOptionPane.WARNING_MESSAGE
+				);
+			}
+		}
+	}
+	
+	/*
+	 * ANNULER : Annulation de toutes les modifications précédemment effectuées 
+	 */
+	public void Annuler(){
+		switch (this.mode) {
+		case "nouveau":
+			VideChamps();
+			ChargementConsultation();
+			break;
+		
+		case "modification":
+			Mission missSelect = getMissionSelected();
+			if (missSelect != null) {
+				this.nom.setText(missSelect.getNomM());
+				this.dateD.setText(MissionDateFormat.format(missSelect.getDateDebut()));
+				this.duree.setText(Integer.toString(missSelect.getDuree()));
+				this.nombre.setText(Integer.toString(missSelect.getNbPersReq()));
+				this.statut.setSelectedItem(missSelect.getStatus());
 				
-				if (missSelect != null) {
-					this.nom.setText(missSelect.getNomM());
-					this.dateD.setText(MissionDateFormat.format(missSelect.getDateDebut()));
-					this.duree.setText(Integer.toString(missSelect.getDuree()));
-					this.nombre.setText(Integer.toString(missSelect.getNbPersReq()));
-					this.statut.setSelectedItem(missSelect.getStatus());
-					
-					ArrayList<CompetenceRequirement> listCompMiss = missSelect.getCompReq();
-					TableModel tmComp = JTables.CompetencesRequises(listCompMiss).getModel();
-					this.JTableCompetences.setModel(tmComp);
-					
-					ArrayList<Employee> listEmpMiss = missSelect.getAffEmp();
-					TableModel tmEmp = JTables.Employes(listEmpMiss).getModel();
-					this.JTableEmployes.setModel(tmEmp);
-					
-					this.mJTableEmployes = (GenericTableModel<Employee>) this.JTableEmployes.getModel();
-					this.mJTableCompetences = (GenericTableModel<CompetenceRequirement>) this.JTableCompetences.getModel();
+				ArrayList<CompetenceRequirement> listCompMiss = missSelect.getCompReq();
+				TableModel tmComp = JTables.CompetencesRequises(listCompMiss).getModel();
+				this.JTableCompetences.setModel(tmComp);
+				
+				ArrayList<Employee> listEmpMiss = missSelect.getAffEmp();
+				TableModel tmEmp = JTables.Employes(listEmpMiss).getModel();
+				this.JTableEmployes.setModel(tmEmp);
+				ChargementConsultation();
+			}
+			break;
+		}
+	}
+	
+	/*
+	 * SUPPRIMER : Suppression de l'employé  séléctionné
+	 */
+	public void Supprimer(){
+		Mission missSelect = getMissionSelected();
+		if (missSelect != null) {
+			int n = JOptionPane.showConfirmDialog(
+					new JFrame(), "Voulez vraiment supprimer cette mission ?", "Confirmation de suppression",
+					JOptionPane.YES_NO_OPTION
+			);
+			if (n == JOptionPane.YES_OPTION) {
+				try {
+					data.Missions().supprimer(missSelect);
+					this.mJTableMissions.deleteRowObject(missSelect);
+					this.mJTableMissions.fireTableDataChanged();
+					VideChamps();
+				} catch (DataException e1) {
+					e1.printStackTrace();
 				}
 			}
 		}
 	}
 	
-	@Override
-	public void mouseEntered(MouseEvent e) {
+	
+	public void AjouterCompetence(){
+		Mission missSelect = getMissionSelected();
+		if (missSelect != null) {
+			JFrame frame;
+			try {
+				frame = new MissionsAddCompetence(data, getMissionSelected(), this);
+				frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				frame.pack();
+				frame.setVisible(true);
+			} catch (HeadlessException | DataException e1) {
+				e1.printStackTrace();
+			}
+		}
 	}
 	
-	@Override
-	public void mouseExited(MouseEvent e) {
+	
+	public void ModifierCompetence(){
+		CompetenceRequirement compSelect = getCompetenceSelected();
+		if (compSelect != null) {
+			int rowIndex = this.JTableCompetences.getSelectedRow();
+			MissionsEditCompetence fel = new MissionsEditCompetence(rowIndex, JTableCompetences, compSelect, this);
+			fel.displayGUI();
+		}
 	}
 	
-	@Override
-	public void mousePressed(MouseEvent e) {
+	public void SupprimerCompetence(){
+		Mission missSelect = getMissionSelected();
+		if (missSelect != null) {
+			CompetenceRequirement compSelect = getCompetenceSelected();
+			if (compSelect != null) {
+				int n = JOptionPane.showConfirmDialog(
+						new JFrame(), "Voulez vraiment supprimer cette compétence ?",
+						"Confirmation de suppression", JOptionPane.YES_NO_OPTION
+				);
+				if (n == JOptionPane.YES_OPTION) {
+					missSelect.removeCompetenceReq(compSelect);
+					this.mJTableCompetences.deleteRowObject(compSelect);
+					this.mJTableCompetences.fireTableDataChanged();
+				}
+			}
+		}
 	}
 	
-	@Override
-	public void mouseReleased(MouseEvent e) {
+	public void AjouterEmploye(){
+		ProgramFrame.getFrame().setEnabled(false);
+		switch (this.mode) {
+		case "nouveau":
+			try {
+				ArrayList<Employee> listEmpNonPoss = data.Employes().tous();
+				GenericTableModel<Employee> empNonPossModel = (GenericTableModel<Employee>) JTables
+						.Employes(listEmpNonPoss).getModel();
+				JTable empNonPoss = new JTable(empNonPossModel);
+				JTable empPoss = new JTable(mJTableEmployes);
+				PersonnelEditCompetence gestionListe = new PersonnelEditCompetence(
+						empPoss, empNonPoss, mJTableEmployes, empNonPossModel
+				);
+				gestionListe.displayGUI();
+			} catch (DataException e1) {
+				e1.printStackTrace();
+			}
+			break;
+		
+		case "modification":
+			Mission missSelect = getMissionSelected();
+			if (missSelect != null) {
+				ArrayList<Employee> listEmpNonPoss;
+				try {
+					listEmpNonPoss = data.Employes().Autres(mJTableEmployes.getArraylist());
+					GenericTableModel<Employee> empNonPossModel = (GenericTableModel<Employee>) JTables
+							.Employes(listEmpNonPoss).getModel();
+					JTable empNonPoss = new JTable(empNonPossModel);
+					JTable empPoss = new JTable(mJTableEmployes);
+					MissionsEditEmploye gestionListe = new MissionsEditEmploye(empPoss, empNonPoss, mJTableEmployes, empNonPossModel);
+					gestionListe.displayGUI();
+				} catch (DataException e1) {
+					e1.printStackTrace();
+				}
+				
+			}
+			break;
+		}
 	}
+	
+	public void AjouterEmployeRecommande(){
+		ProgramFrame.getFrame().setEnabled(false);
+		switch (this.mode) {
+		case "nouveau":
+			break;
+		
+		case "modification":
+			Mission missSelect = getMissionSelected();
+			if (missSelect != null) {
+				
+			}
+			break;
+		}
+	}
+
+
 }
