@@ -30,13 +30,11 @@ import gui.Formulaire;
 import gui.GenericTableModel;
 import gui.HintTextField;
 import gui.JTables;
-import gui.ProgramFrame;
 import gui.RechercheJTable;
 import gui.Titre;
 import models.CompetenceRequirement;
 import models.Employee;
 import models.Mission;
-import models.Recommendation;
 import models.Status;
 
 /**
@@ -52,7 +50,7 @@ public class Missions extends Formulaire {
 	private Button																boutonEditComp;
 	private Button																boutonDeleteComp;
 	private Button																boutonAddEmp;
-	private Button																boutonAddEmpRecom;
+	private Button																boutonDeleteEmp;
 	private Button																boutonMissionTermine;
 	private JTextField															nom;
 	private JComboBox<Status>											statut;
@@ -204,9 +202,13 @@ public class Missions extends Formulaire {
 		this.boutonDeleteComp.setBounds(1160, 160);
 		add(this.boutonDeleteComp);
 		
-		this.boutonAddEmp = new Button("/boutons/miniedit.png");
+		this.boutonAddEmp = new Button("/boutons/miniadd.png");
 		this.boutonAddEmp.setBounds(1160, 280);
 		add(this.boutonAddEmp);
+		
+		this.boutonDeleteEmp = new Button("/boutons/minidelete.png");
+		this.boutonDeleteEmp.setBounds(1160, 320);
+		add(this.boutonDeleteEmp);
 		
 		this.JTableMissions.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e){
@@ -268,6 +270,12 @@ public class Missions extends Formulaire {
 			}
 		});
 		
+		this.boutonDeleteEmp.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+				SupprimerEmploye();
+			}
+		});
+		
 		composantsEdition.add(this.JTableEmployes);
 		composantsEdition.add(this.JTableCompetences);
 		composantsEdition.add(this.nom);
@@ -281,6 +289,7 @@ public class Missions extends Formulaire {
 		composantsEdition.add(this.boutonAddEmp);
 		composantsEdition.add(this.boutonEnregistrer);
 		composantsEdition.add(this.boutonAnnuler);
+		composantsEdition.add(this.boutonDeleteEmp);
 		
 		composantsConsultation.add(this.boutonNouveau);
 		composantsConsultation.add(this.boutonModifier);
@@ -363,7 +372,6 @@ public class Missions extends Formulaire {
 		}
 	}
 
-	// TODO : Appeler à chaque modification de champ et affectation d'employés ou compétences req.
 	void updateComboBox() {
 		Mission mission = getMissionSelected();
 		statut.removeAllItems();
@@ -374,7 +382,6 @@ public class Missions extends Formulaire {
 			statut.addItem(Status.PLANIFIEE);
 	}
 	
-	// TODO: Appeler avant l'enregistrement
 	private void updateMissionStatus() {
 		Status selected = (Status) statut.getSelectedItem();
 		Mission mission = getMissionSelected();
@@ -384,7 +391,6 @@ public class Missions extends Formulaire {
 				&& mission.getStatus() == Status.PLANIFIEE)
 			mission.deplanifier();
 	}
-	
 	
 	public void updateCompReq() {
 		mJTableCompetences.fireTableDataChanged();
@@ -573,30 +579,28 @@ public class Missions extends Formulaire {
 	}
 	
 	public void AjouterEmploye(){
-		ProgramFrame.getFrame().setEnabled(false);
+		ArrayList<Employee> absentEmployes;
 		try {
-			ArrayList<Employee> absentEmployes = data.Employes().tous();
+			absentEmployes = data.Employes().tous();
 			ArrayList<Employee> presentEmployes = mJTableEmployes.getArraylist();
-			
 			for (Employee emp : presentEmployes) {
 				if(absentEmployes.contains(emp)){
 					absentEmployes.remove(emp);
 				}
 			}
 			missionEnCours.setAffEmp(presentEmployes);
-			Recommendation recommandation  = new Recommendation(missionEnCours, absentEmployes);
-			recommandation.setRecommendations();
+			MissionsAddEmploye fel = new MissionsAddEmploye(missionEnCours, absentEmployes, this, mJTableEmployes);
+			fel.displayGUI();
 			
-			ArrayList<Employee> listEmpNonPoss = recommandation.getEmpRec();
-			JTable empNonPoss = JTables.Recommendation(recommandation);
-			TableModel empNonPossModel = empNonPoss.getModel();
-			JTable empPoss = new JTable(mJTableEmployes);
-			MissionsEditEmploye gestionListe = new MissionsEditEmploye(empPoss, empNonPoss, mJTableEmployes, empNonPossModel, this, missionEnCours);
-			gestionListe.displayGUI();
-			
-		} catch (DataException e1) {
-			e1.printStackTrace();
+		} catch (DataException e) {
+			e.printStackTrace();
 		}
+	}
+	
+	public void SupprimerEmploye(){
+		Employee emp = (Employee) mJTableEmployes.getRowObject(JTableEmployes.getSelectedRow());
+		missionEnCours.removeEmployee(emp);
+		mJTableEmployes.fireTableDataChanged();
 	}
 
 }
