@@ -14,7 +14,6 @@ public abstract class MissionAbstract extends CSVEntity {
 	private static final long		serialVersionUID		= 6150557649409166209L;
 	protected String				nom;
 	protected Date					dateDebut;
-	protected Date					dateFinReelle;
 	protected int					duree;
 	protected int					nbPersReq;
 	protected int					id						= -1;
@@ -27,7 +26,6 @@ public abstract class MissionAbstract extends CSVEntity {
 		this.duree = duree;
 		this.nbPersReq = nbPersReq;
 		this.AffEmp = new ArrayList<>();
-		this.setDateFin(duree);
 	}
 	
 	/**
@@ -35,7 +33,7 @@ public abstract class MissionAbstract extends CSVEntity {
 	 */
 	public Status getStatus() {
 		
-		if (Cal.today().compareTo(dateFinReelle) > 0) {
+		if (Cal.today().compareTo(getDateFin()) > 0) {
 			return Status.TERMINEE; // Vérification de si la mission est
 									// terminée puis retour
 		}
@@ -54,6 +52,13 @@ public abstract class MissionAbstract extends CSVEntity {
 										// encore en préparation
 	}
 	
+	private Date getDateFin() {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(this.dateDebut);
+		cal.add(Calendar.DATE, duree);
+		return cal.getTime();
+	}
+	
 	public int nbEmployesManquants() {
 		return nbPersReq - AffEmp.size();
 	}
@@ -70,12 +75,6 @@ public abstract class MissionAbstract extends CSVEntity {
 	 * @param duree
 	 * @return calcul la date de fin et l'instancie sur la mission
 	 */
-	public void setDateFin(int duree) {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(this.dateDebut);
-		cal.add(Calendar.DATE, duree);
-		this.dateFinReelle = cal.getTime();
-	}
 	
 	public boolean estModifiable() {
 		return (getStatus() == Status.PREPARATION || getStatus() == Status.PLANIFIEE);
@@ -125,14 +124,6 @@ public abstract class MissionAbstract extends CSVEntity {
 	
 	public void setDuree(int duree) {
 		this.duree = duree;
-	}
-	
-	public void setDateFin(Date dateFin) {
-		this.dateFinReelle = dateFin;
-	}
-	
-	public Date getDateFinReelle() {
-		return dateFinReelle;
 	}
 	
 	public boolean getForcer_planification() {
