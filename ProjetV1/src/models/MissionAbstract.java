@@ -86,6 +86,10 @@ public abstract class MissionAbstract extends CSVEntity {
 		AffEmp.add(e);
 	}
 	
+	public void removeEmployee(Employee e) {
+		AffEmp.remove(e);
+	}
+	
 	public int getID() {
 		return id;
 	}
