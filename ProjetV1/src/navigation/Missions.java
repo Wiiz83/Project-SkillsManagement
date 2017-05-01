@@ -176,7 +176,7 @@ public class Missions extends Formulaire {
 		
 		MaskFormatter formatterDate;
 		try {
-			formatterDate = new MaskFormatter("##/##/##");
+			formatterDate = new MaskFormatter("##/##/####");
 			formatterDate.setPlaceholderCharacter('_');
 			this.dateD = new JFormattedTextField(formatterDate);
 		} catch (ParseException e) {
