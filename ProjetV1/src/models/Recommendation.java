@@ -15,14 +15,13 @@ import data.DataException;
  */
 public class Recommendation {
 	
-	private static int							recID;
-	private Mission								misToRec;
-	private ArrayList<Employee>					empRec;
-	private ArrayList<CompetenceRequirement>	misCompReq;
-	private ArrayList<Employee>					empAff;
-	private ArrayList<Employee>					empToRec;
-	private Data								data;
-	private int[]								RLevel;
+	private static int							recID; //id du groupe de recommendations
+	private Mission								misToRec; //Mission qui a besoin des recommendations
+	private ArrayList<Employee>					empRec; //ArrayList des employés à tester pour les recommendations
+	private ArrayList<CompetenceRequirement>	misCompReq; //ArrayList des compétences requises dans la missions
+	private ArrayList<Employee>					empAff; //ArrayList affectés à la mission
+	private ArrayList<Employee>					empToRec; //ArrayList des employés recommendés
+	private int[]								RLevel; //Tableau des niveaux de recommendations par employés
 	
 	/**
 	 * @param misToRec  La mission qui est concernée par les recommendations
@@ -33,7 +32,6 @@ public class Recommendation {
 		this.misToRec = misToRec;
 		this.misCompReq = misToRec.getCompReq();
 		this.empAff = emp;
-		this.data = data;
 	}
 	
 	/**
@@ -102,6 +100,11 @@ public class Recommendation {
 			}
 		}
 		return nbEmpReqComp; // On retourne le nombre d'employé en manque sur la compétence
+	}
+	
+	public int getLevel(int idEmp){
+		
+		return 0;
 	}
 	
 	public ArrayList<Employee> getEmpRec() {
