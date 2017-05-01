@@ -32,8 +32,8 @@ public class Recommendation {
 		this.misToRec = misToRec;
 		this.misCompReq = misToRec.getCompReq();
 		this.empRec = emp;
-		this.empAff = this.misToRec.getAffEmp(); //blabla bla test
-		this.RLevel = new int[emp.size()];
+		this.empAff = this.misToRec.getAffEmp(); //blabla bla test	
+		this.RLevel = new int[250];
 	}
 	
 	/**
@@ -72,7 +72,7 @@ public class Recommendation {
 		for (Employee e : empRec) {
 			for (Employee e2 : empAff) {
 				if (e == e2) {
-					empRec.remove(e);
+					empRec.remove(e2);
 				}
 			}
 		}
@@ -105,15 +105,13 @@ public class Recommendation {
 	}
 	
 	public int getLevel(int idEmp){
+		System.out.println(idEmp);
+		System.out.println(this.RLevel[idEmp]);
 		return this.RLevel[idEmp];
 	}
 	
 	public ArrayList<Employee> getEmpRec() {
 		return empRec;
-	}
-	
-	public int[] getRLevel() {
-		return RLevel;
 	}
 	
 	public void setRLevel(int[] rLevel) {
