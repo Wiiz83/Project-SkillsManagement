@@ -3,6 +3,7 @@ package models;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 import csv.CSVEntity;
 import csv.InvalidDataException;
@@ -150,6 +151,17 @@ public abstract class MissionAbstract extends CSVEntity {
 		} catch (NumberFormatException e) {
 			throw new InvalidDataException(e);
 		}
+	}
+	
+	@Override
+	public void setReferencedObjects(HashMap<Class<? extends CSVEntity>, ArrayList<Object>> hashMap) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
 	}
 	
 }
