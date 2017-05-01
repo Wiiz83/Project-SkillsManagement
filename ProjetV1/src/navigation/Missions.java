@@ -610,9 +610,7 @@ public class Missions extends Formulaire {
 					absentEmployes.remove(emp);
 				}
 			}
-
-			missionEnCours.setAffEmp(presentEmployes);
-			
+			//missionEnCours.setAffEmp(presentEmployes);
 			Recommendation recommandation  = new Recommendation(missionEnCours, absentEmployes);
 			recommandation.setRecommendations();
 			
