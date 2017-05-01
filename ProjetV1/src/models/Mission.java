@@ -97,4 +97,9 @@ public class Mission extends MissionAbstract {
 		return true;
 	}
 	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
+	
 }
