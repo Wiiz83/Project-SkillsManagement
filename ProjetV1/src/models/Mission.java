@@ -61,6 +61,10 @@ public class Mission extends MissionAbstract {
 		return CompReq;
 	}
 	
+	public void setCompReq(ArrayList<CompetenceRequirement> compR) {
+		this.CompReq = compR;
+	}
+	
 	@Override
 	public String toString() {
 		return "Mission [nomM=" + nom + ", id=" + id + ", AffEmp=" + AffEmp + ", CompReq=" + CompReq + "]";

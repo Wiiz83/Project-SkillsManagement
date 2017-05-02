@@ -308,7 +308,7 @@ public class Missions extends Formulaire {
 		this.dateD.setText("");
 		this.duree.setText("");
 		this.nombre.setText("");
-		this.statut.setSelectedIndex(0);
+		this.statut.addItem(Status.PREPARATION);
 		this.mJTableEmployes = (GenericTableModel<Employee>) JTables.Employes(new ArrayList<Employee>()).getModel();
 		this.JTableEmployes.setModel(mJTableEmployes);
 		this.mJTableCompetences = (GenericTableModel<CompetenceRequirement>) JTables
@@ -333,6 +333,10 @@ public class Missions extends Formulaire {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public Mission getMissionEnCours(){
+		return missionEnCours;
 	}
 	
 	/*
@@ -373,12 +377,11 @@ public class Missions extends Formulaire {
 	}
 
 	void updateComboBox() {
-		Mission mission = getMissionSelected();
 		statut.removeAllItems();
-		if (mission == null)
+		if (missionEnCours == null)
 			return;
-		statut.addItem(mission.getStatus());
-		if (mission.getStatus() == Status.PREPARATION)
+		statut.addItem(missionEnCours.getStatus());
+		if (missionEnCours.getStatus() == Status.PREPARATION)
 			statut.addItem(Status.PLANIFIEE);
 	}
 	
@@ -449,16 +452,45 @@ public class Missions extends Formulaire {
 		} else {
 
 			updateMissionStatus();
-
+			
 			Date dateD = new Date(this.dateD.getText());
 			String strDuree = this.duree.getText().replaceAll("\\D+","");
 			int duree = Integer.parseInt(strDuree);
 			String strNombre = this.nombre.getText().replaceAll("\\D+","");
 			int nb = Integer.parseInt(strNombre);
 			String nom = this.nom.getText();
+			ArrayList<Employee> presentEmployes = mJTableEmployes.getArraylist();
+			ArrayList<CompetenceRequirement> presentCompetences = mJTableCompetences.getArraylist();
 			
-			Mission mission = new Mission(nom, dateD, duree, nb);
-			ChargementConsultation();
+			missionEnCours.setDateDebut(dateD);
+			missionEnCours.setDuree(duree);
+			missionEnCours.setNbPersReq(nb);
+			missionEnCours.setNomM(nom);
+			missionEnCours.setAffEmp(presentEmployes);
+			missionEnCours.setCompReq(presentCompetences);
+			
+			switch (this.mode) {
+			case "nouveau":
+				try {
+					data.Missions().ajouter(missionEnCours);
+					this.mJTableMissions.addRowObject(missionEnCours);
+					this.mJTableMissions.fireTableDataChanged();
+					super.ChargementConsultation();
+				} catch (DataException e) {
+					e.printStackTrace();
+				}
+				break;
+			
+			case "modification":
+				try {
+					data.Missions().modifier(missionEnCours);
+					this.mJTableMissions.fireTableDataChanged();
+					super.ChargementConsultation();
+				} catch (DataException e) {
+					e.printStackTrace();
+				}
+				break;
+		}
 			}
 		}
 		
