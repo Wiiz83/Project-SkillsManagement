@@ -8,6 +8,7 @@ public class Data {
 	private Missions	missions;
 	private Competences	competences;
 	private Langues		langues;
+	private Formations	formations;
 	
 	public Data(CSVConfig config) throws DataException {
 		this.config = config;
@@ -15,6 +16,7 @@ public class Data {
 		this.missions = new Missions(this);
 		this.competences = new Competences(this);
 		this.langues = new Langues(this);
+		this.formations = new Formations(this);
 	}
 	
 	public CSVConfig getCSVConfig() {
@@ -23,6 +25,10 @@ public class Data {
 	
 	public Employes Employes() {
 		return employes;
+	}
+	
+	public Formations Formations() {
+		return formations;
 	}
 	
 	public Missions Missions() {
