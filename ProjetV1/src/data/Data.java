@@ -17,6 +17,7 @@ public class Data {
 		this.competences = new Competences(this);
 		this.langues = new Langues(this);
 		this.formations = new Formations(this);
+		
 	}
 	
 	public CSVConfig getCSVConfig() {
