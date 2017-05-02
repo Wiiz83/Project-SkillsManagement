@@ -60,7 +60,7 @@ public class AppCSVDeserializer implements CSVDeserializer {
 				Integer.parseInt(line.get(4))
 		);
 		formation.setCsvID(line.get(0));
-		if (line.get(6).equals("true"))
+		if (line.get(5).equals("true"))
 			formation.planifier();
 		return formation;
 	}
