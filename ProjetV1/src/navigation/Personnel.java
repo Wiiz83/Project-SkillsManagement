@@ -180,6 +180,7 @@ public class Personnel extends Formulaire {
 		composantsEdition.add(this.boutonAnnuler);
 		composantsEdition.add(this.JTableCompetences);
 		
+		composantsConsultation.add(this.recherche);
 		composantsConsultation.add(this.boutonNouveau);
 		composantsConsultation.add(this.boutonModifier);
 		composantsConsultation.add(this.boutonNouveau);

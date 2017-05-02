@@ -268,6 +268,8 @@ public class Formations  extends Formulaire {
 		composantsEdition.add(this.boutonEnregistrer);
 		composantsEdition.add(this.boutonAnnuler);
 		
+		composantsConsultation.add(this.recherche);
+		composantsConsultation.add(this.filtre);
 		composantsConsultation.add(this.boutonNouveau);
 		composantsConsultation.add(this.boutonModifier);
 		composantsConsultation.add(this.boutonNouveau);
@@ -322,12 +324,12 @@ public class Formations  extends Formulaire {
 			this.statut.setSelectedItem(missSelect.getStatus());
 			
 			ArrayList<Competence> listCompMiss = missSelect.getCompetences();
-			TableModel tmComp = JTables.Competences(listCompMiss).getModel();
-			this.JTableCompetences.setModel(tmComp);
+			this.mJTableCompetences = (GenericTableModel<Competence>) JTables.Competences(listCompMiss).getModel();
+			this.JTableCompetences.setModel(mJTableCompetences);
 			
 			ArrayList<Employee> listEmpMiss = missSelect.getAffEmp();
-			TableModel tmEmp = JTables.Employes(listEmpMiss).getModel();
-			this.JTableEmployes.setModel(tmEmp);
+			this.mJTableEmployes = (GenericTableModel<Employee>) JTables.Employes(listEmpMiss).getModel();
+			this.JTableEmployes.setModel(mJTableEmployes);
 		}
 	}
 	
