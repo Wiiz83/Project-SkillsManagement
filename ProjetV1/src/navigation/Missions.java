@@ -190,6 +190,11 @@ public class Missions extends Formulaire {
 		jsEmp.setBounds(650, 280, 500, 200);
 		add(jsEmp);
 		
+		this.boutonMissionTermine = new Button("/boutons/missionterminee.png");
+		this.boutonMissionTermine.setBounds(400, 400);
+		this.boutonMissionTermine.setVisible(false);
+		add(this.boutonMissionTermine);
+		
 		this.boutonAddComp = new Button("/boutons/miniadd.png");
 		this.boutonAddComp.setBounds(1160, 80);
 		add(this.boutonAddComp);
@@ -209,6 +214,14 @@ public class Missions extends Formulaire {
 		this.boutonDeleteEmp = new Button("/boutons/minidelete.png");
 		this.boutonDeleteEmp.setBounds(1160, 320);
 		add(this.boutonDeleteEmp);
+		
+		this.boutonDeleteEmp.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+			/* TODO
+				MissionTerminee();
+				*/
+			}
+		});
 		
 		this.JTableMissions.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e){
@@ -412,6 +425,11 @@ public class Missions extends Formulaire {
 			this.duree.setText(Integer.toString(missSelect.getDuree()));
 			this.nombre.setText(Integer.toString(missSelect.getNbPersReq()));
 			this.statut.setSelectedItem(missSelect.getStatus());
+			/* TODO
+			if(this.statut = Status.EN_RETARD){
+				this.boutonMissionTermine.setVisible(true);
+			}
+			*/
 			
 			ArrayList<CompetenceRequirement> listCompMiss = missSelect.getCompReq();
 			TableModel tmComp = JTables.CompetencesRequises(listCompMiss).getModel();
@@ -427,6 +445,15 @@ public class Missions extends Formulaire {
 			updateComboBox();
 		}
 	}
+	
+	
+	/*
+	 * TODO
+	
+	public void MissionTerminee(){
+		missionEnCours.setStatut(Status.TERMINEE);
+	}
+ */
 	
 	
 	/*

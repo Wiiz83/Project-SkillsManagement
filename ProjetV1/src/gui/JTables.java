@@ -174,6 +174,39 @@ public class JTables {
 		return table;
 	}
 	
+	
+	public static JTable Formations(ArrayList<MissionFormation> formations) {
+		String[] headers = { "Nom", "Durée", "Statut" };
+		@SuppressWarnings("serial")
+		TableModel dataModel = new GenericTableModel<MissionFormation>(formations, headers) {
+			
+			  public boolean isCellEditable(int rowIndex, int mColIndex) {
+			        return false;
+			  }
+			
+			public Object getValueAt(int row, int col) {
+				MissionFormation formation = formations.get(row);
+				switch (col) {
+				case 0:
+					return formation.getNomM();
+				case 1:
+					return formation.getDuree();
+				case 2:
+					return formation.getStatus();
+				default:
+					System.out.println("Missions JTable access ");
+					break;
+				}
+				return formation;
+			}
+		};
+		JTable table = new JTable(dataModel);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setAutoCreateRowSorter(true);
+		table.getRowSorter().toggleSortOrder(0);
+		return table;
+	}
+	
 	public static JTable LanguesCompetence(Competence competence, ArrayList<Language> langues) {
 		
 		String[] headers = { "Pays", "Libellé" };
@@ -230,7 +263,7 @@ public class JTables {
 	}
 	
 	public static JTable Alertes(ArrayList<Alerte> Alertes) {
-		String[] headers = { "Alerte", "Détails" };
+		String[] headers = { "Type d'alerte", "Nom de mission", "Date de début", "Mission" };
 		@SuppressWarnings("serial")
 		TableModel dataModel = new GenericTableModel<Alerte>(Alertes, headers) {
 			
@@ -240,7 +273,7 @@ public class JTables {
 			
 			@Override
 			public int getColumnCount() {
-				return 2;
+				return 4;
 			}
 			
 			@Override
@@ -254,7 +287,11 @@ public class JTables {
 				case 0:
 					return Alertes.get(row).getType();
 				case 1:
-					return Alertes.get(row).getDesc();
+					return Alertes.get(row).getNom();
+				case 2:
+					return Alertes.get(row).getDateDebut();
+				case 3:
+					return Alertes.get(row).getMission();
 				default:
 					System.out.println("Alertes JTable access ");
 					break;
@@ -264,6 +301,9 @@ public class JTables {
 			
 		};
 		JTable table = new JTable(dataModel);
+		table.getColumnModel().getColumn(3).setMinWidth(0);
+		table.getColumnModel().getColumn(3).setMaxWidth(0);
+		table.getColumnModel().getColumn(3).setWidth(0);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setAutoCreateRowSorter(true);
 		table.getRowSorter().toggleSortOrder(0);
