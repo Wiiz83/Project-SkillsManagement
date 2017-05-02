@@ -3,15 +3,24 @@ package navigation;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Date;
+
 import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
+
 import gui.Alerte;
 import gui.JTables;
 import gui.Titre;
+import models.Employee;
 import models.Mission;
 import models.Status;
 import org.jfree.chart.ChartFactory;
@@ -130,6 +139,29 @@ public class Accueil extends JPanel {
 		jsAlertes.setVisible(true);
 		jsAlertes.setBounds(820, 340, 440, 250);
 		add(jsAlertes);
+		
+		alertesJTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+				if(alertesJTable.getValueAt(alertesJTable.getSelectedRow(), 1) == "Mission en retard"){
+					int n = JOptionPane.showConfirmDialog(
+							new JFrame(), "Cette mission est elle terminée ?", "Confirmation de mission terminée",
+							JOptionPane.YES_NO_OPTION
+					);
+					if (n == JOptionPane.YES_OPTION) {
+						// TODO : On met le statut en TERMINEE
+						Mission m = (Mission) alertesJTable.getValueAt(alertesJTable.getSelectedRow(), 3);
+						Date dateFin = new Date();
+						m.setDateFinRelle(dateFin);
+						DefaultTableModel dtm = (DefaultTableModel) alertesJTable.getModel();
+						dtm.fireTableDataChanged();
+						
+					}
+				}
+			}
+			
+		});
 		
 		validate();
 		

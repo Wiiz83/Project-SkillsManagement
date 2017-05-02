@@ -20,6 +20,7 @@ import javax.swing.border.LineBorder;
 import data.Data;
 import navigation.Accueil;
 import navigation.Competences;
+import navigation.Formations;
 import navigation.Missions;
 import navigation.Personnel;
 
@@ -32,10 +33,12 @@ public class Header extends JPanel implements MouseListener {
 	private Button				boutonCompetences;
 	private Button				boutonPersonnel;
 	private Button				boutonMissions;
+	private Button				boutonFormations;
 	private Button				currentBouton;
 	private Accueil				panelAccueil;
 	private Personnel			panelPersonnel;
 	private Missions			panelMissions;
+	private Formations		panelFormations;
 	private Competences		panelCompetences;
 	private String				etat;
 	private JFrame				frame;
@@ -71,10 +74,12 @@ public class Header extends JPanel implements MouseListener {
 		this.boutonCompetences = new Button("/boutons/competences.png");
 		this.boutonPersonnel = new Button("/boutons/personnel.png");
 		this.boutonMissions = new Button("/boutons/missions.png");
+		this.boutonFormations  = new Button("/boutons/formation.png");
 		this.boutonAccueil.addMouseListener(this);
 		this.boutonCompetences.addMouseListener(this);
 		this.boutonPersonnel.addMouseListener(this);
 		this.boutonMissions.addMouseListener(this);
+		this.boutonFormations.addMouseListener(this);
 		
 		this.setLayout(new BorderLayout());
 		this.setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
@@ -88,6 +93,7 @@ public class Header extends JPanel implements MouseListener {
 		this.menu.add(this.boutonCompetences);
 		this.menu.add(this.boutonPersonnel);
 		this.menu.add(this.boutonMissions);
+		this.menu.add(this.boutonFormations);
 		this.frame.add(this.menu);
 		
 		this.contenu = new JPanel();
@@ -150,6 +156,12 @@ public class Header extends JPanel implements MouseListener {
 			this.PageActuelle = this.panelCompetences;
 			this.contenu.add(this.panelCompetences);
 			break;
+			
+		case "formations":
+			this.panelFormations = new Formations(data);
+			this.PageActuelle = this.panelFormations;
+			this.contenu.add(this.panelFormations);
+			break;
 		
 		default:
 			System.out.println("Problème lors du chargement de la page");
@@ -182,6 +194,8 @@ public class Header extends JPanel implements MouseListener {
 				this.etat = "personnel";
 			} else if (e.getSource().equals(this.boutonMissions)) {
 				this.etat = "missions";
+			} else if (e.getSource().equals(this.boutonFormations)) {
+				this.etat = "formations";
 			}
 			this.currentBouton = (Button) e.getSource();
 			this.currentBouton.setBorder(new LineBorder(Color.BLACK));

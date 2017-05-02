@@ -230,7 +230,7 @@ public class JTables {
 	}
 	
 	public static JTable Alertes(ArrayList<Alerte> Alertes) {
-		String[] headers = { "Alerte", "Détails" };
+		String[] headers = { "Type d'alerte", "Nom de mission", "Date de début", "Mission" };
 		@SuppressWarnings("serial")
 		TableModel dataModel = new GenericTableModel<Alerte>(Alertes, headers) {
 			
@@ -240,7 +240,7 @@ public class JTables {
 			
 			@Override
 			public int getColumnCount() {
-				return 2;
+				return 4;
 			}
 			
 			@Override
@@ -254,7 +254,11 @@ public class JTables {
 				case 0:
 					return Alertes.get(row).getType();
 				case 1:
-					return Alertes.get(row).getDesc();
+					return Alertes.get(row).getNom();
+				case 2:
+					return Alertes.get(row).getDateDebut();
+				case 3:
+					return Alertes.get(row).getMission();
 				default:
 					System.out.println("Alertes JTable access ");
 					break;
@@ -264,6 +268,9 @@ public class JTables {
 			
 		};
 		JTable table = new JTable(dataModel);
+		table.getColumnModel().getColumn(3).setMinWidth(0);
+		table.getColumnModel().getColumn(3).setMaxWidth(0);
+		table.getColumnModel().getColumn(3).setWidth(0);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setAutoCreateRowSorter(true);
 		table.getRowSorter().toggleSortOrder(0);
