@@ -23,6 +23,10 @@ public class MissionFormation extends MissionAbstract {
 		return Competences;
 	}
 	
+	public void setCompetences(ArrayList<Competence> comp) {
+		this.Competences = comp;
+	}
+	
 	@Override
 	public HashMap<Class<? extends CSVEntity>, ArrayList<String>> getReferencedObjectsIDS() {
 		HashMap<Class<? extends CSVEntity>, ArrayList<String>> IDS = new HashMap<>();

@@ -460,7 +460,7 @@ public class Missions extends Formulaire {
 	 * NOUVEAU : Création d'une nouvelle mission
 	 */
 	public void Nouveau(){
-		this.missionEnCours = new Mission("", null, 0, 0);
+		this.missionEnCours = new Mission("", models.Cal.today(), 0, 0);
 		VideChamps();
 		ChargementModification();
 		this.mode = "nouveau";
