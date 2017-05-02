@@ -8,7 +8,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-import csv.CSVEntity;
 import models.*;
 
 /**
@@ -18,23 +17,6 @@ import models.*;
 
 public class JTables {
 	
-	@SuppressWarnings("unchecked")
-	public static <E extends CSVEntity> JTable getTable(Class<? extends CSVEntity> c, ArrayList<E> data) {
-		
-		if (c == Competence.class)
-			return Competences((ArrayList<Competence>) data);
-		if (c == Employee.class) {
-			return Employes((ArrayList<Employee>) data);
-		}
-		if (c == Mission.class) {
-			return Missions((ArrayList<Mission>) data);
-		}
-		if (c == CompetenceRequirement.class) {
-			return CompetencesRequises((ArrayList<CompetenceRequirement>) data);
-		} else {
-			return null;
-		}
-	}
 	
 	public static JTable Employes(ArrayList<Employee> employes) {
 		SimpleDateFormat dateformatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -142,17 +124,17 @@ public class JTables {
 		return table;
 	}
 	
-	public static JTable Missions(ArrayList<Mission> missions) {
+	public static <E extends MissionAbstract> JTable Missions(ArrayList<E> missions) {
 		String[] headers = { "Nom", "Durée", "Statut" };
 		@SuppressWarnings("serial")
-		TableModel dataModel = new GenericTableModel<Mission>(missions, headers) {
+		TableModel dataModel = new GenericTableModel<E>(missions, headers) {
 			
 			  public boolean isCellEditable(int rowIndex, int mColIndex) {
 			        return false;
 			  }
 			
 			public Object getValueAt(int row, int col) {
-				Mission mis = missions.get(row);
+				E mis = missions.get(row);
 				switch (col) {
 				case 0:
 					return mis.getNomM();
@@ -175,37 +157,7 @@ public class JTables {
 	}
 	
 	
-	public static JTable Formations(ArrayList<MissionFormation> formations) {
-		String[] headers = { "Nom", "Durée", "Statut" };
-		@SuppressWarnings("serial")
-		TableModel dataModel = new GenericTableModel<MissionFormation>(formations, headers) {
-			
-			  public boolean isCellEditable(int rowIndex, int mColIndex) {
-			        return false;
-			  }
-			
-			public Object getValueAt(int row, int col) {
-				MissionFormation formation = formations.get(row);
-				switch (col) {
-				case 0:
-					return formation.getNomM();
-				case 1:
-					return formation.getDuree();
-				case 2:
-					return formation.getStatus();
-				default:
-					System.out.println("Missions JTable access ");
-					break;
-				}
-				return formation;
-			}
-		};
-		JTable table = new JTable(dataModel);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setAutoCreateRowSorter(true);
-		table.getRowSorter().toggleSortOrder(0);
-		return table;
-	}
+
 	
 	public static JTable LanguesCompetence(Competence competence, ArrayList<Language> langues) {
 		
