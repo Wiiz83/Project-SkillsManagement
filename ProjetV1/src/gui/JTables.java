@@ -174,6 +174,39 @@ public class JTables {
 		return table;
 	}
 	
+	
+	public static JTable Formations(ArrayList<MissionFormation> formations) {
+		String[] headers = { "Nom", "Durée", "Statut" };
+		@SuppressWarnings("serial")
+		TableModel dataModel = new GenericTableModel<MissionFormation>(formations, headers) {
+			
+			  public boolean isCellEditable(int rowIndex, int mColIndex) {
+			        return false;
+			  }
+			
+			public Object getValueAt(int row, int col) {
+				MissionFormation formation = formations.get(row);
+				switch (col) {
+				case 0:
+					return formation.getNomM();
+				case 1:
+					return formation.getDuree();
+				case 2:
+					return formation.getStatus();
+				default:
+					System.out.println("Missions JTable access ");
+					break;
+				}
+				return formation;
+			}
+		};
+		JTable table = new JTable(dataModel);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setAutoCreateRowSorter(true);
+		table.getRowSorter().toggleSortOrder(0);
+		return table;
+	}
+	
 	public static JTable LanguesCompetence(Competence competence, ArrayList<Language> langues) {
 		
 		String[] headers = { "Pays", "Libellé" };

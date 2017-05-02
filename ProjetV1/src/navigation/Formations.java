@@ -69,7 +69,7 @@ public class Formations  extends Formulaire {
 		
 		this.JTableFormations = new JTable();
 		try {
-			JTableFormations = JTables.Missions(data.Missions().tous());
+			JTableFormations = JTables.Formations(data.Mission().tous());
 			JTableFormations.setFillsViewportHeight(true);
 			JScrollPane js = new JScrollPane(JTableFormations);
 			js.setVisible(true);
