@@ -20,6 +20,7 @@ public abstract class MissionAbstract extends CSVEntity {
 	protected int					id						= -1;
 	protected ArrayList<Employee>	AffEmp;
 	protected boolean				forcer_planification	= false;
+	protected Status				St;	
 	
 	public MissionAbstract(String nomM, Date dateDebut, int duree, int nbPersReq) {
 		this.nom = nomM;
@@ -27,6 +28,7 @@ public abstract class MissionAbstract extends CSVEntity {
 		this.duree = duree;
 		this.nbPersReq = nbPersReq;
 		this.AffEmp = new ArrayList<>();
+		
 	}
 	
 	/**
@@ -35,19 +37,23 @@ public abstract class MissionAbstract extends CSVEntity {
 	public Status getStatus() {
 		
 		if (Cal.today().compareTo(getDateFin()) > 0) {
+			this.St = Status.TERMINEE;
 			return Status.TERMINEE; // Vérification de si la mission est
 									// terminée puis retour
 		}
 		if (AffEmp.size() >= nbPersReq || forcer_planification)
 			if (Cal.today().compareTo(dateDebut) > 0) {
+				this.St = Status.EN_COURS;
 				return Status.EN_COURS; // Vérification de si la mission est
 										// commencée puis retour
 			} else {
+				this.St = Status.PLANIFIEE;
 				return Status.PLANIFIEE; // Vérification de si la mission est
 											// planifiée mais non commencée puis
 											// retour
 			}
 		else
+			this.St = Status.PREPARATION;
 			return Status.PREPARATION; // Si aucun des états précédents ne
 										// correspond alors la mission est
 										// encore en préparation

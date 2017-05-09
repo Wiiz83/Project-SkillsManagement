@@ -1,5 +1,8 @@
 package models;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,6 +36,28 @@ public class Mission extends MissionAbstract {
 		cal.setTime(this.dateDebut);
 		cal.add(Calendar.DATE, duree);
 		this.dateFinReelle = cal.getTime();
+	}
+	
+	public void updateStatus() throws ParseException{
+		DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+		Date dt = new Date();
+		String nowString = df.format(dt);
+		String dateDebut = df.format(this.getDateDebut());
+		try {
+			dateDebut = this.getDateDebut().toString();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Date now = df.parse(nowString);
+		Date debut = df.parse(dateDebut);
+		if (now.compareTo(debut) > 0) {
+			
+		} else if (now.compareTo(debut) < 0) {
+		    this.St = Status.EN_COURS;
+		} else if (now.compareTo(debut) == 0) {
+			this.St = Status.EN_COURS;
+		}
 	}
 	
 	public void setDateFinRelle(Date dateFin) {
