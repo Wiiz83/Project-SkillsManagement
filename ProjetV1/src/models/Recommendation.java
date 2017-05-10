@@ -16,6 +16,7 @@ public class Recommendation {
 	private ArrayList<Employee>							empAff;						 //ArrayList affectés à la mission
 	private ArrayList<Employee>							empToRec; 				//ArrayList des employés recommendés
 	private int[]													RLevel; 						//Tableau des niveaux de recommendations par employés
+	private double[]									newRLevel;
 			
 	/**
 	 * @param misToRec  La mission qui est concernée par les recommendations
@@ -26,6 +27,7 @@ public class Recommendation {
 		this.empRec = emp;
 		this.empAff = this.misToRec.getAffEmp(); 
 		this.RLevel = new int[250];
+		this.newRLevel = new double[250];
 	}
 	
 	/**
@@ -47,6 +49,27 @@ public class Recommendation {
 					this.RLevel[e.getID()]++;
 				}
 			}
+		}
+	}
+	
+	public void newRecommendation(){
+		deleteAff();
+		int totalComp = 0;
+		int totalCompHad = 0;
+		double coeff = 0.0;
+		for(Employee e : empRec){
+			totalComp = e.getCompetences().size();
+			this.RLevel[e.getID()] = 0;
+			totalCompHad = 0;
+			for(Competence c : e.getCompetences()){
+				if(checkCompMission(c) != 0){
+					if(!this.empRec.contains(e)){
+						this.empToRec.add(e);
+					}
+					totalCompHad++;
+				}
+			}
+			this.newRLevel[e.getID()] = Math.round(totalCompHad / totalComp);
 		}
 	}
 	
