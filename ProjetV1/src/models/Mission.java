@@ -43,20 +43,22 @@ public class Mission extends MissionAbstract {
 		Date dt = new Date();
 		String nowString = df.format(dt);
 		String dateDebut = df.format(this.getDateDebut());
-		try {
-			dateDebut = this.getDateDebut().toString();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		dateDebut = this.getDateDebut().toString();
 		Date now = df.parse(nowString);
 		Date debut = df.parse(dateDebut);
 		if (now.compareTo(debut) > 0) {
-			
+			this.St = Status.EN_COURS;
 		} else if (now.compareTo(debut) < 0) {
-		    this.St = Status.EN_COURS;
+		    if(this.St != Status.PLANIFIEE || this.St != Status.PREPARATION){
+				this.St = Status.PREPARATION;
+			}
 		} else if (now.compareTo(debut) == 0) {
 			this.St = Status.EN_COURS;
+		}
+		if(now.compareTo(this.dateFinReelle) > 0 && this.St != Status.TERMINEE){
+			this.St = Status.EN_RETARD;
+		}else if (now.compareTo(this.dateFinReelle) == 0 && this.St != Status.TERMINEE){
+			this.St = Status.EN_RETARD;
 		}
 	}
 	
