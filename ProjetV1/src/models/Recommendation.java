@@ -53,10 +53,9 @@ public class Recommendation {
 	}
 	
 	public void newRecommendation(){
-		deleteAff();
 		int totalComp = 0;
 		int totalCompHad = 0;
-		double coeff = 0.0;
+		deleteAff();
 		for(Employee e : empRec){
 			totalComp = e.getCompetences().size();
 			this.RLevel[e.getID()] = 0;
