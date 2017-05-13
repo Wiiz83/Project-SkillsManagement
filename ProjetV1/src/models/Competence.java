@@ -110,4 +110,12 @@ public class Competence extends CSVEntity implements Cloneable {
 		return copy;
 	}
 	
+	@Override
+	protected HashMap<Class<? extends CSVEntity>, ArrayList<? extends CSVEntity>> getReferencedObjects() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+
+	
 }

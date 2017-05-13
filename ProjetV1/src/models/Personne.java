@@ -1,8 +1,5 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import csv.CSVEntity;
 import csv.InvalidDataException;
 
@@ -51,17 +48,6 @@ public abstract class Personne extends CSVEntity {
 		} catch (NumberFormatException e) {
 			throw new InvalidDataException(e);
 		}
-	}
-	
-	@Override
-	public HashMap<Class<? extends CSVEntity>, ArrayList<String>> getReferencedObjectsIDS() {
-		assert (false);
-		return null;
-	}
-	
-	@Override
-	public void setReferencedObjects(HashMap<Class<? extends CSVEntity>, ArrayList<Object>> hashMap) {
-		assert (false);
 	}
 	
 	@Override

@@ -68,14 +68,7 @@ public class CompetenceRequirement extends CSVEntity {
 				+ requiredEmployees + "]";
 	}
 	
-	@Override
-	public HashMap<Class<? extends CSVEntity>, ArrayList<String>> getReferencedObjectsIDS() {
-		HashMap<Class<? extends CSVEntity>, ArrayList<String>> ids = new HashMap<>();
-		ArrayList<String> id = new ArrayList<>();
-		id.add(competence.csvID());
-		ids.put(Competence.class, id);
-		return ids;
-	}
+
 	
 	@Override
 	public void setReferencedObjects(HashMap<Class<? extends CSVEntity>, ArrayList<Object>> hashMap) {
@@ -105,5 +98,14 @@ public class CompetenceRequirement extends CSVEntity {
 		if (requiredEmployees != other.requiredEmployees)
 			return false;
 		return true;
+	}
+	
+	@Override
+	protected HashMap<Class<? extends CSVEntity>, ArrayList<? extends CSVEntity>> getReferencedObjects() {
+		HashMap<Class<? extends CSVEntity>, ArrayList<? extends CSVEntity>> referencedObjects = new HashMap<>();
+		ArrayList<Competence> list = new ArrayList<>();
+		list.add(competence);
+		referencedObjects.put(Competence.class, list);
+		return referencedObjects;
 	}
 }

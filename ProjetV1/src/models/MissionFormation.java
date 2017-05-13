@@ -28,11 +28,11 @@ public class MissionFormation extends MissionAbstract {
 	}
 	
 	@Override
-	public HashMap<Class<? extends CSVEntity>, ArrayList<String>> getReferencedObjectsIDS() {
-		HashMap<Class<? extends CSVEntity>, ArrayList<String>> IDS = new HashMap<>();
-		IDS.put(Employee.class, getIDS(AffEmp));
-		IDS.put(Competence.class, getIDS(Competences));
-		return IDS;
+	protected HashMap<Class<? extends CSVEntity>, ArrayList<? extends CSVEntity>> getReferencedObjects() {
+		HashMap<Class<? extends CSVEntity>, ArrayList<? extends CSVEntity>> referencedObjects = new HashMap<>();
+		referencedObjects.put(Employee.class, AffEmp);
+		referencedObjects.put(Competence.class, Competences);
+		return referencedObjects;
 	}
 	
 	@Override

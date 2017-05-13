@@ -1,6 +1,7 @@
 package csv;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -19,12 +20,12 @@ public class CSVObjectDeleter<E extends CSVEntity> {
 		this.config = config;
 	}
 	
-	public void deleteObject(E e) throws IOException, InvalidCSVException, CSVUpdateException {
+	public void deleteObject(E e) throws IOException, CSVUpdateException, CSVException {
 		deleteObject(e, true);
 	}
 	
 	public void deleteObject(E e, boolean deleteReferencesToObject)
-			throws IOException, InvalidCSVException, CSVUpdateException {
+			throws IOException, CSVUpdateException, CSVException {
 		
 		if (!e.isAttached()) {
 			throw new CSVUpdateException("Object to delete is not attached");
@@ -36,7 +37,18 @@ public class CSVObjectDeleter<E extends CSVEntity> {
 		e.setAttached(false);
 	}
 	
-	private void deleteReferencesToObject(E e) throws IOException, InvalidCSVException {
+	private void dissociateObject(E e, Class<? extends CSVEntity> rClass, String rID) throws CSVUpdateException, CSVException {
+		CSVObjects<? extends CSVEntity> rCSVObjects = new CSVObjects<>(rClass, config);
+		HashMap<Class<? extends CSVEntity>, ArrayList<? extends CSVEntity>> rReferencedObjects = rCSVObjects
+				.getByID(rID)
+				.getReferencedObjects();
+		boolean removed = rReferencedObjects.get(e.getClass()).remove(e);
+		if (!removed)
+			throw new CSVUpdateException("dissociateObject fail");
+		
+	}
+	
+	private void deleteReferencesToObject(E e) throws IOException, CSVUpdateException, CSVException {
 		CSVModel model = config.getModel();
 		for (Class<? extends CSVEntity> N : model.Metadata().getReferencingEntities(e.getClass())) {
 			if (N == null)
@@ -62,8 +74,11 @@ public class CSVObjectDeleter<E extends CSVEntity> {
 					modifiedLines.put(line.get(0), newline);
 				}
 			}
-			for (Entry<String, CSVLine> entry : modifiedLines.entrySet())
+			for (Entry<String, CSVLine> entry : modifiedLines.entrySet()) {
 				assocDoc.modifiyLineByID(entry.getKey(), entry.getValue());
+				dissociateObject(e, N, entry.getKey());
+			}
+			System.gc();
 		}
 	}
 	

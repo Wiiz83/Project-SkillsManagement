@@ -36,28 +36,38 @@ public class CSVObjectSaver<E extends CSVEntity> {
 	}
 	
 	private void saveObjectReferences(E e) throws IOException, NumberFormatException, ParseException, CSVException {
-		HashMap<Class<? extends CSVEntity>, ArrayList<String>> associatedObjectsIDS = e.getReferencedObjectsIDS();
+		HashMap<Class<? extends CSVEntity>, ArrayList<? extends CSVEntity>> associatedObjects = e
+				.getReferencedObjects();
 		CSVModel model = config.getModel();
 		for (Class<? extends CSVEntity> N : model.Metadata().getAssociatedEntities(e.getClass())) {
-			if (N == null || associatedObjectsIDS.get(N) == null)
+			if (N == null || associatedObjects == null)
 				continue;
-			if (associatedObjectsIDS.get(N).size() == 0)
+			if (associatedObjects.get(N).size() == 0)
 				continue;
 			CSVAssociation assoc = new CSVAssociation(e.getClass(), N);
 			CSVDocument assocDoc = config.getDocument(assoc);
 			CSVObjects<? extends CSVEntity> nObjects = new CSVObjects<>(N, config);
 			// Check that the referenced objects already exist in the CSV
 			// documents
-			for (String ID : associatedObjectsIDS.get(N)) {
-				CSVEntity n = nObjects.getByID(ID);
+			for (CSVEntity nEntity : associatedObjects.get(N)) {
+				CSVEntity n = nObjects.getByID(nEntity.csvID());
 				if (n == null) {
-					throw new InvalidCSVException("Referenced object with ID: " + ID + " does not exist.");
+					throw new InvalidCSVException("Referenced object does not exist: " + nEntity);
 				}
 			}
 			CSVLine assocLine = new CSVLine();
 			assocLine.add(e.csvID());
-			assocLine.addAll(associatedObjectsIDS.get(N));
+			assocLine.addAll(getIDS(associatedObjects.get(N)));
 			assocDoc.addOrModifyLine(e.csvID(), assocLine);
 		}
 	}
+	
+	private ArrayList<String> getIDS(ArrayList<? extends CSVEntity> ReferencedObjects) {
+		ArrayList<String> ids = new ArrayList<String>();
+		for (CSVEntity e : ReferencedObjects) {
+			ids.add(e.csvID());
+		}
+		return ids;
+	}
+	
 }

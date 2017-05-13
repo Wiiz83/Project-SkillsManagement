@@ -1,8 +1,5 @@
 package models;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -38,34 +35,19 @@ public class Mission extends MissionAbstract {
 		this.dateFinReelle = cal.getTime();
 	}
 	
-	public void updateStatus() throws ParseException{
-		DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
-		Date dt = new Date();
-		String nowString = df.format(dt);
-		String dateDebut = df.format(this.getDateDebut());
-		dateDebut = this.getDateDebut().toString();
-		Date now = df.parse(nowString);
-		Date debut = df.parse(dateDebut);
-		if (now.compareTo(debut) > 0) {
-			this.St = Status.EN_COURS;
-		} else if (now.compareTo(debut) < 0) {
-		    if(this.St != Status.PLANIFIEE || this.St != Status.PREPARATION){
-				this.St = Status.PREPARATION;
-			}
-		} else if (now.compareTo(debut) == 0) {
-			this.St = Status.EN_COURS;
-		}
-		if(now.compareTo(this.dateFinReelle) > 0 && this.St != Status.TERMINEE){
-			this.St = Status.EN_RETARD;
-		}else if (now.compareTo(this.dateFinReelle) == 0 && this.St != Status.TERMINEE){
-			this.St = Status.EN_RETARD;
-		}
+	public void setDateFinRelle(Date date) {
+		this.dateFinReelle = date;
 	}
 	
-	public void setDateFinRelle(Date dateFin) {
-		this.dateFinReelle = dateFin;
+	public boolean enRetard() {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(this.dateDebut);
+		cal.add(Calendar.DATE, duree);
+		Date dateFinPrev = cal.getTime();
+		return dateFinReelle.compareTo(dateFinPrev) <= 0;
 	}
 	
+
 	public Date getDateFinReelle() {
 		return dateFinReelle;
 	}
@@ -98,11 +80,11 @@ public class Mission extends MissionAbstract {
 	}
 	
 	@Override
-	public HashMap<Class<? extends CSVEntity>, ArrayList<String>> getReferencedObjectsIDS() {
-		HashMap<Class<? extends CSVEntity>, ArrayList<String>> IDS = new HashMap<>();
-		IDS.put(Employee.class, getIDS(AffEmp));
-		IDS.put(CompetenceRequirement.class, getIDS(CompReq));
-		return IDS;
+	protected HashMap<Class<? extends CSVEntity>, ArrayList<? extends CSVEntity>> getReferencedObjects() {
+		HashMap<Class<? extends CSVEntity>, ArrayList<? extends CSVEntity>> referencedObjects = new HashMap<>();
+		referencedObjects.put(Employee.class, AffEmp);
+		referencedObjects.put(Competence.class, CompReq);
+		return referencedObjects;
 	}
 	
 	@Override

@@ -39,8 +39,8 @@ public class Language extends CSVEntity {
 	}
 	
 	@Override
-	public HashMap<Class<? extends CSVEntity>, ArrayList<String>> getReferencedObjectsIDS() {
-		return new HashMap<>();
+	protected HashMap<Class<? extends CSVEntity>, ArrayList<? extends CSVEntity>> getReferencedObjects() {
+		return null;
 	}
 	
 	@Override

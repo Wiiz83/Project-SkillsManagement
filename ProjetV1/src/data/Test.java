@@ -18,6 +18,7 @@ public class Test {
 		SimpleDateFormat dateformatter = new SimpleDateFormat("dd/MM/yyyy");
 		CSVConfig config = new AppCSVConfig();
 		Data data = new Data(config);
+		
 		Employee e = data.Employes().parID(1);
 		System.out.println(e);
 		Competence c = data.Competences().parID("B.3.");

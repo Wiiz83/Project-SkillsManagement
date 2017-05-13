@@ -5,7 +5,7 @@ package models;
  */
 public enum Status {
 	
-	PREPARATION("Préparation"), PLANIFIEE("Planifiée"), EN_COURS("En cours"), TERMINEE("Terminée"), EN_RETARD("En retard");
+	PREPARATION("Préparation"), PLANIFIEE("Planifiée"), EN_COURS("En cours"), TERMINEE("Terminée");
 	private String value;
 	
 	private Status(String s) {

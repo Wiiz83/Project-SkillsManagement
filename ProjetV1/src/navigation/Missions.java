@@ -44,30 +44,30 @@ import models.Status;
  */
 public class Missions extends Formulaire {
 	
-	private static final long												serialVersionUID	= 1L;
-	private Data																	data;
-	private Button																boutonAddComp;
-	private Button																boutonEditComp;
-	private Button																boutonDeleteComp;
-	private Button																boutonAddEmp;
-	private Button																boutonDeleteEmp;
-	private Button																boutonMissionTermine;
-	private JTextField															nom;
-	private JComboBox<Status>											statut;
-	private JFormattedTextField											dateD;
-	private JFormattedTextField											duree;
-	private JFormattedTextField											nombre;
-	private HintTextField														recherche;
-	private JComboBox<String>											filtre;
-	private JTable																JTableMissions;
-	private GenericTableModel<Mission>								mJTableMissions;
-	private JTable																JTableCompetences;
+	private static final long							serialVersionUID	= 1L;
+	private Data										data;
+	private Button										boutonAddComp;
+	private Button										boutonEditComp;
+	private Button										boutonDeleteComp;
+	private Button										boutonAddEmp;
+	private Button										boutonDeleteEmp;
+	private Button										boutonMissionTermine;
+	private JTextField									nom;
+	private JComboBox<Status>							statut;
+	private JFormattedTextField							dateD;
+	private JFormattedTextField							duree;
+	private JFormattedTextField							nombre;
+	private HintTextField								recherche;
+	private JComboBox<String>							filtre;
+	private JTable										JTableMissions;
+	private GenericTableModel<Mission>					mJTableMissions;
+	private JTable										JTableCompetences;
 	private GenericTableModel<CompetenceRequirement>	mJTableCompetences;
-	private JTable																JTableEmployes;
-	private GenericTableModel<Employee>							mJTableEmployes;
-	private SimpleDateFormat	MissionDateFormat				= new SimpleDateFormat("dd/MM/yyyy");
-	private Mission																missionEnCours;
-
+	private JTable										JTableEmployes;
+	private GenericTableModel<Employee>					mJTableEmployes;
+	private SimpleDateFormat							MissionDateFormat	= new SimpleDateFormat("dd/MM/yyyy");
+	private Mission										missionEnCours;
+	
 	public Missions(Data data) {
 		super();
 		
@@ -163,7 +163,7 @@ public class Missions extends Formulaire {
 		this.nombre = new JFormattedTextField(numberFormat);
 		this.nombre.setBounds(480, 140, 120, 25);
 		add(nombre);
-
+		
 		MaskFormatter formatterDate;
 		try {
 			formatterDate = new MaskFormatter("##/##/####");
@@ -176,7 +176,7 @@ public class Missions extends Formulaire {
 		add(this.dateD);
 		
 		this.JTableCompetences = new JTable();
-
+		
 		this.JTableCompetences.setFillsViewportHeight(true);
 		JScrollPane jsComp = new JScrollPane(this.JTableCompetences);
 		jsComp.setVisible(true);
@@ -215,79 +215,103 @@ public class Missions extends Formulaire {
 		this.boutonDeleteEmp.setBounds(1160, 320);
 		add(this.boutonDeleteEmp);
 		
-		this.boutonDeleteEmp.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e){
-			/* TODO
-				MissionTerminee();
-				*/
-			}
-		});
+		this.boutonDeleteEmp.addMouseListener(
+				new MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
+						/*
+						 * TODO MissionTerminee();
+						 */
+					}
+				}
+		);
 		
-		this.JTableMissions.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e){
-				AffichageSelection();
-			}
-		});
+		this.JTableMissions.addMouseListener(
+				new MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
+						AffichageSelection();
+					}
+				}
+		);
 		
-		this.boutonNouveau.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e){
-				Nouveau();
-			}
-		});
+		this.boutonNouveau.addMouseListener(
+				new MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
+						Nouveau();
+					}
+				}
+		);
 		
-		this.boutonModifier.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e){
-				Modifier();
-			}
-		});
+		this.boutonModifier.addMouseListener(
+				new MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
+						Modifier();
+					}
+				}
+		);
 		
-		this.boutonSupprimer.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e){
-				Supprimer();
-			}
-		});
+		this.boutonSupprimer.addMouseListener(
+				new MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
+						Supprimer();
+					}
+				}
+		);
 		
-		this.boutonEnregistrer.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e){
-				Enregistrer();
-			}
-		});
+		this.boutonEnregistrer.addMouseListener(
+				new MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
+						Enregistrer();
+					}
+				}
+		);
 		
-		this.boutonAnnuler.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e){
-				Annuler();
-			}
-		});
+		this.boutonAnnuler.addMouseListener(
+				new MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
+						Annuler();
+					}
+				}
+		);
 		
-		this.boutonAddComp.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e){
-				AjouterCompetence();
-			}
-		});
+		this.boutonAddComp.addMouseListener(
+				new MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
+						AjouterCompetence();
+					}
+				}
+		);
 		
-		this.boutonEditComp.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e){
-				ModifierCompetence();
-			}
-		});
+		this.boutonEditComp.addMouseListener(
+				new MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
+						ModifierCompetence();
+					}
+				}
+		);
 		
-		this.boutonDeleteComp.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e){
-				SupprimerCompetence();
-			}
-		});
+		this.boutonDeleteComp.addMouseListener(
+				new MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
+						SupprimerCompetence();
+					}
+				}
+		);
 		
-		this.boutonAddEmp.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e){
-				AjouterEmploye();
-			}
-		});
+		this.boutonAddEmp.addMouseListener(
+				new MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
+						AjouterEmploye();
+					}
+				}
+		);
 		
-		this.boutonDeleteEmp.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e){
-				SupprimerEmploye();
-			}
-		});
+		this.boutonDeleteEmp.addMouseListener(
+				new MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
+						SupprimerEmploye();
+					}
+				}
+		);
 		
 		composantsEdition.add(this.JTableEmployes);
 		composantsEdition.add(this.JTableCompetences);
@@ -329,7 +353,6 @@ public class Missions extends Formulaire {
 		this.JTableCompetences.setModel(mJTableCompetences);
 	}
 	
-	
 	/*
 	 * Renvoi la mission séléctionnée
 	 */
@@ -348,7 +371,7 @@ public class Missions extends Formulaire {
 		}
 	}
 	
-	public Mission getMissionEnCours(){
+	public Mission getMissionEnCours() {
 		return missionEnCours;
 	}
 	
@@ -388,7 +411,7 @@ public class Missions extends Formulaire {
 			return null;
 		}
 	}
-
+	
 	void updateComboBox() {
 		statut.removeAllItems();
 		if (missionEnCours == null)
@@ -400,7 +423,7 @@ public class Missions extends Formulaire {
 	
 	private void updateMissionStatus() {
 		Status selected = (Status) statut.getSelectedItem();
-		Mission mission = getMissionSelected();
+		Mission mission = missionEnCours;
 		if (selected == Status.PLANIFIEE && mission.getStatus() == Status.PREPARATION)
 			mission.planifier();
 		if (selected == Status.PREPARATION && mission.getForcer_planification()
@@ -412,11 +435,10 @@ public class Missions extends Formulaire {
 		mJTableCompetences.fireTableDataChanged();
 	}
 	
-	
 	/*
 	 * Affichage des détails de la mission sélectionnée
 	 */
-	public void AffichageSelection(){
+	public void AffichageSelection() {
 		Mission missSelect = getMissionSelected();
 		
 		if (missSelect != null) {
@@ -425,11 +447,10 @@ public class Missions extends Formulaire {
 			this.duree.setText(Integer.toString(missSelect.getDuree()));
 			this.nombre.setText(Integer.toString(missSelect.getNbPersReq()));
 			this.statut.setSelectedItem(missSelect.getStatus());
-			/* TODO
-			if(this.statut = Status.EN_RETARD){
-				this.boutonMissionTermine.setVisible(true);
-			}
-			*/
+			/*
+			 * TODO if(this.statut = Status.EN_RETARD){
+			 * this.boutonMissionTermine.setVisible(true); }
+			 */
 			
 			ArrayList<CompetenceRequirement> listCompMiss = missSelect.getCompReq();
 			TableModel tmComp = JTables.CompetencesRequises(listCompMiss).getModel();
@@ -446,20 +467,17 @@ public class Missions extends Formulaire {
 		}
 	}
 	
-	
 	/*
 	 * TODO
-	
-	public void MissionTerminee(){
-		missionEnCours.setStatut(Status.TERMINEE);
-	}
- */
-	
+	 * 
+	 * public void MissionTerminee(){ missionEnCours.setStatut(Status.TERMINEE);
+	 * }
+	 */
 	
 	/*
 	 * NOUVEAU : Création d'une nouvelle mission
 	 */
-	public void Nouveau(){
+	public void Nouveau() {
 		this.missionEnCours = new Mission("", models.Cal.today(), 0, 0);
 		VideChamps();
 		ChargementModification();
@@ -469,21 +487,21 @@ public class Missions extends Formulaire {
 	/*
 	 * TODO ENREGISTRER : Enregistrement de la mission
 	 */
-	public void Enregistrer(){
-		if ((this.dateD.getText().equals("")) || (this.duree.getText().equals(""))
-				|| (this.nombre.getText().equals("")) || (this.nom.getText().equals(""))) {
+	public void Enregistrer() {
+		if ((this.dateD.getText().equals("")) || (this.duree.getText().equals("")) || (this.nombre.getText().equals(""))
+				|| (this.nom.getText().equals(""))) {
 			JOptionPane.showMessageDialog(
 					new JFrame(), "Vous devez renseigner toutes les informations pour enregistrer.",
 					"Informations non renseignés", JOptionPane.WARNING_MESSAGE
 			);
 		} else {
-
+			
 			updateMissionStatus();
 			
 			Date dateD = new Date(this.dateD.getText());
-			String strDuree = this.duree.getText().replaceAll("\\D+","");
+			String strDuree = this.duree.getText().replaceAll("\\D+", "");
 			int duree = Integer.parseInt(strDuree);
-			String strNombre = this.nombre.getText().replaceAll("\\D+","");
+			String strNombre = this.nombre.getText().replaceAll("\\D+", "");
 			int nb = Integer.parseInt(strNombre);
 			String nom = this.nom.getText();
 			ArrayList<Employee> presentEmployes = mJTableEmployes.getArraylist();
@@ -517,71 +535,70 @@ public class Missions extends Formulaire {
 					e.printStackTrace();
 				}
 				break;
-		}
 			}
 		}
-		
+	}
 	
 	/*
 	 * MODIFIER : Modification de l'employé séléctionné
 	 */
-	public void Modifier(){
+	public void Modifier() {
 		this.missionEnCours = getMissionSelected();
 		if (missionEnCours != null) {
 			if (missionEnCours.estModifiable()) {
 				super.ChargementModification();
 			} else if (missionEnCours.getStatus() == Status.EN_COURS) {
 				JOptionPane.showMessageDialog(
-						new JFrame(), "La mission est en cours : elle n'est donc plus modifiable.",
-						"Mission en cours", JOptionPane.WARNING_MESSAGE
+						new JFrame(), "La mission est en cours : elle n'est donc plus modifiable.", "Mission en cours",
+						JOptionPane.WARNING_MESSAGE
 				);
 			} else if (missionEnCours.getStatus() == Status.TERMINEE) {
 				JOptionPane.showMessageDialog(
-						new JFrame(), "La mission est terminée : elle n'est donc plus modifiable.",
-						"Mission terminée", JOptionPane.WARNING_MESSAGE
+						new JFrame(), "La mission est terminée : elle n'est donc plus modifiable.", "Mission terminée",
+						JOptionPane.WARNING_MESSAGE
 				);
 			}
 		}
 	}
 	
 	/*
-	 * ANNULER : Annulation de toutes les modifications précédemment effectuées 
+	 * ANNULER : Annulation de toutes les modifications précédemment effectuées
 	 */
-	public void Annuler(){
+	public void Annuler() {
 		this.missionEnCours = null;
 		
 		switch (this.mode) {
-			case "nouveau":
-				VideChamps();
+		case "nouveau":
+			VideChamps();
+			ChargementConsultation();
+			break;
+		
+		case "modification":
+			Mission missSelect = getMissionSelected();
+			if (missSelect != null) {
+				this.nom.setText(missSelect.getNomM());
+				this.dateD.setText(MissionDateFormat.format(missSelect.getDateDebut()));
+				this.duree.setText(Integer.toString(missSelect.getDuree()));
+				this.nombre.setText(Integer.toString(missSelect.getNbPersReq()));
+				this.statut.setSelectedItem(missSelect.getStatus());
+				
+				ArrayList<CompetenceRequirement> listCompMiss = missSelect.getCompReq();
+				TableModel tmComp = JTables.CompetencesRequises(listCompMiss).getModel();
+				this.JTableCompetences.setModel(tmComp);
+				
+				ArrayList<Employee> listEmpMiss = missSelect.getAffEmp();
+				TableModel tmEmp = JTables.Employes(listEmpMiss).getModel();
+				this.JTableEmployes.setModel(tmEmp);
 				ChargementConsultation();
-				break;
-			
-			case "modification":
-				Mission missSelect = getMissionSelected();
-				if (missSelect != null) {
-					this.nom.setText(missSelect.getNomM());
-					this.dateD.setText(MissionDateFormat.format(missSelect.getDateDebut()));
-					this.duree.setText(Integer.toString(missSelect.getDuree()));
-					this.nombre.setText(Integer.toString(missSelect.getNbPersReq()));
-					this.statut.setSelectedItem(missSelect.getStatus());
-					
-					ArrayList<CompetenceRequirement> listCompMiss = missSelect.getCompReq();
-					TableModel tmComp = JTables.CompetencesRequises(listCompMiss).getModel();
-					this.JTableCompetences.setModel(tmComp);
-					
-					ArrayList<Employee> listEmpMiss = missSelect.getAffEmp();
-					TableModel tmEmp = JTables.Employes(listEmpMiss).getModel();
-					this.JTableEmployes.setModel(tmEmp);
-					ChargementConsultation();
-				}
-				break;
+			}
+			break;
 		}
 	}
 	
 	/*
-	 * SUPPRIMER : Suppression de l'employé  séléctionné
+	 * SUPPRIMER : Suppression de l'employé séléctionné
 	 */
-	public void Supprimer(){
+	public void Supprimer() {
 		Mission missSelect = getMissionSelected();
 		if (missSelect != null) {
 			int n = JOptionPane.showConfirmDialog(
@@ -601,8 +618,7 @@ public class Missions extends Formulaire {
 		}
 	}
 	
-	
-	public void AjouterCompetence(){
+	public void AjouterCompetence() {
 		JFrame frame;
 		try {
 			frame = new MissionsAddCompetence(data, this.missionEnCours, this);
@@ -614,8 +630,7 @@ public class Missions extends Formulaire {
 		}
 	}
 	
-	
-	public void ModifierCompetence(){
+	public void ModifierCompetence() {
 		CompetenceRequirement compSelect = getCompetenceSelected();
 		if (compSelect != null) {
 			int rowIndex = this.JTableCompetences.getSelectedRow();
@@ -624,10 +639,13 @@ public class Missions extends Formulaire {
 		}
 	}
 	
-	public void SupprimerCompetence(){
+	public void SupprimerCompetence() {
 		CompetenceRequirement compSelect = getCompetenceSelected();
 		if (compSelect != null) {
-			int n = JOptionPane.showConfirmDialog(new JFrame(), "Voulez vraiment supprimer cette compétence ?","Confirmation de suppression", JOptionPane.YES_NO_OPTION);
+			int n = JOptionPane.showConfirmDialog(
+					new JFrame(), "Voulez vraiment supprimer cette compétence ?", "Confirmation de suppression",
+					JOptionPane.YES_NO_OPTION
+			);
 			if (n == JOptionPane.YES_OPTION) {
 				missionEnCours.removeCompetenceReq(compSelect);
 				this.mJTableCompetences.deleteRowObject(compSelect);
@@ -637,13 +655,13 @@ public class Missions extends Formulaire {
 		}
 	}
 	
-	public void AjouterEmploye(){
+	public void AjouterEmploye() {
 		ArrayList<Employee> absentEmployes;
 		try {
 			absentEmployes = data.Employes().tous();
 			ArrayList<Employee> presentEmployes = mJTableEmployes.getArraylist();
 			for (Employee emp : presentEmployes) {
-				if(absentEmployes.contains(emp)){
+				if (absentEmployes.contains(emp)) {
 					absentEmployes.remove(emp);
 				}
 			}
@@ -656,10 +674,10 @@ public class Missions extends Formulaire {
 		}
 	}
 	
-	public void SupprimerEmploye(){
+	public void SupprimerEmploye() {
 		Employee emp = (Employee) mJTableEmployes.getRowObject(JTableEmployes.getSelectedRow());
 		missionEnCours.removeEmployee(emp);
 		mJTableEmployes.fireTableDataChanged();
 	}
-
+	
 }

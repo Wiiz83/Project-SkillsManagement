@@ -53,9 +53,10 @@ public abstract class CSVEntity implements Serializable {
 	
 	public abstract void setCsvID(String ID) throws InvalidDataException;
 	
-	public abstract HashMap<Class<? extends CSVEntity>, ArrayList<String>> getReferencedObjectsIDS();
+
+	protected abstract void setReferencedObjects(HashMap<Class<? extends CSVEntity>, ArrayList<Object>> hashMap);
 	
-	public abstract void setReferencedObjects(HashMap<Class<? extends CSVEntity>, ArrayList<Object>> hashMap);
+	protected abstract HashMap<Class<? extends CSVEntity>, ArrayList<? extends CSVEntity>> getReferencedObjects();
 	
 	public boolean equals(Object o) {
 		if (o == null)
@@ -65,27 +66,11 @@ public abstract class CSVEntity implements Serializable {
 		return (this.getClass() == o.getClass()) && ((CSVEntity) o).csvID().equals(this.csvID());
 	}
 	
-	/*
-	 * public final int hashCode() { return (this.getClass().getName() + ";;" +
-	 * this.csvID()).hashCode(); }
-	 */
-	
-	/**
-	 * @param ReferencedObjects
-	 * @return Les IDs CSV d'une liste d'objets attachés.
-	 */
-	protected final ArrayList<String> getIDS(ArrayList<? extends CSVEntity> ReferencedObjects) {
-		ArrayList<String> ids = new ArrayList<String>();
-		for (CSVEntity e : ReferencedObjects) {
-			ids.add(e.csvID());
-		}
-		return ids;
-	}
 	
 	@Override
-	public Object clone() throws CloneNotSupportedException {
-		return super.clone();
-		
+	protected void finalize() throws Throwable {
+		System.out.println(this.getClass() + " : " + csvID() + " collected");
+		super.finalize();
 	}
 	
 }

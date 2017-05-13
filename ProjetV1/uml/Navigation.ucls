@@ -2,70 +2,158 @@
 <class-diagram version="1.1.14" icons="true" automaticImage="JPEG" always-add-relationships="false" 
   generalizations="true" realizations="true" associations="true" dependencies="true" nesting-relationships="true" 
   router="FAN">  
-  <class id="1" language="java" name="navigation.JTables" project="ProjetV1" 
-    file="/ProjetV1/src/navigation/JTables.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="171" width="254" x="696" y="946"/>    
+  <class id="1" language="java" name="navigation.FormationsEditEmploye" project="ProjetV1" 
+    file="/ProjetV1/src/navigation/FormationsEditEmploye.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="351" width="395" x="952" y="553"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="navigation.Personnel" project="ProjetV1" 
+  <class id="2" language="java" name="navigation.Formations" project="ProjetV1" 
+    file="/ProjetV1/src/navigation/Formations.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="621" width="309" x="1038" y="-108"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="navigation.Personnel" project="ProjetV1" 
     file="/ProjetV1/src/navigation/Personnel.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="567" width="193" x="354" y="56"/>    
+    <position height="477" width="299" x="1387" y="-108"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="navigation.Missions" project="ProjetV1" 
+  <class id="4" language="java" name="navigation.MissionsAddCompetence" project="ProjetV1" 
+    file="/ProjetV1/src/navigation/MissionsAddCompetence.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="315" width="270" x="1726" y="-108"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="navigation.Missions" project="ProjetV1" 
     file="/ProjetV1/src/navigation/Missions.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="477" width="193" x="587" y="56"/>    
+    <position height="837" width="359" x="2036" y="553"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="csv.CSVObjects" project="ProjetV1" file="/ProjetV1/src/csv/CSVObjects.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="315" width="292" x="354" y="946"/>    
+  <class id="6" language="java" name="navigation.PersonnelEditCompetence" project="ProjetV1" 
+    file="/ProjetV1/src/navigation/PersonnelEditCompetence.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="351" width="410" x="1387" y="553"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="navigation.Accueil" project="ProjetV1" 
+  <class id="7" language="java" name="navigation.Accueil" project="ProjetV1" 
     file="/ProjetV1/src/navigation/Accueil.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="225" width="206" x="108" y="56"/>    
+    <position height="189" width="206" x="337" y="-108"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="navigation.Competences" project="ProjetV1" 
+  <class id="8" language="java" name="navigation.FormationsEditCompetence" project="ProjetV1" 
+    file="/ProjetV1/src/navigation/FormationsEditCompetence.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="351" width="415" x="583" y="-108"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="navigation.MissionsEditCompetence" project="ProjetV1" 
+    file="/ProjetV1/src/navigation/MissionsEditCompetence.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="315" width="365" x="2036" y="-108"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="navigation.CompetencesEditLangue" project="ProjetV1" 
+    file="/ProjetV1/src/navigation/CompetencesEditLangue.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="279" width="329" x="2898" y="-108"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="navigation.Competences" project="ProjetV1" 
     file="/ProjetV1/src/navigation/Competences.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="441" width="193" x="820" y="56"/>    
+    <position height="495" width="299" x="2898" y="553"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <dependency id="7">    
-    <bendpoint x="705" y="663"/>    
+  <class id="12" language="java" name="navigation.MissionsAddEmploye" project="ProjetV1" 
+    file="/ProjetV1/src/navigation/MissionsAddEmploye.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="189" width="417" x="2441" y="-108"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <dependency id="13">    
     <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="1"/>  
+    <end type="TARGET" refId="6"/>  
   </dependency>  
-  <dependency id="8">    
-    <bendpoint x="384" y="663"/>    
+  <dependency id="14">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="1"/>  
   </dependency>  
+  <dependency id="15">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <association id="16">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="17" name="pageMissions"/>      
+      <multiplicity id="18" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="19">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="20" name="parent"/>      
+      <multiplicity id="21" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="22">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="23" name="competences"/>      
+      <multiplicity id="24" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="25">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="26" name="missions"/>      
+      <multiplicity id="27" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

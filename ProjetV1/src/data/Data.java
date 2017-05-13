@@ -3,7 +3,7 @@ package data;
 import csv.CSVConfig;
 
 public class Data {
-	CSVConfig			config;
+	private CSVConfig	config;
 	private Employes	employes;
 	private Missions	missions;
 	private Competences	competences;

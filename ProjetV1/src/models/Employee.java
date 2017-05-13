@@ -79,16 +79,18 @@ public class Employee extends Personne {
 				+ Competences + "]";
 	}
 	
-	@Override
-	public HashMap<Class<? extends CSVEntity>, ArrayList<String>> getReferencedObjectsIDS() {
-		HashMap<Class<? extends CSVEntity>, ArrayList<String>> IDS = new HashMap<>();
-		IDS.put(Competence.class, getIDS(Competences));
-		return IDS;
-	}
+
 	
 	@Override
 	public void setReferencedObjects(HashMap<Class<? extends CSVEntity>, ArrayList<Object>> hashMap) {
 		Competences = castArrayList(hashMap, Competence.class);
+	}
+	
+	@Override
+	protected HashMap<Class<? extends CSVEntity>, ArrayList<? extends CSVEntity>> getReferencedObjects() {
+		HashMap<Class<? extends CSVEntity>, ArrayList<? extends CSVEntity>> referencedObjects = new HashMap<>();
+		referencedObjects.put(Competence.class, Competences);
+		return referencedObjects;
 	}
 	
 	@Override
@@ -117,4 +119,6 @@ public class Employee extends Personne {
 		this.Competences = listComp;
 		
 	}
+	
+
 }
