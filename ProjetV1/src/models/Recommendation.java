@@ -20,7 +20,6 @@ public class Recommendation {
 	private ArrayList<Employee> empAff; // ArrayList affectés à la mission
 	private ArrayList<Employee> empToRec; // ArrayList des employés recommendés
 	private int[] RLevel; // Tableau des niveaux de recommendations par employés
-	private int[] newRLevel;
 
 	/**
 	 * @param misToRec
@@ -32,7 +31,6 @@ public class Recommendation {
 		this.empRec = emp;
 		this.empAff = this.misToRec.getAffEmp();
 		this.RLevel = new int[250];
-		this.newRLevel = new int[250];
 	}
 
 	/**
@@ -76,7 +74,7 @@ public class Recommendation {
 				}
 			}
 			int temp = totalCompHad / totalComp * 100;
-			this.newRLevel[e.getID()] = temp;
+			this.RLevel[e.getID()] = temp;
 		}
 	}
 
