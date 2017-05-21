@@ -10,7 +10,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
-
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -18,13 +17,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import gui.Alerte;
 import gui.JTables;
 import gui.Titre;
-import models.Employee;
 import models.Mission;
 import models.Status;
 import org.jfree.chart.ChartFactory;
@@ -129,8 +126,23 @@ public class Accueil extends JPanel {
 			e.printStackTrace();
 		}
 		
+		ArrayList<Mission> alertes_emp_m = new ArrayList<>();
+		ArrayList<Mission> alertes_retard = new ArrayList<>();
+		try {
+			alertes_emp_m = data.Missions().AlertesEmployesManquants();
+			alertes_retard = data.Missions().AlertesMissionsEnRetard();
+		} catch (DataException e1) {
+			e1.printStackTrace();
+		}
+		ArrayList<Alerte> alertes = new ArrayList<>();
 		
-		RemplissageAlertes();
+		for (Mission m : alertes_emp_m)
+			alertes.add(new Alerte(m,"Employés non affectés"));
+		for (Mission m : alertes_retard)
+			alertes.add(new Alerte(m, "Mission en retard"));
+		
+			
+		this.alertesJTable = JTables.Alertes(alertes);
 		
 		alertesJTable.setFillsViewportHeight(true);
 		JScrollPane jsAlertes = new JScrollPane(alertesJTable);
@@ -147,32 +159,9 @@ public class Accueil extends JPanel {
 			        }
 			    }
 			});
-			
-		
 		validate();
-		
 	}
-	
-	public void RemplissageAlertes(){
-		
-		ArrayList<Mission> alertes_emp_m = new ArrayList<>();
-		ArrayList<Mission> alertes_retard = new ArrayList<>();
-		try {
-			alertes_emp_m = data.Missions().AlertesEmployesManquants();
-			alertes_retard = data.Missions().AlertesMissionsEnRetard();
-		} catch (DataException e1) {
-			e1.printStackTrace();
-		}
-		ArrayList<Alerte> alertes = new ArrayList<>();
-		
-		for (Mission m : alertes_emp_m)
-			alertes.add(new Alerte(m,"Employés non affectés"));
-		for (Mission m : alertes_retard)
-			alertes.add(new Alerte(m, "Mission en retard"));
-			
-		this.alertesJTable = JTables.Alertes(alertes);
-	}
-	
+
 	
 	public void PopUpMissionEnRetard(){
 		DatePicker dp = new DatePicker();
@@ -203,9 +192,28 @@ public class Accueil extends JPanel {
 		        	missionEnCours.setDateFinRelle(DateDeFin);
 		        	try {
 						data.Missions().modifier(missionEnCours);
-						RemplissageAlertes();
-						/*TableModel dtm = alertesJTable.getModel();
-						dtm.fireTableDataChanged();*/
+						
+						ArrayList<Mission> alertes_emp_m = new ArrayList<>();
+						ArrayList<Mission> alertes_retard = new ArrayList<>();
+						try {
+							alertes_emp_m = data.Missions().AlertesEmployesManquants();
+							alertes_retard = data.Missions().AlertesMissionsEnRetard();
+						} catch (DataException e1) {
+							e1.printStackTrace();
+						}
+						ArrayList<Alerte> alertes = new ArrayList<>();
+						
+						for (Mission m : alertes_emp_m)
+							alertes.add(new Alerte(m,"Employés non affectés"));
+						for (Mission m : alertes_retard)
+							alertes.add(new Alerte(m, "Mission en retard"));
+						
+						TableModel TableAlertes = JTables.Alertes(alertes).getModel();
+						this.alertesJTable.setModel(TableAlertes);
+						alertesJTable.getColumnModel().getColumn(3).setMinWidth(0);
+						alertesJTable.getColumnModel().getColumn(3).setMaxWidth(0);
+						alertesJTable.getColumnModel().getColumn(3).setWidth(0);
+						
 					} catch (DataException e) {
 						e.printStackTrace();
 					}

@@ -512,7 +512,10 @@ public class Missions extends Formulaire {
 			
 			updateMissionStatus();
 			
-			Date dateD = new Date(this.dateD.getText());
+			ZonedDateTime zdt = this.dateD.getDate().atStartOfDay(ZoneId.systemDefault());
+			Instant instant = zdt.toInstant();
+			java.util.Date dateD = java.util.Date.from(instant);
+			
 			String strDuree = this.duree.getText().replaceAll("\\D+", "");
 			int duree = Integer.parseInt(strDuree);
 			String strNombre = this.nombre.getText().replaceAll("\\D+", "");
@@ -564,9 +567,9 @@ public class Missions extends Formulaire {
 			} else if (missionEnCours.getStatus() == Status.EN_COURS) {
 
 					DatePicker dp = new DatePicker();
-					String message ="La mission est en cours : elle n'est donc plus modifiable. \n \n Si elle est terminée, veuillez entrer la date de fin :";
+					String message ="La mission est en cours : elle n'est donc plus modifiable. \n Si elle est terminée, veuillez entrer la date de fin :";
 					Object[] params = {message,dp};
-					int n = JOptionPane.showConfirmDialog(null,params,"Start date", JOptionPane.YES_NO_OPTION);
+					int n = JOptionPane.showConfirmDialog(null,params,"Cette mission est elle terminée ?", JOptionPane.YES_NO_OPTION);
 					
 					if (n == JOptionPane.YES_OPTION) {
 			
