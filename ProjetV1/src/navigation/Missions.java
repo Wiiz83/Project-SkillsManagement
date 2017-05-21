@@ -8,8 +8,10 @@ import java.awt.event.MouseEvent;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,8 +60,8 @@ public class Missions extends Formulaire {
 	private Button										boutonMissionTermine;
 	private JTextField									nom;
 	private JComboBox<Status>							statut;
-	private JFormattedTextField							dateD;
-	private JFormattedTextField							dateF;
+	private DatePicker									dateD;
+	private DatePicker									dateF;
 	private JLabel 										labelFin;
 	private JFormattedTextField							duree;
 	private JFormattedTextField							nombre;
@@ -147,7 +149,7 @@ public class Missions extends Formulaire {
 		labelDuree.setBounds(350, 220, 150, 25);
 		add(labelDuree);
 		
-		labelFin = new JLabel("Date de fin réelle :");
+		labelFin = new JLabel("Date de fin :");
 		labelFin.setBounds(350, 260, 150, 25);
 		labelFin.setVisible(false);
 		add(labelFin);
@@ -177,23 +179,16 @@ public class Missions extends Formulaire {
 		this.nombre.setBounds(480, 140, 120, 25);
 		add(nombre);
 
-		MaskFormatter formatterDate;
-		try {
-			formatterDate = new MaskFormatter("##/##/####");
-			formatterDate.setPlaceholderCharacter('_');
-			this.dateD = new JFormattedTextField(formatterDate);
-			this.dateF = new JFormattedTextField(formatterDate);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		this.dateD = new DatePicker();
 		this.dateD.setBounds(440, 180, 160, 25);
-		this.dateF.setBounds(460, 260, 140, 25);
+		add(dateD);
+		
+		this.dateF = new DatePicker();
+		this.dateF.setBounds(440, 260, 160, 25);
 		this.dateF.setVisible(false);
-		add(this.dateD);
-		add(this.dateF);
+		add(dateF);
 		
 		this.JTableCompetences = new JTable();
-		
 		this.JTableCompetences.setFillsViewportHeight(true);
 		JScrollPane jsComp = new JScrollPane(this.JTableCompetences);
 		jsComp.setVisible(true);
@@ -206,11 +201,6 @@ public class Missions extends Formulaire {
 		jsEmp.setVisible(true);
 		jsEmp.setBounds(650, 280, 500, 200);
 		add(jsEmp);
-		
-		this.boutonMissionTermine = new Button("/boutons/missionterminee.png");
-		this.boutonMissionTermine.setBounds(400, 400);
-		this.boutonMissionTermine.setVisible(false);
-		add(this.boutonMissionTermine);
 		
 		this.boutonAddComp = new Button("/boutons/miniadd.png");
 		this.boutonAddComp.setBounds(1160, 80);
@@ -231,16 +221,6 @@ public class Missions extends Formulaire {
 		this.boutonDeleteEmp = new Button("/boutons/minidelete.png");
 		this.boutonDeleteEmp.setBounds(1160, 320);
 		add(this.boutonDeleteEmp);
-		
-		this.boutonDeleteEmp.addMouseListener(
-				new MouseAdapter() {
-					public void mouseClicked(MouseEvent e) {
-						/*
-						 * TODO MissionTerminee();
-						 */
-					}
-				}
-		);
 		
 		this.JTableMissions.addMouseListener(
 				new MouseAdapter() {
@@ -461,7 +441,13 @@ public class Missions extends Formulaire {
 		
 		if (missSelect != null) {
 			this.nom.setText(missSelect.getNomM());
-			this.dateD.setText(MissionDateFormat.format(missSelect.getDateDebut()));
+			
+			Date date =  missSelect.getDateDebut();
+			Instant instant = date.toInstant();
+			ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
+			LocalDate d = zdt.toLocalDate();
+			this.dateD.setDate(d);
+
 			this.duree.setText(Integer.toString(missSelect.getDuree()));
 			this.nombre.setText(Integer.toString(missSelect.getNbPersReq()));
 			this.statut.setSelectedItem(missSelect.getStatus());
@@ -469,6 +455,12 @@ public class Missions extends Formulaire {
 			if(missSelect.getStatus() == Status.TERMINEE){
 				this.labelFin.setVisible(true);
 				this.dateF.setVisible(true);
+
+				Date datefin =  missSelect.getDateFinReelle();
+				Instant instantfin = datefin.toInstant();
+				ZonedDateTime zdtfin = instantfin.atZone(ZoneId.systemDefault());
+				LocalDate dfin = zdtfin.toLocalDate();
+				this.dateF.setDate(dfin);
 			} else {
 				this.labelFin.setVisible(false);
 				this.dateF.setVisible(false);

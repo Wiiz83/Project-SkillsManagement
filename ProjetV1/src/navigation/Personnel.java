@@ -117,12 +117,10 @@ public class Personnel extends Formulaire {
 		this.prenom = new JTextField();
 		this.prenom.setBounds(450, 80, 150, 25);
 		add(this.prenom);
-		
-		
+
 		this.datePicker = new DatePicker();
 		this.datePicker.setBounds(450, 110, 180, 25);
 		add(datePicker);
-		
 		
 		this.JTableCompetences = new JTable();
 		this.JTableCompetences.setFillsViewportHeight(true);
