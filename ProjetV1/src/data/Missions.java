@@ -96,17 +96,44 @@ public class Missions extends CSVRequests<Mission> {
 		return dansIntervalle(dateDebut, nbJours);
 	}
 	
-	public ArrayList<Mission> Alertes() throws DataException {
+	/**
+	 * @return Missions en préparation qui commencent dans 15 jours
+	 * @throws DataException
+	 */
+	public ArrayList<Mission> AlertesEmployesManquants() throws DataException {
 		Comparator<Mission> comp = (m, n) -> m.getDateDebut().compareTo(m.getDateDebut());
 		comp = comp.thenComparing((m, n) -> m.nbEmployesManquants() - n.nbEmployesManquants());
 		ArrayList<Mission> alertes = new ArrayList<>();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(Cal.today());
+		cal.add(Calendar.DATE, 15);
+		Date dateRetard = cal.getTime();
 		try {
-			alertes = filtrerTrier(m -> m.getStatus() == Status.PREPARATION && m.nbEmployesManquants() > 0, comp);
+			alertes = filtrerTrier(
+					m -> m.getStatus() == Status.PREPARATION && m.nbEmployesManquants() > 0
+							&& m.getDateDebut().after(dateRetard),
+					comp
+			);
 		} catch (DataException e) {
 			throw new DataException(e);
 		}
 		return alertes;
-		
+	}
+	
+	/**
+	 * @return Missions en cours et qui sont en retard
+	 * @throws DataException
+	 */
+	public ArrayList<Mission> AlertesMissionsEnRetard() throws DataException {
+		Comparator<Mission> comp = (m, n) -> m.getDateDebut().compareTo(m.getDateDebut());
+		comp = comp.thenComparing((m, n) -> m.nbEmployesManquants() - n.nbEmployesManquants());
+		ArrayList<Mission> alertes = new ArrayList<>();
+		try {
+			alertes = filtrerTrier(m -> m.getStatus() == Status.EN_COURS && m.enRetard(), comp);
+		} catch (DataException e) {
+			throw new DataException(e);
+		}
+		return alertes;
 	}
 	
 }

@@ -122,17 +122,21 @@ public class Accueil extends JPanel {
 		}
 		
 		
-		ArrayList<Mission> missions_alerte = new ArrayList<>();
+		ArrayList<Mission> alertes_emp_m = new ArrayList<>();
+		ArrayList<Mission> alertes_retard = new ArrayList<>();
 		try {
-			missions_alerte = data.Missions().Alertes();
+			alertes_emp_m = data.Missions().AlertesEmployesManquants();
+			alertes_retard = data.Missions().AlertesMissionsEnRetard();
 		} catch (DataException e1) {
 			e1.printStackTrace();
 		}
 		ArrayList<Alerte> alertes = new ArrayList<>();
 		
-		for (Mission m : missions_alerte)
-			alertes.add(new Alerte(m));
-		
+		for (Mission m : alertes_emp_m)
+			alertes.add(new Alerte(m,"Employés non affectés"));
+		for (Mission m : alertes_retard)
+			alertes.add(new Alerte(m, "Mission en retard"));
+			
 		JTable	alertesJTable = JTables.Alertes(alertes);
 		alertesJTable.setFillsViewportHeight(true);
 		JScrollPane jsAlertes = new JScrollPane(alertesJTable);

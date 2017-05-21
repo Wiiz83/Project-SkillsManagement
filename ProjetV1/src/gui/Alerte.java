@@ -19,8 +19,8 @@ public class Alerte {
 		this.desc = desc;
 	}
 	
-	public Alerte(Mission M) {
-		this.type = "Employés non affectés";
+	public Alerte(Mission M, String type) {
+		this.type = type;
 		this.nom = M.getNomM();
 		this.dateDebut = MissionDateFormat.format(M.getDateDebut());
 		this.mission = M;
