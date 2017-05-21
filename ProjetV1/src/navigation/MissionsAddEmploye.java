@@ -61,11 +61,7 @@ public class MissionsAddEmploye {
         panelJTable.setLayout( new FlowLayout());
        
 		Recommendation recommandation  = new Recommendation(missionEnCours, listeEmp);
-		try {
-			recommandation.setRecommendations();
-		} catch (DataException e1) {
-			e1.printStackTrace();
-		}
+		recommandation.newRecommendation();
 
 		ArrayList<Employee> listEmpNonPoss = recommandation.getEmpRec();
 		JTable empNonPoss = JTables.Recommendation(recommandation);

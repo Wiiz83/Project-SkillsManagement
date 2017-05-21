@@ -10,26 +10,29 @@ import data.DataException;
  */
 public class Recommendation {
 
-	private Mission												misToRec; 					//Mission qui a besoin des recommendations
-	private ArrayList<Employee>							empRec; 					//ArrayList des employés à tester pour les recommendations
-	private ArrayList<CompetenceRequirement>	misCompReq; 			//ArrayList des compétences requises dans la missions
-	private ArrayList<Employee>							empAff;						 //ArrayList affectés à la mission
-	private ArrayList<Employee>							empToRec; 				//ArrayList des employés recommendés
-	private int[]													RLevel; 						//Tableau des niveaux de recommendations par employés
-	private double[]									newRLevel;
-			
+	private Mission misToRec; // Mission qui a besoin des recommendations
+	private ArrayList<Employee> empRec; // ArrayList des employés à tester pour
+										// les recommendations
+	private ArrayList<CompetenceRequirement> misCompReq; // ArrayList des
+															// compétences
+															// requises dans la
+															// missions
+	private ArrayList<Employee> empAff; // ArrayList affectés à la mission
+	private ArrayList<Employee> empToRec; // ArrayList des employés recommendés
+	private int[] RLevel; // Tableau des niveaux de recommendations par employés
+
 	/**
-	 * @param misToRec  La mission qui est concernée par les recommendations
-	 */	
+	 * @param misToRec
+	 *            La mission qui est concernée par les recommendations
+	 */
 	public Recommendation(Mission misToRec, ArrayList<Employee> emp) {
 		this.misToRec = misToRec;
 		this.misCompReq = misToRec.getCompReq();
 		this.empRec = emp;
-		this.empAff = this.misToRec.getAffEmp(); 
+		this.empAff = this.misToRec.getAffEmp();
 		this.RLevel = new int[250];
-		this.newRLevel = new double[250];
 	}
-	
+
 	/**
 	 * @throws IOException
 	 * @throws NumberFormatException
@@ -40,7 +43,9 @@ public class Recommendation {
 	 */
 	public void setRecommendations() throws DataException {
 		deleteAff();
-		for (Employee e : empRec) { // Boucles et conditions pour vérifier si l'employé est recommendable et si oui l'ajoute
+		for (Employee e : empRec) { // Boucles et conditions pour vérifier si
+									// l'employé est recommendable et si oui
+									// l'ajoute
 			this.RLevel[e.getID()] = 0;
 			for (Competence c : e.getCompetences()) {
 				if (checkCompMission(c) != 0) {
@@ -51,34 +56,35 @@ public class Recommendation {
 			}
 		}
 	}
-	
-	public void newRecommendation(){
+
+	public void newRecommendation() {
 		int totalComp = 0;
 		int totalCompHad = 0;
 		deleteAff();
-		for(Employee e : empRec){
+		for (Employee e : empRec) {
 			totalComp = e.getCompetences().size();
 			this.RLevel[e.getID()] = 0;
 			totalCompHad = 0;
-			for(Competence c : e.getCompetences()){
-				if(checkCompMission(c) != 0){
-					if(!this.empRec.contains(e)){
+			for (Competence c : e.getCompetences()) {
+				if (checkCompMission(c) != 0) {
+					if (!this.empRec.contains(e)) {
 						this.empToRec.add(e);
 					}
 					totalCompHad++;
 				}
 			}
-			this.newRLevel[e.getID()] = Math.round(totalCompHad / totalComp);
+			int temp = totalCompHad / totalComp * 100;
+			this.RLevel[e.getID()] = temp;
 		}
 	}
-	
+
 	/**
 	 * @return la liste des employés recommendés pour la mission
 	 */
 	public ArrayList<Employee> GetEmpToRec() {
 		return this.empToRec;
 	}
-	
+
 	/**
 	 * Efface tout les employés déjà présent sur la mission des recommendations
 	 */
@@ -91,7 +97,7 @@ public class Recommendation {
 			}
 		}
 	}
-	
+
 	/**
 	 * @param Compétence
 	 *            a vérifier concernant la mission
@@ -111,23 +117,25 @@ public class Recommendation {
 		for (Employee e : this.empAff) {
 			for (Competence cEmp : e.getCompetences()) {
 				if (cEmp == c) {
-					nbEmpReqComp--; // On décrémente le compteur pour avoir au final le nombre d'employés encore requis
+					nbEmpReqComp--; // On décrémente le compteur pour avoir au
+									// final le nombre d'employés encore requis
 				}
 			}
 		}
-		return nbEmpReqComp; // On retourne le nombre d'employé en manque sur la compétence
+		return nbEmpReqComp; // On retourne le nombre d'employé en manque sur la
+								// compétence
 	}
-	
-	public int getLevel(int idEmp){
+
+	public int getLevel(int idEmp) {
 		return this.RLevel[idEmp];
 	}
-	
+
 	public ArrayList<Employee> getEmpRec() {
 		return empRec;
 	}
-	
+
 	public void setRLevel(int[] rLevel) {
 		RLevel = rLevel;
 	}
-	
+
 }
