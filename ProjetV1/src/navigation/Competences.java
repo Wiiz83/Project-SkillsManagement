@@ -20,6 +20,7 @@ import gui.Formulaire;
 import gui.GenericTableModel;
 import gui.HintTextField;
 import gui.JTables;
+import gui.ProgramFrame;
 import gui.RechercheJTable;
 import gui.Titre;
 import models.Competence;
@@ -147,6 +148,14 @@ public class Competences extends Formulaire {
 			public void mouseClicked(MouseEvent e){
 				ModifierLibelle();
 			}
+		});
+		
+		this.JTableLangues.addMouseListener(new MouseAdapter() {
+		   public void mousePressed(MouseEvent me) {
+		        if (me.getClickCount() == 2) {
+		        	ModifierLibelle();
+		        }
+		    }
 		});
 		
 		composantsEdition.add(this.boutonEditLangue);
@@ -386,6 +395,7 @@ public class Competences extends Formulaire {
 	public void ModifierLibelle(){
 		int rowIndex = JTableLangues.getSelectedRow();
 		if(rowIndex > -1){
+			ProgramFrame.getFrame().setEnabled(false);
 			switch (this.mode) {
 			case "nouveau":
 				CompetencesEditLangue felnouv = new CompetencesEditLangue(rowIndex, JTableLangues, this.tempComp, this);
