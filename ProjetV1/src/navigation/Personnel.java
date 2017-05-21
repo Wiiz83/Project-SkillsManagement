@@ -236,22 +236,13 @@ public class Personnel extends Formulaire {
 		if (EmployeSelect != null) {
 			this.nom.setText(EmployeSelect.getLastName());
 			this.prenom.setText(EmployeSelect.getName());
-			
-			
-			System.out.println("DATE :" + EmployeSelect.getEntryDate());
-			//LocalDate d = EmployeSelect.getEntryDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-			//LocalDate d = LocalDate.ofInstant(EmployeSelect.getEntryDate().toInstant(), ZoneId.systemDefault());
-			
+
 			Date date = EmployeSelect.getEntryDate();
 			Instant instant = date.toInstant();
 			ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
 			LocalDate d = zdt.toLocalDate();
-			
 			this.datePicker.setDate(d);
 			
-			
-			
-
 			this.listCompEmp = EmployeSelect.getCompetences();
 			this.mJTablePersonnel = (GenericTableModel<Employee>) this.JTablePersonnel.getModel();
 			this.mJTableCompetences = (GenericTableModel<Competence>) JTables.Competences(listCompEmp).getModel();
@@ -281,7 +272,10 @@ public class Personnel extends Formulaire {
 					"Informations non renseignés", JOptionPane.WARNING_MESSAGE
 			);
 		} else {
-			Date DateEntree = java.sql.Date.valueOf(this.datePicker.getDate());
+			ZonedDateTime zdt = this.datePicker.getDate().atStartOfDay(ZoneId.systemDefault());
+			Instant instant = zdt.toInstant();
+			java.util.Date DateEntree = java.util.Date.from(instant);
+			
 			try {
 				switch (this.mode) {
 				case "nouveau":
