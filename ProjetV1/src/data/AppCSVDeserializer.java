@@ -102,15 +102,16 @@ public class AppCSVDeserializer implements CSVDeserializer {
 		return e;
 	}
 	
+	// ID;Nom;DateDebut;Duree;NB_PersReq;date_reelle;forcer_planif
 	private Mission Mission(CSVLine line) throws NumberFormatException, ParseException, InvalidDataException {
 		Mission m = new Mission(
 				line.get(1), dateformatter.parse(line.get(2)), Integer.parseInt(line.get(3)),
 				Integer.parseInt(line.get(4))
 		);
 		m.setCsvID(line.get(0));
+		m.setDateFinRelle(dateformatter.parse(line.get(5)));
 		if (line.get(6).equals("true"))
 			m.planifier();
-		m.setDateFinRelle(dateformatter.parse(line.get(5)));
 		return m;
 	}
 	

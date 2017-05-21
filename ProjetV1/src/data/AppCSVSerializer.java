@@ -48,6 +48,7 @@ public class AppCSVSerializer implements CSVSerializer {
 	}
 	
 	private CSVLine Mission(Mission o) {
+		// ID;Nom;DateDebut;Duree;NB_PersReq;date_reelle;forcer_planif
 		CSVLine line = new CSVLine();
 		line.add(o.csvID());
 		line.add(o.getNomM());

@@ -45,7 +45,7 @@ public class Mission extends MissionAbstract {
 		cal.setTime(this.dateDebut);
 		cal.add(Calendar.DATE, duree);
 		Date dateFinPrev = cal.getTime();
-		return dateFinReelle.compareTo(dateFinPrev) <= 0;
+		return dateFinReelle.compareTo(dateFinPrev) >= 0;
 	}
 	
 
