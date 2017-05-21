@@ -55,7 +55,8 @@ public class Missions extends Formulaire {
 	private JTextField									nom;
 	private JComboBox<Status>							statut;
 	private JFormattedTextField							dateD;
-	private JFormattedTextField							dateFinReelle;
+	private JFormattedTextField							dateF;
+	private JLabel 										labelFin;
 	private JFormattedTextField							duree;
 	private JFormattedTextField							nombre;
 	private HintTextField								recherche;
@@ -68,7 +69,7 @@ public class Missions extends Formulaire {
 	private GenericTableModel<Employee>					mJTableEmployes;
 	private SimpleDateFormat							MissionDateFormat	= new SimpleDateFormat("dd/MM/yyyy");
 	private Mission										missionEnCours;
-	private Mission										mClone;
+	
 	public Missions(Data data) {
 		super();
 		
@@ -107,8 +108,10 @@ public class Missions extends Formulaire {
 		this.filtre.addActionListener(
 				new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if (filtre.getSelectedItem().toString() != "Tous") {
+						if (filtre.getSelectedItem().toString() != "Toutes") {
 							rowSorter.setRowFilter(RowFilter.regexFilter(filtre.getSelectedItem().toString(), 2));
+						} else {
+							rowSorter.setRowFilter(null);
 						}
 					}
 				}
@@ -140,9 +143,10 @@ public class Missions extends Formulaire {
 		labelDuree.setBounds(350, 220, 150, 25);
 		add(labelDuree);
 		
-		JLabel labelDateFinRelle = new JLabel("Date de fin:");
-		labelDateFinRelle.setBounds(350, 260, 150, 25);
-		add(labelDateFinRelle);
+		JLabel labelFin = new JLabel("Date de fin réélle :");
+		labelFin.setBounds(350, 260, 150, 25);
+		labelFin.setVisible(false);
+		add(labelFin);
 		
 		JLabel labelCompetences = new JLabel("Liste des compétences :");
 		labelCompetences.setBounds(650, 50, 150, 25);
@@ -152,7 +156,6 @@ public class Missions extends Formulaire {
 		labelEmployes.setBounds(650, 250, 150, 25);
 		add(labelEmployes);
 		
-
 		this.nom = new JTextField();
 		this.nom.setBounds(400, 60, 200, 25);
 		add(this.nom);
@@ -170,21 +173,20 @@ public class Missions extends Formulaire {
 		this.nombre.setBounds(480, 140, 120, 25);
 		add(nombre);
 		
-
 		MaskFormatter formatterDate;
 		try {
 			formatterDate = new MaskFormatter("##/##/####");
 			formatterDate.setPlaceholderCharacter('_');
 			this.dateD = new JFormattedTextField(formatterDate);
-			this.dateFinReelle= new JFormattedTextField(formatterDate); 
+			this.dateF = new JFormattedTextField(formatterDate);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		this.dateD.setBounds(440, 180, 160, 25);
+		this.dateF.setBounds(460, 260, 140, 25);
+		this.dateF.setVisible(false);
 		add(this.dateD);
-		
-		this.dateFinReelle.setBounds(440, 260, 160, 25);
-		add(this.dateFinReelle);
+		add(this.dateF);
 		
 		this.JTableCompetences = new JTable();
 		
@@ -329,7 +331,7 @@ public class Missions extends Formulaire {
 		composantsEdition.add(this.nom);
 		composantsEdition.add(this.statut);
 		composantsEdition.add(this.dateD);
-		composantsEdition.add(this.dateFinReelle);
+		composantsEdition.add(this.dateF);
 		composantsEdition.add(this.duree);
 		composantsEdition.add(this.nombre);
 		composantsEdition.add(this.boutonAddComp);
@@ -355,7 +357,6 @@ public class Missions extends Formulaire {
 	public void VideChamps() {
 		this.nom.setText("");
 		this.dateD.setText("");
-		this.dateFinReelle.setText("");
 		this.duree.setText("");
 		this.nombre.setText("");
 		this.statut.addItem(Status.PREPARATION);
@@ -511,7 +512,6 @@ public class Missions extends Formulaire {
 			
 			updateMissionStatus();
 			
-
 			Date dateD = new Date(this.dateD.getText());
 			String strDuree = this.duree.getText().replaceAll("\\D+", "");
 			int duree = Integer.parseInt(strDuree);
@@ -521,7 +521,6 @@ public class Missions extends Formulaire {
 			ArrayList<Employee> presentEmployes = mJTableEmployes.getArraylist();
 			ArrayList<CompetenceRequirement> presentCompetences = mJTableCompetences.getArraylist();
 			
-			missionEnCours.setDateFinRelle(new Date(this.dateFinReelle.getText()));
 			missionEnCours.setDateDebut(dateD);
 			missionEnCours.setDuree(duree);
 			missionEnCours.setNbPersReq(nb);
@@ -563,10 +562,17 @@ public class Missions extends Formulaire {
 			if (missionEnCours.estModifiable()) {
 				super.ChargementModification();
 			} else if (missionEnCours.getStatus() == Status.EN_COURS) {
+				
+				/*
 				JOptionPane.showMessageDialog(
 						new JFrame(), "La mission est en cours : elle n'est donc plus modifiable.", "Mission en cours",
 						JOptionPane.WARNING_MESSAGE
-				);
+				);*/
+				
+
+				Object result = JOptionPane.showInputDialog(new JFrame(), "La mission est en cours : elle n'est donc plus modifiable. \n Si elle est terminée, veuillez e:");
+
+				
 			} else if (missionEnCours.getStatus() == Status.TERMINEE) {
 				JOptionPane.showMessageDialog(
 						new JFrame(), "La mission est terminée : elle n'est donc plus modifiable.", "Mission terminée",
