@@ -39,11 +39,11 @@ public class Missions extends CSVRequests<Mission> {
 			CSVObjects<CompetenceRequirement> compreq_csv = new CSVObjects<CompetenceRequirement>(
 					CompetenceRequirement.class, data.getCSVConfig()
 			);
-			if (m.getCompReq() != null) {
-				for (CompetenceRequirement cr : m.getCompReq())
-					if (cr.isAttached())
-						compreq_csv.delete(cr);
+			for (CompetenceRequirement cr : m.getCompReq()) {
+				if (cr.isAttached())
+					compreq_csv.delete(cr);
 			}
+			
 		} catch (CSVException e1) {
 			throw new DataException(e1);
 		}
@@ -52,8 +52,19 @@ public class Missions extends CSVRequests<Mission> {
 	
 	@Override
 	public void modifier(Mission m) throws DataException {
-		this.supprimer(m);
-		this.ajouter(m);
+		try {
+			CSVObjects<CompetenceRequirement> compreq_csv = new CSVObjects<CompetenceRequirement>(
+					CompetenceRequirement.class, data.getCSVConfig()
+			);
+			for (CompetenceRequirement cr : m.getCompReq()) {
+				if (cr.isAttached())
+					compreq_csv.modify(cr);
+			}
+			
+		} catch (CSVException e1) {
+			throw new DataException(e1);
+		}
+		super.modifier(m);
 	}
 	
 	public Mission parID(int ID) throws DataException {

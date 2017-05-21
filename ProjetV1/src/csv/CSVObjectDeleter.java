@@ -75,6 +75,9 @@ public class CSVObjectDeleter<E extends CSVEntity> {
 				}
 			}
 			for (Entry<String, CSVLine> entry : modifiedLines.entrySet()) {
+				if (entry.getValue().size() == 1)
+					assocDoc.removeLine(entry.getKey());
+				else
 				assocDoc.modifiyLineByID(entry.getKey(), entry.getValue());
 				dissociateObject(e, N, entry.getKey());
 			}
