@@ -27,6 +27,9 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
+
+import com.github.lgooddatepicker.components.DatePicker;
+
 import data.Data;
 import data.DataException;
 
@@ -41,6 +44,7 @@ public class Accueil extends JPanel {
 	JPanel						missionsEnCours;
 	JPanel						missionsTempsIntervalle;
 	Data						data;
+	private JTable				alertesJTable;
 	
 	public Accueil(Data data) {
 		this.data = data;
@@ -137,38 +141,65 @@ public class Accueil extends JPanel {
 		for (Mission m : alertes_retard)
 			alertes.add(new Alerte(m, "Mission en retard"));
 			
-		JTable	alertesJTable = JTables.Alertes(alertes);
+		this.alertesJTable = JTables.Alertes(alertes);
 		alertesJTable.setFillsViewportHeight(true);
 		JScrollPane jsAlertes = new JScrollPane(alertesJTable);
 		jsAlertes.setVisible(true);
 		jsAlertes.setBounds(820, 340, 440, 250);
 		add(jsAlertes);
 		
-		alertesJTable.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				super.mouseClicked(e);
-				if(alertesJTable.getValueAt(alertesJTable.getSelectedRow(), 1) == "Mission en retard"){
-					int n = JOptionPane.showConfirmDialog(
-							new JFrame(), "Cette mission est elle terminée ?", "Confirmation de mission terminée",
-							JOptionPane.YES_NO_OPTION
-					);
-					if (n == JOptionPane.YES_OPTION) {
-						// TODO : On met le statut en TERMINEE
-						Mission m = (Mission) alertesJTable.getValueAt(alertesJTable.getSelectedRow(), 3);
-						Date dateFin = new Date();
-						m.setDateFinRelle(dateFin);
-						DefaultTableModel dtm = (DefaultTableModel) alertesJTable.getModel();
-						dtm.fireTableDataChanged();
-						
-					}
-				}
-			}
+		this.alertesJTable.addMouseListener(new MouseAdapter() {
+			   public void mousePressed(MouseEvent me) {
+			        if (me.getClickCount() == 2) {
+						if(alertesJTable.getValueAt(alertesJTable.getSelectedRow(), 0) == "Mission en retard"){
+							PopUpMissionEnRetard();
+						}
+			        }
+			    }
+			});
 			
-		});
 		
 		validate();
 		
+	}
+	
+	
+	public void PopUpMissionEnRetard(){
+		DatePicker dp = new DatePicker();
+		String message ="Veuillez entrer la date de fin réelle de la mission :";
+		Object[] params = {message,dp};
+		int n = JOptionPane.showConfirmDialog(null,params,"Cette mission est elle terminée ?", JOptionPane.YES_NO_OPTION);
+		
+		if (n == JOptionPane.YES_OPTION) {
+
+			if(dp.getDate() == null){
+				JOptionPane.showMessageDialog(new JFrame(), "La date de fin réelle est invalide.","Date invalide", JOptionPane.WARNING_MESSAGE);
+				PopUpMissionEnRetard();
+			} else {
+				
+				Mission missionEnCours = (Mission) this.alertesJTable.getValueAt(alertesJTable.getSelectedRow(), 3);
+				Date DateDeFin = java.sql.Date.valueOf(dp.getDate());
+				Date DateDeDebut = missionEnCours.getDateDebut();
+				
+				// Date Début après Date Fin
+		        if (DateDeDebut.compareTo(DateDeFin) > 0) {
+					JOptionPane.showMessageDialog(new JFrame(), "La date de fin doit être supérieure ou égale à la date de début.","Date invalide", JOptionPane.WARNING_MESSAGE);
+					PopUpMissionEnRetard();
+		        } else if (DateDeDebut.compareTo(DateDeFin) <= 0) {	        	
+		        	missionEnCours.setDateFinRelle(DateDeFin);
+		        	try {
+						data.Missions().modifier(missionEnCours);
+						DefaultTableModel dtm = (DefaultTableModel) alertesJTable.getModel();
+						dtm.fireTableDataChanged();
+					} catch (DataException e) {
+						e.printStackTrace();
+					}
+		        } else {
+					JOptionPane.showMessageDialog(new JFrame(), "La date de fin réelle est invalide.","Date invalide", JOptionPane.WARNING_MESSAGE);
+					PopUpMissionEnRetard();
+		        }
+			}
+		}
 	}
 	
 	@Override

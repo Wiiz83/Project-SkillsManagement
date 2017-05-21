@@ -4,7 +4,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Date;
+
 import javax.swing.BorderFactory;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
@@ -13,9 +19,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.MaskFormatter;
+
+import com.github.lgooddatepicker.components.DatePicker;
+
 import data.Data;
 import data.DataException;
 import gui.Button;
@@ -28,6 +38,7 @@ import gui.RechercheJTable;
 import gui.Titre;
 import models.Competence;
 import models.Employee;
+import models.Mission;
 
 /**
  * Page "Personnel" de l'application contenant la liste du personnel avec
@@ -46,7 +57,7 @@ public class Personnel extends Formulaire {
 	private Button											boutonEditComp;
 	private JTextField										nom;
 	private JTextField										prenom;
-	private JTextField										date;
+	private DatePicker 										datePicker;
 	private HintTextField 									recherche;
 	private SimpleDateFormat	EmployeeDateFormat	= new SimpleDateFormat("dd/MM/yyyy");
 
@@ -107,18 +118,13 @@ public class Personnel extends Formulaire {
 		this.prenom.setBounds(450, 80, 150, 25);
 		add(this.prenom);
 		
-		MaskFormatter formatterDate;
-		try {
-			formatterDate = new MaskFormatter("##/##/####");
-			formatterDate.setPlaceholderCharacter('_');
-			this.date = new JFormattedTextField(formatterDate);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		this.date.setBounds(450, 110, 150, 25);
-		add(this.date);
+		
+		this.datePicker = new DatePicker();
+		this.datePicker.setBounds(450, 110, 180, 25);
+		add(datePicker);
+		
+		
 		this.JTableCompetences = new JTable();
-
 		this.JTableCompetences.setFillsViewportHeight(true);
 		JScrollPane js = new JScrollPane(this.JTableCompetences);
 		js.setVisible(true);
@@ -175,7 +181,7 @@ public class Personnel extends Formulaire {
 		composantsEdition.add(this.boutonEditComp);
 		composantsEdition.add(this.nom);
 		composantsEdition.add(this.prenom);
-		composantsEdition.add(this.date);
+		composantsEdition.add(this.datePicker);
 		composantsEdition.add(this.boutonEnregistrer);
 		composantsEdition.add(this.boutonAnnuler);
 		composantsEdition.add(this.JTableCompetences);
@@ -196,7 +202,7 @@ public class Personnel extends Formulaire {
 	public void VideChamps() {
 		this.nom.setText("");
 		this.prenom.setText("");
-		this.date.setText("");
+		this.datePicker.setText("");
 		this.mJTableCompetences = (GenericTableModel<Competence>) JTables.Competences(new ArrayList<Competence>())
 				.getModel();
 		this.JTableCompetences.setModel(this.mJTableCompetences);
@@ -230,7 +236,22 @@ public class Personnel extends Formulaire {
 		if (EmployeSelect != null) {
 			this.nom.setText(EmployeSelect.getLastName());
 			this.prenom.setText(EmployeSelect.getName());
-			this.date.setText(EmployeeDateFormat.format(EmployeSelect.getEntryDate()));
+			
+			
+			System.out.println("DATE :" + EmployeSelect.getEntryDate());
+			//LocalDate d = EmployeSelect.getEntryDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			//LocalDate d = LocalDate.ofInstant(EmployeSelect.getEntryDate().toInstant(), ZoneId.systemDefault());
+			
+			Date date = EmployeSelect.getEntryDate();
+			Instant instant = date.toInstant();
+			ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
+			LocalDate d = zdt.toLocalDate();
+			
+			this.datePicker.setDate(d);
+			
+			
+			
+
 			this.listCompEmp = EmployeSelect.getCompetences();
 			this.mJTablePersonnel = (GenericTableModel<Employee>) this.JTablePersonnel.getModel();
 			this.mJTableCompetences = (GenericTableModel<Competence>) JTables.Competences(listCompEmp).getModel();
@@ -254,17 +275,17 @@ public class Personnel extends Formulaire {
 	 * ENREGISTRER : Enregistrement de l'employé
 	 */
 	public void Enregistrer(){
-		if((this.nom.getText().equals("")) || (this.prenom.getText().equals("")) || (this.date.getText().equals(""))){
+		if((this.nom.getText().equals("")) || (this.prenom.getText().equals("")) || (this.datePicker.getText().equals(""))){
 			JOptionPane.showMessageDialog(
 					new JFrame(), "Vous devez renseigner toutes les informations pour enregistrer.",
 					"Informations non renseignés", JOptionPane.WARNING_MESSAGE
 			);
 		} else {
-
+			Date DateEntree = java.sql.Date.valueOf(this.datePicker.getDate());
 			try {
 				switch (this.mode) {
 				case "nouveau":
-					Employee nouvEmp = new Employee(this.nom.getText(), this.prenom.getText(), this.date.getText());
+					Employee nouvEmp = new Employee(this.nom.getText(), this.prenom.getText(), DateEntree);
 					data.Employes().ajouter(nouvEmp);
 					ArrayList<Competence> listCompNouv = mJTableCompetences.getArraylist();
 					nouvEmp.setCompetences(listCompNouv);
@@ -279,7 +300,7 @@ public class Personnel extends Formulaire {
 						Employee empSelect = getSelected();
 						empSelect.setLastName(this.nom.getText());
 						empSelect.setName(this.prenom.getText());
-						empSelect.setEntryDate(this.date.getText(), "dd/MM/yyyy");
+						empSelect.setEntryDate(DateEntree);
 						ArrayList<Competence> listComp = mJTableCompetences.getArraylist();
 						empSelect.setCompetences(listComp);
 						data.Employes().modifier(empSelect);
@@ -288,8 +309,6 @@ public class Personnel extends Formulaire {
 					}
 					break;
 				}
-			} catch (ParseException e1) {
-				System.out.println("Format incorrect: " + e1);
 			} catch (DataException e1) {
 				System.out.println("Problème d'enregistrement: " + e1);
 			}
@@ -318,11 +337,15 @@ public class Personnel extends Formulaire {
 		break;
 		
 		case "modification":
+			AffichageSelection();
+			ChargementConsultation();
+			/*
 			if (getSelected() != null) {
 				Employee EmployeSelect = getSelected();
 				this.nom.setText(EmployeSelect.getLastName());
 				this.prenom.setText(EmployeSelect.getName());
-				this.date.setText(EmployeeDateFormat.format(EmployeSelect.getEntryDate()));
+				LocalDate d = EmployeSelect.getEntryDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+				this.datePicker.setDate(d);
 				this.listCompEmp = EmployeSelect.getCompetences();
 				this.mJTableCompetences = (GenericTableModel<Competence>) JTables.Competences(listCompEmp)
 						.getModel();
@@ -330,7 +353,7 @@ public class Personnel extends Formulaire {
 				this.JTableCompetences.getColumnModel().getColumn(0).setPreferredWidth(200);
 				this.JTableCompetences.getColumnModel().getColumn(1).setPreferredWidth(600);
 				ChargementConsultation();
-			}
+			}*/
 			break;
 		}
 	}
