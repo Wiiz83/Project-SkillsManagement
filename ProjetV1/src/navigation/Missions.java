@@ -8,6 +8,9 @@ import java.awt.event.MouseEvent;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.BorderFactory;
@@ -23,6 +26,7 @@ import javax.swing.RowFilter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.MaskFormatter;
+import com.github.lgooddatepicker.components.DatePicker;
 import data.Data;
 import data.DataException;
 import gui.Button;
@@ -143,7 +147,7 @@ public class Missions extends Formulaire {
 		labelDuree.setBounds(350, 220, 150, 25);
 		add(labelDuree);
 		
-		JLabel labelFin = new JLabel("Date de fin réélle :");
+		labelFin = new JLabel("Date de fin réelle :");
 		labelFin.setBounds(350, 260, 150, 25);
 		labelFin.setVisible(false);
 		add(labelFin);
@@ -172,7 +176,7 @@ public class Missions extends Formulaire {
 		this.nombre = new JFormattedTextField(numberFormat);
 		this.nombre.setBounds(480, 140, 120, 25);
 		add(nombre);
-		
+
 		MaskFormatter formatterDate;
 		try {
 			formatterDate = new MaskFormatter("##/##/####");
@@ -461,10 +465,14 @@ public class Missions extends Formulaire {
 			this.duree.setText(Integer.toString(missSelect.getDuree()));
 			this.nombre.setText(Integer.toString(missSelect.getNbPersReq()));
 			this.statut.setSelectedItem(missSelect.getStatus());
-			/*
-			 * TODO if(this.statut = Status.EN_RETARD){
-			 * this.boutonMissionTermine.setVisible(true); }
-			 */
+
+			if(missSelect.getStatus() == Status.TERMINEE){
+				this.labelFin.setVisible(true);
+				this.dateF.setVisible(true);
+			} else {
+				this.labelFin.setVisible(false);
+				this.dateF.setVisible(false);
+			}
 			
 			ArrayList<CompetenceRequirement> listCompMiss = missSelect.getCompReq();
 			TableModel tmComp = JTables.CompetencesRequises(listCompMiss).getModel();
@@ -562,16 +570,33 @@ public class Missions extends Formulaire {
 			if (missionEnCours.estModifiable()) {
 				super.ChargementModification();
 			} else if (missionEnCours.getStatus() == Status.EN_COURS) {
-				
-				/*
-				JOptionPane.showMessageDialog(
-						new JFrame(), "La mission est en cours : elle n'est donc plus modifiable.", "Mission en cours",
-						JOptionPane.WARNING_MESSAGE
-				);*/
-				
 
-				Object result = JOptionPane.showInputDialog(new JFrame(), "La mission est en cours : elle n'est donc plus modifiable. \n Si elle est terminée, veuillez e:");
-
+					DatePicker dp = new DatePicker();
+					String message ="La mission est en cours : elle n'est donc plus modifiable. \n \n Si elle est terminée, veuillez entrer la date de fin :";
+					Object[] params = {message,dp};
+					int n = JOptionPane.showConfirmDialog(null,params,"Start date", JOptionPane.YES_NO_OPTION);
+					
+					if (n == JOptionPane.YES_OPTION) {
+			
+						Date DateDeFin = java.sql.Date.valueOf(dp.getDate());
+						Date DateDeDebut = missionEnCours.getDateDebut();
+						
+						// Date Début après Date Fin
+				        if (DateDeDebut.compareTo(DateDeFin) > 0) {
+							JOptionPane.showMessageDialog(new JFrame(), "La date de fin doit être supérieure ou égale à la date de début.","Date invalide", JOptionPane.WARNING_MESSAGE);
+							Modifier();
+				        } else if (DateDeDebut.compareTo(DateDeFin) <= 0) {
+				        	missionEnCours.setDateFinRelle(DateDeFin);
+				        	try {
+								data.Missions().modifier(missionEnCours);
+							} catch (DataException e) {
+								e.printStackTrace();
+							}
+				        } else {
+							JOptionPane.showMessageDialog(new JFrame(), "La date de fin réelle est invalide.","Date invalide", JOptionPane.WARNING_MESSAGE);
+							Modifier();
+				        }
+					}
 				
 			} else if (missionEnCours.getStatus() == Status.TERMINEE) {
 				JOptionPane.showMessageDialog(
