@@ -511,6 +511,7 @@ public class Missions extends Formulaire {
 			
 			updateMissionStatus();
 			
+
 			Date dateD = new Date(this.dateD.getText());
 			String strDuree = this.duree.getText().replaceAll("\\D+", "");
 			int duree = Integer.parseInt(strDuree);
