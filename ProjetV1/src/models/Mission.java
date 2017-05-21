@@ -21,6 +21,7 @@ public class Mission extends MissionAbstract {
 	public Mission(String nomM, Date dateDebut, int duree, int nbPersReq) {
 		super(nomM, dateDebut, duree, nbPersReq);
 		this.CompReq = new ArrayList<>();
+		setDateFinRelle(duree);
 	}
 	
 	/**
@@ -83,7 +84,7 @@ public class Mission extends MissionAbstract {
 	protected HashMap<Class<? extends CSVEntity>, ArrayList<? extends CSVEntity>> getReferencedObjects() {
 		HashMap<Class<? extends CSVEntity>, ArrayList<? extends CSVEntity>> referencedObjects = new HashMap<>();
 		referencedObjects.put(Employee.class, AffEmp);
-		referencedObjects.put(Competence.class, CompReq);
+		referencedObjects.put(CompetenceRequirement.class, CompReq);
 		return referencedObjects;
 	}
 	

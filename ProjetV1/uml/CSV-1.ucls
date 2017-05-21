@@ -4,7 +4,7 @@
   router="FAN">  
   <class id="1" language="java" name="csv.CSVObjectSaver" project="ProjetV1" 
     file="/ProjetV1/src/csv/CSVObjectSaver.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="117" width="175" x="1235" y="428"/>    
+    <position height="117" width="175" x="93" y="24"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -13,169 +13,152 @@
   </class>  
   <class id="2" language="java" name="csv.CSVConfig" project="ProjetV1" file="/ProjetV1/src/csv/CSVConfig.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="189" width="481" x="950" y="621"/>    
+    <position height="279" width="363" x="588" y="217"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="csv.CSVEntity" project="ProjetV1" file="/ProjetV1/src/csv/CSVEntity.java" 
+  <class id="3" language="java" name="csv.CSVObjects" project="ProjetV1" file="/ProjetV1/src/csv/CSVObjects.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="293" y="189"/>    
+    <position height="-1" width="-1" x="513" y="-152"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="csv.CSVObjects" project="ProjetV1" file="/ProjetV1/src/csv/CSVObjects.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="979" y="139"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="5" language="java" name="csv.CSVAssociation" project="ProjetV1" 
-    file="/ProjetV1/src/csv/CSVAssociation.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="193" y="461"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="6" language="java" name="csv.CSVObjectDeleter" project="ProjetV1" 
+  <class id="4" language="java" name="csv.CSVObjectDeleter" project="ProjetV1" 
     file="/ProjetV1/src/csv/CSVObjectDeleter.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="153" width="191" x="1004" y="428"/>    
+    <position height="153" width="191" x="308" y="24"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="7" language="java" name="csv.CSVCache" project="ProjetV1" file="/ProjetV1/src/csv/CSVCache.java" 
+  <class id="5" language="java" name="csv.CSVCache" project="ProjetV1" file="/ProjetV1/src/csv/CSVCache.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="135" width="210" x="1148" y="850"/>    
+    <position height="135" width="210" x="136" y="536"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="8" language="java" name="csv.CSVSerializer" project="ProjetV1" file="/ProjetV1/src/csv/CSVSerializer.java" 
+  <interface id="6" language="java" name="csv.CSVSerializer" project="ProjetV1" 
+    file="/ProjetV1/src/csv/CSVSerializer.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="81" width="151" x="609" y="536"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="7" language="java" name="csv.CSVFileConfig" project="ProjetV1" file="/ProjetV1/src/csv/CSVFileConfig.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="99" width="158" x="950" y="850"/>    
+    <position height="135" width="186" x="386" y="1174"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="9" language="java" name="csv.CSVFileConfig" project="ProjetV1" file="/ProjetV1/src/csv/CSVFileConfig.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="135" width="186" x="727" y="1470"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="10" language="java" name="csv.CSVObjectLoader" project="ProjetV1" 
+  <class id="8" language="java" name="csv.CSVObjectLoader" project="ProjetV1" 
     file="/ProjetV1/src/csv/CSVObjectLoader.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="153" width="436" x="528" y="428"/>    
+    <position height="153" width="436" x="539" y="24"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="csv.CSVDeserializer" project="ProjetV1" 
+  <interface id="9" language="java" name="csv.CSVDeserializer" project="ProjetV1" 
     file="/ProjetV1/src/csv/CSVDeserializer.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="648" y="746"/>    
+    <position height="81" width="177" x="800" y="536"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
-  </class>  
-  <class id="12" language="java" name="csv.CSVLine" project="ProjetV1" file="/ProjetV1/src/csv/CSVLine.java" 
+  </interface>  
+  <class id="10" language="java" name="csv.CSVLine" project="ProjetV1" file="/ProjetV1/src/csv/CSVLine.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="153" width="138" x="1452" y="1205"/>    
+    <position height="171" width="138" x="1017" y="909"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="13" language="java" name="csv.CSVModel" project="ProjetV1" file="/ProjetV1/src/csv/CSVModel.java" 
+  <class id="11" language="java" name="csv.CSVModel" project="ProjetV1" file="/ProjetV1/src/csv/CSVModel.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="117" width="183" x="727" y="850"/>    
+    <position height="117" width="183" x="386" y="536"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="14" language="java" name="csv.CSVMetadataMapper" project="ProjetV1" 
+  <class id="12" language="java" name="csv.CSVMetadataMapper" project="ProjetV1" 
     file="/ProjetV1/src/csv/CSVMetadataMapper.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="225" width="486" x="727" y="1205"/>    
+    <position height="225" width="486" x="386" y="909"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="15" language="java" name="csv.CSVDocument" project="ProjetV1" file="/ProjetV1/src/csv/CSVDocument.java" 
+  <class id="13" language="java" name="csv.CSVDocument" project="ProjetV1" file="/ProjetV1/src/csv/CSVDocument.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="315" width="212" x="1452" y="850"/>    
+    <position height="333" width="212" x="1017" y="536"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="16" language="java" name="csv.CSVException" project="ProjetV1" file="/ProjetV1/src/csv/CSVException.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="153" width="186" x="1205" y="37"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
+  <association id="14">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="15" name="csvdeleter"/>      
+      <multiplicity id="16" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
   <association id="17">    
     <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="18" name="serializer"/>      
+      <attribute id="18" name="deserializer"/>      
       <multiplicity id="19" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
+    <end type="TARGET" refId="9" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="20">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="21" name="config"/>      
+    <bendpoint x="1026" y="24"/>    
+    <bendpoint x="1026" y="217"/>    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="21" name="doc"/>      
       <multiplicity id="22" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
+    <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="23">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="24" name="deserializer"/>      
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="24" name="metadata"/>      
       <multiplicity id="25" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
+    <end type="TARGET" refId="12" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="26">    
-    <end type="SOURCE" refId="11" navigable="false">      
-      <attribute id="27" name="csvconfig"/>      
-      <multiplicity id="28" minimum="0" maximum="1"/>    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="27" name="csvFilesConfigs"/>      
+      <multiplicity id="28" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
+    <end type="TARGET" refId="7" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="29">    
@@ -183,19 +166,19 @@
       <attribute id="30" name="csvcache"/>      
       <multiplicity id="31" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
+    <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="32">    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="33" name="lines"/>      
-      <multiplicity id="34" minimum="0" maximum="2147483647"/>    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="33" name="csvloader"/>      
+      <multiplicity id="34" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="12" navigable="true"/>    
+    <end type="TARGET" refId="8" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="35">    
-    <end type="SOURCE" refId="1" navigable="false">      
+    <end type="SOURCE" refId="8" navigable="false">      
       <attribute id="36" name="config"/>      
       <multiplicity id="37" minimum="0" maximum="1"/>    
     </end>    
@@ -203,15 +186,15 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="38">    
-    <end type="SOURCE" refId="14" navigable="false">      
-      <attribute id="39" name="csvFilesConfigs"/>      
-      <multiplicity id="40" minimum="0" maximum="2147483647"/>    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="39" name="serializer"/>      
+      <multiplicity id="40" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
+    <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="41">    
-    <end type="SOURCE" refId="6" navigable="false">      
+    <end type="SOURCE" refId="1" navigable="false">      
       <attribute id="42" name="config"/>      
       <multiplicity id="43" minimum="0" maximum="1"/>    
     </end>    
@@ -219,40 +202,39 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="44">    
-    <bendpoint x="1440" y="428"/>    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="45" name="config"/>      
-      <multiplicity id="46" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="47">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="48" name="csvdeleter"/>      
-      <multiplicity id="49" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="50">    
     <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="51" name="metadata"/>      
-      <multiplicity id="52" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="14" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="53">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="54" name="csvloader"/>      
-      <multiplicity id="55" minimum="0" maximum="1"/>    
+      <attribute id="45" name="lines"/>      
+      <multiplicity id="46" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="10" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="56">    
+  <association id="47">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="48" name="documents"/>      
+      <multiplicity id="49" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="50">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="51" name="model"/>      
+      <multiplicity id="52" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="53">    
     <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="54" name="config"/>      
+      <multiplicity id="55" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="56">    
+    <end type="SOURCE" refId="3" navigable="false">      
       <attribute id="57" name="csvsaver"/>      
       <multiplicity id="58" minimum="0" maximum="1"/>    
     </end>    
@@ -260,29 +242,12 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="59">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="60" name="documents"/>      
-      <multiplicity id="61" minimum="0" maximum="2147483647"/>    
+    <bendpoint x="1005" y="24"/>    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="60" name="config"/>      
+      <multiplicity id="61" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="15" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="62">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="63" name="model"/>      
-      <multiplicity id="64" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="13" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="65">    
-    <bendpoint x="1461" y="428"/>    
-    <bendpoint x="1461" y="621"/>    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="66" name="doc"/>      
-      <multiplicity id="67" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="15" navigable="true"/>    
+    <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
