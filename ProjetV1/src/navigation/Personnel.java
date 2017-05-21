@@ -2,7 +2,6 @@ package navigation;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -10,22 +9,18 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
-
 import javax.swing.BorderFactory;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import javax.swing.text.MaskFormatter;
-
 import com.github.lgooddatepicker.components.DatePicker;
-
 import data.Data;
 import data.DataException;
 import gui.Button;
@@ -133,12 +128,12 @@ public class Personnel extends Formulaire {
 		this.boutonEditComp.setBounds(1160, 170);
 		add(this.boutonEditComp);
 		
+		JTablePersonnel.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+	        public void valueChanged(ListSelectionEvent event) {
+	        	AffichageSelection();
+	        }
+	    });
 		
-		this.JTablePersonnel.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e){
-				AffichageSelection();
-			}
-		});
 		
 		this.boutonNouveau.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e){

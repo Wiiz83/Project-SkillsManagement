@@ -10,6 +10,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import csv.InvalidDataException;
@@ -108,11 +110,11 @@ public class Competences extends Formulaire {
 		add(this.boutonEditLangue);
 		
 		
-		this.JTableCompetences.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e){
-				AffichageSelection();
-			}
-		});
+		JTableCompetences.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+	        public void valueChanged(ListSelectionEvent event) {
+	        	AffichageSelection();
+	        }
+	    });
 		
 		this.boutonNouveau.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e){
@@ -158,7 +160,18 @@ public class Competences extends Formulaire {
 		    }
 		});
 		
-		composantsEdition.add(this.boutonEditLangue);
+		JTableLangues.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+	        public void valueChanged(ListSelectionEvent event) {
+	            if (JTableLangues.getSelectedRow() > -1) {
+	            	boutonEditLangue.setVisible(true);
+	            } else {
+	            	boutonEditLangue.setVisible(false);
+	            }
+	        }
+	    });
+		
+		boutonEditLangue.setVisible(false);
+		
 		composantsEdition.add(this.code);
 		composantsEdition.add(this.boutonEnregistrer);
 		composantsEdition.add(this.boutonAnnuler);

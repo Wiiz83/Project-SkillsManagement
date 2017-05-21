@@ -19,7 +19,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.MaskFormatter;
@@ -34,9 +35,7 @@ import gui.ProgramFrame;
 import gui.RechercheJTable;
 import gui.Titre;
 import models.Competence;
-import models.CompetenceRequirement;
 import models.Employee;
-import models.Mission;
 import models.MissionFormation;
 import models.Status;
 
@@ -46,7 +45,6 @@ public class Formations  extends Formulaire {
 	private Data																	data;
 	private Button																boutonEditEmp;
 	private Button																boutonEditComp;
-	private Button																boutonMissionTermine;
 	private JTextField															nom;
 	private JComboBox<Status>											statut;
 	private JFormattedTextField											dateD;
@@ -186,11 +184,6 @@ public class Formations  extends Formulaire {
 		jsEmp.setBounds(650, 280, 500, 200);
 		add(jsEmp);
 		
-		this.boutonMissionTermine = new Button("/boutons/missionterminee.png");
-		this.boutonMissionTermine.setBounds(400, 400);
-		this.boutonMissionTermine.setVisible(false);
-		add(this.boutonMissionTermine);
-		
 		this.boutonEditComp = new Button("/boutons/miniedit.png");
 		this.boutonEditComp.setBounds(1160, 80);
 		add(this.boutonEditComp);
@@ -199,19 +192,12 @@ public class Formations  extends Formulaire {
 		this.boutonEditEmp.setBounds(1160, 280);
 		add(this.boutonEditEmp);
 
-		this.boutonMissionTermine.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e){
-			/* TODO
-				MissionTerminee();
-				*/
-			}
-		});
+		JTableFormations.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+	        public void valueChanged(ListSelectionEvent event) {
+	        	AffichageSelection();
+	        }
+	    });
 		
-		this.JTableFormations.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e){
-				AffichageSelection();
-			}
-		});
 		
 		this.boutonNouveau.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e){
@@ -242,6 +228,12 @@ public class Formations  extends Formulaire {
 				Annuler();
 			}
 		});
+		
+		JTableFormations.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+	        public void valueChanged(ListSelectionEvent event) {
+	        	AffichageSelection();
+	        }
+	    });
 		
 		this.boutonEditComp.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e){

@@ -25,6 +25,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.MaskFormatter;
@@ -57,12 +59,9 @@ public class Missions extends Formulaire {
 	private Button										boutonDeleteComp;
 	private Button										boutonAddEmp;
 	private Button										boutonDeleteEmp;
-	private Button										boutonMissionTermine;
 	private JTextField									nom;
 	private JComboBox<Status>							statut;
 	private DatePicker									dateD;
-	private DatePicker									dateF;
-	private JLabel 										labelFin;
 	private JFormattedTextField							duree;
 	private JFormattedTextField							nombre;
 	private HintTextField								recherche;
@@ -73,8 +72,9 @@ public class Missions extends Formulaire {
 	private GenericTableModel<CompetenceRequirement>	mJTableCompetences;
 	private JTable										JTableEmployes;
 	private GenericTableModel<Employee>					mJTableEmployes;
-	private SimpleDateFormat							MissionDateFormat	= new SimpleDateFormat("dd/MM/yyyy");
 	private Mission										missionEnCours;
+	private JLabel 										dateDeFinPrevue;
+	private JLabel 										dateDeFinReelle;
 	
 	public Missions(Data data) {
 		super();
@@ -149,11 +149,14 @@ public class Missions extends Formulaire {
 		labelDuree.setBounds(350, 220, 150, 25);
 		add(labelDuree);
 		
-		labelFin = new JLabel("Date de fin :");
-		labelFin.setBounds(350, 260, 150, 25);
-		labelFin.setVisible(false);
-		add(labelFin);
+		dateDeFinPrevue = new JLabel("");
+		dateDeFinPrevue.setBounds(350, 510, 500, 25);
+		add(dateDeFinPrevue);
 		
+		dateDeFinReelle = new JLabel("");
+		dateDeFinReelle.setBounds(1010, 510, 500, 25);
+		add(dateDeFinReelle);
+
 		JLabel labelCompetences = new JLabel("Liste des compétences :");
 		labelCompetences.setBounds(650, 50, 150, 25);
 		add(labelCompetences);
@@ -182,11 +185,6 @@ public class Missions extends Formulaire {
 		this.dateD = new DatePicker();
 		this.dateD.setBounds(440, 180, 160, 25);
 		add(dateD);
-		
-		this.dateF = new DatePicker();
-		this.dateF.setBounds(440, 260, 160, 25);
-		this.dateF.setVisible(false);
-		add(dateF);
 		
 		this.JTableCompetences = new JTable();
 		this.JTableCompetences.setFillsViewportHeight(true);
@@ -222,13 +220,11 @@ public class Missions extends Formulaire {
 		this.boutonDeleteEmp.setBounds(1160, 320);
 		add(this.boutonDeleteEmp);
 		
-		this.JTableMissions.addMouseListener(
-				new MouseAdapter() {
-					public void mouseClicked(MouseEvent e) {
-						AffichageSelection();
-					}
-				}
-		);
+		JTableMissions.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+	        public void valueChanged(ListSelectionEvent event) {
+	        	AffichageSelection();
+	        }
+	    });
 		
 		this.boutonNouveau.addMouseListener(
 				new MouseAdapter() {
@@ -310,22 +306,35 @@ public class Missions extends Formulaire {
 				}
 		);
 		
+		JTableCompetences.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+	        public void valueChanged(ListSelectionEvent event) {
+	            if (JTableCompetences.getSelectedRow() > -1) {
+	            	boutonEditComp.setVisible(true);
+	            } else {
+	            	boutonEditComp.setVisible(false);
+	            }
+	        }
+	    });
+		
+		boutonEditComp.setVisible(false);
+		
+		
 		composantsEdition.add(this.JTableEmployes);
 		composantsEdition.add(this.JTableCompetences);
 		composantsEdition.add(this.nom);
 		composantsEdition.add(this.statut);
 		composantsEdition.add(this.dateD);
-		composantsEdition.add(this.dateF);
 		composantsEdition.add(this.duree);
 		composantsEdition.add(this.nombre);
 		composantsEdition.add(this.boutonAddComp);
 		composantsEdition.add(this.boutonDeleteComp);
-		composantsEdition.add(this.boutonEditComp);
 		composantsEdition.add(this.boutonAddEmp);
 		composantsEdition.add(this.boutonEnregistrer);
 		composantsEdition.add(this.boutonAnnuler);
 		composantsEdition.add(this.boutonDeleteEmp);
 		
+		composantsConsultation.add(this.recherche);
+		composantsConsultation.add(this.filtre);
 		composantsConsultation.add(this.boutonNouveau);
 		composantsConsultation.add(this.boutonModifier);
 		composantsConsultation.add(this.boutonNouveau);
@@ -342,6 +351,8 @@ public class Missions extends Formulaire {
 		this.nom.setText("");
 		this.dateD.setText("");
 		this.duree.setText("");
+		dateDeFinPrevue.setText("");
+		dateDeFinReelle.setText("");
 		this.nombre.setText("");
 		this.statut.addItem(Status.PREPARATION);
 		this.mJTableEmployes = (GenericTableModel<Employee>) JTables.Employes(new ArrayList<Employee>()).getModel();
@@ -453,18 +464,16 @@ public class Missions extends Formulaire {
 			this.statut.setSelectedItem(missSelect.getStatus());
 
 			if(missSelect.getStatus() == Status.TERMINEE){
-				this.labelFin.setVisible(true);
-				this.dateF.setVisible(true);
-
-				Date datefin =  missSelect.getDateFinReelle();
-				Instant instantfin = datefin.toInstant();
-				ZonedDateTime zdtfin = instantfin.atZone(ZoneId.systemDefault());
-				LocalDate dfin = zdtfin.toLocalDate();
-				this.dateF.setDate(dfin);
+				this.dateDeFinReelle.setVisible(true);
+			    SimpleDateFormat formatter = new SimpleDateFormat("EEEE dd MMM yyyy");
+			    String sdateDeFinReelle = formatter.format(missSelect.getDateFinReelle());
+			    dateDeFinReelle.setText("Date de fin prévue le " + sdateDeFinReelle);
 			} else {
-				this.labelFin.setVisible(false);
-				this.dateF.setVisible(false);
+				this.dateDeFinReelle.setVisible(false);
 			}
+		    SimpleDateFormat formatter = new SimpleDateFormat("EEEE dd MMM yyyy");
+		    String dateFinPrevue = formatter.format(missSelect.getDateFin());
+			dateDeFinPrevue.setText("Date de fin prévue le " + dateFinPrevue);
 			
 			ArrayList<CompetenceRequirement> listCompMiss = missSelect.getCompReq();
 			TableModel tmComp = JTables.CompetencesRequises(listCompMiss).getModel();
@@ -480,13 +489,6 @@ public class Missions extends Formulaire {
 			updateComboBox();
 		}
 	}
-	
-	/*
-	 * TODO
-	 * 
-	 * public void MissionTerminee(){ missionEnCours.setStatut(Status.TERMINEE);
-	 * }
-	 */
 	
 	/*
 	 * NOUVEAU : Création d'une nouvelle mission
@@ -617,19 +619,7 @@ public class Missions extends Formulaire {
 		case "modification":
 			Mission missSelect = getMissionSelected();
 			if (missSelect != null) {
-				this.nom.setText(missSelect.getNomM());
-				this.dateD.setText(MissionDateFormat.format(missSelect.getDateDebut()));
-				this.duree.setText(Integer.toString(missSelect.getDuree()));
-				this.nombre.setText(Integer.toString(missSelect.getNbPersReq()));
-				this.statut.setSelectedItem(missSelect.getStatus());
-				
-				ArrayList<CompetenceRequirement> listCompMiss = missSelect.getCompReq();
-				TableModel tmComp = JTables.CompetencesRequises(listCompMiss).getModel();
-				this.JTableCompetences.setModel(tmComp);
-				
-				ArrayList<Employee> listEmpMiss = missSelect.getAffEmp();
-				TableModel tmEmp = JTables.Employes(listEmpMiss).getModel();
-				this.JTableEmployes.setModel(tmEmp);
+				AffichageSelection();
 				ChargementConsultation();
 			}
 			break;
