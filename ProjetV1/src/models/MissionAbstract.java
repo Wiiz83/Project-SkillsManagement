@@ -53,7 +53,7 @@ public abstract class MissionAbstract extends CSVEntity {
 										// encore en préparation
 	}
 	
-	private Date getDateFin() {
+	public Date getDateFin() {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(this.dateDebut);
 		cal.add(Calendar.DATE, duree);
