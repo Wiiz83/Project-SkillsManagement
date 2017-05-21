@@ -55,6 +55,7 @@ public class Missions extends Formulaire {
 	private JTextField									nom;
 	private JComboBox<Status>							statut;
 	private JFormattedTextField							dateD;
+	private JFormattedTextField							dateFinReelle;
 	private JFormattedTextField							duree;
 	private JFormattedTextField							nombre;
 	private HintTextField								recherche;
@@ -67,7 +68,7 @@ public class Missions extends Formulaire {
 	private GenericTableModel<Employee>					mJTableEmployes;
 	private SimpleDateFormat							MissionDateFormat	= new SimpleDateFormat("dd/MM/yyyy");
 	private Mission										missionEnCours;
-	
+	private Mission										mClone;
 	public Missions(Data data) {
 		super();
 		
@@ -139,6 +140,10 @@ public class Missions extends Formulaire {
 		labelDuree.setBounds(350, 220, 150, 25);
 		add(labelDuree);
 		
+		JLabel labelDateFinRelle = new JLabel("Date de fin:");
+		labelDateFinRelle.setBounds(350, 260, 150, 25);
+		add(labelDateFinRelle);
+		
 		JLabel labelCompetences = new JLabel("Liste des compétences :");
 		labelCompetences.setBounds(650, 50, 150, 25);
 		add(labelCompetences);
@@ -147,6 +152,7 @@ public class Missions extends Formulaire {
 		labelEmployes.setBounds(650, 250, 150, 25);
 		add(labelEmployes);
 		
+
 		this.nom = new JTextField();
 		this.nom.setBounds(400, 60, 200, 25);
 		add(this.nom);
@@ -164,16 +170,21 @@ public class Missions extends Formulaire {
 		this.nombre.setBounds(480, 140, 120, 25);
 		add(nombre);
 		
+
 		MaskFormatter formatterDate;
 		try {
 			formatterDate = new MaskFormatter("##/##/####");
 			formatterDate.setPlaceholderCharacter('_');
 			this.dateD = new JFormattedTextField(formatterDate);
+			this.dateFinReelle= new JFormattedTextField(formatterDate); 
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		this.dateD.setBounds(440, 180, 160, 25);
 		add(this.dateD);
+		
+		this.dateFinReelle.setBounds(440, 260, 160, 25);
+		add(this.dateFinReelle);
 		
 		this.JTableCompetences = new JTable();
 		
@@ -318,6 +329,7 @@ public class Missions extends Formulaire {
 		composantsEdition.add(this.nom);
 		composantsEdition.add(this.statut);
 		composantsEdition.add(this.dateD);
+		composantsEdition.add(this.dateFinReelle);
 		composantsEdition.add(this.duree);
 		composantsEdition.add(this.nombre);
 		composantsEdition.add(this.boutonAddComp);
@@ -343,6 +355,7 @@ public class Missions extends Formulaire {
 	public void VideChamps() {
 		this.nom.setText("");
 		this.dateD.setText("");
+		this.dateFinReelle.setText("");
 		this.duree.setText("");
 		this.nombre.setText("");
 		this.statut.addItem(Status.PREPARATION);
@@ -507,6 +520,7 @@ public class Missions extends Formulaire {
 			ArrayList<Employee> presentEmployes = mJTableEmployes.getArraylist();
 			ArrayList<CompetenceRequirement> presentCompetences = mJTableCompetences.getArraylist();
 			
+			missionEnCours.setDateFinRelle(new Date(this.dateFinReelle.getText()));
 			missionEnCours.setDateDebut(dateD);
 			missionEnCours.setDuree(duree);
 			missionEnCours.setNbPersReq(nb);
