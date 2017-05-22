@@ -67,10 +67,10 @@ public abstract class CSVEntity implements Serializable {
 	}
 	
 	
-	@Override
-	protected void finalize() throws Throwable {
-		System.out.println(this.getClass() + " : " + csvID() + " collected");
-		super.finalize();
-	}
+	/*
+	 * @Override protected void finalize() throws Throwable {
+	 * System.out.println(this.getClass() + " : " + csvID() + " collected");
+	 * super.finalize(); }
+	 */
 	
 }

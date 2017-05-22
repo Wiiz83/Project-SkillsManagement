@@ -589,9 +589,10 @@ public class Missions extends Formulaire {
 	public void Modifier() {
 		this.missionEnCours = getMissionSelected();
 		 
-			cloned = (Mission) missionEnCours.clone();
+
 	 
 		if (missionEnCours != null) {
+			cloned = (Mission) missionEnCours.clone();
 			if (missionEnCours.estModifiable()) {
 				super.ChargementModification();
 			} else if (missionEnCours.getStatus() == Status.EN_COURS) {
