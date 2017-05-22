@@ -24,6 +24,14 @@ import navigation.Formations;
 import navigation.Missions;
 import navigation.Personnel;
 
+/**
+ * La classe Header est la classe maîtresse de notre programme, elle
+ * décompose la fenêtre en deux sous panels : l'en-tête avec la navigation
+ * et le contenu avec la page souhaitée. Les changements de pages
+ * s'effectuent ici car elle relie les actions sur la navigation avec le
+ * chargement des pages.
+ *
+ */
 public class Header extends JPanel implements MouseListener {
 	
 	private static final long	serialVersionUID	= 1L;
@@ -48,14 +56,7 @@ public class Header extends JPanel implements MouseListener {
 	private Data 					data;
 	
 	/**
-	 * La classe Header est la classe maîtresse de notre programme Elle
-	 * décompose la fenêtre en deux sous panels : l'en-tête avec la navigation
-	 * et le contenu avec la page souhaitée Les changements de pages
-	 * s'effectuent ici car elle relie les actions sur la navigation avec le
-	 * chargement des pages
-	 * 
-	 * @param frame
-	 *            La fenêtre de notre programme
+	 * @param frame La fenêtre de notre programme
 	 */
 	public Header(JFrame frame, Data data) {
 		super();
@@ -108,8 +109,9 @@ public class Header extends JPanel implements MouseListener {
 		this.etat = "accueil";
 		ChargementPage();
 	}
-	
-	/**
+
+	/* (non-Javadoc)
+	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
 	 * Dessine l'arrière plan de l'en-tête et de la page ainsi que le logo
 	 */
 	@Override

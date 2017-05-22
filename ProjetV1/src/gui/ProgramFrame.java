@@ -8,6 +8,9 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import data.Data;
 
+/**
+ * La fênetre de notre application
+ */
 public class ProgramFrame {
 	private static JFrame		frame;
 	private Header				header;
@@ -15,6 +18,9 @@ public class ProgramFrame {
 	public static final int	WIDTH	= 1280;
 	public static final int	HEIGHT	= 720;
 
+	/**
+	 * @param data
+	 */
 	public void displayGUI(Data data) {
 		ProgramFrame.setFrame(new JFrame());
 		ProgramFrame.getFrame().setSize(WIDTH, HEIGHT);

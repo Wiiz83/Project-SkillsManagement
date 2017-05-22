@@ -17,6 +17,9 @@ import javax.swing.JTextField;
 import gui.ProgramFrame;
 import models.Competence;
 
+/**
+ * Fênetre popup pour éditer les libellés des compétences
+ */
 public class CompetencesEditLangue {
 	
 	public JTextField TFlibelle;
@@ -34,6 +37,12 @@ public class CompetencesEditLangue {
 	Competences competences;
 	public JFrame frame;
 	
+	/**
+	 * @param row la ligne de la jtable séléctionnée
+	 * @param jtable la jtable concernée 
+	 * @param compSelect la compétence séléctionnée
+	 * @param c la page Compétences
+	 */
 	public CompetencesEditLangue(int row, JTable jtable, Competence compSelect, Competences c) {
 		this.pays = (String) jtable.getValueAt(row, 0);		
 		this.libelle = (String) jtable.getValueAt(row, 1);	
@@ -44,6 +53,9 @@ public class CompetencesEditLangue {
 	}
 	
 	
+	/**
+	 * Affichage de la fênetre
+	 */
 	public void displayGUI(){
 		this.frame = new JFrame("Modification d'un libellé de compétence");
 		frame.setSize(400, 170);
@@ -86,6 +98,7 @@ public class CompetencesEditLangue {
         JPanel panelBoutons = new JPanel();
         panelBoutons.setLayout( new FlowLayout());        
         
+        // On valide la modification : on enregistre, on actualise les champs et on revient à la fênetre principale
 		this.valider = new JButton("Valider");
 		this.valider.addActionListener(new ActionListener() {
 			@Override
@@ -98,6 +111,7 @@ public class CompetencesEditLangue {
 		});
 		
 		
+		// On annule tout et on revient à la fênetre principale
 		this.annuler = new JButton("Annuler");
 		this.annuler.addActionListener(new ActionListener() {
 			@Override
@@ -115,7 +129,7 @@ public class CompetencesEditLangue {
         panel.add(panelBoutons);
 
         //Set up the content pane.
-		panel.setOpaque(true);  //content panes must be opaque
+		panel.setOpaque(true);
         frame.setContentPane(panel);
 
         frame.setVisible(true);
