@@ -14,6 +14,12 @@ import models.Mission;
 @SuppressWarnings("unused")
 public class Test {
 	public static void main(String[] args) throws CSVException, ParseException {
+		CSVLine line = new CSVLine();
+		line.add("B.3.;844;Tests");
+		System.out.println(line);
+		System.out.println(line.size());
+		System.out.println(line.isValid());
+		/*
 		SimpleDateFormat dateformatter = new SimpleDateFormat("dd/MM/yyyy");
 		CSVConfig config = new AppCSVConfig();
 		CSVObjects<Mission> mis_csv = new CSVObjects<Mission>(Mission.class, config);
@@ -26,6 +32,7 @@ public class Test {
 		for (Competence c : list)
 			competences_csv.modify(c);
 		System.out.println(list);
+		*/
 	}
 	
 }

@@ -73,11 +73,25 @@ public class CSVObjectLoader<E extends CSVEntity> {
 	private ArrayList<String> getAssociatedIDS(String ID, CSVAssociation assoc) throws IOException {
 		CSVDocument assocDoc = config.getDocument(assoc);
 		CSVLine line = assocDoc.getLineByID(ID);
+		ArrayList<String> IDS = new ArrayList<String>();
 		if (line != null)
+		{
 			line.remove(0);
-		else
-			return new ArrayList<String>();
-		return line;
+			for (String cell : line)
+				if (validIDCell(cell))
+					IDS.add(cell);
+				
+		}
+		return IDS;
+	}
+	
+	private boolean validIDCell(String cell) {
+		if (cell == "")
+			return false;
+		for (int i = 0; i < cell.length(); i++)
+			if (cell.charAt(i) != ' ')
+				return true;
+		return false;
 	}
 	
 }
