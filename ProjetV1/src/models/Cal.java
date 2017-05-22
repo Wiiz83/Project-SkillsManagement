@@ -11,6 +11,8 @@ import java.util.Scanner;
 
 public class Cal {
 
+	private static boolean print = true;
+	
 	/**
 	 * @return La date d'aujourd'hui ou une autre date pour les tests
 	 * @throws IOException 
@@ -28,6 +30,10 @@ public class Cal {
 			try {
 				st = bf.readLine(); //On lit la ligne 1 du fichier
 			} catch (IOException e) {
+				if (print) {
+					print = false;
+					System.out.println("Temps: " + today.getTime());
+				}
 				return today.getTime();
 			}
 			if(st != null){			
@@ -35,14 +41,24 @@ public class Cal {
 				String[] Split = new String[3];
 				Split = st.split(";"); //On récupère les valeurs (année, mois, jour) du fichier
 				today.set(Integer.parseInt(Split[0]), Integer.parseInt(Split[1]), Integer.parseInt(Split[2]));
-				
+				if (print) {
+					print = false;
+					System.out.println("Temps: " + today.getTime());
+				}
 				return today.getTime(); //Return de la valeur du calendar
 			}else{
+				if (print) {
+					print = false;
+					System.out.println("Temps: " + today.getTime());
+				}
 				return today.getTime(); //Return de la valeur du calendar
 			}
 		} catch (FileNotFoundException e) {
 			
-			e.printStackTrace();
+			if (print) {
+				print = false;
+				System.out.println("Temps: " + today.getTime());
+			}
 			return today.getTime(); //Si erreur on retourne la date d'aujourd'hui
 		}
 				
