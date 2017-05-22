@@ -18,6 +18,9 @@ import javax.swing.ListSelectionModel;
 import gui.GenericTableModel;
 import gui.ProgramFrame;
 
+/**
+ * Fênetre pour éditer les compétences
+ */
 public class FormationsEditCompetence implements ActionListener {
 
 	private static final Insets EMPTY_INSETS = new Insets(0, 0, 0, 0);
@@ -38,6 +41,12 @@ public class FormationsEditCompetence implements ActionListener {
 	private JButton addButton;
 	private JButton removeButton;
 
+	/**
+	 * @param Poss JTable avec les éléments possédés
+	 * @param nonPoss JTable avec les éléments non possédés 
+	 * @param PossModel Le modèle de la JTable Poss
+	 * @param nonPossModel Le modèle de la JTable nonPoss
+	 */
 	public FormationsEditCompetence(JTable Poss, JTable nonPoss, GenericTableModel PossModel,GenericTableModel nonPossModel) {
 		this.ElementPoss = Poss;
 		this.ElementNonPoss = nonPoss;
@@ -47,6 +56,9 @@ public class FormationsEditCompetence implements ActionListener {
 		this.mJTablePoss = PossModel;
 	}
 	
+	/**
+	 * Affichage de la fênetre
+	 */
 	public void displayGUI(){
 		
 		JFrame frame = new JFrame();
@@ -87,6 +99,10 @@ public class FormationsEditCompetence implements ActionListener {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 * Clic sur les boutons 
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		

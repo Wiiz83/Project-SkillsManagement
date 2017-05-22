@@ -34,7 +34,7 @@ public class Button extends JComponent implements MouseListener {
 
 	/**
 	 * Création d'un bouton personnalisé à partir d'une image et avec un masque sur le survol de souris
-	 * @param url : Chemin vers l'image pour le bouton 
+	 * @param url le chemin vers l'image pour le bouton 
 	 */
 	public Button(String url) {
 		super();

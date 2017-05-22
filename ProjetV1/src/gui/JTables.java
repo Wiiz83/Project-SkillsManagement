@@ -12,12 +12,14 @@ import models.*;
 
 /**
  * Permet de convertir une liste d'objets en JTable
- *
  */
-
 public class JTables {
 	
 	
+	/**
+	 * @param employes la liste des employés
+	 * @return la jtable
+	 */
 	public static JTable Employes(ArrayList<Employee> employes) {
 		SimpleDateFormat dateformatter = new SimpleDateFormat("yyyy-MM-dd");
 		String[] headers = { "Nom", "Prénom", "Date d'entrée" };
@@ -54,6 +56,10 @@ public class JTables {
 		return table;
 	}
 	
+	/**
+	 * @param competences la liste des compétences
+	 * @return la jtable
+	 */
 	public static JTable Competences(ArrayList<Competence> competences) {
 		
 		String[] headers = { "Code", "FR" };
@@ -89,6 +95,10 @@ public class JTables {
 		return table;
 	}
 	
+	/**
+	 * @param CompReq la liste des compétences requises
+	 * @return la jtable
+	 */
 	public static JTable CompetencesRequises(ArrayList<CompetenceRequirement> CompReq) {
 		String[] headers = { "Code", "FR", "Employés requis" };
 		@SuppressWarnings("serial")
@@ -124,6 +134,10 @@ public class JTables {
 		return table;
 	}
 	
+	/**
+	 * @param missions la liste de missions
+	 * @return la jtable
+	 */
 	public static <E extends MissionAbstract> JTable Missions(ArrayList<E> missions) {
 		String[] headers = { "Nom", "Durée", "Statut" };
 		@SuppressWarnings("serial")
@@ -159,6 +173,11 @@ public class JTables {
 	
 
 	
+	/**
+	 * @param competence la compétence 
+	 * @param langues la liste des libellés de la compétence
+	 * @return la jtable
+	 */
 	public static JTable LanguesCompetence(Competence competence, ArrayList<Language> langues) {
 		
 		String[] headers = { "Pays", "Libellé" };
@@ -214,6 +233,10 @@ public class JTables {
 		return table;
 	}
 	
+	/**
+	 * @param Alertes la liste des alertes
+	 * @return la jtable
+	 */
 	public static JTable Alertes(ArrayList<Alerte> Alertes) {
 		String[] headers = { "Type d'alerte", "Nom de mission", "Date de début", "Mission" };
 		@SuppressWarnings("serial")
@@ -262,6 +285,10 @@ public class JTables {
 		return table;
 	}
 	
+	/**
+	 * @param recom la liste des recommandations
+	 * @return la jtable
+	 */
 	public static JTable Recommendation(Recommendation recom) {
 		
 		String[] headers = { "Nom", "Prénom", "Recommandation", "Employé"};

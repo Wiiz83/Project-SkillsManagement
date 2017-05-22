@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+/**
+ * Classe pour une page de type formulaire
+ */
 public class Formulaire extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -20,6 +23,9 @@ public class Formulaire extends JPanel {
     protected Button				boutonEnregistrer;
     protected Button				boutonAnnuler;
     
+    /**
+     * Construction du formulaire avec les boutons
+     */
     public Formulaire(){
 		
 		this.boutonNouveau = new Button("/boutons/nouveau.png");
@@ -44,9 +50,9 @@ public class Formulaire extends JPanel {
 		add(this.boutonAnnuler);
     }
     
-	 /*
-	  *   Mode Consultation : Les éléments du formulaire ne sont pas modifiables
-	  */
+	/**
+	 * Les éléments du formulaire ne sont pas modifiables
+	 */
 	public void ChargementConsultation() {
 		 for(JComponent component: composantsEdition){
 			if(component instanceof Button){
@@ -65,8 +71,8 @@ public class Formulaire extends JPanel {
 		this.mode = "consultation";
 	}
 	
-	/*
-	 * Mode Modification : Les éléments du formulaire sont modifiables
+	/**
+	 * Les éléments du formulaire sont modifiables
 	 */
 	public void ChargementModification() {
 		 for(JComponent component: composantsEdition){
@@ -86,6 +92,9 @@ public class Formulaire extends JPanel {
 		this.mode = "modification";
 	}
     
+	/* (non-Javadoc)
+	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);

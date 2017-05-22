@@ -58,6 +58,9 @@ public class Competences extends Formulaire {
 	private HintTextField 									recherche;
 	private Competence 									tempComp;
 	
+	/**
+	 * @param data
+	 */
 	public Competences(Data data) {
 		super();
 		
