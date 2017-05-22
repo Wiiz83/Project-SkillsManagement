@@ -57,4 +57,18 @@ public class MissionFormation extends MissionAbstract {
 			return false;
 		return true;
 	}
+	
+	
+	/**
+	 * Méthode pour attribution des compétences aux employés a la fin de la formation
+	 */
+	public void giveCompetences(){
+		for(Employee e : this.getAffEmp()){
+			for(Competence c : this.getCompetences()){
+				if(!e.getCompetences().contains(c)){
+					e.addCompetence(c);
+				}
+			}
+		}
+	}
 }
