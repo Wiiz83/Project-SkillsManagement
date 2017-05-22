@@ -11,6 +11,7 @@ import data.Data;
 import data.DataException;
 import data.AppCSVConfig;
 import gui.ProgramFrame;
+import models.Competence;
 import models.Employee;
 import models.MissionFormation;
 import models.Status;
@@ -34,6 +35,7 @@ public class Program {
 			// données.
 			try {
 				data = new Data(new AppCSVConfig());
+				giveCompetences(data);
 			} catch (DataException e) {
 				System.out.println("Problème chargement des CSV" + e.getMessage());
 				JOptionPane.showMessageDialog(
@@ -43,12 +45,6 @@ public class Program {
 				e.printStackTrace();
 				return;
 			}
-			
-			ArrayList<MissionFormation> listeFormationsTerminee = data.Formations().filtrer(o -> o.getStatus() == Status.TERMINEE);
-			for (MissionFormation formation : listeFormationsTerminee) {
-				formation.giveCompetences();
-			}
-			
 			SwingUtilities.invokeLater(
 					new Runnable() {
 						public void run() {
@@ -57,5 +53,28 @@ public class Program {
 					}
 			);
 		}
+	}
+	
+	/**
+	 * Méthode pour attribution des compétences aux employés a la fin de la
+	 * formation on check les employés, ensuite les compétences, si l'employé ne
+	 * l'a pas déjà on lui ajoute
+	 * 
+	 * @throws DataException
+	 */
+	
+	private static void giveCompetences(Data data) throws DataException {
+		ArrayList<MissionFormation> listeFormationsTerminee = data.Formations().filtrer(o -> o.getStatus() == Status.TERMINEE);
+		for (MissionFormation formation : listeFormationsTerminee) {
+			for(Employee e : formation.getAffEmp()){
+				for(Competence c : formation.getCompetences()){
+					if(!e.getCompetences().contains(c)){
+						e.addCompetence(c);
+						data.Employes().modifier(e);
+					}
+				}
+			}
+		}
+		
 	}
 }
