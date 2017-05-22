@@ -84,6 +84,7 @@ public class Missions extends Formulaire {
 	private Mission										missionEnCours;
 	private JLabel 										dateDeFinPrevue;
 	private JLabel 										dateDeFinReelle;
+	private Mission										cloned;
 	private NumberFormat numberFormat = NumberFormat.getNumberInstance();
 	
 	public Missions(Data data) {
@@ -605,6 +606,9 @@ public class Missions extends Formulaire {
 	 */
 	public void Modifier() {
 		this.missionEnCours = getMissionSelected();
+		 
+			cloned = (Mission) missionEnCours.clone();
+	 
 		if (missionEnCours != null) {
 			if (missionEnCours.estModifiable()) {
 				super.ChargementModification();
@@ -660,6 +664,8 @@ public class Missions extends Formulaire {
 		
 		case "modification":
 			Mission missSelect = getMissionSelected();
+			missSelect.setCompReq(cloned.getCompReq());
+			missSelect.setAffEmp(cloned.getAffEmp());
 			if (missSelect != null) {
 				AffichageSelection();
 				ChargementConsultation();

@@ -159,9 +159,6 @@ public abstract class MissionAbstract extends CSVEntity {
 	
  
 	
-	@Override
-	public Object clone() throws CloneNotSupportedException {
-		return super.clone();
-	}
+
 	
 }

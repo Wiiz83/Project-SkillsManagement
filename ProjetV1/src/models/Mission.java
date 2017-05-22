@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import csv.CSVEntity;
 
-public class Mission extends MissionAbstract {
+public class Mission extends MissionAbstract implements Cloneable {
 	
 	private static final long					serialVersionUID	= -6014131798059503343L;
 	private ArrayList<CompetenceRequirement>	CompReq;
@@ -112,8 +112,25 @@ public class Mission extends MissionAbstract {
 	}
 	
 	@Override
-	public Object clone() throws CloneNotSupportedException {
-		return super.clone();
+	public Object clone() {
+		ArrayList<CompetenceRequirement> cr = new ArrayList<>();
+		ArrayList<Employee> emp = new ArrayList<>();
+		
+		for (CompetenceRequirement s : CompReq)
+			cr.add(s);
+		for (Employee s : this.AffEmp)
+			emp.add(s);
+		
+		Mission copy = null;
+		try {
+			copy = (Mission) super.clone();
+		} catch (CloneNotSupportedException e1) {
+			e1.printStackTrace();
+		}
+		copy.setAffEmp(emp);
+		copy.setCompReq(cr);
+		return copy;
 	}
+
 	
 }
