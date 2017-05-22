@@ -15,23 +15,37 @@ public class Cal {
 	 * @return La date d'aujourd'hui ou une autre date pour les tests
 	 * @throws IOException 
 	 */
-	public static Date today() throws IOException {
+	public static Date today(){
 		Calendar today = Calendar.getInstance();
-		FileReader file = new FileReader("date.txt");
-		BufferedReader bf = new BufferedReader(file);
-		today.clear(Calendar.HOUR);
-		today.clear(Calendar.MINUTE);
-		today.clear(Calendar.SECOND);
-		if(bf.readLine() != null){			
+		FileReader file;
+		try {
+			file = new FileReader("date.txt");
+			BufferedReader bf = new BufferedReader(file);
+			today.clear(Calendar.HOUR);
+			today.clear(Calendar.MINUTE);
+			today.clear(Calendar.SECOND);
 			String st;
-			st = bf.readLine();
-			String[] Split = new String[3];
-			Split = st.split(";");
-			today.set(Integer.parseInt(Split[1]), Integer.parseInt(Split[2]), Integer.parseInt(Split[3]));
+			try {
+				st = bf.readLine();
+			} catch (IOException e) {
+				return today.getTime();
+			}
+			if(st != null){			
+				
+				String[] Split = new String[3];
+				Split = st.split(";");
+				today.set(Integer.parseInt(Split[1]), Integer.parseInt(Split[2]), Integer.parseInt(Split[3]));
+				
+				return today.getTime();
+			}else{
+				return today.getTime();
+			}
+		} catch (FileNotFoundException e) {
+			
+			e.printStackTrace();
 			return today.getTime();
-		}else{
-			return today.getTime();
-		}		
+		}
+				
 	}
 
 }
