@@ -1,5 +1,10 @@
 package navigation;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -15,6 +20,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -24,6 +30,9 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.MaskFormatter;
+
+import com.github.lgooddatepicker.components.DatePicker;
+
 import data.Data;
 import data.DataException;
 import gui.Button;
@@ -47,7 +56,7 @@ public class Formations  extends Formulaire {
 	private Button																boutonEditComp;
 	private JTextField															nom;
 	private JComboBox<Status>											statut;
-	private JFormattedTextField											dateD;
+	private DatePicker											dateD;
 	private JFormattedTextField											duree;
 	private JFormattedTextField											nombre;
 	private HintTextField														recherche;
@@ -59,7 +68,10 @@ public class Formations  extends Formulaire {
 	private JTable																JTableEmployes;
 	private GenericTableModel<Employee>  						mJTableEmployes;
 	private SimpleDateFormat	FormationDateFormat				= new SimpleDateFormat("dd/MM/yyyy");
+	private NumberFormat numberFormat = NumberFormat.getNumberInstance();
 	private MissionFormation												formationEnCours;
+	private JLabel 										dateDeFinPrevue;
+	private JLabel 										dateDeFinReelle;
 
 	
 	public Formations(Data data) {
@@ -113,84 +125,111 @@ public class Formations  extends Formulaire {
 		titre.setBounds(330, 10, 930, 20);
 		add(titre);
 		
-		JLabel labelNom = new JLabel("Nom :");
-		labelNom.setBounds(350, 60, 150, 25);
-		add(labelNom);
 		
-		JLabel labelStatut = new JLabel("Statut :");
-		labelStatut.setBounds(350, 100, 150, 25);
-		add(labelStatut);
-		
-		JLabel labelNbPersonnes = new JLabel("Personnes requises :");
-		labelNbPersonnes.setBounds(350, 140, 150, 25);
-		add(labelNbPersonnes);
-		
-		JLabel labelDebut = new JLabel("Date de début :");
-		labelDebut.setBounds(350, 180, 150, 25);
-		add(labelDebut);
-		
-		JLabel labelDuree = new JLabel("Durée (en jours) :");
-		labelDuree.setBounds(350, 220, 150, 25);
-		add(labelDuree);
-		
-		JLabel labelCompetences = new JLabel("Liste des compétences :");
-		labelCompetences.setBounds(650, 50, 150, 25);
-		add(labelCompetences);
-		
-		JLabel labelEmployes = new JLabel("Liste des employés :");
-		labelEmployes.setBounds(650, 250, 150, 25);
-		add(labelEmployes);
-		
-		this.nom = new JTextField();
-		this.nom.setBounds(400, 60, 200, 25);
-		add(this.nom);
-		
-		this.statut = new JComboBox<>();
-		this.statut.setBounds(400, 100, 200, 25);
-		add(this.statut);
-		
-		NumberFormat numberFormat = NumberFormat.getNumberInstance();
-		this.duree = new JFormattedTextField(numberFormat);
-		this.duree.setBounds(450, 220, 150, 25);
-		add(this.duree);
-		
-		this.nombre = new JFormattedTextField(numberFormat);
-		this.nombre.setBounds(480, 140, 120, 25);
-		add(nombre);
+		JPanel panelPadding = new JPanel();
+		panelPadding.setBounds(350, 50, 300, 480);
+		panelPadding.setBackground(Color.WHITE);
+		panelPadding.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Informations", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP));
 
-		MaskFormatter formatterDate;
-		try {
-			formatterDate = new MaskFormatter("##/##/####");
-			formatterDate.setPlaceholderCharacter('_');
-			this.dateD = new JFormattedTextField(formatterDate);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		this.dateD.setBounds(440, 180, 160, 25);
-		add(this.dateD);
+
+		JPanel jpanelInfo = new JPanel(new GridLayout(15,1,0,4));		
+		jpanelInfo.setPreferredSize(new Dimension(280, 450));
+		jpanelInfo.setBackground(Color.WHITE);
+
+        jpanelInfo.add(new JLabel("Nom : "));
+    	this.nom = new JTextField();
+        jpanelInfo.add(nom);
+        
+        jpanelInfo.add(new JLabel("Statut :"));
+        this.statut = new JComboBox<>();
+        jpanelInfo.add(statut);
+        
+        jpanelInfo.add(new JLabel("Personnes requises : "));
+        this.nombre = new JFormattedTextField(numberFormat);
+        jpanelInfo.add(nombre);
+        
+        jpanelInfo.add(new JLabel("Date de début : "));
+        this.dateD = new DatePicker();
+        jpanelInfo.add(dateD);
+        
+        jpanelInfo.add(new JLabel("Durée (en jours) :"));
+        this.duree = new JFormattedTextField(numberFormat);
+        jpanelInfo.add(duree);
 		
+		dateDeFinPrevue = new JLabel("");
+		dateDeFinPrevue.setHorizontalAlignment(JLabel.CENTER);
+		dateDeFinPrevue.setVerticalAlignment(JLabel.CENTER);
+		jpanelInfo.add(dateDeFinPrevue);
+		
+		dateDeFinReelle = new JLabel("");
+		dateDeFinReelle.setHorizontalAlignment(JLabel.CENTER);
+		dateDeFinReelle.setVerticalAlignment(JLabel.CENTER);
+		jpanelInfo.add(dateDeFinReelle);
+
+        panelPadding.add(jpanelInfo);
+		this.add(panelPadding);
+
+		
+		JPanel panelPadding3 = new JPanel();
+		panelPadding3.setBounds(660, 50, 590, 240);
+		panelPadding3.setBackground(Color.WHITE);
+		panelPadding3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Liste des compétences", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP));
+		
+		JPanel panelCompetences = new JPanel(new BorderLayout());		
+		panelCompetences.setPreferredSize(new Dimension(480, 200));
+		panelCompetences.setBackground(Color.WHITE);
+
 		this.JTableCompetences = new JTable();
-
 		this.JTableCompetences.setFillsViewportHeight(true);
 		JScrollPane jsComp = new JScrollPane(this.JTableCompetences);
 		jsComp.setVisible(true);
-		jsComp.setBounds(650, 80, 500, 150);
-		add(jsComp);
+		panelCompetences.add(jsComp);
 		
+		panelPadding3.add(panelCompetences);
+		
+		JPanel panelCompetencesButtons = new JPanel(new FlowLayout());		
+		panelCompetencesButtons.setPreferredSize(new Dimension(60, 100));
+		panelCompetencesButtons.setBackground(Color.WHITE);
+		
+		this.boutonEditComp = new Button("/boutons/miniedit.png");
+		panelCompetencesButtons.add(this.boutonEditComp);
+		
+		panelPadding3.add(panelCompetencesButtons);
+		
+		
+		this.add(panelPadding3);
+		
+		
+		
+		
+		
+		JPanel panelPadding2 = new JPanel();
+		panelPadding2.setBounds(660, 290, 590, 240);
+		panelPadding2.setBackground(Color.WHITE);
+		panelPadding2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Liste des employés", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP));
+		
+		JPanel panelEmployes = new JPanel(new BorderLayout());		
+		panelEmployes.setPreferredSize(new Dimension(480, 200));
+		panelEmployes.setBackground(Color.WHITE);
+
 		this.JTableEmployes = new JTable();
 		this.JTableEmployes.setFillsViewportHeight(true);
 		JScrollPane jsEmp = new JScrollPane(this.JTableEmployes);
 		jsEmp.setVisible(true);
-		jsEmp.setBounds(650, 280, 500, 200);
-		add(jsEmp);
-		
-		this.boutonEditComp = new Button("/boutons/miniedit.png");
-		this.boutonEditComp.setBounds(1160, 80);
-		add(this.boutonEditComp);
+		panelEmployes.add(jsEmp);
 
+		panelPadding2.add(panelEmployes);
+		
+		JPanel panelEmployesButtons = new JPanel(new FlowLayout());		
+		panelEmployesButtons.setPreferredSize(new Dimension(60, 100));
+		panelEmployesButtons.setBackground(Color.WHITE);
+		
 		this.boutonEditEmp = new Button("/boutons/miniedit.png");
-		this.boutonEditEmp.setBounds(1160, 280);
-		add(this.boutonEditEmp);
+		panelEmployesButtons.add(this.boutonEditEmp);
+		
+		panelPadding2.add(panelEmployesButtons);
+		
+		this.add(panelPadding2);
 
 		JTableFormations.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {

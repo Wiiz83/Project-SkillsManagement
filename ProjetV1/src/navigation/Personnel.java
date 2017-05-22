@@ -1,5 +1,10 @@
 package navigation;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
@@ -13,6 +18,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -89,44 +95,62 @@ public class Personnel extends Formulaire {
 		titre.setBounds(330, 10, 930, 20);
 		add(titre);
 		
-		JLabel labelNom = new JLabel("Nom :");
-		labelNom.setBounds(350, 50, 150, 25);
-		add(labelNom);
 		
-		JLabel labelPrenom = new JLabel("Prénom :");
-		labelPrenom.setBounds(350, 80, 150, 25);
-		add(labelPrenom);
-		
-		JLabel labelDate = new JLabel("Date d'entrée :");
-		labelDate.setBounds(350, 110, 150, 25);
-		add(labelDate);
-		
-		JLabel labelCompetences = new JLabel("Liste des compétences :");
-		labelCompetences.setBounds(350, 140, 150, 25);
-		add(labelCompetences);
-		
-		this.nom = new JTextField();
-		this.nom.setBounds(450, 50, 150, 25);
-		add(this.nom);
-		
-		this.prenom = new JTextField();
-		this.prenom.setBounds(450, 80, 150, 25);
-		add(this.prenom);
+		JPanel panelPadding = new JPanel();
+		panelPadding.setBounds(350, 50, 300, 480);
+		panelPadding.setBackground(Color.WHITE);
+		panelPadding.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Informations", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP));
 
+
+		JPanel jpanelInfo = new JPanel(new GridLayout(15,1,0,4));		
+		jpanelInfo.setPreferredSize(new Dimension(280, 450));
+		jpanelInfo.setBackground(Color.WHITE);
+
+		jpanelInfo.add(new JLabel("Nom :"));
+		this.nom = new JTextField();
+		jpanelInfo.add(this.nom);
+		
+		jpanelInfo.add(new JLabel("Prénom :"));
+		this.prenom = new JTextField();
+		jpanelInfo.add(this.prenom);
+		
+		jpanelInfo.add(new JLabel("Date d'entrée"));
 		this.datePicker = new DatePicker();
-		this.datePicker.setBounds(450, 110, 180, 25);
-		add(datePicker);
+		jpanelInfo.add(this.datePicker);
+
+        panelPadding.add(jpanelInfo);
+		this.add(panelPadding);
+
+		
+		
+		JPanel panelPadding3 = new JPanel();
+		panelPadding3.setBounds(660, 50, 590, 480);
+		panelPadding3.setBackground(Color.WHITE);
+		panelPadding3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Liste des compétences", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP));
+		
+		JPanel panelCompetences = new JPanel(new BorderLayout());		
+		panelCompetences.setPreferredSize(new Dimension(480, 430));
+		panelCompetences.setBackground(Color.WHITE);
 		
 		this.JTableCompetences = new JTable();
 		this.JTableCompetences.setFillsViewportHeight(true);
 		JScrollPane js = new JScrollPane(this.JTableCompetences);
 		js.setVisible(true);
-		js.setBounds(350, 170, 800, 350);
-		add(js);
+		panelCompetences.add(js);
 		
+		panelPadding3.add(panelCompetences);
+		
+		JPanel panelCompetencesButtons = new JPanel(new FlowLayout());
+
+		panelCompetencesButtons.setPreferredSize(new Dimension(60, 100));
+		panelCompetencesButtons.setBackground(Color.WHITE);
+
 		this.boutonEditComp = new Button("/boutons/miniedit.png");
-		this.boutonEditComp.setBounds(1160, 170);
-		add(this.boutonEditComp);
+		panelCompetencesButtons.add(this.boutonEditComp);
+		
+		panelPadding3.add(panelCompetencesButtons);
+		this.add(panelPadding3);
+		
 		
 		JTablePersonnel.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {

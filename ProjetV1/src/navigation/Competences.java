@@ -1,12 +1,20 @@
 package navigation;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -14,6 +22,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+
+import com.github.lgooddatepicker.components.DatePicker;
+
 import csv.InvalidDataException;
 import data.Data;
 import data.DataException;
@@ -86,29 +97,52 @@ public class Competences extends Formulaire {
 		titre.setBounds(330, 10, 930, 20);
 		add(titre);
 		
-		JLabel labelNom = new JLabel("Code :");
-		labelNom.setBounds(350, 60, 150, 25);
-		add(labelNom);
-		
-		JLabel labelCompetences = new JLabel("Liste des langues :");
-		labelCompetences.setBounds(350, 100, 150, 25);
-		add(labelCompetences);
-		
+		JPanel panelPadding = new JPanel();
+		panelPadding.setBounds(350, 50, 300, 480);
+		panelPadding.setBackground(Color.WHITE);
+		panelPadding.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Informations", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP));
+
+
+		JPanel jpanelInfo = new JPanel(new GridLayout(15,1,0,4));		
+		jpanelInfo.setPreferredSize(new Dimension(280, 450));
+		jpanelInfo.setBackground(Color.WHITE);
+
+		jpanelInfo.add(new JLabel("Code :"));
 		this.code = new JTextField();
-		this.code.setBounds(400, 60, 150, 25);
-		add(this.code);
+		jpanelInfo.add(this.code);
+
+        panelPadding.add(jpanelInfo);
+		this.add(panelPadding);
+
+		
+		
+		JPanel panelPadding3 = new JPanel();
+		panelPadding3.setBounds(660, 50, 590, 480);
+		panelPadding3.setBackground(Color.WHITE);
+		panelPadding3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Liste des libellés", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP));
+		
+		JPanel panelCompetences = new JPanel(new BorderLayout());		
+		panelCompetences.setPreferredSize(new Dimension(480, 430));
+		panelCompetences.setBackground(Color.WHITE);
 		
 		this.JTableLangues = new JTable();
 		this.JTableLangues.setFillsViewportHeight(true);
 		JScrollPane jsLangues = new JScrollPane(this.JTableLangues);
 		jsLangues.setVisible(true);
-		jsLangues.setBounds(350, 130, 800, 400);
-		add(jsLangues);
+		panelCompetences.add(jsLangues);
 		
+		panelPadding3.add(panelCompetences);
+		
+		JPanel panelCompetencesButtons = new JPanel(new FlowLayout());
+
+		panelCompetencesButtons.setPreferredSize(new Dimension(60, 100));
+		panelCompetencesButtons.setBackground(Color.WHITE);
+
 		this.boutonEditLangue = new Button("/boutons/miniedit.png");
-		this.boutonEditLangue.setBounds(1160, 130);
-		add(this.boutonEditLangue);
+		panelCompetencesButtons.add(this.boutonEditLangue);
 		
+		panelPadding3.add(panelCompetencesButtons);
+		this.add(panelPadding3);
 		
 		JTableCompetences.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {
