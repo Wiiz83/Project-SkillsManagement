@@ -59,6 +59,8 @@ public class Missions extends CSVRequests<Mission> {
 			for (CompetenceRequirement cr : m.getCompReq()) {
 				if (cr.isAttached())
 					compreq_csv.modify(cr);
+				else
+					compreq_csv.add(cr);
 			}
 			
 		} catch (CSVException e1) {
