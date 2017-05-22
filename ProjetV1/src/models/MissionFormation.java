@@ -15,7 +15,6 @@ public class MissionFormation extends MissionAbstract {
 	public Status getStatus() {
 		
 		if (Cal.today().compareTo(getDateFin()) > 0) {
-			this.giveCompetences();
 			return Status.TERMINEE; // Vérification de si la mission est
 									// terminée puis retour
 		}
