@@ -2,11 +2,8 @@ package navigation;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
@@ -22,7 +19,6 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
@@ -33,8 +29,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
-import javax.swing.SpringLayout;
-import javax.swing.border.CompoundBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
@@ -414,11 +408,6 @@ public class Missions extends Formulaire {
 			return this.mJTableMissions
 					.getRowObject(this.JTableMissions.convertRowIndexToModel(this.JTableMissions.getSelectedRow()));
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(
-					new JFrame(), "Vous devez sélectionner une mission pour réaliser cette action.",
-					"Mission non séléctionnée", JOptionPane.WARNING_MESSAGE
-			);
-			e.printStackTrace();
 			return null;
 		}
 	}
@@ -437,11 +426,6 @@ public class Missions extends Formulaire {
 					this.JTableCompetences.convertRowIndexToModel(this.JTableCompetences.getSelectedRow())
 			);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(
-					new JFrame(), "Vous devez sélectionner une compétence pour réaliser cette action.",
-					"Compétence non séléctionnée", JOptionPane.WARNING_MESSAGE
-			);
-			e.printStackTrace();
 			return null;
 		}
 	}
@@ -456,11 +440,6 @@ public class Missions extends Formulaire {
 			return this.mJTableEmployes
 					.getRowObject(this.JTableEmployes.convertRowIndexToModel(this.JTableEmployes.getSelectedRow()));
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(
-					new JFrame(), "Vous devez sélectionner un employé pour réaliser cette action.",
-					"Employé non séléctionné", JOptionPane.WARNING_MESSAGE
-			);
-			e.printStackTrace();
 			return null;
 		}
 	}

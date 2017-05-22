@@ -74,7 +74,6 @@ public class Formations extends Formulaire {
 	private GenericTableModel<Competence> mJTableCompetences;
 	private JTable JTableEmployes;
 	private GenericTableModel<Employee> mJTableEmployes;
-	private SimpleDateFormat FormationDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 	private NumberFormat numberFormat = NumberFormat.getNumberInstance();
 	private MissionFormation formationEnCours;
 	private JLabel dateDeFinPrevue;
@@ -338,10 +337,6 @@ public class Formations extends Formulaire {
 			return mJTableFormations
 					.getRowObject(this.JTableFormations.convertRowIndexToModel(this.JTableFormations.getSelectedRow()));
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(new JFrame(),
-					"Vous devez sélectionner une formation pour réaliser cette action.", "Formation non séléctionnée",
-					JOptionPane.WARNING_MESSAGE);
-			e.printStackTrace();
 			return null;
 		}
 	}

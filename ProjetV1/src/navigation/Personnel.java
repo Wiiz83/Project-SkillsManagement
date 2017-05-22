@@ -39,7 +39,6 @@ import gui.RechercheJTable;
 import gui.Titre;
 import models.Competence;
 import models.Employee;
-import models.Mission;
 
 /**
  * Formulaire contenant tous les employés
@@ -58,7 +57,6 @@ public class Personnel extends Formulaire {
 	private JTextField prenom;
 	private DatePicker datePicker;
 	private HintTextField recherche;
-	private SimpleDateFormat EmployeeDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
 	/**
 	 * @param data
@@ -233,9 +231,6 @@ public class Personnel extends Formulaire {
 			return this.mJTablePersonnel
 					.getRowObject(this.JTablePersonnel.convertRowIndexToModel(this.JTablePersonnel.getSelectedRow()));
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(new JFrame(),
-					"Vous devez sélectionner un employé pour réaliser cette action.", "Employé non séléctionné",
-					JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
 	}

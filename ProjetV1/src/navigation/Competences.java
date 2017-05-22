@@ -242,11 +242,6 @@ public class Competences extends Formulaire {
 					this.JTableCompetences.convertRowIndexToModel(this.JTableCompetences.getSelectedRow())
 			);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(
-					new JFrame(), "Vous devez sélectionner une compétence pour réaliser cette action.",
-					"Compétence non séléctionnée", JOptionPane.WARNING_MESSAGE
-			);
-			e.printStackTrace();
 			return null;
 		}
 	}
@@ -301,15 +296,17 @@ public class Competences extends Formulaire {
 	 */
 	public void AffichageSelection(){
 		Competence CompSelect = getCompetenceSelected();
-		this.code.setText(CompSelect.getCode().toString());
-		
-		ArrayList<Language> ListeLangues;
-		try {
-			ListeLangues = data.Langues().tous();
-			this.mJTableLangues = JTables.LanguesCompetence(CompSelect, ListeLangues).getModel();
-			this.JTableLangues.setModel(mJTableLangues);
-		} catch (DataException e1) {
-			e1.printStackTrace();
+		if (CompSelect != null) {
+			this.code.setText(CompSelect.getCode().toString());
+			
+			ArrayList<Language> ListeLangues;
+			try {
+				ListeLangues = data.Langues().tous();
+				this.mJTableLangues = JTables.LanguesCompetence(CompSelect, ListeLangues).getModel();
+				this.JTableLangues.setModel(mJTableLangues);
+			} catch (DataException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 

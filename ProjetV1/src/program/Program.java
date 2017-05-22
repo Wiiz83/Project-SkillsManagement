@@ -31,6 +31,10 @@ public class Program {
 				e.printStackTrace();
 				return;
 			}
+			
+			// Assignation auto des compétences de fin de formation
+			
+				
 			SwingUtilities.invokeLater(
 					new Runnable() {
 						public void run() {
