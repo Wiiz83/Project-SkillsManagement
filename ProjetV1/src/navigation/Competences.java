@@ -345,7 +345,10 @@ public class Competences extends Formulaire {
 				try {
 					c = new Competence(this.code.getText(), noms);
 				} catch (InvalidDataException e2) {
-					e2.printStackTrace();
+					JOptionPane.showMessageDialog(
+							new JFrame(), "Le code doit être au format 'Majuscule.Numéro.'",
+							"Format de code incorrect", JOptionPane.WARNING_MESSAGE
+					);
 					return;
 				}
 				
@@ -367,7 +370,11 @@ public class Competences extends Formulaire {
 						this.mJTableCompetences.fireTableDataChanged();
 						ChargementConsultation();
 					} catch (InvalidDataException e1) {
-						e1.printStackTrace();
+						JOptionPane.showMessageDialog(
+								new JFrame(), "Le code doit être au format 'Majuscule.Numéro.'",
+								"Format de code incorrect", JOptionPane.WARNING_MESSAGE
+						);
+						return;
 					}
 				}
 				break;
