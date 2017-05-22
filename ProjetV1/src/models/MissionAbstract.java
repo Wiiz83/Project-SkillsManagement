@@ -3,7 +3,6 @@ package models;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 
 import csv.CSVEntity;
 import csv.InvalidDataException;
@@ -20,6 +19,7 @@ public abstract class MissionAbstract extends CSVEntity {
 	protected int					id						= -1;
 	protected ArrayList<Employee>	AffEmp;
 	protected boolean				forcer_planification	= false;
+	protected Date					dateFinReelle;
 	
 	public MissionAbstract(String nomM, Date dateDebut, int duree, int nbPersReq) {
 		this.nom = nomM;
@@ -27,6 +27,8 @@ public abstract class MissionAbstract extends CSVEntity {
 		this.duree = duree;
 		this.nbPersReq = nbPersReq;
 		this.AffEmp = new ArrayList<>();
+		setDateFinRelle(duree);
+		
 	}
 	
 	/**
@@ -157,6 +159,28 @@ public abstract class MissionAbstract extends CSVEntity {
 		}
 	}
 	
+	public void setDateFinRelle(int duree) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(this.dateDebut);
+		cal.add(Calendar.DATE, duree);
+		this.dateFinReelle = cal.getTime();
+	}
+	
+	public void setDateFinRelle(Date date) {
+		this.dateFinReelle = date;
+	}
+	
+	public boolean enRetard() {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(this.dateDebut);
+		cal.add(Calendar.DATE, duree);
+		Date dateFinPrev = cal.getTime();
+		return dateFinReelle.compareTo(dateFinPrev) >= 0;
+	}
+	
+	public Date getDateFinReelle() {
+		return dateFinReelle;
+	}
  
 	
 

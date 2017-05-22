@@ -43,8 +43,8 @@ public class CSVObjectDeleter<E extends CSVEntity> {
 				.getByID(rID)
 				.getReferencedObjects();
 		boolean removed = rReferencedObjects.get(e.getClass()).remove(e);
-		if (!removed)
-			throw new CSVUpdateException("dissociateObject fail");
+		// if (!removed)
+		// throw new CSVUpdateException("dissociateObject fail");
 		
 	}
 	

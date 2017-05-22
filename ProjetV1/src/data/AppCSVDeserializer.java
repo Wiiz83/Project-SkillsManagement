@@ -54,16 +54,7 @@ public class AppCSVDeserializer implements CSVDeserializer {
 		}
 	}
 	
-	private MissionFormation MissionFormation(CSVLine line)
-			throws NumberFormatException, ParseException, InvalidDataException {
-		MissionFormation formation = new MissionFormation(line.get(1), dateformatter.parse(line.get(2)), Integer.parseInt(line.get(3)),
-				Integer.parseInt(line.get(4))
-		);
-		formation.setCsvID(line.get(0));
-		if (line.get(5).equals("true"))
-			formation.planifier();
-		return formation;
-	}
+
 	
 	private Language Languages(CSVLine line) throws InvalidDataException {
 		Language l = new Language(line.get(1), line.get(2));
@@ -113,6 +104,19 @@ public class AppCSVDeserializer implements CSVDeserializer {
 		if (line.get(6).equals("true"))
 			m.planifier();
 		return m;
+	}
+	
+	private MissionFormation MissionFormation(CSVLine line)
+			throws NumberFormatException, ParseException, InvalidDataException {
+		MissionFormation formation = new MissionFormation(
+				line.get(1), dateformatter.parse(line.get(2)), Integer.parseInt(line.get(3)),
+				Integer.parseInt(line.get(4))
+		);
+		formation.setCsvID(line.get(0));
+		formation.setDateFinRelle(dateformatter.parse(line.get(5)));
+		if (line.get(6).equals("true"))
+			formation.planifier();
+		return formation;
 	}
 	
 }

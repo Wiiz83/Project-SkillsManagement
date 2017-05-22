@@ -1,7 +1,6 @@
 package models;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import csv.CSVEntity;
@@ -10,7 +9,6 @@ public class Mission extends MissionAbstract implements Cloneable {
 	
 	private static final long					serialVersionUID	= -6014131798059503343L;
 	private ArrayList<CompetenceRequirement>	CompReq;
-	protected Date								dateFinReelle;
 	
 	/**
 	 * @param nomM
@@ -21,7 +19,6 @@ public class Mission extends MissionAbstract implements Cloneable {
 	public Mission(String nomM, Date dateDebut, int duree, int nbPersReq) {
 		super(nomM, dateDebut, duree, nbPersReq);
 		this.CompReq = new ArrayList<>();
-		setDateFinRelle(duree);
 	}
 	
 	/**
@@ -29,29 +26,7 @@ public class Mission extends MissionAbstract implements Cloneable {
 	 * @return ajoute une compétence a la mission (true si réussi false si echec
 	 *         de l'ajout
 	 */
-	public void setDateFinRelle(int duree) {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(this.dateDebut);
-		cal.add(Calendar.DATE, duree);
-		this.dateFinReelle = cal.getTime();
-	}
-	
-	public void setDateFinRelle(Date date) {
-		this.dateFinReelle = date;
-	}
-	
-	public boolean enRetard() {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(this.dateDebut);
-		cal.add(Calendar.DATE, duree);
-		Date dateFinPrev = cal.getTime();
-		return dateFinReelle.compareTo(dateFinPrev) >= 0;
-	}
-	
 
-	public Date getDateFinReelle() {
-		return dateFinReelle;
-	}
 	
 	public boolean addCompetenceReq(CompetenceRequirement cr) {
 		return CompReq.add(cr);
