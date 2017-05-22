@@ -84,6 +84,7 @@ public class MissionFormation extends MissionAbstract {
 	
 	/**
 	 * Méthode pour attribution des compétences aux employés a la fin de la formation
+	 * on check les employés, ensuite les compétences, si l'employé ne l'a pas déjà on lui ajoute
 	 */
 	public void giveCompetences(){
 		for(Employee e : this.getAffEmp()){
