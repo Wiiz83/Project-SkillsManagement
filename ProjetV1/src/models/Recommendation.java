@@ -57,7 +57,9 @@ public class Recommendation {
 		}
 	}
 
-	public void newRecommendation() {
+	
+	//Nouvel algo pour les recommendations sur la base d'un check des compétences requises qu'il a sur le total de ses comps
+	public void newRecommendation() { //On retourne un poucentage de recommendation pour ne pas gacher une personne avec bcp de comps 
 		int totalComp = 0;
 		int totalCompHad = 0;
 		deleteAff();
@@ -73,7 +75,7 @@ public class Recommendation {
 					totalCompHad++;
 				}
 			}
-			double temp = totalCompHad;
+			double temp = totalCompHad; //Décomposition des calculs du pourcentage (Sinon erreur)
 			temp = temp / totalComp;
 			temp = temp * 100;
 			int finalLevel = (int) Math.round(temp); 
