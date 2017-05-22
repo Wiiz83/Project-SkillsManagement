@@ -125,6 +125,13 @@ public class CSVObjects<E extends CSVEntity> {
 		config.getCSVCache().getCache(entityClass).remove(e.csvID());
 	}
 	
+	public void deleteByID(String ID) throws CSVException {
+		E obj = getByID(ID);
+		if (obj == null)
+			throw new CSVException("Object to delete by ID not found : ID:" + ID);
+		delete(obj);
+	}
+	
 	/**
 	 * Supprime un objet puis le rajoute.
 	 * 
@@ -269,5 +276,6 @@ public class CSVObjects<E extends CSVEntity> {
 	public String toString() {
 		return "CSVObjects [doc=" + doc + ", entityClass=" + entityClass + "]";
 	}
+
 	
 }

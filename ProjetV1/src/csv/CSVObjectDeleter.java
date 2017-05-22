@@ -43,11 +43,6 @@ public class CSVObjectDeleter<E extends CSVEntity> {
 				.getByID(rID)
 				.getReferencedObjects();
 		rReferencedObjects.get(e.getClass()).remove(e);
-		if (rClass.getSuperclass() == CSVAssociationObject.class) {
-			// rCSVObjects.delete(rCSVObjects.getByID(rID));
-		}
-
-		
 	}
 	
 	private void deleteReferencesToObject(E e) throws IOException, CSVUpdateException, CSVException {
@@ -78,6 +73,12 @@ public class CSVObjectDeleter<E extends CSVEntity> {
 				}
 			}
 			for (Entry<String, CSVLine> entry : modifiedLines.entrySet()) {
+				if (N.getSuperclass() == CSVAssociationObject.class) {
+					CSVObjects<? extends CSVEntity> AssocObjects = new CSVObjects<>(N, config);
+					AssocObjects.deleteByID(entry.getKey());
+					break;
+				}
+				
 				if (entry.getValue().size() == 1)
 					assocDoc.removeLine(entry.getKey());
 				else
