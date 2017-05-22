@@ -2,11 +2,15 @@ package gui;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import models.*;
 
@@ -340,7 +344,14 @@ public class JTables {
 		table.getColumnModel().getColumn(3).setWidth(0);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setAutoCreateRowSorter(true);
-		table.getRowSorter().toggleSortOrder(0);
+		//table.getRowSorter().toggleSortOrder(2);
+		
+		TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel());
+		table.setRowSorter(sorter);
+		List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+		sortKeys.add(new RowSorter.SortKey(2, SortOrder.DESCENDING));
+		sorter.setSortKeys(sortKeys);
+		
 		return table;
 	}
 	

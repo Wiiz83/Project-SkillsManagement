@@ -13,11 +13,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 import data.DataException;
 import gui.GenericTableModel;
 import gui.JTables;
 import gui.ProgramFrame;
+import models.CompetenceRequirement;
 import models.Employee;
 import models.Mission;
 import models.Recommendation;
@@ -31,6 +33,7 @@ public class MissionsAddEmploye {
 	ArrayList<Employee> listeEmp;
 	Missions pageMissions;
 	GenericTableModel<Employee>	mJTablePoss;
+	JTable empNonPoss;
 	
 	public MissionsAddEmploye(Mission missionEnCours, ArrayList<Employee> listeEmp, Missions pageMissions, GenericTableModel mJTablePoss) {
 		this.missionEnCours = missionEnCours;
@@ -64,7 +67,8 @@ public class MissionsAddEmploye {
 		recommandation.newRecommendation();
 
 		ArrayList<Employee> listEmpNonPoss = recommandation.getEmpRec();
-		JTable empNonPoss = JTables.Recommendation(recommandation);
+		this.empNonPoss = JTables.Recommendation(recommandation);
+		
 		empNonPoss.setFillsViewportHeight(true);
 		JScrollPane js = new JScrollPane(empNonPoss);
 		js.setVisible(true);
@@ -80,6 +84,11 @@ public class MissionsAddEmploye {
 			public void actionPerformed(ActionEvent e) {
 				int rowIndex = empNonPoss.getSelectedRow();
 				Employee emp = (Employee) empNonPoss.getValueAt(rowIndex, 3);
+			
+				listeEmp.remove(emp);
+				DefaultTableModel tm = (DefaultTableModel) JTables.Recommendation(recommandation).getModel();
+				tm.fireTableDataChanged();
+
 				missionEnCours.affectEmployee(emp);
 				mJTablePoss.fireTableDataChanged();
 				int modelRow = empNonPoss.convertRowIndexToModel(rowIndex);

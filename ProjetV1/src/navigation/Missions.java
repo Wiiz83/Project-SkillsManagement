@@ -394,8 +394,7 @@ public class Missions extends Formulaire {
 		this.statut.addItem(Status.PREPARATION);
 		this.mJTableEmployes = (GenericTableModel<Employee>) JTables.Employes(new ArrayList<Employee>()).getModel();
 		this.JTableEmployes.setModel(mJTableEmployes);
-		this.mJTableCompetences = (GenericTableModel<CompetenceRequirement>) JTables
-				.CompetencesRequises(new ArrayList<CompetenceRequirement>()).getModel();
+		this.mJTableCompetences = (GenericTableModel<CompetenceRequirement>) JTables.CompetencesRequises(new ArrayList<CompetenceRequirement>()).getModel();
 		this.JTableCompetences.setModel(mJTableCompetences);
 	}
 	
@@ -464,7 +463,10 @@ public class Missions extends Formulaire {
 	}
 	
 	public void updateCompReq() {
-		mJTableCompetences.fireTableDataChanged();
+		ArrayList<CompetenceRequirement> listCompMiss = missionEnCours.getCompReq();
+		this.mJTableCompetences = (GenericTableModel<CompetenceRequirement>) JTables.CompetencesRequises(listCompMiss).getModel();
+		this.JTableCompetences.setModel(mJTableCompetences);
+		this.mJTableCompetences.fireTableDataChanged();
 	}
 	
 	/*
@@ -524,7 +526,7 @@ public class Missions extends Formulaire {
 	}
 	
 	/*
-	 * TODO ENREGISTRER : Enregistrement de la mission
+	 * ENREGISTRER : Enregistrement de la mission
 	 */
 	public void Enregistrer() {
 		if ((this.dateD.getText().equals("")) || (this.duree.getText().equals("")) || (this.nombre.getText().equals(""))
@@ -548,7 +550,7 @@ public class Missions extends Formulaire {
 			String nom = this.nom.getText();
 			ArrayList<Employee> presentEmployes = mJTableEmployes.getArraylist();
 			ArrayList<CompetenceRequirement> presentCompetences = mJTableCompetences.getArraylist();
-			
+
 			missionEnCours.setDateDebut(dateD);
 			missionEnCours.setDuree(duree);
 			missionEnCours.setNbPersReq(nb);
