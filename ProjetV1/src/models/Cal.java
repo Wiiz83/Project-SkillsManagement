@@ -40,7 +40,7 @@ public class Cal {
 				
 				String[] Split = new String[3];
 				Split = st.split(";"); //On récupère les valeurs (année, mois, jour) du fichier
-				today.set(Integer.parseInt(Split[0]), Integer.parseInt(Split[1]), Integer.parseInt(Split[2]));
+				today.set(Integer.parseInt(Split[0]), Integer.parseInt(Split[1]) - 1, Integer.parseInt(Split[2]));
 				if (print) {
 					print = false;
 					System.out.println("Temps: " + today.getTime());
