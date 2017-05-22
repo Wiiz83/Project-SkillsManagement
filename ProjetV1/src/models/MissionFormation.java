@@ -11,6 +11,29 @@ public class MissionFormation extends MissionAbstract {
 	private static final long		serialVersionUID	= 4395319872170806127L;
 	private ArrayList<Competence>	Competences;
 	
+	@Override
+	public Status getStatus() {
+		
+		if (Cal.today().compareTo(getDateFin()) > 0) {
+			this.giveCompetences();
+			return Status.TERMINEE; // Vérification de si la mission est
+									// terminée puis retour
+		}
+		if (AffEmp.size() >= nbPersReq || forcer_planification)
+			if (Cal.today().compareTo(dateDebut) > 0) {
+				return Status.EN_COURS; // Vérification de si la mission est
+										// commencée puis retour
+			} else {
+				return Status.PLANIFIEE; // Vérification de si la mission est
+											// planifiée mais non commencée puis
+											// retour
+			}
+		else
+			return Status.PREPARATION; // Si aucun des états précédents ne
+										// correspond alors la mission est
+										// encore en préparation
+	}
+	
 	public MissionFormation(String nomM, Date dateDebut, int duree, int nbPersReq) {
 		super(nomM, dateDebut, duree, nbPersReq);
  	}
