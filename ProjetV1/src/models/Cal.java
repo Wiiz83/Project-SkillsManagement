@@ -19,7 +19,7 @@ public class Cal {
 		Calendar today = Calendar.getInstance();
 		FileReader file;
 		try {
-			file = new FileReader("date.txt");
+			file = new FileReader("./ressources/fichiers/date.txt");
 			BufferedReader bf = new BufferedReader(file); //Test sur le fichier pour les tests
 			today.clear(Calendar.HOUR);
 			today.clear(Calendar.MINUTE);
@@ -34,7 +34,7 @@ public class Cal {
 				
 				String[] Split = new String[3];
 				Split = st.split(";"); //On récupère les valeurs (année, mois, jour) du fichier
-				today.set(Integer.parseInt(Split[1]), Integer.parseInt(Split[2]), Integer.parseInt(Split[3]));
+				today.set(Integer.parseInt(Split[0]), Integer.parseInt(Split[1]), Integer.parseInt(Split[2]));
 				
 				return today.getTime(); //Return de la valeur du calendar
 			}else{

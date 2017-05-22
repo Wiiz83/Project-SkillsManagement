@@ -3,6 +3,7 @@ package models;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import csv.CSVAssociationObject;
 import csv.CSVEntity;
 import csv.InvalidDataException;
 
@@ -10,7 +11,7 @@ import csv.InvalidDataException;
  * Représente une compétence et le nombre d'employés nécessaires pour cette
  * compétence dans une mission
  */
-public class CompetenceRequirement extends CSVEntity {
+public class CompetenceRequirement extends CSVAssociationObject {
 	/**
 	 * 
 	 */

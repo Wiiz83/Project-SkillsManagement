@@ -42,9 +42,11 @@ public class CSVObjectDeleter<E extends CSVEntity> {
 		HashMap<Class<? extends CSVEntity>, ArrayList<? extends CSVEntity>> rReferencedObjects = rCSVObjects
 				.getByID(rID)
 				.getReferencedObjects();
-		boolean removed = rReferencedObjects.get(e.getClass()).remove(e);
-		// if (!removed)
-		// throw new CSVUpdateException("dissociateObject fail");
+		rReferencedObjects.get(e.getClass()).remove(e);
+		if (rClass.getSuperclass() == CSVAssociationObject.class) {
+			// rCSVObjects.delete(rCSVObjects.getByID(rID));
+		}
+
 		
 	}
 	
@@ -53,6 +55,7 @@ public class CSVObjectDeleter<E extends CSVEntity> {
 		for (Class<? extends CSVEntity> N : model.Metadata().getReferencingEntities(e.getClass())) {
 			if (N == null)
 				continue;
+			
 			CSVAssociation assoc = new CSVAssociation(N, e.getClass());
 			CSVDocument assocDoc = config.getDocument(assoc);
 			
