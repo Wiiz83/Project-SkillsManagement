@@ -36,9 +36,9 @@ public class Cal {
 				Split = st.split(";"); //On récupère les valeurs (année, mois, jour) du fichier
 				today.set(Integer.parseInt(Split[1]), Integer.parseInt(Split[2]), Integer.parseInt(Split[3]));
 				
-				return today.getTime();
+				return today.getTime(); //Return de la valeur du calendar
 			}else{
-				return today.getTime();
+				return today.getTime(); //Return de la valeur du calendar
 			}
 		} catch (FileNotFoundException e) {
 			
