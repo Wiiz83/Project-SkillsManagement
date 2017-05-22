@@ -41,7 +41,7 @@ public class MissionsAddEmploye {
 	
 	
 	public void displayGUI(){
-		this.frame = new JFrame("Modification d'une compétence requise pour une mission");
+		this.frame = new JFrame("Modification des employés de la mission");
 		frame.setSize(500, 550);
 		frame.setResizable(false);
 		frame.setLocation(150, 20);
