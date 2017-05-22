@@ -73,7 +73,9 @@ public class Recommendation {
 					totalCompHad++;
 				}
 			}
-			double temp = totalCompHad/totalComp * 100;
+			double temp = totalCompHad;
+			temp = temp / totalComp;
+			temp = temp * 100;
 			int finalLevel = (int) Math.round(temp); 
 			this.RLevel[e.getID()] = finalLevel;
 		}

@@ -63,7 +63,7 @@ public class FormationsEditCompetence implements ActionListener {
 		
 		JFrame frame = new JFrame();
 		frame.setSize(800, 400);
-		frame.setTitle("Gestion des listes d'éléments");
+		frame.setTitle("Modification des compétences d'une formation");
 		frame.setResizable(false);
 		frame.setLocation(5, 5);
         frame.addWindowListener(new WindowAdapter() {

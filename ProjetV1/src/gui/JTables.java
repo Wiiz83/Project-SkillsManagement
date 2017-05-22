@@ -313,7 +313,7 @@ public class JTables {
 				case 1: 
 					return recom.getEmpRec().get(row).getName();
 				case 2: 
-					return recom.getLevel(recom.getEmpRec().get(row).getID());
+					return recom.getLevel(recom.getEmpRec().get(row).getID())+ " %";
 				case 3: 
 					return recom.getEmpRec().get(row);
 				default:
