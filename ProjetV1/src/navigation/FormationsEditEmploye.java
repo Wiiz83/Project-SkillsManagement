@@ -57,15 +57,7 @@ public class FormationsEditEmploye implements ActionListener {
 		this.ElementNonPoss.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.mJTableNonPoss = nonPossModel;
 		this.mJTablePoss = PossModel;
-		
-		TableRowSorter<TableModel> sorter1 = new TableRowSorter<TableModel>(ElementPoss.getModel());
-		ElementPoss.setRowSorter(sorter1);
-		TableRowSorter<TableModel> sorter2 = new TableRowSorter<TableModel>(ElementNonPoss.getModel());
-		ElementNonPoss.setRowSorter(sorter2);
-		List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
-		sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
-		sorter1.setSortKeys(sortKeys);
-		sorter2.setSortKeys(sortKeys);
+
 	}
 	
 	public void displayGUI(){
