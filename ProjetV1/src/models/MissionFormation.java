@@ -14,6 +14,7 @@ public class MissionFormation extends MissionAbstract {
 	
 	public MissionFormation(String nomM, Date dateDebut, int duree, int nbPersReq) {
 		super(nomM, dateDebut, duree, nbPersReq);
+		Competences = new ArrayList<Competence>();
  	}
 	
 	public void addCompetence(Competence c) {
