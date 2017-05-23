@@ -70,8 +70,8 @@ public class Program {
 				for(Competence c : formation.getCompetences()){
 					if(!e.getCompetences().contains(c)){
 						e.addCompetence(c);
-						data.Employes().modifier(e);
 					}
+					data.Employes().modifier(e);
 				}
 			}
 		}
