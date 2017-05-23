@@ -137,7 +137,7 @@ public class Formations extends Formulaire {
 		add(this.filtre);
 		JTableFormations.setRowSorter(rowSorter);
 
-		Titre titre = new Titre(" Détails de la mission :");
+		Titre titre = new Titre(" Détails de la formation :");
 		titre.setBounds(330, 10, 930, 20);
 		add(titre);
 

@@ -169,7 +169,7 @@ public class JTables {
 				case 0:
 					return mis.getNomM();
 				case 1:
-					return mis.getDateDebut();
+					return mis.getLocalDate();
 				case 2:
 					return mis.getStatus();
 				default:
