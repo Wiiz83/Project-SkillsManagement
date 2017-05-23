@@ -6,12 +6,14 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -20,6 +22,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -458,9 +462,8 @@ public class Missions extends Formulaire {
 	
 	private void updateMissionStatus() {
 		Status selected = (Status) statut.getSelectedItem();
-		Mission mission = missionEnCours;
-		if (selected == Status.PLANIFIEE && mission.getStatus() == Status.PREPARATION)
-			mission.planifier();
+		if (selected == Status.PLANIFIEE && missionEnCours.getStatus() == Status.PREPARATION)
+			missionEnCours.planifier();
 	}
 	
 	public void updateCompReq() {
@@ -622,7 +625,10 @@ public class Missions extends Formulaire {
 				        	missionEnCours.setDateFinRelle(DateDeFin);
 				        	try {
 								data.Missions().modifier(missionEnCours);
-								AffichageSelection();
+								this.mJTableMissions.fireTableDataChanged();
+								updateMissionStatus();
+								updateComboBox();
+								
 							} catch (DataException e) {
 								e.printStackTrace();
 							}
@@ -694,6 +700,14 @@ public class Missions extends Formulaire {
 		try {
 			ProgramFrame.getFrame().setEnabled(false);
 			frame = new MissionsAddCompetence(data, this.missionEnCours, this);
+			frame.setTitle("Ajout de compétences");
+			frame.setResizable(false);
+			try {
+				Image iconImage = ImageIO.read(getClass().getResourceAsStream("/images/icon.png"));
+				frame.setIconImage(iconImage);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 	        frame.addWindowListener(new WindowAdapter() {
 	            public void windowClosing(WindowEvent we) {
 	            	ProgramFrame.getFrame().setEnabled(true);
