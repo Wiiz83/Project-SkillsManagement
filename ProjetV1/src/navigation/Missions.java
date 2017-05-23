@@ -540,6 +540,7 @@ public class Missions extends Formulaire {
 		} else {
 			
 			updateMissionStatus();
+			updateComboBox();
 			
 			ZonedDateTime zdt = this.dateD.getDate().atStartOfDay(ZoneId.systemDefault());
 			Instant instant = zdt.toInstant();
@@ -590,8 +591,7 @@ public class Missions extends Formulaire {
 	 */
 	public void Modifier() {
 		this.missionEnCours = getMissionSelected();
-		 
-
+		
 	 
 		if (missionEnCours != null) {
 			cloned = (Mission) missionEnCours.clone();
@@ -640,6 +640,7 @@ public class Missions extends Formulaire {
 	 */
 	public void Annuler() {
 		this.missionEnCours = null;
+		updateComboBox();
 		
 		switch (this.mode) {
 		case "nouveau":
