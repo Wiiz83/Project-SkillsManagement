@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -41,6 +43,7 @@ import gui.Formulaire;
 import gui.GenericTableModel;
 import gui.HintTextField;
 import gui.JTables;
+import gui.ProgramFrame;
 import gui.RechercheJTable;
 import gui.Titre;
 import models.CompetenceRequirement;
@@ -458,9 +461,6 @@ public class Missions extends Formulaire {
 		Mission mission = missionEnCours;
 		if (selected == Status.PLANIFIEE && mission.getStatus() == Status.PREPARATION)
 			mission.planifier();
-		if (selected == Status.PREPARATION && mission.getForcer_planification()
-				&& mission.getStatus() == Status.PLANIFIEE)
-			mission.deplanifier();
 	}
 	
 	public void updateCompReq() {
@@ -521,6 +521,7 @@ public class Missions extends Formulaire {
 	 * NOUVEAU : Création d'une nouvelle mission
 	 */
 	public void Nouveau() {
+		JTableMissions.getSelectionModel().clearSelection();
 		this.missionEnCours = new Mission("", models.Cal.today(), 0, 0);
 		VideChamps();
 		ChargementModification();
@@ -539,17 +540,16 @@ public class Missions extends Formulaire {
 			);
 		} else {
 			
-			updateMissionStatus();
-			updateComboBox();
-			
 			ZonedDateTime zdt = this.dateD.getDate().atStartOfDay(ZoneId.systemDefault());
 			Instant instant = zdt.toInstant();
 			java.util.Date dateD = java.util.Date.from(instant);
 			
 			String strDuree = this.duree.getText().replaceAll("\\D+", "");
 			int duree = Integer.parseInt(strDuree);
+			
 			String strNombre = this.nombre.getText().replaceAll("\\D+", "");
 			int nb = Integer.parseInt(strNombre);
+			
 			String nom = this.nom.getText();
 			ArrayList<Employee> presentEmployes = mJTableEmployes.getArraylist();
 			ArrayList<CompetenceRequirement> presentCompetences = mJTableCompetences.getArraylist();
@@ -561,9 +561,11 @@ public class Missions extends Formulaire {
 			missionEnCours.setAffEmp(presentEmployes);
 			missionEnCours.setCompReq(presentCompetences);
 			
+			
 			switch (this.mode) {
 			case "nouveau":
 				try {
+					missionEnCours.resetDateFinReelle();
 					data.Missions().ajouter(missionEnCours);
 					this.mJTableMissions.addRowObject(missionEnCours);
 					this.mJTableMissions.fireTableDataChanged();
@@ -583,6 +585,9 @@ public class Missions extends Formulaire {
 				}
 				break;
 			}
+			
+			updateMissionStatus();
+			updateComboBox();
 		}
 	}
 	
@@ -687,8 +692,14 @@ public class Missions extends Formulaire {
 	public void AjouterCompetence() {
 		JFrame frame;
 		try {
+			ProgramFrame.getFrame().setEnabled(false);
 			frame = new MissionsAddCompetence(data, this.missionEnCours, this);
-			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	        frame.addWindowListener(new WindowAdapter() {
+	            public void windowClosing(WindowEvent we) {
+	            	ProgramFrame.getFrame().setEnabled(true);
+	            	frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		        }
+		    });
 			frame.pack();
 			frame.setVisible(true);
 		} catch (HeadlessException | DataException e1) {
@@ -700,6 +711,7 @@ public class Missions extends Formulaire {
 		CompetenceRequirement compSelect = getCompetenceSelected();
 		if (compSelect != null) {
 			int rowIndex = this.JTableCompetences.getSelectedRow();
+			ProgramFrame.getFrame().setEnabled(false);
 			MissionsEditCompetence fel = new MissionsEditCompetence(rowIndex, JTableCompetences, compSelect, this);
 			fel.displayGUI();
 		}
@@ -731,6 +743,7 @@ public class Missions extends Formulaire {
 					absentEmployes.remove(emp);
 				}
 			}
+			ProgramFrame.getFrame().setEnabled(false);
 			missionEnCours.setAffEmp(presentEmployes);
 			MissionsAddEmploye fel = new MissionsAddEmploye(missionEnCours, absentEmployes, this, mJTableEmployes);
 			fel.displayGUI();

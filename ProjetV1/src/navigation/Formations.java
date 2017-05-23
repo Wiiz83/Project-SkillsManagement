@@ -49,6 +49,7 @@ import gui.RechercheJTable;
 import gui.Titre;
 import models.Competence;
 import models.Employee;
+import models.Mission;
 import models.MissionFormation;
 import models.Status;
 
@@ -320,7 +321,8 @@ public class Formations extends Formulaire {
 		dateDeFinPrevue.setText("");
 		dateDeFinReelle.setText("");
 		this.nombre.setText("");
-		this.statut.addItem(Status.PREPARATION);
+		statut.removeAllItems();
+		statut.addItem(Status.PREPARATION);
 		this.mJTableEmployes = (GenericTableModel<Employee>) JTables.Employes(new ArrayList<Employee>()).getModel();
 		this.JTableEmployes.setModel(mJTableEmployes);
 		this.mJTableCompetences = (GenericTableModel<Competence>) JTables.Competences(new ArrayList<Competence>())
@@ -340,45 +342,64 @@ public class Formations extends Formulaire {
 			return null;
 		}
 	}
+	
+	void updateComboBox() {
+		statut.removeAllItems();
+		if (formationEnCours == null)
+			return;
+		statut.addItem(formationEnCours.getStatus());
+		if (formationEnCours.getStatus() == Status.PREPARATION)
+			statut.addItem(Status.PLANIFIEE);
+	}
+	
+	private void updateMissionStatus() {
+		Status selected = (Status) statut.getSelectedItem();
+		MissionFormation mission = formationEnCours;
+		if (selected == Status.PLANIFIEE && mission.getStatus() == Status.PREPARATION)
+			mission.planifier();
+	}
 
 	/**
 	 * Affichage des détails de la mission sélectionnée
 	 */
 	public void AffichageSelection() {
-		MissionFormation missSelect = getFormationSelected();
+		formationEnCours = getFormationSelected();
 
-		if (missSelect != null) {
-			this.nom.setText(missSelect.getNomM());
+		if (formationEnCours != null) {
+			this.nom.setText(formationEnCours.getNomM());
 
-			Date date = missSelect.getDateDebut();
+			Date date = formationEnCours.getDateDebut();
 			Instant instant = date.toInstant();
 			ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
 			LocalDate d = zdt.toLocalDate();
 			this.dateD.setDate(d);
 
-			this.duree.setText(Integer.toString(missSelect.getDuree()));
-			this.nombre.setText(Integer.toString(missSelect.getNbPersReq()));
-			this.statut.setSelectedItem(missSelect.getStatus());
+			this.duree.setText(Integer.toString(formationEnCours.getDuree()));
+			this.nombre.setText(Integer.toString(formationEnCours.getNbPersReq()));
 
-			if (missSelect.getStatus() == Status.TERMINEE) {
+			this.statut.setSelectedItem(formationEnCours.getStatus());
+
+			if (formationEnCours.getStatus() == Status.TERMINEE) {
 				this.dateDeFinReelle.setVisible(true);
 				SimpleDateFormat formatter = new SimpleDateFormat("EEEE dd MMM yyyy");
-				String sdateDeFinReelle = formatter.format(missSelect.getDateFinReelle());
+				String sdateDeFinReelle = formatter.format(formationEnCours.getDateFinReelle());
 				dateDeFinReelle.setText("Date de fin réelle le " + sdateDeFinReelle);
 			} else {
 				this.dateDeFinReelle.setVisible(false);
 			}
 			SimpleDateFormat formatter = new SimpleDateFormat("EEEE dd MMM yyyy");
-			String dateFinPrevue = formatter.format(missSelect.getDateFin());
+			String dateFinPrevue = formatter.format(formationEnCours.getDateFin());
 			dateDeFinPrevue.setText("Date de fin prévue le " + dateFinPrevue);
 
-			ArrayList<Competence> listCompMiss = missSelect.getCompetences();
+			ArrayList<Competence> listCompMiss = formationEnCours.getCompetences();
 			this.mJTableCompetences = (GenericTableModel<Competence>) JTables.Competences(listCompMiss).getModel();
 			this.JTableCompetences.setModel(mJTableCompetences);
 
-			ArrayList<Employee> listEmpMiss = missSelect.getAffEmp();
+			ArrayList<Employee> listEmpMiss = formationEnCours.getAffEmp();
 			this.mJTableEmployes = (GenericTableModel<Employee>) JTables.Employes(listEmpMiss).getModel();
 			this.JTableEmployes.setModel(mJTableEmployes);
+			
+			updateComboBox();
 		}
 	}
 
@@ -386,6 +407,7 @@ public class Formations extends Formulaire {
 	 * Création d'une nouvelle mission
 	 */
 	public void Nouveau() {
+		JTableFormations.getSelectionModel().clearSelection();
 		this.formationEnCours = new MissionFormation("", models.Cal.today(), 0, 0);
 		VideChamps();
 		super.ChargementModification();
@@ -403,6 +425,7 @@ public class Formations extends Formulaire {
 					JOptionPane.WARNING_MESSAGE);
 		} else {
 
+			
 			ZonedDateTime zdt = this.dateD.getDate().atStartOfDay(ZoneId.systemDefault());
 			Instant instant = zdt.toInstant();
 			java.util.Date dateD = java.util.Date.from(instant);
@@ -426,6 +449,7 @@ public class Formations extends Formulaire {
 			switch (this.mode) {
 			case "nouveau":
 				try {
+					formationEnCours.resetDateFinReelle();
 					data.Formations().ajouter(formationEnCours);
 					mJTableFormations.addRowObject(formationEnCours);
 					mJTableFormations.fireTableDataChanged();
@@ -445,6 +469,9 @@ public class Formations extends Formulaire {
 				}
 				break;
 			}
+			
+			updateMissionStatus();
+			updateComboBox();
 		}
 	}
 
@@ -475,6 +502,7 @@ public class Formations extends Formulaire {
 		this.formationEnCours = null;
 		VideChamps();
 		ChargementConsultation();
+		updateComboBox();
 	}
 
 	/**

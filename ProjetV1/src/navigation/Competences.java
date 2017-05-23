@@ -316,6 +316,7 @@ public class Competences extends Formulaire {
 	 * Création d'une nouvelle compétence
 	 */
 	public void Nouveau() {
+		JTableCompetences.getSelectionModel().clearSelection();
 		ArrayList<String> liste = new ArrayList<>();
 		for (int i = 0; i < langues.size(); i++) {
 			liste.add("");

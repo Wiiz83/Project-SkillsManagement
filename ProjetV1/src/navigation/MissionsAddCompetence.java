@@ -15,6 +15,7 @@ import data.Data;
 import data.DataException;
 import gui.GenericTableModel;
 import gui.JTables;
+import gui.ProgramFrame;
 import models.*;
 
 /**

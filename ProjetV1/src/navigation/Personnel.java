@@ -263,6 +263,7 @@ public class Personnel extends Formulaire {
 	 * Création d'un nouvel employé
 	 */
 	public void Nouveau() {
+		JTablePersonnel.getSelectionModel().clearSelection();
 		VideChamps();
 		super.ChargementModification();
 		this.mode = "nouveau";
