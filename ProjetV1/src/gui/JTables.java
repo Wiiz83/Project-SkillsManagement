@@ -25,7 +25,7 @@ public class JTables {
 	 * @return la jtable
 	 */
 	public static JTable Employes(ArrayList<Employee> employes) {
-		SimpleDateFormat dateformatter = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat dateformatter = new SimpleDateFormat("dd/MM/YYYY");
 		String[] headers = { "Nom", "Prénom", "Date d'entrée" };
 		@SuppressWarnings("serial")
 		TableModel dataModel = new GenericTableModel<Employee>(employes, headers) {

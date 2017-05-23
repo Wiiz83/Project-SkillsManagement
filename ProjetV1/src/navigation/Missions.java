@@ -526,6 +526,20 @@ public class Missions extends Formulaire {
 			this.mJTableEmployes = (GenericTableModel<Employee>) this.JTableEmployes.getModel();
 			this.mJTableCompetences = (GenericTableModel<CompetenceRequirement>) this.JTableCompetences.getModel();
 			
+			JTableEmployes.setAutoCreateRowSorter(true);
+			TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(JTableEmployes.getModel());
+			JTableEmployes.setRowSorter(sorter);
+			List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+			sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+			sorter.setSortKeys(sortKeys);
+			
+			JTableCompetences.setAutoCreateRowSorter(true);
+			TableRowSorter<TableModel> sorter2 = new TableRowSorter<TableModel>(JTableCompetences.getModel());
+			JTableCompetences.setRowSorter(sorter2);
+			List<RowSorter.SortKey> sortKeys2 = new ArrayList<>(25);
+			sortKeys2.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+			sorter2.setSortKeys(sortKeys2);
+			
 			updateComboBox();
 		}
 	}

@@ -349,6 +349,7 @@ public class Competences extends Formulaire {
 					"Vous devez renseigner au moins le code et le libellé français pour enregistrer.",
 					"Informations non renseignés", JOptionPane.WARNING_MESSAGE);
 		} else {
+			
 			try {
 				switch (this.mode) {
 				case "nouveau":
@@ -365,7 +366,17 @@ public class Competences extends Formulaire {
 						return;
 					}
 
-					data.Competences().ajouter(c);
+					try {
+						data.Competences().ajouter(c);
+					} catch (DataException ex) {
+						if (ex.getRootCause() instanceof csv.DuplicateIDException){
+							JOptionPane.showMessageDialog(new JFrame(), "Le code existe déjà. Veuillez en choisir un autre.",
+									"Code existant", JOptionPane.WARNING_MESSAGE);
+							return;
+						}
+							
+					}
+						
 					this.mJTableCompetences.addRowObject(c);
 					this.mJTableCompetences.fireTableDataChanged();
 
