@@ -1,7 +1,7 @@
 package csv;
 
 @SuppressWarnings("serial")
-public class CSVUpdateException extends Exception {
+public class CSVUpdateException extends CSVException {
 
 	public CSVUpdateException() {
 		super();
