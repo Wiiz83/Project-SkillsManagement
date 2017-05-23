@@ -1,9 +1,6 @@
 package models;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -128,11 +125,10 @@ public abstract class MissionAbstract extends CSVEntity {
 		return dateDebut;
 	}
 	
-	public LocalDate getLocalDate() {
-		Instant instant = dateDebut.toInstant();
-		ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
-		LocalDate d = zdt.toLocalDate();
-		return d;
+	public String getDateDebutToString() {
+		SimpleDateFormat	MissionDateFormat	= new SimpleDateFormat("dd/MM/yyyy");
+		String dateDebutString = MissionDateFormat.format(dateDebut);
+		return dateDebutString;
 	}
 	
 	public void setDateDebut(Date dateDebut) {
