@@ -628,7 +628,7 @@ public class Missions extends Formulaire {
 								this.mJTableMissions.fireTableDataChanged();
 								updateMissionStatus();
 								updateComboBox();
-								
+								VideChamps();
 							} catch (DataException e) {
 								e.printStackTrace();
 							}
