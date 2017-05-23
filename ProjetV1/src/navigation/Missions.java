@@ -617,6 +617,7 @@ public class Missions extends Formulaire {
 				        	missionEnCours.setDateFinRelle(DateDeFin);
 				        	try {
 								data.Missions().modifier(missionEnCours);
+								AffichageSelection();
 							} catch (DataException e) {
 								e.printStackTrace();
 							}
