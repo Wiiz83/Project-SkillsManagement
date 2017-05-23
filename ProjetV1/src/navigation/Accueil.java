@@ -61,7 +61,7 @@ public class Accueil extends JPanel {
 
 		JTable tableMEC = new JTable();
 		try {
-			tableMEC = JTables.Missions(data.Missions().AvecStatus(Status.EN_COURS));
+			tableMEC = JTables.MissionsAccueil(data.Missions().AvecStatus(Status.EN_COURS));
 		} catch (DataException e) {
 			e.printStackTrace();
 		}
@@ -81,7 +81,7 @@ public class Accueil extends JPanel {
 
 		JTable tableMAV = new JTable();
 		try {
-			tableMAV = JTables.Missions(data.Missions().duMois());
+			tableMAV = JTables.MissionsAccueil(data.Missions().duMois());
 		} catch (DataException e) {
 			e.printStackTrace();
 		}

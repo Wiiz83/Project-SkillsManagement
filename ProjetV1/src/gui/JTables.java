@@ -190,6 +190,48 @@ public class JTables {
 		return table;
 	}
 	
+	/**
+	 * @param missions la liste de missions
+	 * @return la jtable
+	 */
+	public static <E extends MissionAbstract> JTable MissionsAccueil(ArrayList<E> missions) {
+		String[] headers = { "Nom", "Date de début", "Date de fin", "Statut" };
+		@SuppressWarnings("serial")
+		TableModel dataModel = new GenericTableModel<E>(missions, headers) {
+			
+			  public boolean isCellEditable(int rowIndex, int mColIndex) {
+			        return false;
+			  }
+			
+			public Object getValueAt(int row, int col) {
+				E mis = missions.get(row);
+				switch (col) {
+				case 0:
+					return mis.getNomM();
+				case 1:
+					return mis.getDateDebutToString();
+				case 2:
+					return mis.getDateFinToString();
+				case 3:
+					return mis.getStatus();
+				default:
+					System.out.println("Missions JTable access ");
+					break;
+				}
+				return missions;
+			}
+		};
+		JTable table = new JTable(dataModel);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setAutoCreateRowSorter(true);
+		TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel());
+		table.setRowSorter(sorter);
+		List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+		sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+		sorter.setSortKeys(sortKeys);
+		return table;
+	}
+	
 	
 
 	

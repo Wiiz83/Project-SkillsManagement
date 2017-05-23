@@ -181,6 +181,12 @@ public abstract class MissionAbstract extends CSVEntity {
 	public Date getDateFinReelle() {
 		return dateFinReelle;
 	}
+	
+	public String getDateFinToString() {
+		SimpleDateFormat	MissionDateFormat	= new SimpleDateFormat("dd/MM/yyyy");
+		String dateFinString = MissionDateFormat.format(dateFinReelle);
+		return dateFinString;
+	}
  
 	
 }
