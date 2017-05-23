@@ -564,6 +564,7 @@ public class Missions extends Formulaire {
 			missionEnCours.setAffEmp(presentEmployes);
 			missionEnCours.setCompReq(presentCompetences);
 			
+			updateMissionStatus();
 			
 			switch (this.mode) {
 			case "nouveau":
@@ -588,8 +589,7 @@ public class Missions extends Formulaire {
 				}
 				break;
 			}
-			
-			updateMissionStatus();
+		
 			updateComboBox();
 		}
 	}
