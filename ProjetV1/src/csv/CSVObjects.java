@@ -74,7 +74,7 @@ public class CSVObjects<E extends CSVEntity> {
 		}
 		try {
 			if (getByID(e.csvID()) != null) {
-				throw new InvalidCSVException("Object with ID= " + e.csvID() + " already exists in " + doc.getPath());
+				throw new DuplicateIDException(e.csvID(), doc.getPath());
 			}
 		} catch (NumberFormatException e1) {
 			throw new CSVException(e1);
