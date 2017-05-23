@@ -391,7 +391,8 @@ public class Missions extends Formulaire {
 		dateDeFinPrevue.setText("");
 		dateDeFinReelle.setText("");
 		this.nombre.setText("");
-		this.statut.addItem(Status.PREPARATION);
+		statut.removeAllItems();
+		statut.addItem(Status.PREPARATION);
 		this.mJTableEmployes = (GenericTableModel<Employee>) JTables.Employes(new ArrayList<Employee>()).getModel();
 		this.JTableEmployes.setModel(mJTableEmployes);
 		this.mJTableCompetences = (GenericTableModel<CompetenceRequirement>) JTables.CompetencesRequises(new ArrayList<CompetenceRequirement>()).getModel();
