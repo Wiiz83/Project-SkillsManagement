@@ -36,7 +36,7 @@ public abstract class MissionAbstract extends CSVEntity {
 	 */
 	public Status getStatus() {
 		
-		if (Cal.today().compareTo(getDateFin()) > 0) {
+		if (Cal.today().compareTo(getDateFinReelle()) > 0) {
 			return Status.TERMINEE; // Vérification de si la mission est
 									// terminée puis retour
 		}
