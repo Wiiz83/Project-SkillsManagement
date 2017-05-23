@@ -473,38 +473,39 @@ public class Missions extends Formulaire {
 	 * Affichage des détails de la mission sélectionnée
 	 */
 	public void AffichageSelection() {
-		Mission missSelect = getMissionSelected();
+		missionEnCours = getMissionSelected();
 		
-		if (missSelect != null) {
-			this.nom.setText(missSelect.getNomM());
+		
+		if (missionEnCours != null) {
+			this.nom.setText(missionEnCours.getNomM());
 			
-			Date date =  missSelect.getDateDebut();
+			Date date =  missionEnCours.getDateDebut();
 			Instant instant = date.toInstant();
 			ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
 			LocalDate d = zdt.toLocalDate();
 			this.dateD.setDate(d);
 
-			this.duree.setText(Integer.toString(missSelect.getDuree()));
-			this.nombre.setText(Integer.toString(missSelect.getNbPersReq()));
-			this.statut.setSelectedItem(missSelect.getStatus());
+			this.duree.setText(Integer.toString(missionEnCours.getDuree()));
+			this.nombre.setText(Integer.toString(missionEnCours.getNbPersReq()));
+			this.statut.setSelectedItem(missionEnCours.getStatus());
 
-			if(missSelect.getStatus() == Status.TERMINEE){
+			if(missionEnCours.getStatus() == Status.TERMINEE){
 				this.dateDeFinReelle.setVisible(true);
 			    SimpleDateFormat formatter = new SimpleDateFormat("EEEE dd MMM yyyy");
-			    String sdateDeFinReelle = formatter.format(missSelect.getDateFinReelle());
+			    String sdateDeFinReelle = formatter.format(missionEnCours.getDateFinReelle());
 			    dateDeFinReelle.setText("Date de fin réelle le " + sdateDeFinReelle);
 			} else {
 				this.dateDeFinReelle.setVisible(false);
 			}
 		    SimpleDateFormat formatter = new SimpleDateFormat("EEEE dd MMM yyyy");
-		    String dateFinPrevue = formatter.format(missSelect.getDateFin());
+		    String dateFinPrevue = formatter.format(missionEnCours.getDateFin());
 			dateDeFinPrevue.setText("Date de fin prévue le " + dateFinPrevue);
 			
-			ArrayList<CompetenceRequirement> listCompMiss = missSelect.getCompReq();
+			ArrayList<CompetenceRequirement> listCompMiss = missionEnCours.getCompReq();
 			TableModel tmComp = JTables.CompetencesRequises(listCompMiss).getModel();
 			this.JTableCompetences.setModel(tmComp);
 			
-			ArrayList<Employee> listEmpMiss = missSelect.getAffEmp();
+			ArrayList<Employee> listEmpMiss = missionEnCours.getAffEmp();
 			TableModel tmEmp = JTables.Employes(listEmpMiss).getModel();
 			this.JTableEmployes.setModel(tmEmp);
 			
