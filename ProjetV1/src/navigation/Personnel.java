@@ -261,6 +261,15 @@ public class Personnel extends Formulaire {
 			this.mJTablePersonnel = (GenericTableModel<Employee>) this.JTablePersonnel.getModel();
 			this.mJTableCompetences = (GenericTableModel<Competence>) JTables.Competences(listCompEmp).getModel();
 			this.JTableCompetences.setModel(this.mJTableCompetences);
+			
+			JTableCompetences.setAutoCreateRowSorter(true);
+			TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(JTableCompetences.getModel());
+			JTableCompetences.setRowSorter(sorter);
+			List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+			sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+			sorter.setSortKeys(sortKeys);
+			
+			
 			this.JTableCompetences.getColumnModel().getColumn(0).setPreferredWidth(200);
 			this.JTableCompetences.getColumnModel().getColumn(1).setPreferredWidth(600);
 		}
