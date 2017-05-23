@@ -162,22 +162,12 @@ public abstract class MissionAbstract extends CSVEntity {
 		}
 	}
 	
-	public void setDateFinRelle(int duree) {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(this.dateDebut);
-		cal.add(Calendar.DATE, duree);
-		this.dateFinReelle = cal.getTime();
-	}
-	
 	public void setDateFinRelle(Date date) {
 		this.dateFinReelle = date;
 	}
 	
 	public boolean enRetard() {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(this.dateDebut);
-		cal.add(Calendar.DATE, duree);
-		Date dateFinPrev = cal.getTime();
+		Date dateFinPrev = getDateFin();
 		return dateFinReelle.compareTo(dateFinPrev) >= 0;
 	}
 	

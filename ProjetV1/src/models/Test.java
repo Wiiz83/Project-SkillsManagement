@@ -7,7 +7,7 @@ import java.util.Date;
 public class Test {
 	public static void main(String[] args) throws ParseException {
 		SimpleDateFormat dateformatter = new SimpleDateFormat("dd/MM/yyyy");
-		Date d = dateformatter.parse("24/05/2017");
+		Date d = dateformatter.parse("01/05/2017");
 		
 		Mission m = new Mission("test", d, 10, 0);
 		Mission m2 = new Mission("test", d, 10, 5);

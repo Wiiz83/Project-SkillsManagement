@@ -101,7 +101,7 @@ public class Test {
 		mission_test.affectEmployee(emp.get(4));
 		mission_test.affectEmployee(emp.get(5));
 		mission_test.affectEmployee(emp.get(6));
-		mission_test.setDateFinRelle(60);
+			// mission_test.setDateFinRelle(60);
 		data.Missions().ajouter(mission_test);
 		
 		// mission terminée
@@ -109,7 +109,7 @@ public class Test {
 		mission_test.affectEmployee(emp.get(4));
 		mission_test.affectEmployee(emp.get(5));
 		mission_test.affectEmployee(emp.get(6));
-		mission_test.setDateFinRelle(60);
+			// mission_test.setDateFinRelle(60);
 		data.Missions().ajouter(mission_test);
 		}
 	}
