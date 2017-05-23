@@ -23,4 +23,14 @@ public class DataException extends Exception {
 		// TODO Auto-generated constructor stub
 	}
 	
+	public Throwable getRootCause() {
+		Throwable cause = null;
+		Throwable result = this;
+		
+		while (null != (cause = result.getCause()) && (result != cause)) {
+			result = cause;
+		}
+		return result;
+	}
+	
 }
