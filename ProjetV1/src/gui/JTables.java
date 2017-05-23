@@ -56,7 +56,11 @@ public class JTables {
 		JTable table = new JTable(dataModel);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setAutoCreateRowSorter(true);
-		table.getRowSorter().toggleSortOrder(0);
+		TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel());
+		table.setRowSorter(sorter);
+		List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+		sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+		sorter.setSortKeys(sortKeys);
 		return table;
 	}
 	
@@ -93,7 +97,11 @@ public class JTables {
 		JTable table = new JTable(dataModel);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setAutoCreateRowSorter(true);
-		table.getRowSorter().toggleSortOrder(0);
+		TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel());
+		table.setRowSorter(sorter);
+		List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+		sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+		sorter.setSortKeys(sortKeys);
 		table.getColumnModel().getColumn(0).setPreferredWidth(75);
 		table.getColumnModel().getColumn(1).setPreferredWidth(225);
 		return table;
@@ -134,7 +142,11 @@ public class JTables {
 		JTable table = new JTable(dataModel);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setAutoCreateRowSorter(true);
-		table.getRowSorter().toggleSortOrder(0);
+		TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel());
+		table.setRowSorter(sorter);
+		List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+		sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+		sorter.setSortKeys(sortKeys);
 		return table;
 	}
 	
@@ -143,7 +155,7 @@ public class JTables {
 	 * @return la jtable
 	 */
 	public static <E extends MissionAbstract> JTable Missions(ArrayList<E> missions) {
-		String[] headers = { "Nom", "Durée", "Statut" };
+		String[] headers = { "Nom", "Date de début", "Statut" };
 		@SuppressWarnings("serial")
 		TableModel dataModel = new GenericTableModel<E>(missions, headers) {
 			
@@ -157,7 +169,7 @@ public class JTables {
 				case 0:
 					return mis.getNomM();
 				case 1:
-					return mis.getDuree();
+					return mis.getDateDebut();
 				case 2:
 					return mis.getStatus();
 				default:
@@ -170,7 +182,11 @@ public class JTables {
 		JTable table = new JTable(dataModel);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setAutoCreateRowSorter(true);
-		table.getRowSorter().toggleSortOrder(0);
+		TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel());
+		table.setRowSorter(sorter);
+		List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+		sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+		sorter.setSortKeys(sortKeys);
 		return table;
 	}
 	
@@ -285,7 +301,12 @@ public class JTables {
 		table.getColumnModel().getColumn(3).setWidth(0);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setAutoCreateRowSorter(true);
-		table.getRowSorter().toggleSortOrder(0);
+		TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel());
+		table.setRowSorter(sorter);
+		List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+		sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+		sorter.setSortKeys(sortKeys);
+		
 		return table;
 	}
 	
@@ -344,8 +365,6 @@ public class JTables {
 		table.getColumnModel().getColumn(3).setWidth(0);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setAutoCreateRowSorter(true);
-		//table.getRowSorter().toggleSortOrder(2);
-		
 		TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel());
 		table.setRowSorter(sorter);
 		List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);

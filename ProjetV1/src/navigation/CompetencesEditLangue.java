@@ -1,5 +1,6 @@
 package navigation;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
@@ -64,7 +65,7 @@ public class CompetencesEditLangue {
 		this.frame = new JFrame("Modification d'un libellé de compétence");
 		frame.setSize(400, 170);
 		frame.setResizable(false);
-		frame.setLocation(150, 150);
+		frame.setLocation(300, 100);
 
 		try {
 			Image iconImage = ImageIO.read(getClass().getResourceAsStream("/images/icon.png"));
@@ -81,10 +82,12 @@ public class CompetencesEditLangue {
 	    });
 	
         JPanel panel = new JPanel();
+        panel.setBackground(Color.WHITE);
         panel.setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
         
         JPanel panelPays = new JPanel();
+        panelPays.setBackground(Color.WHITE);
         panelPays.setLayout( new FlowLayout());
         
     	JLabel labelPays = new JLabel("Pays :");
@@ -97,6 +100,7 @@ public class CompetencesEditLangue {
         
         
         JPanel panelLibelle = new JPanel();
+        panelLibelle.setBackground(Color.WHITE);
         panelLibelle.setLayout( new FlowLayout());
         
     	JLabel labelLibelle = new JLabel("Libellé :");
@@ -107,6 +111,7 @@ public class CompetencesEditLangue {
         panelLibelle.add(TFlibelle);
         
         JPanel panelBoutons = new JPanel();
+        panelBoutons.setBackground(Color.WHITE);
         panelBoutons.setLayout( new FlowLayout());        
         
         // On valide la modification : on enregistre, on actualise les champs et on revient à la fênetre principale

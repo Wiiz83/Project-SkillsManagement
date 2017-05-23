@@ -166,9 +166,9 @@ public class Accueil extends JPanel {
 	 */
 	public void PopUpMissionEnRetard() {
 		DatePicker dp = new DatePicker();
-		String message = "Veuillez entrer la date de fin réelle de la mission :";
+		String message = "Veuillez entrer sa date de fin réelle :";
 		Object[] params = { message, dp };
-		int n = JOptionPane.showConfirmDialog(null, params, "Cette mission est elle terminée ?",
+		int n = JOptionPane.showConfirmDialog(null, params, "Modification de la de fin réelle",
 				JOptionPane.YES_NO_OPTION);
 
 		if (n == JOptionPane.YES_OPTION) {

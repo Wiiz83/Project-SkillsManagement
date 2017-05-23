@@ -18,6 +18,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -29,6 +31,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
@@ -110,6 +114,11 @@ public class Formations extends Formulaire {
 		TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(JTableFormations.getModel());
 		this.recherche.getDocument().addDocumentListener(new RechercheJTable(recherche, indication, rowSorter));
 		add(this.recherche);
+		
+		JTableFormations.setRowSorter(rowSorter);
+		List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+		sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+		rowSorter.setSortKeys(sortKeys);
 
 		this.filtre = new JComboBox<>();
 		this.filtre.addItem("Toutes");
@@ -354,9 +363,8 @@ public class Formations extends Formulaire {
 	
 	private void updateMissionStatus() {
 		Status selected = (Status) statut.getSelectedItem();
-		MissionFormation mission = formationEnCours;
-		if (selected == Status.PLANIFIEE && mission.getStatus() == Status.PREPARATION)
-			mission.planifier();
+		if (selected == Status.PLANIFIEE && formationEnCours.getStatus() == Status.PREPARATION)
+			formationEnCours.planifier();
 	}
 
 	/**
@@ -379,14 +387,15 @@ public class Formations extends Formulaire {
 
 			this.statut.setSelectedItem(formationEnCours.getStatus());
 
-			if (formationEnCours.getStatus() == Status.TERMINEE) {
+			if(formationEnCours.getDateFinReelle() != formationEnCours.getDateFin()){
 				this.dateDeFinReelle.setVisible(true);
-				SimpleDateFormat formatter = new SimpleDateFormat("EEEE dd MMM yyyy");
-				String sdateDeFinReelle = formatter.format(formationEnCours.getDateFinReelle());
-				dateDeFinReelle.setText("Date de fin réelle le " + sdateDeFinReelle);
+			    SimpleDateFormat formatter = new SimpleDateFormat("EEEE dd MMM yyyy");
+			    String sdateDeFinReelle = formatter.format(formationEnCours.getDateFinReelle());
+			    dateDeFinReelle.setText("Date de fin réelle le " + sdateDeFinReelle);
 			} else {
 				this.dateDeFinReelle.setVisible(false);
 			}
+			
 			SimpleDateFormat formatter = new SimpleDateFormat("EEEE dd MMM yyyy");
 			String dateFinPrevue = formatter.format(formationEnCours.getDateFin());
 			dateDeFinPrevue.setText("Date de fin prévue le " + dateFinPrevue);
@@ -445,6 +454,8 @@ public class Formations extends Formulaire {
 			formationEnCours.setNomM(nom);
 			formationEnCours.setAffEmp(presentEmployes);
 			formationEnCours.setCompetences(presentCompetences);
+			
+			updateMissionStatus();
 
 			switch (this.mode) {
 			case "nouveau":
@@ -470,13 +481,13 @@ public class Formations extends Formulaire {
 				break;
 			}
 			
-			updateMissionStatus();
+			
 			updateComboBox();
 		}
 	}
 
 	/**
-	 * Modification de la mission séléctionnée
+	 * Modification de la formation séléctionnée
 	 */
 	public void Modifier() {
 		this.formationEnCours = getFormationSelected();
@@ -484,16 +495,47 @@ public class Formations extends Formulaire {
 			if (formationEnCours.estModifiable()) {
 				super.ChargementModification();
 			} else if (formationEnCours.getStatus() == Status.EN_COURS) {
-				JOptionPane.showMessageDialog(new JFrame(),
-						"La mission est en cours : elle n'est donc plus modifiable.", "Mission en cours",
-						JOptionPane.WARNING_MESSAGE);
-			} else if (formationEnCours.getStatus() == Status.TERMINEE) {
-				JOptionPane.showMessageDialog(new JFrame(),
-						"La mission est terminée : elle n'est donc plus modifiable.", "Mission terminée",
-						JOptionPane.WARNING_MESSAGE);
-			}
+
+				DatePicker dp = new DatePicker();
+				String message ="La formation est en cours : elle n'est donc plus modifiable. \n Veuillez entrer sa date de fin réelle :";
+				Object[] params = {message,dp};
+				int n = JOptionPane.showConfirmDialog(null,params,"Modification de la de fin réelle", JOptionPane.YES_NO_OPTION);
+				
+				if (n == JOptionPane.YES_OPTION) {
+		
+					Date DateDeFin = java.sql.Date.valueOf(dp.getDate());
+					Date DateDeDebut = formationEnCours.getDateDebut();
+					
+					// Date Début après Date Fin
+			        if (DateDeDebut.compareTo(DateDeFin) > 0) {
+						JOptionPane.showMessageDialog(new JFrame(), "La date de fin doit être supérieure ou égale à la date de début.","Date invalide", JOptionPane.WARNING_MESSAGE);
+						Modifier();
+			        } else if (DateDeDebut.compareTo(DateDeFin) <= 0) {
+			        	formationEnCours.setDateFinRelle(DateDeFin);
+			        	try {
+							data.Formations().modifier(formationEnCours);
+							this.mJTableFormations.fireTableDataChanged();
+							updateMissionStatus();
+							updateComboBox();
+							VideChamps();
+						} catch (DataException e) {
+							e.printStackTrace();
+						}
+			        } else {
+						JOptionPane.showMessageDialog(new JFrame(), "La date de fin réelle est invalide.","Date invalide", JOptionPane.WARNING_MESSAGE);
+						Modifier();
+			        }
+				}
+			
+		} else if (formationEnCours.getStatus() == Status.TERMINEE) {
+			JOptionPane.showMessageDialog(
+					new JFrame(), "La formation est terminée : elle n'est donc plus modifiable.", "Formation terminée",
+					JOptionPane.WARNING_MESSAGE
+			);
+		}
 		}
 	}
+
 
 	/**
 	 * Annulation de toutes les modifications précédemment effectuées
@@ -549,8 +591,8 @@ public class Formations extends Formulaire {
 	 * Modifier les employés
 	 */
 	public void ModifierEmploye() {
-		ProgramFrame.getFrame().setEnabled(false);
 		try {
+			ProgramFrame.getFrame().setEnabled(false);
 			ArrayList<Employee> listCompNonPoss = data.Employes().Autres(mJTableEmployes.getArraylist());
 			GenericTableModel<Employee> compNonPossModel = (GenericTableModel<Employee>) JTables
 					.Employes(listCompNonPoss).getModel();
@@ -563,4 +605,6 @@ public class Formations extends Formulaire {
 			e1.printStackTrace();
 		}
 	}
+	
+
 }

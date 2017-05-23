@@ -58,6 +58,7 @@ public class MissionFormation extends MissionAbstract {
 			return false;
 		return true;
 	}
+
 	
 	
 }

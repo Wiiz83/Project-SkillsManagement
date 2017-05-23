@@ -22,6 +22,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -35,6 +36,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
@@ -115,6 +118,11 @@ public class Missions extends Formulaire {
 		TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(JTableMissions.getModel());
 		this.recherche.getDocument().addDocumentListener(new RechercheJTable(recherche, indication, rowSorter));
 		add(this.recherche);
+		
+		JTableMissions.setRowSorter(rowSorter);
+		List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+		sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+		rowSorter.setSortKeys(sortKeys);
 		
 		this.filtre = new JComboBox<>();
 		this.filtre.addItem("Toutes");
@@ -493,7 +501,7 @@ public class Missions extends Formulaire {
 			this.nombre.setText(Integer.toString(missionEnCours.getNbPersReq()));
 			this.statut.setSelectedItem(missionEnCours.getStatus());
 
-			if(missionEnCours.getStatus() == Status.TERMINEE){
+			if(missionEnCours.getDateFinReelle() != missionEnCours.getDateFin()){
 				this.dateDeFinReelle.setVisible(true);
 			    SimpleDateFormat formatter = new SimpleDateFormat("EEEE dd MMM yyyy");
 			    String sdateDeFinReelle = formatter.format(missionEnCours.getDateFinReelle());
@@ -501,6 +509,8 @@ public class Missions extends Formulaire {
 			} else {
 				this.dateDeFinReelle.setVisible(false);
 			}
+			
+			
 		    SimpleDateFormat formatter = new SimpleDateFormat("EEEE dd MMM yyyy");
 		    String dateFinPrevue = formatter.format(missionEnCours.getDateFin());
 			dateDeFinPrevue.setText("Date de fin prévue le " + dateFinPrevue);
@@ -608,9 +618,9 @@ public class Missions extends Formulaire {
 			} else if (missionEnCours.getStatus() == Status.EN_COURS) {
 
 					DatePicker dp = new DatePicker();
-					String message ="La mission est en cours : elle n'est donc plus modifiable. \n Si elle est terminée, veuillez entrer la date de fin :";
+					String message ="La mission est en cours : elle n'est donc plus modifiable. \n Veuillez entrer sa date de fin réelle :";
 					Object[] params = {message,dp};
-					int n = JOptionPane.showConfirmDialog(null,params,"Cette mission est elle terminée ?", JOptionPane.YES_NO_OPTION);
+					int n = JOptionPane.showConfirmDialog(null,params,"Modification de la de fin réelle", JOptionPane.YES_NO_OPTION);
 					
 					if (n == JOptionPane.YES_OPTION) {
 			
@@ -702,6 +712,8 @@ public class Missions extends Formulaire {
 			frame = new MissionsAddCompetence(data, this.missionEnCours, this);
 			frame.setTitle("Ajout de compétences");
 			frame.setResizable(false);
+			frame.setBackground(Color.WHITE);
+			frame.setLocation(300, 100);
 			try {
 				Image iconImage = ImageIO.read(getClass().getResourceAsStream("/images/icon.png"));
 				frame.setIconImage(iconImage);

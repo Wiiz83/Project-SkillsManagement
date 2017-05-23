@@ -1,5 +1,6 @@
 package navigation;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
@@ -61,7 +62,7 @@ public class MissionsEditCompetence {
 		this.frame = new JFrame("Modification d'une compétence requise pour une mission");
 		frame.setSize(500, 200);
 		frame.setResizable(false);
-		frame.setLocation(150, 20);
+		frame.setLocation(300, 100);
 		try {
 			Image iconImage = ImageIO.read(getClass().getResourceAsStream("/images/icon.png"));
 			frame.setIconImage(iconImage);
@@ -77,10 +78,12 @@ public class MissionsEditCompetence {
 	    });
 	
         JPanel panel = new JPanel();
+        panel.setBackground(Color.WHITE);
         panel.setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
         
         JPanel panelPays = new JPanel();
+        panelPays.setBackground(Color.WHITE);
         panelPays.setLayout( new FlowLayout());
         
     	JLabel labelPays = new JLabel("Pays :");
@@ -92,6 +95,7 @@ public class MissionsEditCompetence {
         panelPays.add(TFpays);
         
         JPanel panelLibelle = new JPanel();
+        panelLibelle.setBackground(Color.WHITE);
         panelLibelle.setLayout( new FlowLayout());
         
     	JLabel labelLibelle = new JLabel("Libellé :");
@@ -103,6 +107,7 @@ public class MissionsEditCompetence {
         panelLibelle.add(TFlibelle);
         
         JPanel panelNombre = new JPanel();
+        panelNombre.setBackground(Color.WHITE);
         panelNombre.setLayout( new FlowLayout());
         
     	JLabel labeNombre = new JLabel("Nombre d'employés :");
@@ -113,6 +118,7 @@ public class MissionsEditCompetence {
         panelNombre.add(TFNombre);
         
         JPanel panelBoutons = new JPanel();
+        panelBoutons.setBackground(Color.WHITE);
         panelBoutons.setLayout( new FlowLayout());        
         
 		this.valider = new JButton("Valider");

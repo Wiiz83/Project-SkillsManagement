@@ -8,6 +8,8 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -18,6 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
@@ -94,6 +98,13 @@ public class Competences extends Formulaire {
 		this.recherche.setBounds(10, 10, 300, 25);
 		TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(JTableCompetences.getModel());
 		this.recherche.getDocument().addDocumentListener(new RechercheJTable(recherche, indication, rowSorter));
+		
+		JTableCompetences.setRowSorter(rowSorter);
+		List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+		sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+		rowSorter.setSortKeys(sortKeys);
+		
+		
 		add(this.recherche);
 		JTableCompetences.setRowSorter(rowSorter);
 

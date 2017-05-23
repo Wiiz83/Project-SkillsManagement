@@ -1,5 +1,6 @@
 package navigation;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -9,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -19,17 +22,22 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+
 import gui.GenericTableModel;
 import gui.ProgramFrame;
 
 public class FormationsEditEmploye implements ActionListener {
 
 	private static final Insets EMPTY_INSETS = new Insets(0, 0, 0, 0);
-	private static final String ADD_BUTTON_LABEL = "<< Add";
-	private static final String REMOVE_BUTTON_LABEL = "Remove >>";
+	private static final String ADD_BUTTON_LABEL = "<<";
+	private static final String REMOVE_BUTTON_LABEL = ">>";
 
-	private static final String PRESENTS	= "Élements présents";
-	private static final String RESTANTS	= "Élements restants";
+	private static final String PRESENTS	= "Employés présents";
+	private static final String RESTANTS	= "Employés restants";
 	
 	private JLabel ElementPossLabel;
 	private JLabel ElementNonPossLabel;
@@ -49,15 +57,25 @@ public class FormationsEditEmploye implements ActionListener {
 		this.ElementNonPoss.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.mJTableNonPoss = nonPossModel;
 		this.mJTablePoss = PossModel;
+		
+		TableRowSorter<TableModel> sorter1 = new TableRowSorter<TableModel>(ElementPoss.getModel());
+		ElementPoss.setRowSorter(sorter1);
+		TableRowSorter<TableModel> sorter2 = new TableRowSorter<TableModel>(ElementNonPoss.getModel());
+		ElementNonPoss.setRowSorter(sorter2);
+		List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+		sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+		sorter1.setSortKeys(sortKeys);
+		sorter2.setSortKeys(sortKeys);
 	}
 	
 	public void displayGUI(){
 		
 		JFrame frame = new JFrame();
-		frame.setSize(800, 400);
-		frame.setTitle("Modification des employés d'une formation");
+		frame.setSize(1000, 600);
+		frame.setTitle("Modification des employés");
 		frame.setResizable(false);
-		frame.setLocation(5, 5);
+		frame.setLocation(50, 50);
+		
 		try {
 			Image iconImage = ImageIO.read(getClass().getResourceAsStream("/images/icon.png"));
 			frame.setIconImage(iconImage);
@@ -72,6 +90,7 @@ public class FormationsEditEmploye implements ActionListener {
 	    });
 		
         JPanel content = new JPanel();
+        content.setBackground(Color.WHITE);
 		content.setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
 		content.setLayout(new GridBagLayout());
 		

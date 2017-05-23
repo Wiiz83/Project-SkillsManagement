@@ -1,5 +1,6 @@
 package navigation;
 
+import java.awt.Color;
 import java.awt.HeadlessException;
 import java.util.ArrayList;
 
@@ -85,6 +86,7 @@ public class MissionsAddCompetence extends JFrame {
 		nbEmpLable.setText("Nombre d'employés requis: ");
 		
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(layout);
 		layout.setHorizontalGroup(
 				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(

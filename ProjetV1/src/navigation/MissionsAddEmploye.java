@@ -1,5 +1,6 @@
 package navigation;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -48,10 +49,10 @@ public class MissionsAddEmploye {
 	
 	
 	public void displayGUI(){
-		this.frame = new JFrame("Modification des employés de la mission");
+		this.frame = new JFrame("Affectation d'employés");
 		frame.setSize(500, 550);
 		frame.setResizable(false);
-		frame.setLocation(150, 20);
+		frame.setLocation(300, 100);
 		try {
 			Image iconImage = ImageIO.read(getClass().getResourceAsStream("/images/icon.png"));
 			frame.setIconImage(iconImage);
@@ -67,10 +68,12 @@ public class MissionsAddEmploye {
 	    });
 	
         JPanel panel = new JPanel();
+        panel.setBackground(Color.WHITE);
         panel.setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
         
         JPanel panelJTable = new JPanel();
+        panelJTable.setBackground(Color.WHITE);
         panelJTable.setLayout( new FlowLayout());
        
 		Recommendation recommandation  = new Recommendation(missionEnCours, listeEmp);
@@ -86,6 +89,7 @@ public class MissionsAddEmploye {
 		panelJTable.add(js);
 
         JPanel panelBoutons = new JPanel();
+        panelBoutons.setBackground(Color.WHITE);
         panelBoutons.setLayout( new FlowLayout());        
         
 		this.ajouter = new JButton("Ajouter");
