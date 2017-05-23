@@ -27,8 +27,11 @@ public abstract class MissionAbstract extends CSVEntity {
 		this.duree = duree;
 		this.nbPersReq = nbPersReq;
 		this.AffEmp = new ArrayList<>();
-		setDateFinRelle(duree);
-		
+		dateFinReelle = (Date) getDateFin().clone();
+	}
+	
+	public void resetDateFinReelle() {
+		dateFinReelle = (Date) getDateFin().clone();
 	}
 	
 	/**
@@ -182,7 +185,5 @@ public abstract class MissionAbstract extends CSVEntity {
 		return dateFinReelle;
 	}
  
-	
-
 	
 }
