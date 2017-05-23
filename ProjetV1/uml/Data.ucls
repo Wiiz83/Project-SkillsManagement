@@ -4,7 +4,7 @@
   router="FAN">  
   <class id="1" language="java" name="data.AppCSVConfig" project="ProjetV1" file="/ProjetV1/src/data/AppCSVConfig.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="81" width="107" x="42" y="711"/>    
+    <position height="-1" width="-1" x="69" y="1106"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -13,61 +13,61 @@
   </class>  
   <class id="2" language="java" name="data.AppCSVDataModel" project="ProjetV1" 
     file="/ProjetV1/src/data/AppCSVDataModel.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="99" width="130" x="189" y="886"/>    
+    <position height="-1" width="-1" x="224" y="1291"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="csv.CSVConfig" project="ProjetV1" file="/ProjetV1/src/csv/CSVConfig.java" 
+  <class id="3" language="java" name="data.CSVRequests" project="ProjetV1" file="/ProjetV1/src/data/CSVRequests.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="315" width="363" x="42" y="356"/>    
+    <position height="225" width="287" x="251" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <interface id="4" language="java" name="csv.CSVSerializer" project="ProjetV1" 
-    file="/ProjetV1/src/csv/CSVSerializer.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="81" width="151" x="412" y="711"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </interface>  
-  <interface id="5" language="java" name="csv.CSVDeserializer" project="ProjetV1" 
-    file="/ProjetV1/src/csv/CSVDeserializer.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="81" width="177" x="603" y="711"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </interface>  
-  <class id="6" language="java" name="data.Data" project="ProjetV1" file="/ProjetV1/src/data/Data.java" binary="false" 
+  <class id="4" language="java" name="data.Data" project="ProjetV1" file="/ProjetV1/src/data/Data.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="178" y="154"/>    
+    <position height="279" width="169" x="42" y="302"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="7" language="java" name="data.AppCSVSerializer" project="ProjetV1" 
+  <class id="5" language="java" name="data.AppCSVSerializer" project="ProjetV1" 
     file="/ProjetV1/src/data/AppCSVSerializer.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="225" width="319" x="445" y="356"/>    
+    <position height="-1" width="-1" x="483" y="1326"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="8" language="java" name="data.AppCSVDeserializer" project="ProjetV1" 
+  <class id="6" language="java" name="data.AppCSVDeserializer" project="ProjetV1" 
     file="/ProjetV1/src/data/AppCSVDeserializer.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="243" width="319" x="804" y="356"/>    
+    <position height="-1" width="-1" x="848" y="1337"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="7" language="java" name="csv.CSVDeserializer" project="ProjetV1" 
+    file="/ProjetV1/src/csv/CSVDeserializer.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="81" width="177" x="603" y="1066"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="8" language="java" name="csv.CSVConfig" project="ProjetV1" file="/ProjetV1/src/csv/CSVConfig.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="315" width="363" x="42" y="711"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -76,59 +76,129 @@
   </class>  
   <class id="9" language="java" name="csv.CSVModel" project="ProjetV1" file="/ProjetV1/src/csv/CSVModel.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="135" width="183" x="189" y="711"/>    
+    <position height="-1" width="-1" x="225" y="1134"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <generalization id="10">    
+  <class id="10" language="java" name="csv.CSVObjects" project="ProjetV1" file="/ProjetV1/src/csv/CSVObjects.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="369" width="292" x="251" y="302"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="11" language="java" name="csv.CSVSerializer" project="ProjetV1" 
+    file="/ProjetV1/src/csv/CSVSerializer.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="459" y="1107"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <generalization id="12">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="9"/>  
   </generalization>  
-  <association id="11">    
+  <association id="13">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="12" name="deserializer"/>      
-      <multiplicity id="13" minimum="0" maximum="1"/>    
+      <attribute id="14" name="csvobjects">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="15" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
+    <end type="TARGET" refId="10" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="14">    
+  <realization id="16">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="7"/>  
+  </realization>  
+  <association id="17">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="18" name="config">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="19" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="20">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="21" name="config">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="22" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="23">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="15" name="serializer"/>      
-      <multiplicity id="16" minimum="0" maximum="1"/>    
+      <attribute id="24" name="data">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="25" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="17">    
+  <generalization id="26">    
     <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="3"/>  
+    <end type="TARGET" refId="8"/>  
   </generalization>  
-  <realization id="18">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="5"/>  
+  <realization id="27">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="11"/>  
   </realization>  
-  <association id="19">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="20" name="model"/>      
-      <multiplicity id="21" minimum="0" maximum="1"/>    
+  <association id="28">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="29" name="deserializer">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="30" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="31">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="32" name="model">        
+        <position height="0" width="0" x="-55" y="1"/>      
+      </attribute>      
+      <multiplicity id="33" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-55" y="1"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="9" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="22">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="4"/>  
-  </realization>  
-  <association id="23">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="24" name="config"/>      
-      <multiplicity id="25" minimum="0" maximum="1"/>    
+  <association id="34">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="35" name="serializer">        
+        <position height="0" width="0" x="-28" y="1"/>      
+      </attribute>      
+      <multiplicity id="36" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-28" y="1"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
+    <end type="TARGET" refId="11" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

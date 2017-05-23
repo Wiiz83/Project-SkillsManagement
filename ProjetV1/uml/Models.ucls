@@ -4,7 +4,7 @@
   router="FAN">  
   <class id="1" language="java" name="models.CompetenceCode" project="ProjetV1" 
     file="/ProjetV1/src/models/CompetenceCode.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="263" width="154" x="493" y="1743"/>    
+    <position height="263" width="154" x="581" y="1897"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -13,7 +13,7 @@
   </class>  
   <class id="2" language="java" name="models.Personne" project="ProjetV1" file="/ProjetV1/src/models/Personne.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1281" y="1214"/>    
+    <position height="299" width="148" x="41" y="37"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -22,7 +22,7 @@
   </class>  
   <class id="3" language="java" name="models.MissionAbstract" project="ProjetV1" 
     file="/ProjetV1/src/models/MissionAbstract.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="641" width="401" x="453" y="-9"/>    
+    <position height="731" width="211" x="581" y="37"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -31,7 +31,7 @@
   </class>  
   <class id="4" language="java" name="models.Competence" project="ProjetV1" file="/ProjetV1/src/models/Competence.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="317" width="445" x="493" y="1386"/>    
+    <position height="335" width="500" x="581" y="1522"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -40,7 +40,7 @@
   </class>  
   <class id="5" language="java" name="models.CompetenceRequirement" project="ProjetV1" 
     file="/ProjetV1/src/models/CompetenceRequirement.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="299" width="445" x="493" y="1047"/>    
+    <position height="299" width="500" x="851" y="1183"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -49,7 +49,7 @@
   </class>  
   <class id="6" language="java" name="models.Mission" project="ProjetV1" file="/ProjetV1/src/models/Mission.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="335" width="445" x="453" y="672"/>    
+    <position height="245" width="500" x="1121" y="808"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -58,139 +58,104 @@
   </class>  
   <class id="7" language="java" name="models.MissionFormation" project="ProjetV1" 
     file="/ProjetV1/src/models/MissionFormation.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="191" width="445" x="-32" y="672"/>    
+    <position height="191" width="500" x="581" y="808"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="8" language="java" name="models.Recommendation" project="ProjetV1" 
-    file="/ProjetV1/src/models/Recommendation.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="209" width="258" x="919" y="-9"/>    
-    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <enumeration id="9" language="java" name="models.Status" project="ProjetV1" file="/ProjetV1/src/models/Status.java" 
+  <class id="8" language="java" name="models.Employee" project="ProjetV1" file="/ProjetV1/src/models/Employee.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="173" width="132" x="125" y="-9"/>    
-    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </enumeration>  
-  <class id="10" language="java" name="models.Employee" project="ProjetV1" file="/ProjetV1/src/models/Employee.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="335" width="445" x="959" y="672"/>    
+    <position height="335" width="500" x="41" y="808"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <association id="11">    
+  <association id="9">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="12" name="competence"/>      
-      <multiplicity id="13" minimum="0" maximum="1"/>    
+      <attribute id="10" name="competence">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="11" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="14">    
-    <bendpoint x="928" y="672"/>    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="15" name="misCompReq"/>      
-      <multiplicity id="16" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="17">    
+  <generalization id="12">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <association id="13">    
     <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="18" name="code"/>      
-      <multiplicity id="19" minimum="0" maximum="1"/>    
+      <attribute id="14" name="code">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="15" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="20">    
+  <generalization id="16">    
     <end type="SOURCE" refId="7"/>    
     <end type="TARGET" refId="3"/>  
   </generalization>  
+  <association id="17">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="18" name="AffEmp">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="19" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="20">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
   <association id="21">    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="22" name="empAff"/>      
-      <multiplicity id="23" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="10" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="24">    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="25" name="misToRec"/>      
-      <multiplicity id="26" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="27">    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="28" name="empRec"/>      
-      <multiplicity id="29" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="10" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="30">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="31" name="CompReq"/>      
-      <multiplicity id="32" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="33">    
-    <bendpoint x="240" y="1047"/>    
+    <bendpoint x="590" y="1183"/>    
     <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="34" name="Competences"/>      
-      <multiplicity id="35" minimum="0" maximum="2147483647"/>    
+      <attribute id="22" name="Competences">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="23" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="36">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="2"/>  
-  </generalization>  
-  <association id="37">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="38" name="AffEmp"/>      
-      <multiplicity id="39" minimum="0" maximum="2147483647"/>    
+  <association id="24">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="25" name="CompReq">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="26" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="10" navigable="true"/>    
+    <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="40">    
+  <association id="27">    
+    <bendpoint x="320" y="1183"/>    
     <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="41" name="empToRec"/>      
-      <multiplicity id="42" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="10" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="43">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="3"/>  
-  </generalization>  
-  <association id="44">    
-    <bendpoint x="968" y="1047"/>    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="45" name="Competences"/>      
-      <multiplicity id="46" minimum="0" maximum="2147483647"/>    
+      <attribute id="28" name="Competences">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="29" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
